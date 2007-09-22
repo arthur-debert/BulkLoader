@@ -1,11 +1,11 @@
-/* BulkLoader: manage multiple loadings in Actioncript 3.
+/** BulkLoader: manage multiple loadings in Actioncript 3.
 *   
 *   
 *   @author Arthur Debert
 *   @version 0.4
 */
 
-/*
+/**
 * Licensed under the MIT License
 * 
 * Copyright (c) 2006-2007 Arthur Debert
@@ -41,10 +41,56 @@
     import br.com.stimuli.loading.LoadingItem;
     import br.com.stimuli.loading.BulkProgressEvent;
     
-    /*
-    *   Manages loading for simultaneous items and multople formats.
+    /**
+    *   Manages loading for simultaneous items and multiple formats.
     *   Exposes a simpler interface, with callbacks instead of events for each item to be loaded (but still dispatched "global" events).
-    *   The number of simultaneous connections is settable.
+    *   The number of simultaneous connections is configurable.
+    *   
+    *   @example Basic usage:<listing version=3.0>
+    import br.com.stimuli.loading.BulkLoader;
+
+    / /instantiate a BulkLoader with a name : a way to reference this instance from another classes without having to set a expolicit reference on many places
+    var bulkLoader : BulkLoader = new BulkLoader("main loading");
+    // add items to be loaded
+    bulkLoader.add("my_xml_file.xml");
+    bulkLoader.add("main.swf");
+    // you can also use a URLRequest object
+    var backgroundURL : URLRequest = new URLRequest("background.jpg");
+    bulkLoader.add(backgroundURL);
+
+    // add event listeners for the loader itself :
+    // event fired when all items have been loaded
+    bulkLoader.addEventListener(BulkLoader.COMPLETE, onCompleteHandler);
+    // event fired when loading progress has been made:
+    bulkLoader.addEventListener(BulkLoader.PROGRESS, onProgressHandler);
+
+    // start loading all items
+    bulkLoader.start();
+
+    function onProgressHandler(evt : ProgressEvent) : void{
+        trace("Loaded" , evt.bytesLoaded," of ",  evt.bytesTotal);
+    }
+
+    function onCompleteHandler() : void{
+            trace("All items are loaeded and ready to consume");
+            // grab the main movie clip:
+            var mainMovie : MovieClip = bulkLoader.getMovieClip("main.swf");
+            // Get the xml object:
+            var mXML : XML = bulkLoader.getXML("my_xml_file.xml");
+            // grab the bitmap for the background image by a string:
+            var myBitmap : Bitmap = bulkLoader.getBitmap("background.jpg");
+            // grab the bitmap for the background image using the url rquest object:
+            var myBitmap : Bitmap = bulkLoader.getBitmap(backgroundURL);
+    }
+
+    // In any other class you can access those assets without having to pass around references to the bulkLoader instance.
+    // In another class  you get get a reference to the "main loading" bulkLoader:
+    var mainLoader : BulkLoader = BulkLoader.getLoader("main loading");
+    // now grab the xml:
+    var mXML : XML = mainLoader.getXML("my_xml_file.xml");
+    // or shorter:
+    var mXML : XML = BulkLoader.getLoader("main loading").getXML("my_xml_file.xml");
+    *    </listing>
     *   @langversion ActionScript 3.0
     *   @playerversion Flash 9.0
     *
@@ -52,25 +98,60 @@
     *   @since  15.09.2007
     */  
     public class BulkLoader extends EventDispatcher {
-        public static const ITEM_LOADED : String = "onItemLoaded";
+        
+        /** Tells this class to use a <code>Loader</code> object to load the item.*/
+        public static const TYPE_IMAGE : String = "loader";
+        /** Tells this class to use a <code>Loader</code> object to load the item.*/
+        public static const TYPE_SWF : String = "loader";
+        /** Tells this class to use a <code>Loader</code> object to load the item.*/
         public static const TYPE_LOADER : String = "loader";
+        /** Tells this class to use a <code>Sound</code> object to load the item.*/
         public static const TYPE_SOUND : String = "sound";
+        /** Tells this class to use a <code>URLRequest</code> object to load the item.*/
         public static const TYPE_TEXT : String = "text";
+        /** Tells this class to use a <code>XML</code> object to load the item.*/
         public static const TYPE_XML : String = "xml";
+        /** Tells this class to use a <code>NetStream</code> object to load the item.*/
         public static const TYPE_VIDEO : String = "video";
         
-        public static var TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png", "flv", "mp3", "xml", "txt", "js", "image" ];
+        /** List of all file extensions that the <code>BulkLoader</code> knows how to guess.
+        *   Availabe types: swf, jpg, jpeg, gif, png. */
+        internal static var AVAILABLE_TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png", "flv", "mp3", "xml", "txt", "js" ];
+        /** List of file extensions that will be automagically use a <code>Loader</code> object for loading.
+        *   Availabe types: txt, js, xml, php, asp .
+        */
+        internal static var LOADER_TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png" , "image"];
+        /** List of file extensions that will be automagically treated as text for loading.
+        *   Availabe types: txt, js, xml, php, asp .
+        */
+        internal static var TEXT_TYPES : Array = ["txt", "js", "xml", "php", "asp" ];
+        /** List of file extensions that will be automagically treated as video for loading. 
+        *  Availabe types: flv. 
+        */
+        internal static var VIDEO_TYPES : Array = ["flv"];
+        /** List of file extensions that will be automagically treated as sound for loading.
+        *  Availabe types: mp3.
+        */
+        internal static var SOUND_TYPES : Array = ["mp3"];
         
-        public static var LOADER_TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png" , "image"];
-        public static var TEXT_TYPES : Array = ["txt", "js", "xml", "php", "asp" ];
-        public static var VIDEO_TYPES : Array = ["flv"];
-        public static var SOUND_TYPES : Array = ["mp3"];
-        public static var XML_TYPES : Array = ["xml"];
+        private static var XML_TYPES : Array = ["xml"];
         
-        /* The name of the event */
+        /** 
+        *   The name of the event 
+        *   @eventType progress
+        */
 		public static const PROGRESS : String = "progress";
+		/** 
+        *   The name of the event 
+        *   @eventType complete
+        */
 		public static const COMPLETE : String = "complete";
-		
+		/**
+		* The name by which this loader instance can be identified.
+		* This property is used so you can get a reference to this instance from other classes in your code without having to save and pass it yourself, throught the static method BulkLoader.getLoader(name) .<p/>
+		* Each name should be unique, as instantiating a BulkLoader with a name already taken will throw an error.
+		* @ see getLoaders
+		*/
         private var _name : String;
         
         private var _items : Array = [];
@@ -81,58 +162,89 @@
         private var _numConnectons : int = 7;
         private var _connections : Array;
         
-        // progress indicators
+        /** 
+        *   The ratio (0->1) of items to load / items total.
+        *   This number is always reliable.
+        **/
         public var loadedRatio : Number = 0;
+        /** Total number of items to load.*/
         public var itemsTotal : int = 0;
+        /** 
+        *   Number of items alrealdy loaded.
+        *   Failed or canceled items are not taken into consideration
+        */
         public var itemsLoaded : int = 0;
+        /** The sum of weights in all items to load.
+        *   Each item's weight default to 1
+        */
         public var totalWeight : int = 0;
+        /** The total bytes to load.
+        *   If the number of items to load is larger than the number of simultaneous connections, bytesTotal will be 0 untill all connections are opened and the number of bytes for all items is known.
+        *   @see #bytesTotalCurrent
+        */ 
         public var bytesTotal : int = 0;
+        /** The sum of all bytes loaded so far. 
+        *  If itemsTotal is less than the number of connections, this will be the same as bytesTotal. Else, bytesTotalCurrent will be available as each loading is started.
+        *   @see #bytesTotal
+        */
         public var bytesTotalCurrent : int = 0;
+        /** The sum of all bytesLoaded for each item.
+        */
         public var bytesLoaded : int = 0;
+        /** The percentage (0->1) of bytes loaded.
+        *   Until all connections are opened  this number is not reliable . If you are downloading more items than the number of simultaneous connections, use loadedRatio or weightPercent instead.
+        *   @see #loadedRatio
+        *   @see #weightPercent
+        */   
         public var percentLoaded : Number = 0;
+        /** The weighted percent of items loaded(0->1).
+        *   This always returns a reliable value.
+        */
         public var weightPercent : Number;
         
-        /*The average latency (in miliseconds) for the entire loading.*/
+        /**The average latency (in miliseconds) for the entire loading.*/
         public var avgLatency : Number;
-        /*The average speed (in kb/s) for the entire loading.*/
+        /**The average speed (in kb/s) for the entire loading.*/
         public var speedAvg : Number;
         private var speedTotal : Number;
         private var startTime : int ;
         private var endTime : int;
-        /*Time in seconds for the whole loading. Only available after everything is laoded*/
+        /**Time in seconds for the whole loading. Only available after everything is laoded*/
         public var totalTime : Number;
         
-        private var hasStarted : Boolean;
-        /* Outputs everything that is happening */
+        /** LogLevel: Outputs everything that is happening. Usefull for debugging. */
         public static const LOG_VERBOSE : int = 0;
-        /*Ouputs noteworthy events such as when an item is finished loading.*/
+        /**Ouputs noteworthy events such as when an item is started / finished loading.*/
         public static const LOG_INFO : int = 2;
-        /*Will only trace errors. Defaut level*/
+        /**Will only trace errors. Defaut level*/
         public static const LOG_ERRORS : int = 3;
-        /*The logging level <code>BulkLoader</code> will use.*/
-        private static var logLevel: int = 3;
+        /**The logging level <code>BulkLoader</code> will use.*/
+        public static var logLevel: int = 3;
         
-
-        /* Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
+        public var isRunning : Boolean;
+        /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
         *   
-        *   @param  name            String      A name that can be used later to reference this loader in a static context,
-        *   @param  numConnectons   int         [optional] The number of maximum simultaneous connections to be open.
-        *   @param  logLevel        int         At which level should traces be outputed. Defaults that only errors will be traced.
+        *   @param name  A name that can be used later to reference this loader in a static context,
+        *   @param  numConnectons The number of maximum simultaneous connections to be open.
+        *   @param  logLevel At which level should traces be outputed. By default only errors will be traced.
+        *   
+        *   @see #numConnectons
+        *   @see #log()
         */
-        public function BulkLoader(theName : String, numConnectons : int = 7, logLevel : int = 3){
-            if (Boolean(allLoaders[theName])){
-                throw new Error ("BulkLoader with name'" + theName +"' has already been created.");
+        public function BulkLoader(name : String, numConnectons : int = 7, logLevel : int = 3){
+            if (Boolean(allLoaders[name])){
+                throw new Error ("BulkLoader with name'" + name +"' has already been created.");
             }
-            allLoaders[theName] = this;
+            allLoaders[name] = this;
             this._numConnectons = numConnectons;
             BulkLoader.logLevel = logLevel;
-            _name = theName;
+            _name = name;
         }
         
-        /* Fetched a loader object created with the <code>name</code> parameter.
+        /** Fetched a loader object created with the <code>name</code> parameter.
         *   This is usefull if you must access loades assets from another scope, without having to pass direct references to this loader.
-        *   @param  name            String      The name of the loader to be fetched.
-        *   @return BulkLoader      The BulkLoader instance that was registred with that name. Returns null if none is found.
+        *   @param  name The name of the loader to be fetched.
+        *   @return The BulkLoader instance that was registred with that name. Returns null if none is found.
         */
         public static function getLoader(name :String) : BulkLoader{
             return BulkLoader.allLoaders[name] as BulkLoader;
@@ -148,12 +260,12 @@
         }
         
         
-        /* Checks if there is <b>loaded</b> item in this <code>BulkLoader</code>.
-        * @param    key         String or URLRequest      The url request object, a url as a string or an id by which the item is identifiable.
-        * @param    searchAll   Boolean                     If true will search through all BulkLoader instances. Else will only search this one.
-        * @return   Boolean                                 True if a loader has a <b>loaded</b> item stored.
+        /** Checks if there is <b>loaded</b> item in this <code>BulkLoader</code>.
+        * @param    The url (as a <code>String</code> or a <code>URLRequest</code> object)or an id (as a <code>String</code>) by which the item is identifiable.
+        * @param    searchAll   If true will search through all <code>BulkLoader</code> instances. Else will only search this one.
+        * @return   True if a loader has a <b>loaded</b> item stored.
         */
-        public function hasItemWithID(id : String, searchAll : Boolean = true) : Boolean{
+        public function hasItem(key : *, searchAll : Boolean = true) : Boolean{
             var loaders : *;
             if (searchAll){
               loaders = allLoaders;
@@ -161,19 +273,16 @@
                 loaders = [this];
             }
             for each (var l : BulkLoader in allLoaders){
-                if (hasItemInBulkLoader(id, l )) return true;
+                if (hasItemInBulkLoader(key, l )) return true;
             }
             return false;
         }
-        /* Adds a new assets to be loaded. The <code>BulkLoader</code> object will manage diferent assets type. If the right type can be infered from the url termination (e.g. the url ends with something.swf) the BulkLoader will relly on the <code>type</code> property of the <code>props</code> parameter. If both are set, the url will overrite the one defined in the <code>type</code> properti of the props object. In case none is specified and the url won't hint at it, the type <code>TYPE_TEXT</code> will be used.
+        /** Adds a new assets to be loaded. The <code>BulkLoader</code> object will manage diferent assets type. If the right type cannot be infered from the url termination (e.g. the url ends with ".swf") the BulkLoader will relly on the <code>type</code> property of the <code>props</code> parameter. If both are set, the <code>type</code>  property of the props object will overrite the one defined in the <code>url</code>. In case none is specified and the url won't hint at it, the type <code>TYPE_TEXT</code> will be used.
         *   
-        *   @param url      String OR URLRequest A string or a <code>URLRequest</code> instance.
-        *   @param props    An object specifing extra data for this loader. See the <code>LoadingItem</code> special props.
+        *   @param url String OR URLRequest A <code>String</code> or a <code>URLRequest</code> instance.
+        *   @param props An object specifing extra data for this loader. See the <code>LoadingItem</code> special props.
         */
         public function add(url : *, props : Object= null ) : void {
-            if(hasStarted){
-                log("Cannot add url", url, "bacuse the loader has already started");
-            }
             props = props || {};
             if (url is String){
                 url = new URLRequest(url);
@@ -230,10 +339,15 @@
             _items.sortOn(["priority", "addedTime"],  [Array.NUMERIC | Array.DESCENDING, Array.NUMERIC]);
         }
         
-        /* Start loading all items added previously
-        *   @param  withConnections int     [optional]The maximum number of connections to make at the same time.
+        /** Start loading all items added previously
+        *   @param  withConnections [optional]The maximum number of connections to make at the same time. If specified, will override the parameter passed (if any) to the constructor.
+        *   @see #numConnectons
+        *   @see #see #BulkLoader()
         */   
         public function start(withConnections : int = -1 ) : void{
+            if(_connections){
+                return;
+            }
             startTime = getTimer();
             if (withConnections  > 0){
                 _numConnectons = withConnections;
@@ -245,14 +359,21 @@
               log("Will load", _items[i], 0);
               _items[i].load();
             }
-            hasStarted = true;
+            isRunning = true;
         }
         
-        /*  Register a new file extension to be loaded as a given type. This is used both in the guessing of types from the url and affects how loading is done for each type.
-        *   @param  extension   String  The file extension to be used (can include the dot or not)
-        *   @param  atType      String  Wich type this extension will be associated with. Possible values" <code>TYPE_LOADER, TYPE_VIDEO, TYPE_SOUND, TYPE_TEXT</code>"
+        /**  Register a new file extension to be loaded as a given type. This is used both in the guessing of types from the url and affects how loading is done for each type.
+        *   @param  extension   The file extension to be used (can include the dot or not)
+        *   @param  atType      Which type this extension will be associated with. 
+        *   
+        *   @see #TYPE_LOADER
+        *   @see #TYPE_VIDEO
+        *   @see #TYPE_SOUND
+        *   @see #TYPE_TEXT
+        *   
+        *   @return A <code>Boolean</code> indicating if the new extension was registered.
         */
-        public static function registerNewType( extension : String, atType : String) : void {
+        public static function registerNewType( extension : String, atType : String) : Boolean {
           if (extension.charAt(0) == ".") extension = extension.substring(1);
           var objects : Array ;
           var options : Object = {
@@ -264,12 +385,16 @@
           objects = options[atType];
           if (objects && objects.indexOf(extension) == -1){
               objects.push(extension);
+              return true;
           }
+          return false;
         }
         
+        // if toLoad is specified it be cut line
         private function loadNext(toLoad : LoadingItem = null) : Boolean{
             var next : Boolean = false;
             if (!toLoad){
+                // no given to load, search for the next one in line
                 for each (var checkItem:LoadingItem in _items){
                    if (!checkItem.isLoading){
                        toLoad = checkItem;
@@ -277,11 +402,15 @@
                    }
                 }
             }
-            //dispatchEvent(new Event(ITEM_LOADED));
             if (toLoad){
-                toLoad.load();
-                _connections.push(toLoad);
                 next = true;
+                isRunning = true;
+                _connections.push(toLoad);
+                toLoad.load();
+                // if we've got any more connections to open, load the next item
+                if(_connections.length < numConnectons){
+                    loadNext();
+                }
             }
             return next;
         }
@@ -298,10 +427,9 @@
              }
             } 
             item.cleanListeners();
-            _contents[item.url] = item.content;
+            _contents[item.url.url] = item.content;
             
             var next : Boolean= loadNext();
-
            var allDone : Boolean = true;
            for each (item in _items){
                 if (!item.isLoaded) {
@@ -311,10 +439,6 @@
            }
            itemsLoaded ++;
            if(allDone) {
-               // trigger the last progress event:
-               var e : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
-                e.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, itemsLoaded, itemsTotal, weightPercent);
-                dispatchEvent(e);
                onAllLoaded();
             }
 
@@ -339,8 +463,13 @@
           speedAvg = speedTotal / num;
         }
         
-        private function removeFromConnections(item : *) : void{
-           _connections.splice(_connections.indexOf(item), 1); 
+        private function removeFromConnections(item : *) : Boolean{
+            var removeIndex : int = _connections.indexOf(item)
+            if(removeIndex > -1){
+                _connections.splice( removeIndex, 1); 
+                return true;
+            }
+           return false;
         }
         
         private function onItemError(evt : IOErrorEvent) : void{
@@ -393,7 +522,7 @@
 
             }
 
-            
+            // only set bytes total if all items have begun loading
             if (itemsStarted == _items.length){
                 bytesTotal = bytesTotalCurrent;
             }
@@ -403,32 +532,38 @@
             dispatchEvent(e);
         }
         
-        /* =================================================================== */
-        /* = Information acess                                               = */
-        /* =================================================================== */
+
         
-        /* The number of simultaneous connections to use.
-        *   @return  int     The number of connections used.
+        /** The number of simultaneous connections to use.
+        *   @return The number of connections used.
+        *   @see #start()
         */
         public function get numConnectons() : int { 
             return _numConnectons; 
         }
-        /* Returns an object where the urls are the keys and the loaded contents are the value for that key.
+        /** Returns an object where the urls are the keys(as strings) and the loaded contents are the value for that key.
         *  Each value is typed as * an the client must check for the right typing.
+        *   @return An object hashed by urls, where values are the downloaded content type of each url. The user mut cast as apropriate.
         */
         public function get contents() : Object { 
           return _contents; 
         }
         
+        /**
+		* The name by which this loader instance can be identified.
+		* This property is used so you can get a reference to this instance from other classes in your code without having to save and pass it yourself, throught the static method BulkLoader.getLoader(name) .<p/>
+		* Each name should be unique, as instantiating a BulkLoader with a name already taken will throw an error.
+		* @see #getLoaders()
+		*/
         public function get name() : String { 
             return _name; 
         }
         
-        /* ============================================================================== */
-        /* = Acessing content function                                                  = */
-        /* ============================================================================== */
+        /** ============================================================================== */
+        /** = Acessing content function                                                  = */
+        /** ============================================================================== */
         
-        /* Helper functions to get loaded content. All helpers will be casted to the specific types. If a cast fails it will throw an error.
+        /** Helper functions to get loaded content. All helpers will be casted to the specific types. If a cast fails it will throw an error.
         *   
         */
         private function getContentAsType(key : *, type : Class,  clearMemory : Boolean = false) : *{
@@ -451,64 +586,64 @@
             return null;
         }
         
-        /* Returns an untyped object with the downloaded asset for the url.
-        *   @param  key          String OR URLRequest     The url request, url as a string or a id  from which the asset was loaded.
-        *   @param  clearMemory  Boolean    If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
-        *   @returns            Untyped     The content retrived from that url
+        /** Returns an untyped object with the downloaded asset for the given key.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded.
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @return The content retrived from that url
         */
         public function getContent(key : String, clearMemory : Boolean = false) : *{
             return getContentAsType(key,  Object,  clearMemory);
         }
         
-        /* Returns an XML object with the downloaded asset for the url.
+        /** Returns an XML object with the downloaded asset for the given key.
         *   @param  key          String OR URLRequest     The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
-        *   @param  clearMemory  Boolean    If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
-        *   @returns            XML         The content retrived from that url casted to a XML object. Returns null if the cast fails.
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @return The content retrived from that url casted to a XML object. Returns null if the cast fails.
         */
         public function getXML(key : *, clearMemory : Boolean = false) : XML{
             return XML(getContentAsType(key, XML,  clearMemory));
         }
         
-        /* Returns a String object with the downloaded asset for the url.
-        *   @param  key          String OR URLRequest     The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
-        *   @param  clearMemory  Boolean    If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
-        *   @returns             String     The content retrived from that url casted to a String object. Returns null if the cast fails.
+        /** Returns a String object with the downloaded asset for the given key.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @return The content retrived from that url casted to a String object. Returns null if the cast fails.
         */
         public function getText(key : *, clearMemory : Boolean = false) : String{
             return String(getContentAsType(key, String, clearMemory));
         }
         
-        /* Returns a Sound object with the downloaded asset for the url.
-        *   @param  key          String OR URLRequest     The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
+        /** Returns a Sound object with the downloaded asset for the given key.
+        *   @param  key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
         *   @param  clearMemory  Boolean    If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
-        *   @returns             Sound      The content retrived from that url casted to a Sound object. Returns null if the cast fails.
+        *   @return The content retrived from that url casted to a Sound object. Returns null if the cast fails.
         */
         public function getSound(key : *, clearMemory : Boolean = false) : Sound{
             return Sound(getContentAsType(key, Sound,clearMemory));
         }
         
-        /* Returns a Bitmap object with the downloaded asset for the url.
-        *   @param  key          String OR URLRequest       The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
-        *   @param  clearMemory  Boolean                    If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
-        *   @returns             Bitmap                     The content retrived from that url casted to a Bitmap object. Returns null if the cast fails.
+        /** Returns a Bitmap object with the downloaded asset for the given key.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @return The content retrived from that url casted to a Bitmap object. Returns null if the cast fails.
         */
         public function getBitmap(key : String, clearMemory : Boolean = false) : Bitmap{
             return Bitmap(getContentAsType(key, Bitmap, clearMemory));
         }
         
-        /* Returns a Bitmap object with the downloaded asset for the url.
-        *   @param  key          String OR URLRequest       The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
-        *   @param  clearMemory  Boolean                    If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
-        *   @returns             MovieClip                  The content retrived from that url casted to a MovieClip object. Returns null if the cast fails.
+        /** Returns a Bitmap object with the downloaded asset for the given key.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @return The content retrived from that url casted to a MovieClip object. Returns null if the cast fails.
         */
         public function getMovieClip(key : String, clearMemory : Boolean = false) : MovieClip{
             return MovieClip(getContentAsType(key, MovieClip, clearMemory));
         }
         
-        /* Returns an BitmapData object with the downloaded asset for the url.
-        *   @param  key          String OR URLRequest       The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails. Does not clone the original bitmap data from the bitmap asset.
-        *   @param  clearMemory  Boolean                    If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
-        *   @returns             BitmapData                 The content retrived from that url casted to a BitmapData object. Returns null if the cast fails.
+        /** Returns an BitmapData object with the downloaded asset for the given key.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails. Does not clone the original bitmap data from the bitmap asset.
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @return The content retrived from that url casted to a BitmapData object. Returns null if the cast fails.
         */
         public function getBitmapData(key : *,  clearMemory : Boolean = false) : BitmapData{
             try{
@@ -531,19 +666,27 @@
         }
         
         private function onAllLoaded() : void {
-            log("Finished all", 1);
+            var eComplete : BulkProgressEvent = new BulkProgressEvent(COMPLETE);
+            eComplete.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, itemsLoaded, itemsTotal, weightPercent);
+            var eProgress : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
+            eProgress.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, itemsLoaded, itemsTotal, weightPercent);
+            dispatchEvent(eProgress);
+            dispatchEvent(eComplete);
+            isRunning = false;
             endTime = getTimer();
             totalTime = BulkLoader.truncateNumber((endTime - startTime) /1000);
             updateStats();
             _connections = null;
             traceStats();
-            var e : BulkProgressEvent = new BulkProgressEvent(COMPLETE);
-            e.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, itemsLoaded, itemsTotal, weightPercent);
-            dispatchEvent(e);
+            log("Finished all", 1);
         }
         
-        public function traceStats() : void{
-            //if(logLevel > 2) return;
+        /* If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3). Outputs a host of statistics about the loading operation
+        *   @return A formated string with loading statistics.
+        *   @see #LOG_ERRORS
+        *   @see logLevel
+        */
+        public function traceStats() : String{
             var stats : Array = [];
             stats.push("\n************************************");
             stats.push("All items loaded(" + itemsTotal + ")");
@@ -563,9 +706,21 @@
                 }
             }
             stats.push("************************************");
-            log(stats.join("\n"), 1);
+            var statsString : String = stats.join("\n");
+            log(statsString, 1);
+            return statsString;
         }
         
+        /* Outputs with a trace operation a message. 
+        *   Depending on <code>logLevel</code> diferrent levels of messages will be outputed:
+        *   <ul>logLevel = LOG_VERBOSE (0) : Everything is logged. Useful for debugging.
+        *   <ul>logLevel = LOG_INFO (1) : Every load operation is logged (loading finished, started, statistics).
+        *   <ul>logLevel = LOG_ERRORS (3) : Only loading errors and callback erros will be traced. Useful in production.
+        *   @see #logLevel
+        *   @see #LOG_ERRORS
+        *   @see #LOG_INFO
+        *   @see #LOG_VERBOSE
+        */   
         protected static function log(...msg) : void{
             var level : int  = isNaN(msg[msg.length -1] ) ? 3 : int(msg.pop());
             if (level >= logLevel ){
@@ -573,7 +728,11 @@
             }
         }
         
-        public function getItem(key : *) : LoadingItem{
+        /* Used internaly to fetch an item with a given key.
+        *   @param key A url (as a string or urlrequest) or an id to fetch
+        *   @return The corresponding <code>LoadingItem</code> or null if one isn't found.
+        */
+        private function getItem(key : *) : LoadingItem{
             for each (var item : LoadingItem in _items){
                 if(item.id == key || item.url.url == key || item.url == key  ){
                     return item;
@@ -602,6 +761,8 @@
             return true;
         }
         
+        /** Deletes all loading and loaded objects. This will stop all connections and delete from the cache all of it's items (no content will be accessible if <code>clearAll</code> is executed).
+        */
         public function clearAll() : void{
             for each (var item : LoadingItem in _items){
                 clearItem(item);
@@ -609,6 +770,9 @@
             delete allLoaders[name];
         }
         
+        /** Deletes all content from all instances of <code>BulkLoader</code> class.
+        *   @see #clearAll()
+        */ 
         public static function clearAllLoaders() : void{
             for each (var atLoader : BulkLoader in allLoaders){
                 atLoader.clearAll();
@@ -618,51 +782,72 @@
             allLoaders = null;
         }
         
+        /** Stop loading the item identified by <code>key</code>. This will not remove the item from the <code>BulkLoader</code>.
+        * @param key The key (url as a string, url as a <code>URLRequest</code> or an id as a <code>String</code>).    
+        * @param loadsNext If it should start loading the next item.
+        * @return A <code>Boolean</code> indicating if the object has been stopped.
+        */
         public function stopItem(key : *,  loadsNext : Boolean = false) : Boolean{
             var item : LoadingItem = getItem(key);
             if(!item) {
                 return false;
             }
             item.stop();
-            removeFromConnections(item);
+            var result : Boolean = removeFromConnections(item);
             if(loadsNext){
                 loadNext();
             }
-            return true;
+            return result;
         }
         
+        /** Stops loading all items of this <code>BulkLoader</code> instance. This does not clear or remove items from the qeue.
+        */
         public  function stopAllItems() : void{
             for each(var item : LoadingItem in _items){
                 stopItem(item);
             }
         }
         
+        /** Stops loading all items from all <code>BulkLoader</code> instances.
+        *   @see #stopAllItems()
+        *   @see #stopItem()
+        */
         public static function stopAllLoaders() : void{
-            for each (var atLoader in allLoaders){
+            for each (var atLoader : BulkLoader in allLoaders){
                 atLoader.stopAllItems();
             }
         }
         
-        public function resume(key : *) : void{
+        /** Resumes loading of the item.
+        *   @param  The url request, url as a string or a id  from which the asset was loaded. 
+        *   @return If a item with that key has been found.
+        */
+        public function resume(key : *) : Boolean{
             var item : LoadingItem = getItem(key);
-            loadNext(item);
+            if(item){
+                loadNext(item);
+                
+            }
+            return Boolean(item);
         }
-        /* Utility function to truncate a number to the given number of decimal places.
+        /** Utility function to truncate a number to the given number of decimal places.
         *   @description 
         *   Number is truncated using the <code>Math.round</code> function.
         *   
-        *   @param  raw         Number  The number to truncate
-        *   @param  decimals    int     The number of decimals place to preserve.
-        *   @return             Number  The truncated number.
+        *   @param  The number to truncate
+        *   @param  The number of decimals place to preserve.
+        *   @return The truncated number.
         */
         public static function truncateNumber(raw : Number, decimals :int =2) : Number {
             var power : int = Math.pow(10, decimals);
            return Math.round(raw * ( power )) / power;
         }
         
+        /** 
+        *   Returns a string identifing this loaded instace.
+        */
         override public function toString() : String{
-            return "[BulkLoader] itemsTotal: " + itemsTotal + ", itemsLoaded: " + itemsLoaded; 
+            return "[BulkLoader] name:"+ name + "itemsTotal: " + itemsTotal + ", itemsLoaded: " + itemsLoaded; 
         }
-    }
-    
+    }   
 }

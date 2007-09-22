@@ -41,8 +41,9 @@ package br.com.stimuli.loading {
     import flash.utils.*;
     
     import br.com.stimuli.loading.BulkLoader;
-    /*
-    *   An object used internaly in <code>BulkLoader</code> instances
+    /**
+    *   An object used internaly in <code>BulkLoader</code> instances.<p/>
+    *   This class is never exposed to the end-user.
     *
     *   @langversion ActionScript 3.0
     *   @playerversion Flash 9.0
@@ -57,57 +58,57 @@ package br.com.stimuli.loading {
         public static const STATUS_FINISHED : String = "finished";
         public static const STATUS_ERROR : String = "error";
 
-        /*The type of loading to perform (see <code>BulkLoader.TYPES</code>).*/
+        /**The type of loading to perform (see <code>BulkLoader.TYPES</code>).*/
         public var type : String;
-        /*The url to load the asset from.*/
+        /**The url to load the asset from.*/
         public var url : URLRequest;
-        /*An [optional] id to retrieve the item by.*/
+        /**An [optional] id to retrieve the item by.*/
         public var id : String;
-        /* The priority at which this item will be downloaded. Items with a higher priority will be downloaded first.*/
+        /** The priority at which this item will be downloaded. Items with a higher priority will be downloaded first.*/
         public var priority : int = 0;
-        /*Indicated if item is loaded and ready to use..*/
+        /**Indicated if item is loaded and ready to use..*/
         public var isLoaded : Boolean;
-        /*Indicated if loading has stated.*/
+        /**Indicated if loading has stated.*/
         public var isLoading : Boolean;
-        /*At what stage this item is at ( canceled, started, finished or error).*/
+        /**At what stage this item is at ( canceled, started, finished or error).*/
         public var status : String;
-        /*Maximun number of tries in case it fails.*/
+        /**Maximun number of tries in case it fails.*/
         public var maxTries : int = 3;
-        /*Current try number.*/
+        /**Current try number.*/
         public var numTries : int = 0;
-        /*Callback to execute as soon as server starts the response.*/
+        /**Callback to execute as soon as server starts the response.*/
         public var onStart : Function;
-        /*Callback to execute as soon item is ready to use.*/
+        /**Callback to execute as soon item is ready to use.*/
         public var onComplete : Function;
-        /*Callback to execute if an error has ocurred.*/
+        /**Callback to execute if an error has ocurred.*/
         public var onError : Function;
         
-        /*A relative unit of size, so that preloaders can show relative progress before all connections have started.*/
+        /**A relative unit of size, so that preloaders can show relative progress before all connections have started.*/
         public var weight : int = 1;
-        /*If a random string should be appended to the end of the url to prevent caching.*/
+        /**If a random string should be appended to the end of the url to prevent caching.*/
         public var preventCache : Boolean;
-        /*the number of bytes to load. Starts at -1.*/
+        /**the number of bytes to load. Starts at -1.*/
         public var bytesTotal : int = -1;
-        /*the number of bytes loaded so far. Starts at -1.*/
+        /**the number of bytes loaded so far. Starts at -1.*/
         public var bytesLoaded : int = 0;
-        /*The percentage of loading done (from 0 to 1).*/
+        /**The percentage of loading done (from 0 to 1).*/
         public var percentLoaded : Number;
-        /*The percentage of loading done relative to the weight of this item(from 0 to 1).*/
+        /**The percentage of loading done relative to the weight of this item(from 0 to 1).*/
         public var weightPercentLoaded : Number;
         
         public var addedTime : int ;
         private var startTime : int ;
         private var responseTime : Number;
-        /* The time (in seconds) that the server took and send begin streaming content.*/
+        /** The time (in seconds) that the server took and send begin streaming content.*/
         public var latency : Number;
         private var totalTime : int;
-        /* The total time (in seconds) this item took to load.*/
+        /** The total time (in seconds) this item took to load.*/
         public var timeToDownload : int;
-        /* The speed (in kbs) for this download.*/
+        /** The speed (in kbs) for this download.*/
         public var speed : Number;
-        /* Internal object used to manage this download.*/
+        /** Internal object used to manage this download.*/
         private var loader : *;
-        /* Internal object that holds the download content.*/
+        /** Internal object that holds the download content.*/
         private var _content : *;
         
         // for video:
@@ -124,7 +125,7 @@ package br.com.stimuli.loading {
             }else{
                 this.type = url.url.substring(url.url.lastIndexOf(".") + 1).toLowerCase();
             }
-            if (BulkLoader.TYPES.indexOf(this.type) == -1 ){
+            if (BulkLoader.AVAILABLE_TYPES.indexOf(this.type) == -1 ){
                 this.type = "txt";
             }
             if(type=="image"){

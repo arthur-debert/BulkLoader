@@ -35,9 +35,11 @@
 package br.com.stimuli.loading {
 	import flash.events.*;
 	br.com.stimuli.loading.BulkLoader;
-	/*
+	/**
 	*	An event that holds information about the status of a <code>BulkLoader</code>.
-	*   
+	*  
+	*   As this event subclasses <code>ProgressEvent</code>, you can choose to listen to <code>BulkProgressEvent</code> or <code>ProgressEvent</code> instances, but this class provides more useful information about loading status.
+	*  
 	*	@langversion ActionScript 3.0
 	*	@playerversion Flash 9.0
 	*
@@ -49,26 +51,27 @@ package br.com.stimuli.loading {
 		public static const PROGRESS : String = "progress";
 		public static const COMPLETE : String = "complete";
 		
-		/* How many bytes have loaded so far.*/
+		/** How many bytes have loaded so far.*/
 		public var bytesTotalCurrent : int;
-		/* The ratio (0-1) loaded (number of items loaded / number of items total) */
+		/** The ratio (0-1) loaded (number of items loaded / number of items total) */
 		public var ratioLoaded : Number;
-		/* A number between 0 - 1 that indicates progress regarding bytes */
+		/** A number between 0 - 1 that indicates progress regarding bytes */
 	    public var percentLoaded : Number;
-	    /* A number between 0 - 1 that indicates progress regarding weights */
+	    /** A number between 0 - 1 that indicates progress regarding weights */
 	    public var weightPercent : Number;
-	    /* Number of items already loaded */
+	    /** Number of items already loaded */
 	    public var itemsLoaded : int;
-	    /* Number of items to be loaded */
+	    /** Number of items to be loaded */
 	    public var itemsTotal : int;
 
         public var name : String;
+
 		public function BulkProgressEvent( name : String, bubbles:Boolean=true, cancelable:Boolean=false ){
 			super(name, bubbles, cancelable);		
 			this.name = name;
 		}
         
-        /* Sets ratio information. The other properties <code>itemsTotal, itemsLoaded, weigthTotal</code> must be set prior to this*/
+        /** Sets loading information.*/
         public function setInfo(
                     bytesLoaded : int ,
                     bytesTotal : int,
@@ -88,7 +91,7 @@ package br.com.stimuli.loading {
         }
         
         /* Returns an identical copy of this object
-        *   @return 
+        *   @return A cloned instance of this object.
         */
 		override public function clone() : Event {
 		    var b : BulkProgressEvent = new BulkProgressEvent(name, bubbles, cancelable)
@@ -96,6 +99,9 @@ package br.com.stimuli.loading {
 			return b;	
 		}
 		
+		/** Returns a <code>String</code> will all available information for this event.
+		* @return A code>String</code> will loading information.
+		*/
 		public function loadingStatus () : String{
 		    var names : Array = [];
             names.push("bytesLoaded: " + bytesLoaded);
