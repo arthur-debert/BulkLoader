@@ -278,11 +278,14 @@ package br.com.stimuli.loading {
                 return;
             }
             try{
-                loader.close();
+                if(loader){
+                    loader.close();
+                }
             }catch(e : Error){
-                
+                trace("{LoadingItem}::method() e", e);
             }
             status = STATUS_STOPPED;
+            isLoading = false;
         }
         
         public function cleanListeners() : void {

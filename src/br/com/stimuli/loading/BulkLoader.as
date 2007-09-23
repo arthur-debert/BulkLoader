@@ -298,7 +298,7 @@
                     try{
                          props.onStart();
                      }catch(e : Error){
-                         log("onStart for url ", item.url, " threw an error:", e.getStackTrace() ,3);
+                         log("onStart for url ", item.url.url, " threw an error:", e.getStackTrace() ,3);
                      }
                     
                 }
@@ -306,14 +306,14 @@
                     try{
                          props.onError();
                      }catch(e : Error){
-                         log("onError for url ", item.url, " threw an error:", e.getStackTrace() ,3);
+                         log("onError for url ", item.url.url, " threw an error:", e.getStackTrace() ,3);
                      }
                     
                 }else if (props.onComplete && item.isLoaded){
                     try{
                          props.onComplete();
                      }catch(e : Error){
-                         log("onComplete for url ", item.url, " threw an error:", e.getStackTrace() ,3);
+                         log("onComplete for url ", item.url.url, " threw an error:", e.getStackTrace() ,3);
                      }
                 }
                 return;
@@ -414,6 +414,7 @@
                 if(_connections.length < numConnectons){
                     _connections.push(toLoad);
                     toLoad.load();
+                    log("Will load item:", toLoad);
                 }
                 // if we've got any more connections to open, load the next item
                 if(_connections.length < numConnectons){
@@ -431,7 +432,7 @@
               try{
                  item.onComplete();
              }catch(e : Error){
-                 log("onComplete for url ", item.url, " threw an error:", e.getStackTrace() ,3);
+                 log("onComplete for url ", item.url.url, " threw an error:", e.getStackTrace() ,3);
              }
             } 
             item.cleanListeners();
@@ -493,7 +494,7 @@
                try{
                    item.onError();
               }catch(e : Error){
-                  log("onError for url ", item.url, " threw an error!", e.getStackTrace(), 3);
+                  log("onError for url ", item.url.url, " threw an error!", e.getStackTrace(), 3);
               }
            }
            log("Error loading", item, 3);
@@ -501,7 +502,7 @@
                item.status = null;
                item.load();
            }else{
-               log("After " + item.numTries + " I am giving up on " + item.url, 3);
+               log("After " + item.numTries + " I am giving up on " + item.url.url, 3);
                removeFromConnections(item);
            }
         }
@@ -513,7 +514,7 @@
                try{
                   item.onStart();
               }catch(e : Error){
-                  log("onStart for url ", item.url, " threw an error!", e.getStackTrace(), 3);
+                  log("onStart for url ", item.url.url, " threw an error!", e.getStackTrace(), 3);
               }
            }
         }
@@ -839,7 +840,7 @@
         * @param loadsNext If it should start loading the next item.
         * @return A <code>Boolean</code> indicating if the object has been stopped.
         */
-        public function stopItem(key : *,  loadsNext : Boolean = false) : Boolean{
+        public function pauseItem(key : *,  loadsNext : Boolean = false) : Boolean{
             var item : LoadingItem = key is LoadingItem ? key : getItem(key);
             if(!item) {
                 return false;
@@ -854,20 +855,21 @@
         
         /** Stops loading all items of this <code>BulkLoader</code> instance. This does not clear or remove items from the qeue.
         */
-        public  function stop() : void{
+        public  function pause() : void{
             for each(var item : LoadingItem in _items){
-                stopItem(item);
+                pauseItem(item);
             }
             isRunning = false;
+            log("Stopping all items", 1);
         }
         
         /** Stops loading all items from all <code>BulkLoader</code> instances.
         *   @see #stopAllItems()
         *   @see #stopItem()
         */
-        public static function stopAllLoaders() : void{
+        public static function pauseAllLoaders() : void{
             for each (var atLoader : BulkLoader in allLoaders){
-                atLoader.stop();
+                atLoader.pause();
             }
         }
         
@@ -876,7 +878,7 @@
         *   @return If a item with that key has resumed loading.
         */
         public function resumeItem(key : *) : Boolean{
-            var item : LoadingItem = getItem(key);
+            var item : LoadingItem = key is LoadingItem ? key : getItem(key);
             if(item){
                 if (item.status == LoadingItem.STATUS_STOPPED){
                     item.status = null;
@@ -890,10 +892,11 @@
         *   @return <code>True</code> if any item was stopped and resumed, false otherwise
         */
         public function resume() : Boolean{
+            log("Resuming all items", 1);
             var affected : Boolean = false;
             _items.forEach(function(item : LoadingItem, ...rest):void{
                 if(item.status == LoadingItem.STATUS_STOPPED){
-                    item.status = null;
+                    resumeItem(item);
                     affected = true;
                 }
             });
