@@ -526,7 +526,7 @@
             var itemsStarted : int = 0;
             var weightLoaded : Number = 0;
             for each (var item:LoadingItem in _items){
-              if (item.status == LoadingItem.STATUS_STARTED || item.status == LoadingItem.STATUS_FINISHED){
+              if (item.status == LoadingItem.STATUS_STARTED || item.status == LoadingItem.STATUS_FINISHED || item.status == LoadingItem.STATUS_STOPPED){
                   bytesLoaded += item.bytesLoaded;
                   bytesTotalCurrent += item.bytesTotal;
                   weightLoaded += (item.bytesLoaded / item.bytesTotal) * item.weight;

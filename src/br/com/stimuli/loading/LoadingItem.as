@@ -123,7 +123,9 @@ package br.com.stimuli.loading {
             if (type) {
                 this.type = type.toLowerCase();
             }else{
-                this.type = url.url.substring(url.url.lastIndexOf(".") + 1).toLowerCase();
+                
+                var searchString : String = url.url.indexOf("?") > -1 ? url.url.substring(0, url.url.indexOf("?")) : url.url;
+                this.type = searchString.substring(searchString.lastIndexOf(".") + 1).toLowerCase();
             }
             if (BulkLoader.AVAILABLE_TYPES.indexOf(this.type) == -1 ){
                 this.type = "txt";
