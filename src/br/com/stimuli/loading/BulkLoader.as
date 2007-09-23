@@ -354,7 +354,7 @@
             if (withConnections  > 0){
                 _numConnectons = withConnections;
             }
-            _connections = new Array(Math.min(_numConnectons, _items.length));
+            _connections = [];
             var max : int = Math.max(_numConnectons, _items.length);
             for (var i:int = 0; i< _connections.length; i++){
               //_connections[i] = _items[i];
