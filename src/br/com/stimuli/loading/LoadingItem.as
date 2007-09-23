@@ -53,7 +53,7 @@ package br.com.stimuli.loading {
     */  
     public class LoadingItem extends EventDispatcher {
 
-        public static const STATUS_CANCELED : String = "canceled";
+        public static const STATUS_STOPPED : String = "stopped";
         public static const STATUS_STARTED : String = "started";
         public static const STATUS_FINISHED : String = "finished";
         public static const STATUS_ERROR : String = "error";
@@ -274,12 +274,15 @@ package br.com.stimuli.loading {
         }
         
         public function stop() : void{
+            if(isLoaded){
+                return;
+            }
             try{
                 loader.close();
             }catch(e : Error){
                 
             }
-            status = null;
+            status = STATUS_STOPPED;
         }
         
         public function cleanListeners() : void {

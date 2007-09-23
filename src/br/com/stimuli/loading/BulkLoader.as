@@ -71,7 +71,7 @@
         trace("Loaded" , evt.bytesLoaded," of ",  evt.bytesTotal);
     }
 
-    function onCompleteHandler() : void{
+    function onCompleteHandler(evt : ProgressEvent) : void{
             trace("All items are loaeded and ready to consume");
             // grab the main movie clip:
             var mainMovie : MovieClip = bulkLoader.getMovieClip("main.swf");
@@ -222,6 +222,7 @@
         public static var logLevel: int = 3;
         
         public var isRunning : Boolean;
+        private var isFinished : Boolean;
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
         *   
         *   @param name  A name that can be used later to reference this loader in a static context,
@@ -346,6 +347,7 @@
         */   
         public function start(withConnections : int = -1 ) : void{
             if(_connections){
+                loadNext();
                 return;
             }
             startTime = getTimer();
@@ -355,10 +357,11 @@
             _connections = new Array(Math.min(_numConnectons, _items.length));
             var max : int = Math.max(_numConnectons, _items.length);
             for (var i:int = 0; i< _connections.length; i++){
-              _connections[i] = _items[i];
-              log("Will load", _items[i], 0);
-              _items[i].load();
+              //_connections[i] = _items[i];
+              //log("Will load", _items[i], 0);
+              //_items[i].load();
             }
+            loadNext();
             isRunning = true;
         }
         
@@ -392,11 +395,14 @@
         
         // if toLoad is specified it be cut line
         private function loadNext(toLoad : LoadingItem = null) : Boolean{
+            if(isFinished){
+                return false;
+            }
             var next : Boolean = false;
             if (!toLoad){
                 // no given to load, search for the next one in line
                 for each (var checkItem:LoadingItem in _items){
-                   if (!checkItem.isLoading){
+                   if (!checkItem.isLoading && checkItem.status != LoadingItem.STATUS_STOPPED){
                        toLoad = checkItem;
                        break;
                    }
@@ -405,8 +411,10 @@
             if (toLoad){
                 next = true;
                 isRunning = true;
-                _connections.push(toLoad);
-                toLoad.load();
+                if(_connections.length < numConnectons){
+                    _connections.push(toLoad);
+                    toLoad.load();
+                }
                 // if we've got any more connections to open, load the next item
                 if(_connections.length < numConnectons){
                     loadNext();
@@ -430,13 +438,7 @@
             _contents[item.url.url] = item.content;
             
             var next : Boolean= loadNext();
-           var allDone : Boolean = true;
-           for each (item in _items){
-                if (!item.isLoaded) {
-                    allDone = false;
-                    break;
-                }
-           }
+           var allDone : Boolean = isAllDoneP();
            itemsLoaded ++;
            if(allDone) {
                onAllLoaded();
@@ -461,6 +463,19 @@
           speedTotal = (totalBytes/1024) / totalTime;
           avgLatency = totalLatency / num;
           speedAvg = speedTotal / num;
+        }
+        
+        private function removeFromItems(item : LoadingItem) : Boolean{
+            var removeIndex : int = _items.indexOf(item)
+            if(removeIndex > -1){
+                _items.splice( removeIndex, 1); 
+                return true;
+            }
+            if(item.isLoaded){
+                itemsLoaded --;
+            }
+            itemsTotal --;
+           return false;
         }
         
         private function removeFromConnections(item : *) : Boolean{
@@ -503,7 +518,7 @@
            }
         }
         
-        private function onProgress(evt : Event) : void{
+        private function onProgress(evt : Event = null) : void{
             bytesLoaded = bytesTotal = bytesTotalCurrent = 0;
             weightPercent = 0;
             itemsLoaded = 0;
@@ -665,6 +680,12 @@
             return null;
         }
         
+        private function isAllDoneP() : Boolean{
+            return _items.every(function(item : LoadingItem, ...rest):Boolean{
+                return item.isLoaded;
+            });
+        }
+        
         private function onAllLoaded() : void {
             var eComplete : BulkProgressEvent = new BulkProgressEvent(COMPLETE);
             eComplete.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, itemsLoaded, itemsTotal, weightPercent);
@@ -678,6 +699,7 @@
             updateStats();
             _connections = null;
             traceStats();
+            isFinished = true;
             log("Finished all", 1);
         }
         
@@ -752,12 +774,11 @@
             if(!item) {
                 return false;
             }
-            var itemIndex : int = _items.indexOf(item);
-            if(itemIndex){
-                _items.splice( itemIndex,1);
-                item.destroy();
-            } 
+            removeFromItems(item);
+            item.destroy();
             item = null;
+            // checks is removeing this item we are done?
+            onProgress();
             return true;
         }
         
@@ -768,6 +789,8 @@
                 clearItem(item);
             }
             delete allLoaders[name];
+            _items = _connections = null;
+            _contents = null;
         }
         
         /** Deletes all content from all instances of <code>BulkLoader</code> class.
@@ -782,13 +805,42 @@
             allLoaders = null;
         }
         
+        /** Removes all items that have been stopped.
+        *   After removing, it will try to restart loading if there are still items to load.
+        *   @ return In any items have been removed.
+        */
+        public function removedStopped() : Boolean{
+            var stoppedLoads : Array = _items.filter(function (item : LoadingItem, ...rest) : Boolean{
+                return (item.status == LoadingItem.STATUS_STOPPED);
+            });
+            stoppedLoads.forEach(function(item : LoadingItem, ...rest):void{
+               clearItem(item); 
+            });
+            loadNext();
+            return stoppedLoads.length > 0;
+        }
+        
+        /** Removes all items that have not succesfully loaded.
+        *   After removing, it will try to restart loading if there are still items to load.
+        *   @ return In any items have been removed.
+        */
+        public function removeErrors(): Boolean{
+            var badLoads : Array = _items.filter(function (item : LoadingItem, ...rest) : Boolean{
+                return (item.status == LoadingItem.STATUS_ERROR);
+            });
+            badLoads.forEach(function(item : LoadingItem, ...rest):void{
+               clearItem(item); 
+            });
+            loadNext();
+            return badLoads.length > 0;
+        }
         /** Stop loading the item identified by <code>key</code>. This will not remove the item from the <code>BulkLoader</code>.
         * @param key The key (url as a string, url as a <code>URLRequest</code> or an id as a <code>String</code>).    
         * @param loadsNext If it should start loading the next item.
         * @return A <code>Boolean</code> indicating if the object has been stopped.
         */
         public function stopItem(key : *,  loadsNext : Boolean = false) : Boolean{
-            var item : LoadingItem = getItem(key);
+            var item : LoadingItem = key is LoadingItem ? key : getItem(key);
             if(!item) {
                 return false;
             }
@@ -802,10 +854,11 @@
         
         /** Stops loading all items of this <code>BulkLoader</code> instance. This does not clear or remove items from the qeue.
         */
-        public  function stopAllItems() : void{
+        public  function stop() : void{
             for each(var item : LoadingItem in _items){
                 stopItem(item);
             }
+            isRunning = false;
         }
         
         /** Stops loading all items from all <code>BulkLoader</code> instances.
@@ -814,21 +867,38 @@
         */
         public static function stopAllLoaders() : void{
             for each (var atLoader : BulkLoader in allLoaders){
-                atLoader.stopAllItems();
+                atLoader.stop();
             }
         }
         
         /** Resumes loading of the item.
-        *   @param  The url request, url as a string or a id  from which the asset was loaded. 
-        *   @return If a item with that key has been found.
+        *   @param  key The url request, url as a string or a id  from which the asset was loaded. 
+        *   @return If a item with that key has resumed loading.
         */
-        public function resume(key : *) : Boolean{
+        public function resumeItem(key : *) : Boolean{
             var item : LoadingItem = getItem(key);
             if(item){
-                loadNext(item);
-                
+                if (item.status == LoadingItem.STATUS_STOPPED){
+                    item.status = null;
+                    return true
+                }
             }
-            return Boolean(item);
+            return false;
+        }
+        
+        /* Resumes all loading operations that were stopped.
+        *   @return <code>True</code> if any item was stopped and resumed, false otherwise
+        */
+        public function resume() : Boolean{
+            var affected : Boolean = false;
+            _items.forEach(function(item : LoadingItem, ...rest):void{
+                if(item.status == LoadingItem.STATUS_STOPPED){
+                    item.status = null;
+                    affected = true;
+                }
+            });
+            loadNext();
+            return affected;
         }
         /** Utility function to truncate a number to the given number of decimal places.
         *   @description 
