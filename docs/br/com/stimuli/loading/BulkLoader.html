@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,PROGRESS,COMPLETE,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesTotalCurrent,bytesLoaded,percentLoaded,weightPercent,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,logLevel,isRunning,numConnectons,contents,name,getLoader,hasItem,add,start,registerNewType,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getBitmapData,getSerializedData,traceStats,log,clearItem,clearAll,clearAllLoaders,stopItem,stopAllItems,stopAllLoaders,resume,truncateNumber,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,PROGRESS,COMPLETE,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesTotalCurrent,bytesLoaded,percentLoaded,weightPercent,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,logLevel,isRunning,numConnectons,contents,name,getLoader,hasItem,add,start,registerNewType,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getBitmapData,getSerializedData,traceStats,log,clearItem,clearAll,clearAllLoaders,removedStopped,removeErrors,pauseItem,pause,pauseAllLoaders,resumeItem,resume,truncateNumber,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -74,7 +74,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
         trace("Loaded" , evt.bytesLoaded," of ",  evt.bytesTotal);
     }
 
-    function onCompleteHandler() : void{
+    function onCompleteHandler(evt : ProgressEvent) : void{
             trace("All items are loaeded and ready to consume");
             // grab the main movie clip:
             var mainMovie : MovieClip = bulkLoader.getMovieClip("main.swf");
@@ -237,7 +237,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#clearItem()">clearItem</a>(key:*):Boolean</div>
-<div class="summaryTableDescription"></div>
+<div class="summaryTableDescription"> This will delete this item from memory.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -314,6 +314,27 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="#pause()">pause</a>():void</div>
+<div class="summaryTableDescription"> Stops loading all items of this <code>BulkLoader</code> instance.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#pauseAllLoaders()">pauseAllLoaders</a>():void</div>
+<div class="summaryTableDescription">[static] Stops loading all items from all <code>BulkLoader</code> instances.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#pauseItem()">pauseItem</a>(key:*, loadsNext:Boolean = false):Boolean</div>
+<div class="summaryTableDescription"> Stop loading the item identified by <code>key</code>.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="#registerNewType()">registerNewType</a>(extension:String, atType:String):Boolean</div>
 <div class="summaryTableDescription">[static]  Register a new file extension to be loaded as a given type.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
@@ -321,7 +342,28 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#resume()">resume</a>(key:*):Boolean</div>
+<a class="signatureLink" href="#removedStopped()">removedStopped</a>():Boolean</div>
+<div class="summaryTableDescription"> Removes all items that have been stopped.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#removeErrors()">removeErrors</a>():Boolean</div>
+<div class="summaryTableDescription"> Removes all items that have not succesfully loaded.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#resume()">resume</a>():Boolean</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#resumeItem()">resumeItem</a>(key:*):Boolean</div>
 <div class="summaryTableDescription"> Resumes loading of the item.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
@@ -331,27 +373,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#start()">start</a>(withConnections:int = -1):void</div>
 <div class="summaryTableDescription"> Start loading all items added previously
           </div>
-</td><td class="summaryTableOwnerCol">BulkLoader</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#stopAllItems()">stopAllItems</a>():void</div>
-<div class="summaryTableDescription"> Stops loading all items of this <code>BulkLoader</code> instance.</div>
-</td><td class="summaryTableOwnerCol">BulkLoader</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#stopAllLoaders()">stopAllLoaders</a>():void</div>
-<div class="summaryTableDescription">[static] Stops loading all items from all <code>BulkLoader</code> instances.</div>
-</td><td class="summaryTableOwnerCol">BulkLoader</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#stopItem()">stopItem</a>(key:*, loadsNext:Boolean = false):Boolean</div>
-<div class="summaryTableDescription"> Stop loading the item identified by <code>key</code>.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -800,7 +821,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function clearAllLoaders():void</code><p> Deletes all content from all instances of <code>BulkLoader</code> class.
+<code>public static function clearAllLoaders():void</code><p> Deletes all content from all instances of <code>BulkLoader</code> class. This will stop any pending loading operations as well as free memory.
           </p><p>
 <span class="label">See also</span>
 </p>
@@ -815,17 +836,20 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function clearItem(key:*):Boolean</code><span class="label">Parameters</span>
+<code>public function clearItem(key:*):Boolean</code><p> This will delete this item from memory. It's content will be inaccessible after that.
+          </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">key</span>:*</code></td>
+<td width="20px"></td><td><code><span class="label">key</span>:*</code> &mdash; A url (as a string or urlrequest) or an id to fetch
+          </td>
 </tr>
 </table>
 <p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code>Boolean</code></td>
+<td width="20"></td><td><code>Boolean</code> &mdash; <code>True</code> if an item with that key has been removed, and <code>false</code> othersiwe.
+          </td>
 </tr>
 </table>
 </div>
@@ -1152,6 +1176,63 @@ showHideInherited();
 </tr>
 </table>
 </div>
+<a name="pause()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">pause</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function pause():void</code><p> Stops loading all items of this <code>BulkLoader</code> instance. This does not clear or remove items from the qeue.
+        </p></div>
+<a name="pauseAllLoaders()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">pauseAllLoaders</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function pauseAllLoaders():void</code><p> Stops loading all items from all <code>BulkLoader</code> instances.
+          </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#stopAllItems()" target="">stopAllItems()</a>
+<br>
+<a href="../loading/BulkLoader.html#stopItem()" target="">stopItem()</a>
+</div>
+</div>
+<a name="pauseItem()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">pauseItem</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function pauseItem(key:*, loadsNext:Boolean = false):Boolean</code><p> Stop loading the item identified by <code>key</code>. This will not remove the item from the <code>BulkLoader</code>. Note that progress notification will jump around, as the stopped item will still count as something to load, but it's byte count will be 0.
+        </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:*</code> &mdash; The key (url as a string, url as a <code>URLRequest</code> or an id as a <code>String</code>).    
+        </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">loadsNext</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If it should start loading the next item.
+        </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; A <code>Boolean</code> indicating if the object has been stopped.
+        </td>
+</tr>
+</table>
+</div>
 <a name="registerNewType()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1196,6 +1277,40 @@ showHideInherited();
 <a href="../loading/BulkLoader.html#TYPE_TEXT" target="">TYPE_TEXT</a>
 </div>
 </div>
+<a name="removedStopped()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">removedStopped</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function removedStopped():Boolean</code><p> Removes all items that have been stopped.
+          After removing, it will try to restart loading if there are still items to load.
+          </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="removeErrors()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">removeErrors</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function removeErrors():Boolean</code><p> Removes all items that have not succesfully loaded.
+          After removing, it will try to restart loading if there are still items to load.
+          </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
 <a name="resume()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1203,11 +1318,27 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function resume(key:*):Boolean</code><p> Resumes loading of the item.
+<code>public function resume():Boolean</code>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+</div>
+<a name="resumeItem()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">resumeItem</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function resumeItem(key:*):Boolean</code><p> Resumes loading of the item. Depending on the environment the player is running, resumed items will be able to use partialy downloaded content. 
           </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">key</span>:*</code> &mdash; The url request, url as a string or a id  from which the asset was loaded. 
+<td width="20px"></td><td><code><span class="label">key</span>:*</code> &mdash; key The url request, url as a string or a id  from which the asset was loaded. 
           </td>
 </tr>
 </table>
@@ -1215,7 +1346,7 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; If a item with that key has been found.
+<td width="20"></td><td><code>Boolean</code> &mdash; If a item with that key has resumed loading.
         </td>
 </tr>
 </table>
@@ -1243,63 +1374,6 @@ showHideInherited();
 <br>
 <a href="../loading/BulkLoader.html#see" target="">BulkLoader()</a>
 </div>
-</div>
-<a name="stopAllItems()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">stopAllItems</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function stopAllItems():void</code><p> Stops loading all items of this <code>BulkLoader</code> instance. This does not clear or remove items from the qeue.
-        </p></div>
-<a name="stopAllLoaders()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">stopAllLoaders</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function stopAllLoaders():void</code><p> Stops loading all items from all <code>BulkLoader</code> instances.
-          </p><p>
-<span class="label">See also</span>
-</p>
-<div class="seeAlso">
-<a href="../loading/BulkLoader.html#stopAllItems()" target="">stopAllItems()</a>
-<br>
-<a href="../loading/BulkLoader.html#stopItem()" target="">stopItem()</a>
-</div>
-</div>
-<a name="stopItem()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">stopItem</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function stopItem(key:*, loadsNext:Boolean = false):Boolean</code><p> Stop loading the item identified by <code>key</code>. This will not remove the item from the <code>BulkLoader</code>.
-        </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">key</span>:*</code> &mdash; The key (url as a string, url as a <code>URLRequest</code> or an id as a <code>String</code>).    
-        </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">loadsNext</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If it should start loading the next item.
-        </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; A <code>Boolean</code> indicating if the object has been stopped.
-        </td>
-</tr>
-</table>
 </div>
 <a name="toString()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">

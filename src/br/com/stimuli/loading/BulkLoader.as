@@ -541,6 +541,8 @@
             // only set bytes total if all items have begun loading
             if (itemsStarted == _items.length){
                 bytesTotal = bytesTotalCurrent;
+            }else{
+                bytesTotal = Number.POSITIVE_INFINITY;
             }
             weightPercent = weightLoaded / totalWeight;
             var e : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
@@ -764,6 +766,10 @@
             return null;
         }
         
+        /** This will delete this item from memory. It's content will be inaccessible after that.
+        *   @param key A url (as a string or urlrequest) or an id to fetch
+        *   @return <code>True</code> if an item with that key has been removed, and <code>false</code> othersiwe.
+        *   */
         public function clearItem(key : *) : Boolean{
             
             var item : LoadingItem;
@@ -794,7 +800,7 @@
             _contents = null;
         }
         
-        /** Deletes all content from all instances of <code>BulkLoader</code> class.
+        /** Deletes all content from all instances of <code>BulkLoader</code> class. This will stop any pending loading operations as well as free memory.
         *   @see #clearAll()
         */ 
         public static function clearAllLoaders() : void{
@@ -808,7 +814,7 @@
         
         /** Removes all items that have been stopped.
         *   After removing, it will try to restart loading if there are still items to load.
-        *   @ return In any items have been removed.
+        *   @ return <code>True</code> if any items have been removed, <code>false</code> otherwise.
         */
         public function removedStopped() : Boolean{
             var stoppedLoads : Array = _items.filter(function (item : LoadingItem, ...rest) : Boolean{
@@ -835,7 +841,7 @@
             loadNext();
             return badLoads.length > 0;
         }
-        /** Stop loading the item identified by <code>key</code>. This will not remove the item from the <code>BulkLoader</code>.
+        /** Stop loading the item identified by <code>key</code>. This will not remove the item from the <code>BulkLoader</code>. Note that progress notification will jump around, as the stopped item will still count as something to load, but it's byte count will be 0.
         * @param key The key (url as a string, url as a <code>URLRequest</code> or an id as a <code>String</code>).    
         * @param loadsNext If it should start loading the next item.
         * @return A <code>Boolean</code> indicating if the object has been stopped.
@@ -873,7 +879,7 @@
             }
         }
         
-        /** Resumes loading of the item.
+        /** Resumes loading of the item. Depending on the environment the player is running, resumed items will be able to use partialy downloaded content. 
         *   @param  key The url request, url as a string or a id  from which the asset was loaded. 
         *   @return If a item with that key has resumed loading.
         */
