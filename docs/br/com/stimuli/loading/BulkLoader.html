@@ -912,10 +912,29 @@ showHideInherited();
                   <td>A number that sets an arbitrary relative size for this item. See #weightPercent.</td>
               </tr>
           </table>
-          
-        </td>
+          </td>
 </tr>
 </table>
+<br>
+<span class="label">Example</span>
+<br>Retriving contents:<div class='listing'><pre>
+import br.stimuli.loaded.BulkLoader;
+var bulkLoader : BulkLoader = new BulkLoader("main");
+   // simple item:
+   bulkLoader.add("config.xml");
+   // use an id that can be retirved latterL
+   bulkLoader.add("background.jpg", {id:"bg"});
+   // or use a static var to have auto-complete and static checks on your ide:
+   bulkLoader.add("background.jpg", {BulkLoader.ID:"bg"});
+   // loads the languages.xml file first and parses before all items are done:
+   public function parseLanguages() : void{
+       var theLangXML : XML = bulkLoader.getXML("langs");
+       // do something wih the xml:
+       doSomething(theLangXML);
+   }
+   bulkLoader.add("languages.xml", {priority:10, onComplete:parseLanguages, id:"langs"});
+   </pre></div>
+        <p></p>
 </div>
 <a name="clearAll()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">

@@ -398,7 +398,25 @@ import br.com.stimuli.loading.BulkProgressEvent;
         *           <td>A number that sets an arbitrary relative size for this item. See #weightPercent.</td>
         *       </tr>
         *   </table>
-        *   
+        *   @example Retriving contents:<listing version=3.0>
+import br.stimuli.loaded.BulkLoader;
+var bulkLoader : BulkLoader = new BulkLoader("main");
+// simple item:
+bulkLoader.add("config.xml");
+// use an id that can be retirved latterL
+bulkLoader.add("background.jpg", {id:"bg"});
+// or use a static var to have auto-complete and static checks on your ide:
+bulkLoader.add("background.jpg", {BulkLoader.ID:"bg"});
+// loads the languages.xml file first and parses before all items are done:
+public function parseLanguages() : void{
+   var theLangXML : XML = bulkLoader.getXML("langs");
+   // do something wih the xml:
+   doSomething(theLangXML);
+}
+bulkLoader.add("languages.xml", {priority:10, onComplete:parseLanguages, id:"langs"});
+// Start the loading operation with only 3 simultaneous connections:
+bulkLoader.start(3)
+   </listing>
         */
         public function add(url : *, props : Object= null ) : void {
             props = props || {};
