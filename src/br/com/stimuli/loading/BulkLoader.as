@@ -181,6 +181,14 @@ import br.com.stimuli.loading.BulkProgressEvent;
 		* @see #add()
 		*/
 		public static const PREVENT_CACHING : String = "preventCache";
+		/** An array of RequestHeader objects to be used when contructing the <code>URLRequest</code> object. If the <code>url</code> parameter is passed as a <code>URLRequest</code> object it will be ignored. Checked when adding a new item to load.
+		* @see #add()
+		*/
+		public static const HEADERS : String = "headers";
+		/** An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_LOADER</code> a LoaderContext should be passed. Checked when adding a new item to load.
+		* @see #add()
+		*/
+		public static const CONTEXT : String = "context";
 		/** A <code>String</code> to be used to identify an item to load, can be used in any method that fetches content (as the key parameters), stops, removes and resume items. Checked when adding a new item to load.
 		* @see #add()
 		* @see #getContent()
@@ -397,6 +405,18 @@ import br.com.stimuli.loading.BulkProgressEvent;
         *           <td><code>int</code></td>
         *           <td>A number that sets an arbitrary relative size for this item. See #weightPercent.</td>
         *       </tr>
+        *       <tr>
+        *           <td>headers</td.
+        *           <td><a href="#HEADERS">HEADERS</a></td>
+        *           <td><code>Array</code></td>
+        *           <td>An array of <code>RequestHeader</code> objects to be used when constructing the URL. If the <code>url</code> parameter is passed as a string, <code>BulkLoader</code> will use these request headers to construct the url.</td>
+        *       </tr>
+        *       <tr>
+        *           <td>context</td.
+        *           <td><a href="#CONTEXT">CONTEXT</a></td>
+        *           <td><code>LoaderContext or SoundLoaderContext</code></td>
+        *           <td>An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_LOADER</code> a LoaderContext should be passed.</td>
+        *       </tr>
         *   </table>
         *   @example Retriving contents:<listing version=3.0>
 import br.stimuli.loaded.BulkLoader;
@@ -422,6 +442,9 @@ bulkLoader.start(3)
             props = props || {};
             if (url is String){
                 url = new URLRequest(url);
+                if(props[HEADERS]){
+                    url.requestHeaders = props[HEADERS];
+                }
             }else if (!url is URLRequest){
                 throw new Error("[BulkLoader] cannot add object with bad type for url:'" + url.url);
             }
@@ -465,6 +488,7 @@ bulkLoader.start(3)
             item.priority = int(props[PRIORITY]) || 0;
             item.maxTries = props[MAX_TRIES] || 3;
             item.weight = int(props[WEIGHT]) || 1;
+            item.context = props[CONTEXT] || null;
             // internal, used to sort items of the same priority
             item.addedTime = getTimer();
             item.addEventListener(Event.COMPLETE, onItemComplete, false, 0, true);

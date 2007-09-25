@@ -111,6 +111,7 @@ package br.com.stimuli.loading {
         /** Internal object that holds the download content.*/
         private var _content : *;
         
+        public var context : * = null;
         // for video:
         public var nc:NetConnection;
         public var stream : NetStream;
@@ -166,17 +167,18 @@ package br.com.stimuli.loading {
                 loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
                 loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 0, true);
                 loader.contentLoaderInfo.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);
-                loader.load(url);
+                loader.load(url, context);
             }else if (loader is Sound){
                 loader.addEventListener(ProgressEvent.PROGRESS, onProgressHandler, false, 0, true);
                 loader.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
                 loader.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 0, true);
                 loader.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);
-                loader.load(url);
+                loader.load(url, context);
             }else if (loader is NetConnection){
                 loader.connect(null);
                 stream = new NetStream(loader);
                 stream.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 0, true);
+                stream.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus, false, 0, true);
                 dummyEventTrigger = new Sprite();
                 dummyEventTrigger.addEventListener(Event.ENTER_FRAME, createNetStreamEvent, false, 0, true);
                 var customClient:Object = new Object();
@@ -210,6 +212,14 @@ package br.com.stimuli.loading {
             }else{
                 var event : ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS, false, false, stream.bytesLoaded, stream.bytesTotal);
                 onProgressHandler(event)
+            }
+        }
+        
+        public function onNetStatus(evt : NetStatusEvent) : void{
+            stream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatus, false);
+            if(evt.info.code == "NetStream.Play.Start"){
+                var e : Event = new Event(Event.OPEN);
+                onStartedHandler(e);
             }
         }
         
