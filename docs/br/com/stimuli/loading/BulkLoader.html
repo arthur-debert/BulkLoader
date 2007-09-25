@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,PROGRESS,COMPLETE,ON_START,ON_ERROR,ON_COMPLETE,PREVENT_CACHING,ID,PRIORITY,MAX_TRIES,WEIGHT,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesTotalCurrent,bytesLoaded,percentLoaded,weightPercent,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,logLevel,isRunning,numConnectons,contents,name,getLoader,hasItem,add,start,registerNewType,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getBitmapData,getSerializedData,traceStats,log,clearItem,clearAll,clearAllLoaders,removePausedItems,removeFailedItems,pauseItem,pause,pauseAllLoaders,resumeItem,resume,truncateNumber,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,PROGRESS,COMPLETE,ON_START,ON_ERROR,ON_COMPLETE,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesTotalCurrent,bytesLoaded,percentLoaded,weightPercent,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,logLevel,isRunning,numConnectons,contents,name,getLoader,hasItem,add,start,registerNewType,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,traceStats,log,clearItem,clearAll,clearAllLoaders,removePausedItems,removeFailedItems,pauseItem,pause,pauseAllLoaders,resumeItem,resume,truncateNumber,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -273,7 +273,21 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#getMovieClip()">getMovieClip</a>(key:String, clearMemory:Boolean = false):MovieClip</div>
-<div class="summaryTableDescription"> Returns a Bitmap object with the downloaded asset for the given key.</div>
+<div class="summaryTableDescription"> Returns a <code>MovieClip</code> object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getNetStream()">getNetStream</a>(key:String, clearMemory:Boolean = false):NetStream</div>
+<div class="summaryTableDescription"> Returns a <code>NetStream</code> object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getNetStreamMetaData()">getNetStreamMetaData</a>(key:String, clearMemory:Boolean = false):Object</div>
+<div class="summaryTableDescription"> Returns a <code>Object</code> with meta data information for a given <code>NetStream</code> key.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -451,6 +465,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#COMPLETE">COMPLETE</a> : String = "complete"<div class="summaryTableDescription">[static] 
           The name of the event 
           </div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#CONTEXT">CONTEXT</a> : String = "context"<div class="summaryTableDescription">[static] An object definig the loading context for this load operario.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#HEADERS">HEADERS</a> : String = "headers"<div class="summaryTableDescription">[static] An array of RequestHeader objects to be used when contructing the <code>URLRequest</code> object.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -911,6 +933,18 @@ showHideInherited();
                   <td><code>int</code></td>
                   <td>A number that sets an arbitrary relative size for this item. See #weightPercent.</td>
               </tr>
+              <tr>
+                  <td>headers</td.
+                  <td><a href="#HEADERS">HEADERS</a></td>
+                  <td><code>Array</code></td>
+                  <td>An array of <code>RequestHeader</code> objects to be used when constructing the URL. If the <code>url</code> parameter is passed as a string, <code>BulkLoader</code> will use these request headers to construct the url.</td>
+              </tr>
+              <tr>
+                  <td>context</td.
+                  <td><a href="#CONTEXT">CONTEXT</a></td>
+                  <td><code>LoaderContext or SoundLoaderContext</code></td>
+                  <td>An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_LOADER</code> a LoaderContext should be passed.</td>
+              </tr>
           </table>
           </td>
 </tr>
@@ -920,19 +954,21 @@ showHideInherited();
 <br>Retriving contents:<div class='listing'><pre>
 import br.stimuli.loaded.BulkLoader;
 var bulkLoader : BulkLoader = new BulkLoader("main");
-   // simple item:
-   bulkLoader.add("config.xml");
-   // use an id that can be retirved latterL
-   bulkLoader.add("background.jpg", {id:"bg"});
-   // or use a static var to have auto-complete and static checks on your ide:
-   bulkLoader.add("background.jpg", {BulkLoader.ID:"bg"});
-   // loads the languages.xml file first and parses before all items are done:
-   public function parseLanguages() : void{
-       var theLangXML : XML = bulkLoader.getXML("langs");
-       // do something wih the xml:
-       doSomething(theLangXML);
-   }
-   bulkLoader.add("languages.xml", {priority:10, onComplete:parseLanguages, id:"langs"});
+// simple item:
+bulkLoader.add("config.xml");
+// use an id that can be retirved latterL
+bulkLoader.add("background.jpg", {id:"bg"});
+// or use a static var to have auto-complete and static checks on your ide:
+bulkLoader.add("background.jpg", {BulkLoader.ID:"bg"});
+// loads the languages.xml file first and parses before all items are done:
+public function parseLanguages() : void{
+   var theLangXML : XML = bulkLoader.getXML("langs");
+   // do something wih the xml:
+   doSomething(theLangXML);
+}
+bulkLoader.add("languages.xml", {priority:10, onComplete:parseLanguages, id:"langs"});
+// Start the loading operation with only 3 simultaneous connections:
+bulkLoader.start(3)
    </pre></div>
         <p></p>
 </div>
@@ -1112,7 +1148,7 @@ var bulkLoader : BulkLoader = new BulkLoader("main");
 </tr>
 </table>
 <div class="detailBody">
-<code>public function getMovieClip(key:String, clearMemory:Boolean = false):MovieClip</code><p> Returns a Bitmap object with the downloaded asset for the given key.
+<code>public function getMovieClip(key:String, clearMemory:Boolean = false):MovieClip</code><p> Returns a <code>MovieClip</code> object with the downloaded asset for the given key.
           </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1132,6 +1168,68 @@ var bulkLoader : BulkLoader = new BulkLoader("main");
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20"></td><td><code>MovieClip</code> &mdash; The content retrived from that url casted to a MovieClip object. Returns null if the cast fails.
+        </td>
+</tr>
+</table>
+</div>
+<a name="getNetStream()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getNetStream</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getNetStream(key:String, clearMemory:Boolean = false):NetStream</code><p> Returns a <code>NetStream</code> object with the downloaded asset for the given key.
+          </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:String</code> &mdash; The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
+          </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">clearMemory</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+          </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>NetStream</code> &mdash; The content retrived from that url casted to a NetStream object. Returns null if the cast fails.
+        </td>
+</tr>
+</table>
+</div>
+<a name="getNetStreamMetaData()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getNetStreamMetaData</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getNetStreamMetaData(key:String, clearMemory:Boolean = false):Object</code><p> Returns a <code>Object</code> with meta data information for a given <code>NetStream</code> key.
+          </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:String</code> &mdash; The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
+          </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">clearMemory</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+          </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code> &mdash; The meta data object downloaded with this NetStream. Returns null if the given key does not resolve to a NetStream.
         </td>
 </tr>
 </table>
@@ -1607,6 +1705,36 @@ var bulkLoader : BulkLoader = new BulkLoader("main");
 <code>public static const COMPLETE:String = "complete"</code><p> 
           The name of the event 
           </p></div>
+<a name="CONTEXT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">CONTEXT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const CONTEXT:String = "context"</code><p> An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_LOADER</code> a LoaderContext should be passed. Checked when adding a new item to load.
+  </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#add()" target="">add()</a>
+</div>
+</div>
+<a name="HEADERS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">HEADERS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const HEADERS:String = "headers"</code><p> An array of RequestHeader objects to be used when contructing the <code>URLRequest</code> object. If the <code>url</code> parameter is passed as a <code>URLRequest</code> object it will be ignored. Checked when adding a new item to load.
+  </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#add()" target="">add()</a>
+</div>
+</div>
 <a name="ID"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>

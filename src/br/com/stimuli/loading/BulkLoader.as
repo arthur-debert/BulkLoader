@@ -670,6 +670,9 @@ bulkLoader.start(3)
         
         private function onItemStarted(evt : Event) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
+            if (item.isVideo()){
+                _contents[item.url.url] = item.stream;
+            }
             log("Started loading", item, 1);
            if(Boolean(item.onStart)) {
                try{
@@ -751,7 +754,7 @@ bulkLoader.start(3)
                 return null;
             }
             try{
-                if (item.isLoaded) {
+                if (item.isLoaded || item.isVideo()) {
                     var res : * = type(item.content)
                     if(clearMemory){
                         clearItem(key);
@@ -810,13 +813,33 @@ bulkLoader.start(3)
             return Bitmap(getContentAsType(key, Bitmap, clearMemory));
         }
         
-        /** Returns a Bitmap object with the downloaded asset for the given key.
+        /** Returns a <code>MovieClip</code> object with the downloaded asset for the given key.
         *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
         *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
         *   @return The content retrived from that url casted to a MovieClip object. Returns null if the cast fails.
         */
         public function getMovieClip(key : String, clearMemory : Boolean = false) : MovieClip{
             return MovieClip(getContentAsType(key, MovieClip, clearMemory));
+        }
+        
+        /** Returns a <code>NetStream</code> object with the downloaded asset for the given key.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @return The content retrived from that url casted to a NetStream object. Returns null if the cast fails.
+        */
+        public function getNetStream(key : String, clearMemory : Boolean = false) : NetStream{
+            return NetStream(getContentAsType(key, NetStream, clearMemory));
+        }
+        
+        /** Returns a <code>Object</code> with meta data information for a given <code>NetStream</code> key.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @return The meta data object downloaded with this NetStream. Returns null if the given key does not resolve to a NetStream.
+        */
+        public function getNetStreamMetaData(key : String, clearMemory : Boolean = false) : Object{
+            var netStream : NetStream = getNetStream(key, clearMemory);
+            return  (Boolean(netStream) ? getItem(key).metaData : null);
+            
         }
         
         /** Returns an BitmapData object with the downloaded asset for the given key.

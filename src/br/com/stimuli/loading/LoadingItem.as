@@ -127,6 +127,7 @@ package br.com.stimuli.loading {
                 
                 var searchString : String = url.url.indexOf("?") > -1 ? url.url.substring(0, url.url.indexOf("?")) : url.url;
                 this.type = searchString.substring(searchString.lastIndexOf(".") + 1).toLowerCase();
+                
             }
             if (BulkLoader.AVAILABLE_TYPES.indexOf(this.type) == -1 ){
                 this.type = "txt";
@@ -218,6 +219,7 @@ package br.com.stimuli.loading {
         public function onNetStatus(evt : NetStatusEvent) : void{
             stream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatus, false);
             if(evt.info.code == "NetStream.Play.Start"){
+                _content = stream;
                 var e : Event = new Event(Event.OPEN);
                 onStartedHandler(e);
             }
@@ -294,7 +296,7 @@ package br.com.stimuli.loading {
                     loader.close();
                 }
             }catch(e : Error){
-                trace("{LoadingItem}::method() e", e);
+                
             }
             status = STATUS_STOPPED;
             isLoading = false;
@@ -315,6 +317,10 @@ package br.com.stimuli.loading {
             }
 
             loader = null;
+        }
+        
+        public function isVideo(): Boolean{
+            return BulkLoader.VIDEO_TYPES.indexOf(type) > -1;
         }
         
         public function destroy() : void{
