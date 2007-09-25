@@ -30,16 +30,31 @@
 * http://code.google.com/p/bulk-loader/
 * http://www.opensource.org/licenses/mit-license.php
 *    
-*/package br.com.stimuli.loading {
+*/
+package br.com.stimuli.loading {
     
-    import flash.events.*;
-    import flash.net.*;
-    import flash.display.*;
-    import flash.media.Sound;
-    import flash.utils.*;
+import flash.events.*;
+import flash.net.*;
+import flash.display.*;
+import flash.media.Sound;
+import flash.utils.*;
+
+import br.com.stimuli.loading.LoadingItem;
+import br.com.stimuli.loading.BulkProgressEvent;
     
-    import br.com.stimuli.loading.LoadingItem;
-    import br.com.stimuli.loading.BulkProgressEvent;
+/**
+ *  Dispatched on download progress by any of the items to download.
+ *
+ *  @eventType br.com.stimuli.loading.BulkProgressEvent.PROGRESS
+ */
+[Event(name="progress", type="br.com.stimuli.loading.BulkProgressEvent")]
+
+/**
+ *  Dispatched when all items have been downloaded and parsed.
+ *
+ *  @eventType br.com.stimuli.loading.BulkProgressEvent.COMPLETE
+ */
+[Event(name="complete", type="br.com.stimuli.loading.BulkProgressEvent")]
     
     /**
     *   Manages loading for simultaneous items and multiple formats.
@@ -97,6 +112,8 @@
     *   @author Arthur Debert
     *   @since  15.09.2007
     */  
+    
+    
     public class BulkLoader extends EventDispatcher {
         
         /** Tells this class to use a <code>Loader</code> object to load the item.*/
@@ -146,6 +163,51 @@
         *   @eventType complete
         */
 		public static const COMPLETE : String = "complete";
+		
+		// properties on adding a new url:
+		/** A function to be called when an item has started loading. Checked when adding a new item to load.
+		* @see #add()
+		*/
+		public static const ON_START : String = "onStart";
+		/** A function to be called if an item has failed loading. Checked when adding a new item to load.
+		* @see #add()
+		*/
+		public static const ON_ERROR : String = "onError";
+		/** A function to be called when an item has finished loading and it's content is ready for usage. Checked when adding a new item to load.
+		* @see #add()
+		*/
+		public static const ON_COMPLETE : String = "onComplete";
+		/** If <code>true</code> a random query (or post data parameter) will be added to prevent caching. Checked when adding a new item to load.
+		* @see #add()
+		*/
+		public static const PREVENT_CACHING : String = "preventCache";
+		/** A <code>String</code> to be used to identify an item to load, can be used in any method that fetches content (as the key parameters), stops, removes and resume items. Checked when adding a new item to load.
+		* @see #add()
+		* @see #getContent()
+		* @see #pauseItem()
+		* @see #resumeItem()
+		* @see #removeItem()
+		*/
+		public static const ID : String = "id";
+
+		/** An <code>int</code> that controls which items are loaded first. Items with a higher <code>PRIORITY</code> will load first. If more than one item has the same <code>PRIORITY</code> number, the order in which they are added will be taken into consideration. Checked when adding a new item to load.
+		* @see #add()
+		*/
+        public static const PRIORITY : String = "priority";
+		
+		/** The number, as an <code>int</code>, to retry downloading an item in case it fails. Checked when adding a new item to load.
+		* @default 3
+		* @see #add()
+		*/
+        public static const MAX_TRIES : String = "maxTries";
+		/* An <code>int</code> that sets a relative size of this item. It's used on the <code>BulkProgressEvent.weightPercent</code> property. This allows bulk downloads with more items that connections and with widely varying file sizes to give a more accurate progress information. Checked when adding a new item to load.
+		* @see #add()
+		* @default 3
+		*/
+        public static const WEIGHT : String = "weight";
+		
+		
+        
 		/**
 		* The name by which this loader instance can be identified.
 		* This property is used so you can get a reference to this instance from other classes in your code without having to save and pass it yourself, throught the static method BulkLoader.getLoader(name) .<p/>
@@ -281,7 +343,62 @@
         /** Adds a new assets to be loaded. The <code>BulkLoader</code> object will manage diferent assets type. If the right type cannot be infered from the url termination (e.g. the url ends with ".swf") the BulkLoader will relly on the <code>type</code> property of the <code>props</code> parameter. If both are set, the <code>type</code>  property of the props object will overrite the one defined in the <code>url</code>. In case none is specified and the url won't hint at it, the type <code>TYPE_TEXT</code> will be used.
         *   
         *   @param url String OR URLRequest A <code>String</code> or a <code>URLRequest</code> instance.
-        *   @param props An object specifing extra data for this loader. See the <code>LoadingItem</code> special props.
+        *   @param props An object specifing extra data for this loader. The following properties are supported:<p/>
+        *   <table>
+        *       <th>Property name</th>
+        *       <th>Class constant</th>
+        *       <th>Data type</th>
+        *       <th>Description</th>
+        *       <tr>
+        *           <td>onStart</td>
+        *           <td><a href="#ON_START">ON_START</a></td>
+        *           <td><code>Function</code></td>
+        *           <td>A callback to be executed as soon as this item begins loading.</td>
+        *       </tr>
+        *       <tr>
+        *           <td>onComplete</td>
+        *           <td><a href="#ON_COMPLETE">ON_COMPLETE</a></td>
+        *           <td><code>Function</code></td>
+        *           <td>A callback to be executed as the tem is done loading and is ready to use.</td>
+        *       </tr>
+        *       <tr>
+        *           <td>onError</td>
+        *           <td><a href="#ON_ERROR">ON_ERROR</a></td>
+        *           <td><code>Function</code></td>
+        *           <td>A callback to be executed if this item fails to load.</td>
+        *       </tr>
+        *       <tr>
+        *           <td>preventCache</td>
+        *           <td><a href="#PREVENT_CACHING">PREVENT_CACHING</a></td>
+        *           <td><code>Boolean</code></td>
+        *           <td>If <code>true</code> a random query string will be added to the url (or a post param in case of post reuquest).</td>
+        *       </tr>
+        *       <tr>
+        *           <td>id</td>
+        *           <td><a href="#ID">ID</a></td>
+        *           <td><code>String</code></td>
+        *           <td>A string to identify this item. This id can be used in any method that uses the <code>key</code> parameter, such as <code>pauseItem, removeItem, resumeItem, getContent, getBitmap, getBitmapData, getXML, getMovieClip and getText</code>.</td>
+        *       </tr>
+        *       <tr>
+        *           <td>priority</td.
+        *           <td><a href="#PRIORITY">PRIORITY</a></td>
+        *           <td><code>int</code></td>
+        *           <td>An <code>int</code> used to order which items till be downloaded first. Items with a higher priority will download first. For items with the same priority they will be loaded in the same order they've been added.</td>
+        *       </tr>
+        *       <tr>
+        *           <td>maxTries</td.
+        *           <td><a href="#MAX_TRIES">MAX_TRIES</a></td>
+        *           <td><code>int</code></td>
+        *           <td>The number of retries in case the lading fails, defaults to 3.</td>
+        *       </tr>
+        *       <tr>
+        *           <td>weight</td.
+        *           <td><a href="#WEIGHT">WEIGHT</a></td>
+        *           <td><code>int</code></td>
+        *           <td>A number that sets an arbitrary relative size for this item. See #weightPercent.</td>
+        *       </tr>
+        *   </table>
+        *   
         */
         public function add(url : *, props : Object= null ) : void {
             props = props || {};
@@ -321,15 +438,17 @@
             
             item  = new LoadingItem(url, props["type"]);
             log("Added",item, 0);
-            item.onStart = props.onStart;
-            item.onComplete = props.onComplete;
-            item.onError = props.onError;
-            item.preventCache = props.preventCache;
-            item.id = props.id;
-            item.priority = int(props.priority) || 0;
+            // properties from the props argument
+            item.onStart = props[ON_START];
+            item.onComplete = props[ON_COMPLETE];
+            item.onError = props[ON_ERROR];
+            item.preventCache = props[PREVENT_CACHING];
+            item.id = props[ID];
+            item.priority = int(props[PRIORITY]) || 0;
+            item.maxTries = props[MAX_TRIES] || 3;
+            item.weight = int(props[WEIGHT]) || 1;
+            // internal, used to sort items of the same priority
             item.addedTime = getTimer();
-            item.maxTries = props.maxTries || 3;
-            item.weight = int(props.weight) || 1;
             item.addEventListener(Event.COMPLETE, onItemComplete, false, 0, true);
             item.addEventListener(IOErrorEvent.IO_ERROR, onItemError, false, 0, true);
             item.addEventListener(Event.OPEN, onItemStarted, false, 0, true);
@@ -816,7 +935,7 @@
         *   After removing, it will try to restart loading if there are still items to load.
         *   @ return <code>True</code> if any items have been removed, <code>false</code> otherwise.
         */
-        public function removedStopped() : Boolean{
+        public function removePausedItems() : Boolean{
             var stoppedLoads : Array = _items.filter(function (item : LoadingItem, ...rest) : Boolean{
                 return (item.status == LoadingItem.STATUS_STOPPED);
             });
@@ -831,7 +950,7 @@
         *   After removing, it will try to restart loading if there are still items to load.
         *   @ return In any items have been removed.
         */
-        public function removeErrors(): Boolean{
+        public function removeFailedItems(): Boolean{
             var badLoads : Array = _items.filter(function (item : LoadingItem, ...rest) : Boolean{
                 return (item.status == LoadingItem.STATUS_ERROR);
             });

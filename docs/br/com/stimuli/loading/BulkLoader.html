@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,PROGRESS,COMPLETE,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesTotalCurrent,bytesLoaded,percentLoaded,weightPercent,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,logLevel,isRunning,numConnectons,contents,name,getLoader,hasItem,add,start,registerNewType,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getBitmapData,getSerializedData,traceStats,log,clearItem,clearAll,clearAllLoaders,removedStopped,removeErrors,pauseItem,pause,pauseAllLoaders,resumeItem,resume,truncateNumber,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,PROGRESS,COMPLETE,ON_START,ON_ERROR,ON_COMPLETE,PREVENT_CACHING,ID,PRIORITY,MAX_TRIES,WEIGHT,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesTotalCurrent,bytesLoaded,percentLoaded,weightPercent,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,logLevel,isRunning,numConnectons,contents,name,getLoader,hasItem,add,start,registerNewType,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getBitmapData,getSerializedData,traceStats,log,clearItem,clearAll,clearAllLoaders,removePausedItems,removeFailedItems,pauseItem,pause,pauseAllLoaders,resumeItem,resume,truncateNumber,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -19,7 +19,7 @@
 <td align="left" class="titleTableTitle">BulkLoader-documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../index-list.html')" href="../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../index.html?br/com/stimuli/loading/BulkLoader.html&amp;br/com/stimuli/loading/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../images/logo.jpg"></td>
 </tr>
 <tr class="titleTableRow2">
-<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;BulkLoader</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;BulkLoader</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#eventSummary">Events</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
 </tr>
 <tr class="titleTableRow3">
 <td colspan="2">&nbsp;</td>
@@ -27,7 +27,7 @@
 </table>
 <script type="text/javascript" language="javascript">
 <!--
-if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class BulkLoader"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class BulkLoader"); titleBar_setSubNav(true,true,false,false,true,false,true,false,false,false,false,false,false,false);}
 --></script>
 <div class="MainContent">
 <table cellspacing="0" cellpadding="0" class="classHeaderTable">
@@ -342,15 +342,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#removedStopped()">removedStopped</a>():Boolean</div>
-<div class="summaryTableDescription"> Removes all items that have been stopped.</div>
+<a class="signatureLink" href="#removeFailedItems()">removeFailedItems</a>():Boolean</div>
+<div class="summaryTableDescription"> Removes all items that have not succesfully loaded.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#removeErrors()">removeErrors</a>():Boolean</div>
-<div class="summaryTableDescription"> Removes all items that have not succesfully loaded.</div>
+<a class="signatureLink" href="#removePausedItems()">removePausedItems</a>():Boolean</div>
+<div class="summaryTableDescription"> Removes all items that have been stopped.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -415,6 +415,31 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 </div>
+<a name="eventSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Events</div>
+<table id="summaryTableEvent" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Event</th><th>Summary</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:complete">complete</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+  Dispatched when all items have been downloaded and parsed.</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#event:progress">progress</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+  Dispatched on download progress by any of the items to download.</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+</table>
+</div>
 <a name="constantSummary"></a>
 <div class="summarySection">
 <div class="summaryTableTitle">Public Constants</div>
@@ -429,6 +454,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ID">ID</a> : String = "id"<div class="summaryTableDescription">[static] A <code>String</code> to be used to identify an item to load, can be used in any method that fetches content (as the key parameters), stops, removes and resume items.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LOG_ERRORS">LOG_ERRORS</a> : int = 3<div class="summaryTableDescription">[static]Will only trace errors.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
@@ -438,6 +467,30 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LOG_VERBOSE">LOG_VERBOSE</a> : int = 0<div class="summaryTableDescription">[static] LogLevel: Outputs everything that is happening.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MAX_TRIES">MAX_TRIES</a> : String = "maxTries"<div class="summaryTableDescription">[static] The number, as an <code>int</code>, to retry downloading an item in case it fails.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ON_COMPLETE">ON_COMPLETE</a> : String = "onComplete"<div class="summaryTableDescription">[static] A function to be called when an item has finished loading and it's content is ready for usage.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ON_ERROR">ON_ERROR</a> : String = "onError"<div class="summaryTableDescription">[static] A function to be called if an item has failed loading.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ON_START">ON_START</a> : String = "onStart"<div class="summaryTableDescription">[static] A function to be called when an item has started loading.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PREVENT_CACHING">PREVENT_CACHING</a> : String = "preventCache"<div class="summaryTableDescription">[static] If <code>true</code> a random query (or post data parameter) will be added to prevent caching.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PRIORITY">PRIORITY</a> : String = "priority"<div class="summaryTableDescription">[static] An <code>int</code> that controls which items are loaded first.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -472,6 +525,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TYPE_XML">TYPE_XML</a> : String = "xml"<div class="summaryTableDescription">[static] Tells this class to use a <code>XML</code> object to load the item.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#WEIGHT">WEIGHT</a> : String = "weight"<div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 </table>
@@ -800,7 +857,62 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">props</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; An object specifing extra data for this loader. See the <code>LoadingItem</code> special props.
+<td width="20px"></td><td><code><span class="label">props</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; An object specifing extra data for this loader. The following properties are supported:<p/>
+          <table>
+              <th>Property name</th>
+              <th>Class constant</th>
+              <th>Data type</th>
+              <th>Description</th>
+              <tr>
+                  <td>onStart</td>
+                  <td><a href="#ON_START">ON_START</a></td>
+                  <td><code>Function</code></td>
+                  <td>A callback to be executed as soon as this item begins loading.</td>
+              </tr>
+              <tr>
+                  <td>onComplete</td>
+                  <td><a href="#ON_COMPLETE">ON_COMPLETE</a></td>
+                  <td><code>Function</code></td>
+                  <td>A callback to be executed as the tem is done loading and is ready to use.</td>
+              </tr>
+              <tr>
+                  <td>onError</td>
+                  <td><a href="#ON_ERROR">ON_ERROR</a></td>
+                  <td><code>Function</code></td>
+                  <td>A callback to be executed if this item fails to load.</td>
+              </tr>
+              <tr>
+                  <td>preventCache</td>
+                  <td><a href="#PREVENT_CACHING">PREVENT_CACHING</a></td>
+                  <td><code>Boolean</code></td>
+                  <td>If <code>true</code> a random query string will be added to the url (or a post param in case of post reuquest).</td>
+              </tr>
+              <tr>
+                  <td>id</td>
+                  <td><a href="#ID">ID</a></td>
+                  <td><code>String</code></td>
+                  <td>A string to identify this item. This id can be used in any method that uses the <code>key</code> parameter, such as <code>pauseItem, removeItem, resumeItem, getContent, getBitmap, getBitmapData, getXML, getMovieClip and getText</code>.</td>
+              </tr>
+              <tr>
+                  <td>priority</td.
+                  <td><a href="#PRIORITY">PRIORITY</a></td>
+                  <td><code>int</code></td>
+                  <td>An <code>int</code> used to order which items till be downloaded first. Items with a higher priority will download first. For items with the same priority they will be loaded in the same order they've been added.</td>
+              </tr>
+              <tr>
+                  <td>maxTries</td.
+                  <td><a href="#MAX_TRIES">MAX_TRIES</a></td>
+                  <td><code>int</code></td>
+                  <td>The number of retries in case the lading fails, defaults to 3.</td>
+              </tr>
+              <tr>
+                  <td>weight</td.
+                  <td><a href="#WEIGHT">WEIGHT</a></td>
+                  <td><code>int</code></td>
+                  <td>A number that sets an arbitrary relative size for this item. See #weightPercent.</td>
+              </tr>
+          </table>
+          
         </td>
 </tr>
 </table>
@@ -1277,14 +1389,14 @@ showHideInherited();
 <a href="../loading/BulkLoader.html#TYPE_TEXT" target="">TYPE_TEXT</a>
 </div>
 </div>
-<a name="removedStopped()"></a>
+<a name="removeFailedItems()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">removedStopped</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">removeFailedItems</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public function removedStopped():Boolean</code><p> Removes all items that have been stopped.
+<code>public function removeFailedItems():Boolean</code><p> Removes all items that have not succesfully loaded.
           After removing, it will try to restart loading if there are still items to load.
           </p><p></p>
 <span class="label">Returns</span>
@@ -1294,14 +1406,14 @@ showHideInherited();
 </tr>
 </table>
 </div>
-<a name="removeErrors()"></a>
+<a name="removePausedItems()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">removeErrors</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">removePausedItems</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public function removeErrors():Boolean</code><p> Removes all items that have not succesfully loaded.
+<code>public function removePausedItems():Boolean</code><p> Removes all items that have been stopped.
           After removing, it will try to restart loading if there are still items to load.
           </p><p></p>
 <span class="label">Returns</span>
@@ -1439,6 +1551,31 @@ showHideInherited();
 </tr>
 </table>
 </div>
+<div class="detailSectionHeader">Event detail</div>
+<a name="event:complete"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">complete</td><td class="detailHeaderType">event&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../loading/BulkProgressEvent.html"><code>br.com.stimuli.loading.BulkProgressEvent</code></a>
+<br>
+<p></p><p>
+  Dispatched when all items have been downloaded and parsed.
+   </p></div>
+<a name="event:progress"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">progress</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<span class="label">Event object type: </span><a href="../loading/BulkProgressEvent.html"><code>br.com.stimuli.loading.BulkProgressEvent</code></a>
+<br>
+<p></p><p>
+  Dispatched on download progress by any of the items to download.
+   </p></div>
 <a name="constantDetail"></a>
 <div class="detailSectionHeader">Constant detail</div>
 <a name="COMPLETE"></a>
@@ -1451,6 +1588,29 @@ showHideInherited();
 <code>public static const COMPLETE:String = "complete"</code><p> 
           The name of the event 
           </p></div>
+<a name="ID"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ID</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ID:String = "id"</code><p> A <code>String</code> to be used to identify an item to load, can be used in any method that fetches content (as the key parameters), stops, removes and resume items. Checked when adding a new item to load.
+  </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#add()" target="">add()</a>
+<br>
+<a href="../loading/BulkLoader.html#getContent()" target="">getContent()</a>
+<br>
+<a href="../loading/BulkLoader.html#pauseItem()" target="">pauseItem()</a>
+<br>
+<a href="../loading/BulkLoader.html#resumeItem()" target="">resumeItem()</a>
+<br>
+<a href="../loading/BulkLoader.html#removeItem()" target="">removeItem()</a>
+</div>
+</div>
 <a name="LOG_ERRORS"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1475,6 +1635,97 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public static const LOG_VERBOSE:int = 0</code><p> LogLevel: Outputs everything that is happening. Usefull for debugging. </p></div>
+<a name="MAX_TRIES"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">MAX_TRIES</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const MAX_TRIES:String = "maxTries"</code><p> The number, as an <code>int</code>, to retry downloading an item in case it fails. Checked when adding a new item to load.
+  </p><p>The default value is <code>3</code>.</p>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#add()" target="">add()</a>
+</div>
+</div>
+<a name="ON_COMPLETE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ON_COMPLETE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ON_COMPLETE:String = "onComplete"</code><p> A function to be called when an item has finished loading and it's content is ready for usage. Checked when adding a new item to load.
+  </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#add()" target="">add()</a>
+</div>
+</div>
+<a name="ON_ERROR"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ON_ERROR</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ON_ERROR:String = "onError"</code><p> A function to be called if an item has failed loading. Checked when adding a new item to load.
+  </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#add()" target="">add()</a>
+</div>
+</div>
+<a name="ON_START"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">ON_START</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const ON_START:String = "onStart"</code><p> A function to be called when an item has started loading. Checked when adding a new item to load.
+  </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#add()" target="">add()</a>
+</div>
+</div>
+<a name="PREVENT_CACHING"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PREVENT_CACHING</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PREVENT_CACHING:String = "preventCache"</code><p> If <code>true</code> a random query (or post data parameter) will be added to prevent caching. Checked when adding a new item to load.
+  </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#add()" target="">add()</a>
+</div>
+</div>
+<a name="PRIORITY"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PRIORITY</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PRIORITY:String = "priority"</code><p> An <code>int</code> that controls which items are loaded first. Items with a higher <code>PRIORITY</code> will load first. If more than one item has the same <code>PRIORITY</code> number, the order in which they are added will be taken into consideration. Checked when adding a new item to load.
+  </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#add()" target="">add()</a>
+</div>
+</div>
 <a name="PROGRESS"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1541,6 +1792,15 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public static const TYPE_XML:String = "xml"</code><p> Tells this class to use a <code>XML</code> object to load the item.</p></div>
+<a name="WEIGHT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">WEIGHT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const WEIGHT:String = "weight"</code>
+</div>
 <br>
 <br>
 <hr>

@@ -34,7 +34,7 @@
 
 package br.com.stimuli.loading {
 	import flash.events.*;
-	br.com.stimuli.loading.BulkLoader;
+
 	/**
 	*	An event that holds information about the status of a <code>BulkLoader</code>.
 	*  
