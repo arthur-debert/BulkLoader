@@ -511,6 +511,7 @@ bulkLoader.start(3)
             itemsTotal += 1;
             totalWeight += item.weight;
             _items.sortOn(["priority", "addedTime"],  [Array.NUMERIC | Array.DESCENDING, Array.NUMERIC]);
+            isFinished = false;
         }
         
         /** Start loading all items added previously
@@ -887,6 +888,9 @@ bulkLoader.start(3)
         }
         
         private function onAllLoaded() : void {
+            if(isFinished){
+                return;
+            }
             var eComplete : BulkProgressEvent = new BulkProgressEvent(COMPLETE);
             eComplete.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, itemsLoaded, itemsTotal, weightPercent);
             var eProgress : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
