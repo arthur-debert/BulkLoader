@@ -192,8 +192,8 @@ import br.com.stimuli.loading.BulkProgressEvent;
 		/** A <code>String</code> to be used to identify an item to load, can be used in any method that fetches content (as the key parameters), stops, removes and resume items. Checked when adding a new item to load.
 		* @see #add()
 		* @see #getContent()
-		* @see #pauseItem()
-		* @see #resumeItem()
+		* @see #pause()
+		* @see #resume()
 		* @see #removeItem()
 		*/
 		public static const ID : String = "id";
@@ -312,7 +312,7 @@ import br.com.stimuli.loading.BulkProgressEvent;
             _name = name;
         }
         
-        /** Fetched a loader object created with the <code>name</code> parameter.
+        /** Fetched a <code>BulkLoader</code> object created with the <code>name</code> parameter.
         *   This is usefull if you must access loades assets from another scope, without having to pass direct references to this loader.
         *   @param  name The name of the loader to be fetched.
         *   @return The BulkLoader instance that was registred with that name. Returns null if none is found.
@@ -343,11 +343,23 @@ import br.com.stimuli.loading.BulkProgressEvent;
             }else{
                 loaders = [this];
             }
-            for each (var l : BulkLoader in allLoaders){
+            for each (var l : BulkLoader in loaders){
                 if (hasItemInBulkLoader(key, l )) return true;
             }
             return false;
         }
+        
+        /** Checks which <code>BulkLoader</code> has an item by the given key.
+        * @param    The url (as a <code>String</code> or a <code>URLRequest</code> object)or an id (as a <code>String</code>) by which the item is identifiable.
+        * @return   The <code>BulkLoader</code> instance that has the given key or <code>null</code> if no key if found in any loader.
+        */
+        public static function whichLoaderHasItem(key : *) : BulkLoader{
+            for each (var l : BulkLoader in allLoaders){
+                if (l.hasItemInBulkLoader(key, l )) return l;
+            }
+            return null;
+        }
+        
         /** Adds a new assets to be loaded. The <code>BulkLoader</code> object will manage diferent assets type. If the right type cannot be infered from the url termination (e.g. the url ends with ".swf") the BulkLoader will relly on the <code>type</code> property of the <code>props</code> parameter. If both are set, the <code>type</code>  property of the props object will overrite the one defined in the <code>url</code>. In case none is specified and the url won't hint at it, the type <code>TYPE_TEXT</code> will be used.
         *   
         *   @param url String OR URLRequest A <code>String</code> or a <code>URLRequest</code> instance.
@@ -385,7 +397,7 @@ import br.com.stimuli.loading.BulkProgressEvent;
         *           <td>id</td>
         *           <td><a href="#ID">ID</a></td>
         *           <td><code>String</code></td>
-        *           <td>A string to identify this item. This id can be used in any method that uses the <code>key</code> parameter, such as <code>pauseItem, removeItem, resumeItem, getContent, getBitmap, getBitmapData, getXML, getMovieClip and getText</code>.</td>
+        *           <td>A string to identify this item. This id can be used in any method that uses the <code>key</code> parameter, such as <code>pause, removeItem, resume, getContent, getBitmap, getBitmapData, getXML, getMovieClip and getText</code>.</td>
         *       </tr>
         *       <tr>
         *           <td>priority</td.
@@ -628,16 +640,17 @@ bulkLoader.start(3)
         }
         
         private function removeFromItems(item : LoadingItem) : Boolean{
-            var removeIndex : int = _items.indexOf(item)
+            var removeIndex : int = _items.indexOf(item);
             if(removeIndex > -1){
                 _items.splice( removeIndex, 1); 
-                return true;
+            }else{
+                return false;
             }
             if(item.isLoaded){
                 itemsLoaded --;
             }
             itemsTotal --;
-           return false;
+            return true;
         }
         
         private function removeFromConnections(item : *) : Boolean{
@@ -757,7 +770,7 @@ bulkLoader.start(3)
                 if (item.isLoaded || item.isVideo()) {
                     var res : * = type(item.content)
                     if(clearMemory){
-                        clearItem(key);
+                        remove(key);
                     }
                     return res;
                 }
@@ -890,10 +903,10 @@ bulkLoader.start(3)
             log("Finished all", 1);
         }
         
-        /* If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3). Outputs a host of statistics about the loading operation
+        /** If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3). Outputs a host of statistics about the loading operation
         *   @return A formated string with loading statistics.
         *   @see #LOG_ERRORS
-        *   @see logLevel
+        *   @see #logLevel
         */
         public function traceStats() : String{
             var stats : Array = [];
@@ -920,7 +933,7 @@ bulkLoader.start(3)
             return statsString;
         }
         
-        /* Outputs with a trace operation a message. 
+        /** Outputs with a trace operation a message. 
         *   Depending on <code>logLevel</code> diferrent levels of messages will be outputed:
         *   <ul>logLevel = LOG_VERBOSE (0) : Everything is logged. Useful for debugging.
         *   <ul>logLevel = LOG_INFO (1) : Every load operation is logged (loading finished, started, statistics).
@@ -937,7 +950,7 @@ bulkLoader.start(3)
             }
         }
         
-        /* Used internaly to fetch an item with a given key.
+        /** Used internaly to fetch an item with a given key.
         *   @param key A url (as a string or urlrequest) or an id to fetch
         *   @return The corresponding <code>LoadingItem</code> or null if one isn't found.
         */
@@ -954,7 +967,7 @@ bulkLoader.start(3)
         *   @param key A url (as a string or urlrequest) or an id to fetch
         *   @return <code>True</code> if an item with that key has been removed, and <code>false</code> othersiwe.
         *   */
-        public function clearItem(key : *) : Boolean{
+        public function remove(key : *) : Boolean{
             
             var item : LoadingItem;
             if (item is LoadingItem){
@@ -968,16 +981,20 @@ bulkLoader.start(3)
             removeFromItems(item);
             item.destroy();
             item = null;
-            // checks is removeing this item we are done?
+            // checks is removing this item we are done?
             onProgress();
+            var allDone : Boolean = isAllDoneP();
+           if(allDone) {
+               onAllLoaded();
+            }
             return true;
         }
         
-        /** Deletes all loading and loaded objects. This will stop all connections and delete from the cache all of it's items (no content will be accessible if <code>clearAll</code> is executed).
+        /** Deletes all loading and loaded objects. This will stop all connections and delete from the cache all of it's items (no content will be accessible if <code>removeAll</code> is executed).
         */
-        public function clearAll() : void{
+        public function removeAll() : void{
             for each (var item : LoadingItem in _items){
-                clearItem(item);
+                remove(item);
             }
             delete allLoaders[name];
             _items = _connections = null;
@@ -985,11 +1002,11 @@ bulkLoader.start(3)
         }
         
         /** Deletes all content from all instances of <code>BulkLoader</code> class. This will stop any pending loading operations as well as free memory.
-        *   @see #clearAll()
+        *   @see #removeAll()
         */ 
-        public static function clearAllLoaders() : void{
+        public static function removeAllLoaders() : void{
             for each (var atLoader : BulkLoader in allLoaders){
-                atLoader.clearAll();
+                atLoader.removeAll();
                 delete allLoaders[atLoader.name];
                 atLoader = null;
             }
@@ -1005,7 +1022,7 @@ bulkLoader.start(3)
                 return (item.status == LoadingItem.STATUS_STOPPED);
             });
             stoppedLoads.forEach(function(item : LoadingItem, ...rest):void{
-               clearItem(item); 
+               remove(item); 
             });
             loadNext();
             return stoppedLoads.length > 0;
@@ -1020,17 +1037,18 @@ bulkLoader.start(3)
                 return (item.status == LoadingItem.STATUS_ERROR);
             });
             badLoads.forEach(function(item : LoadingItem, ...rest):void{
-               clearItem(item); 
+               remove(item); 
             });
             loadNext();
             return badLoads.length > 0;
         }
+        
         /** Stop loading the item identified by <code>key</code>. This will not remove the item from the <code>BulkLoader</code>. Note that progress notification will jump around, as the stopped item will still count as something to load, but it's byte count will be 0.
         * @param key The key (url as a string, url as a <code>URLRequest</code> or an id as a <code>String</code>).    
         * @param loadsNext If it should start loading the next item.
         * @return A <code>Boolean</code> indicating if the object has been stopped.
         */
-        public function pauseItem(key : *,  loadsNext : Boolean = false) : Boolean{
+        public function pause(key : *,  loadsNext : Boolean = false) : Boolean{
             var item : LoadingItem = key is LoadingItem ? key : getItem(key);
             if(!item) {
                 return false;
@@ -1045,9 +1063,9 @@ bulkLoader.start(3)
         
         /** Stops loading all items of this <code>BulkLoader</code> instance. This does not clear or remove items from the qeue.
         */
-        public  function pause() : void{
+        public  function pauseAll() : void{
             for each(var item : LoadingItem in _items){
-                pauseItem(item);
+                pause(item);
             }
             isRunning = false;
             log("Stopping all items", 1);
@@ -1059,7 +1077,7 @@ bulkLoader.start(3)
         */
         public static function pauseAllLoaders() : void{
             for each (var atLoader : BulkLoader in allLoaders){
-                atLoader.pause();
+                atLoader.pauseAll();
             }
         }
         
@@ -1067,26 +1085,24 @@ bulkLoader.start(3)
         *   @param  key The url request, url as a string or a id  from which the asset was loaded. 
         *   @return If a item with that key has resumed loading.
         */
-        public function resumeItem(key : *) : Boolean{
+        public function resume(key : *) : Boolean{
             var item : LoadingItem = key is LoadingItem ? key : getItem(key);
-            if(item){
-                if (item.status == LoadingItem.STATUS_STOPPED){
-                    item.status = null;
-                    return true
-                }
+            if(item && item.status == LoadingItem.STATUS_STOPPED ){
+                item.status = null;
+                return true;
             }
             return false;
         }
         
-        /* Resumes all loading operations that were stopped.
+        /** Resumes all loading operations that were stopped.
         *   @return <code>True</code> if any item was stopped and resumed, false otherwise
         */
-        public function resume() : Boolean{
+        public function resumeAll() : Boolean{
             log("Resuming all items", 1);
             var affected : Boolean = false;
             _items.forEach(function(item : LoadingItem, ...rest):void{
                 if(item.status == LoadingItem.STATUS_STOPPED){
-                    resumeItem(item);
+                    resume(item);
                     affected = true;
                 }
             });

@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,PROGRESS,COMPLETE,ON_START,ON_ERROR,ON_COMPLETE,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesTotalCurrent,bytesLoaded,percentLoaded,weightPercent,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,logLevel,isRunning,numConnectons,contents,name,getLoader,hasItem,add,start,registerNewType,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,traceStats,log,clearItem,clearAll,clearAllLoaders,removePausedItems,removeFailedItems,pauseItem,pause,pauseAllLoaders,resumeItem,resume,truncateNumber,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,PROGRESS,COMPLETE,ON_START,ON_ERROR,ON_COMPLETE,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesTotalCurrent,bytesLoaded,percentLoaded,weightPercent,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,logLevel,isRunning,numConnectons,contents,name,getLoader,hasItem,whichLoaderHasItem,add,start,registerNewType,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,traceStats,log,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,truncateNumber,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -222,27 +222,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#clearAll()">clearAll</a>():void</div>
-<div class="summaryTableDescription"> Deletes all loading and loaded objects.</div>
-</td><td class="summaryTableOwnerCol">BulkLoader</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#clearAllLoaders()">clearAllLoaders</a>():void</div>
-<div class="summaryTableDescription">[static] Deletes all content from all instances of <code>BulkLoader</code> class.</div>
-</td><td class="summaryTableOwnerCol">BulkLoader</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#clearItem()">clearItem</a>(key:*):Boolean</div>
-<div class="summaryTableDescription"> This will delete this item from memory.</div>
-</td><td class="summaryTableOwnerCol">BulkLoader</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
 <a class="signatureLink" href="#getBitmap()">getBitmap</a>(key:String, clearMemory:Boolean = false):Bitmap</div>
 <div class="summaryTableDescription"> Returns a Bitmap object with the downloaded asset for the given key.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
@@ -266,7 +245,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#getLoader()">getLoader</a>(name:String):<a href="../loading/BulkLoader.html">BulkLoader</a>
 </div>
-<div class="summaryTableDescription">[static] Fetched a loader object created with the <code>name</code> parameter.</div>
+<div class="summaryTableDescription">[static] Fetched a <code>BulkLoader</code> object created with the <code>name</code> parameter.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -328,7 +307,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#pause()">pause</a>():void</div>
+<a class="signatureLink" href="#pause()">pause</a>(key:*, loadsNext:Boolean = false):Boolean</div>
+<div class="summaryTableDescription"> Stop loading the item identified by <code>key</code>.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#pauseAll()">pauseAll</a>():void</div>
 <div class="summaryTableDescription"> Stops loading all items of this <code>BulkLoader</code> instance.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
@@ -342,15 +328,29 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#pauseItem()">pauseItem</a>(key:*, loadsNext:Boolean = false):Boolean</div>
-<div class="summaryTableDescription"> Stop loading the item identified by <code>key</code>.</div>
+<a class="signatureLink" href="#registerNewType()">registerNewType</a>(extension:String, atType:String):Boolean</div>
+<div class="summaryTableDescription">[static]  Register a new file extension to be loaded as a given type.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#registerNewType()">registerNewType</a>(extension:String, atType:String):Boolean</div>
-<div class="summaryTableDescription">[static]  Register a new file extension to be loaded as a given type.</div>
+<a class="signatureLink" href="#remove()">remove</a>(key:*):Boolean</div>
+<div class="summaryTableDescription"> This will delete this item from memory.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#removeAll()">removeAll</a>():void</div>
+<div class="summaryTableDescription"> Deletes all loading and loaded objects.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#removeAllLoaders()">removeAllLoaders</a>():void</div>
+<div class="summaryTableDescription">[static] Deletes all content from all instances of <code>BulkLoader</code> class.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -370,15 +370,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#resume()">resume</a>():Boolean</div>
-<div class="summaryTableDescription"></div>
+<a class="signatureLink" href="#resume()">resume</a>(key:*):Boolean</div>
+<div class="summaryTableDescription"> Resumes loading of the item.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#resumeItem()">resumeItem</a>(key:*):Boolean</div>
-<div class="summaryTableDescription"> Resumes loading of the item.</div>
+<a class="signatureLink" href="#resumeAll()">resumeAll</a>():Boolean</div>
+<div class="summaryTableDescription"> Resumes all loading operations that were stopped.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -401,7 +401,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#traceStats()">traceStats</a>():String</div>
-<div class="summaryTableDescription"></div>
+<div class="summaryTableDescription"> If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3).</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -409,6 +409,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#truncateNumber()">truncateNumber</a>(raw:Number, decimals:int = 2):Number</div>
 <div class="summaryTableDescription">[static]<description><![CDATA[ Utility function to truncate a number to the given number of decimal places.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#whichLoaderHasItem()">whichLoaderHasItem</a>(key:*):<a href="../loading/BulkLoader.html">BulkLoader</a>
+</div>
+<div class="summaryTableDescription">[static] Checks which <code>BulkLoader</code> has an item by the given key.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 </table>
@@ -424,7 +432,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#log()">log</a>(... msg):void</div>
-<div class="summaryTableDescription">[static]</div>
+<div class="summaryTableDescription">[static] Outputs with a trace operation a message.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 </table>
@@ -913,7 +921,7 @@ showHideInherited();
                   <td>id</td>
                   <td><a href="#ID">ID</a></td>
                   <td><code>String</code></td>
-                  <td>A string to identify this item. This id can be used in any method that uses the <code>key</code> parameter, such as <code>pauseItem, removeItem, resumeItem, getContent, getBitmap, getBitmapData, getXML, getMovieClip and getText</code>.</td>
+                  <td>A string to identify this item. This id can be used in any method that uses the <code>key</code> parameter, such as <code>pause, removeItem, resume, getContent, getBitmap, getBitmapData, getXML, getMovieClip and getText</code>.</td>
               </tr>
               <tr>
                   <td>priority</td.
@@ -971,54 +979,6 @@ bulkLoader.add("languages.xml", {priority:10, onComplete:parseLanguages, id:"lan
 bulkLoader.start(3)
    </pre></div>
         <p></p>
-</div>
-<a name="clearAll()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">clearAll</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function clearAll():void</code><p> Deletes all loading and loaded objects. This will stop all connections and delete from the cache all of it's items (no content will be accessible if <code>clearAll</code> is executed).
-        </p></div>
-<a name="clearAllLoaders()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">clearAllLoaders</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function clearAllLoaders():void</code><p> Deletes all content from all instances of <code>BulkLoader</code> class. This will stop any pending loading operations as well as free memory.
-          </p><p>
-<span class="label">See also</span>
-</p>
-<div class="seeAlso">
-<a href="../loading/BulkLoader.html#clearAll()" target="">clearAll()</a>
-</div>
-</div>
-<a name="clearItem()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">clearItem</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function clearItem(key:*):Boolean</code><p> This will delete this item from memory. It's content will be inaccessible after that.
-          </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">key</span>:*</code> &mdash; A url (as a string or urlrequest) or an id to fetch
-          </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code> &mdash; <code>True</code> if an item with that key has been removed, and <code>false</code> othersiwe.
-          </td>
-</tr>
-</table>
 </div>
 <a name="getBitmap()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1120,7 +1080,7 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function getLoader(name:String):<a href="../loading/BulkLoader.html">BulkLoader</a></code><p> Fetched a loader object created with the <code>name</code> parameter.
+<code>public static function getLoader(name:String):<a href="../loading/BulkLoader.html">BulkLoader</a></code><p> Fetched a <code>BulkLoader</code> object created with the <code>name</code> parameter.
           This is usefull if you must access loades assets from another scope, without having to pass direct references to this loader.
           </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -1398,12 +1358,29 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>protected static function log(... msg):void</code><span class="label">Parameters</span>
+<code>protected static function log(... msg):void</code><p> Outputs with a trace operation a message. 
+          Depending on <code>logLevel</code> diferrent levels of messages will be outputed:
+          <ul>logLevel = LOG_VERBOSE (0) : Everything is logged. Useful for debugging.
+          <ul>logLevel = LOG_INFO (1) : Every load operation is logged (loading finished, started, statistics).
+          <ul>logLevel = LOG_ERRORS (3) : Only loading errors and callback erros will be traced. Useful in production.
+          </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20px"></td><td><code>... <span class="label">msg</span></code></td>
 </tr>
 </table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#logLevel" target="">logLevel</a>
+<br>
+<a href="../loading/BulkLoader.html#LOG_ERRORS" target="">LOG_ERRORS</a>
+<br>
+<a href="../loading/BulkLoader.html#LOG_INFO" target="">LOG_INFO</a>
+<br>
+<a href="../loading/BulkLoader.html#LOG_VERBOSE" target="">LOG_VERBOSE</a>
+</div>
 </div>
 <a name="pause()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1412,33 +1389,7 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public function pause():void</code><p> Stops loading all items of this <code>BulkLoader</code> instance. This does not clear or remove items from the qeue.
-        </p></div>
-<a name="pauseAllLoaders()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">pauseAllLoaders</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function pauseAllLoaders():void</code><p> Stops loading all items from all <code>BulkLoader</code> instances.
-          </p><p>
-<span class="label">See also</span>
-</p>
-<div class="seeAlso">
-<a href="../loading/BulkLoader.html#stopAllItems()" target="">stopAllItems()</a>
-<br>
-<a href="../loading/BulkLoader.html#stopItem()" target="">stopItem()</a>
-</div>
-</div>
-<a name="pauseItem()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">pauseItem</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function pauseItem(key:*, loadsNext:Boolean = false):Boolean</code><p> Stop loading the item identified by <code>key</code>. This will not remove the item from the <code>BulkLoader</code>. Note that progress notification will jump around, as the stopped item will still count as something to load, but it's byte count will be 0.
+<code>public function pause(key:*, loadsNext:Boolean = false):Boolean</code><p> Stop loading the item identified by <code>key</code>. This will not remove the item from the <code>BulkLoader</code>. Note that progress notification will jump around, as the stopped item will still count as something to load, but it's byte count will be 0.
         </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1461,6 +1412,32 @@ bulkLoader.start(3)
         </td>
 </tr>
 </table>
+</div>
+<a name="pauseAll()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">pauseAll</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function pauseAll():void</code><p> Stops loading all items of this <code>BulkLoader</code> instance. This does not clear or remove items from the qeue.
+        </p></div>
+<a name="pauseAllLoaders()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">pauseAllLoaders</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function pauseAllLoaders():void</code><p> Stops loading all items from all <code>BulkLoader</code> instances.
+          </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#stopAllItems()" target="">stopAllItems()</a>
+<br>
+<a href="../loading/BulkLoader.html#stopItem()" target="">stopItem()</a>
+</div>
 </div>
 <a name="registerNewType()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1506,6 +1483,54 @@ bulkLoader.start(3)
 <a href="../loading/BulkLoader.html#TYPE_TEXT" target="">TYPE_TEXT</a>
 </div>
 </div>
+<a name="remove()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">remove</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function remove(key:*):Boolean</code><p> This will delete this item from memory. It's content will be inaccessible after that.
+          </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:*</code> &mdash; A url (as a string or urlrequest) or an id to fetch
+          </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; <code>True</code> if an item with that key has been removed, and <code>false</code> othersiwe.
+          </td>
+</tr>
+</table>
+</div>
+<a name="removeAll()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">removeAll</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function removeAll():void</code><p> Deletes all loading and loaded objects. This will stop all connections and delete from the cache all of it's items (no content will be accessible if <code>removeAll</code> is executed).
+        </p></div>
+<a name="removeAllLoaders()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">removeAllLoaders</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function removeAllLoaders():void</code><p> Deletes all content from all instances of <code>BulkLoader</code> class. This will stop any pending loading operations as well as free memory.
+          </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#removeAll()" target="">removeAll()</a>
+</div>
+</div>
 <a name="removeFailedItems()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1547,23 +1572,7 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public function resume():Boolean</code>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Boolean</code></td>
-</tr>
-</table>
-</div>
-<a name="resumeItem()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">resumeItem</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function resumeItem(key:*):Boolean</code><p> Resumes loading of the item. Depending on the environment the player is running, resumed items will be able to use partialy downloaded content. 
+<code>public function resume(key:*):Boolean</code><p> Resumes loading of the item. Depending on the environment the player is running, resumed items will be able to use partialy downloaded content. 
           </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1576,6 +1585,23 @@ bulkLoader.start(3)
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20"></td><td><code>Boolean</code> &mdash; If a item with that key has resumed loading.
+        </td>
+</tr>
+</table>
+</div>
+<a name="resumeAll()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">resumeAll</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function resumeAll():Boolean</code><p> Resumes all loading operations that were stopped.
+          </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; <code>True</code> if any item was stopped and resumed, false otherwise
         </td>
 </tr>
 </table>
@@ -1628,14 +1654,23 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public function traceStats():String</code>
-<p></p>
+<code>public function traceStats():String</code><p> If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3). Outputs a host of statistics about the loading operation
+          </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code>String</code></td>
+<td width="20"></td><td><code>String</code> &mdash; A formated string with loading statistics.
+          </td>
 </tr>
 </table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#LOG_ERRORS" target="">LOG_ERRORS</a>
+<br>
+<a href="../loading/BulkLoader.html#logLevel" target="">logLevel</a>
+</div>
 </div>
 <a name="truncateNumber()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1665,6 +1700,33 @@ bulkLoader.start(3)
 <tr>
 <td width="20"></td><td><code>Number</code> &mdash; The truncated number.
         </td>
+</tr>
+</table>
+</div>
+<a name="whichLoaderHasItem()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">whichLoaderHasItem</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function whichLoaderHasItem(key:*):<a href="../loading/BulkLoader.html">BulkLoader</a></code><p> Checks which <code>BulkLoader</code> has an item by the given key.
+        </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:*</code> &mdash;   The url (as a <code>String</code> or a <code>URLRequest</code> object)or an id (as a <code>String</code>) by which the item is identifiable.
+        </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../loading/BulkLoader.html">BulkLoader</a></code> &mdash; 
+                          The <code>BulkLoader</code> instance that has the given key or <code>null</code> if no key if found in any loader.
+        
+                        
+                     </td>
 </tr>
 </table>
 </div>
@@ -1751,9 +1813,9 @@ bulkLoader.start(3)
 <br>
 <a href="../loading/BulkLoader.html#getContent()" target="">getContent()</a>
 <br>
-<a href="../loading/BulkLoader.html#pauseItem()" target="">pauseItem()</a>
+<a href="../loading/BulkLoader.html#pause()" target="">pause()</a>
 <br>
-<a href="../loading/BulkLoader.html#resumeItem()" target="">resumeItem()</a>
+<a href="../loading/BulkLoader.html#resume()" target="">resume()</a>
 <br>
 <a href="../loading/BulkLoader.html#removeItem()" target="">removeItem()</a>
 </div>
