@@ -61,7 +61,7 @@ import br.com.stimuli.loading.BulkProgressEvent;
     *   Exposes a simpler interface, with callbacks instead of events for each item to be loaded (but still dispatched "global" events).
     *   The number of simultaneous connections is configurable.
     *   
-    *   @example Basic usage:<listing version=3.0>
+    *   @example Basic usage:<listing version="3.0">
     import br.com.stimuli.loading.BulkLoader;
 
     / /instantiate a BulkLoader with a name : a way to reference this instance from another classes without having to set a expolicit reference on many places
@@ -165,18 +165,6 @@ import br.com.stimuli.loading.BulkProgressEvent;
 		public static const COMPLETE : String = "complete";
 		
 		// properties on adding a new url:
-		/** A function to be called when an item has started loading. Checked when adding a new item to load.
-		* @see #add()
-		*/
-		public static const ON_START : String = "onStart";
-		/** A function to be called if an item has failed loading. Checked when adding a new item to load.
-		* @see #add()
-		*/
-		public static const ON_ERROR : String = "onError";
-		/** A function to be called when an item has finished loading and it's content is ready for usage. Checked when adding a new item to load.
-		* @see #add()
-		*/
-		public static const ON_COMPLETE : String = "onComplete";
 		/** If <code>true</code> a random query (or post data parameter) will be added to prevent caching. Checked when adding a new item to load.
 		* @see #add()
 		*/
@@ -223,7 +211,8 @@ import br.com.stimuli.loading.BulkProgressEvent;
 		* @ see getLoaders
 		*/
         private var _name : String;
-        
+        private var _id : int;
+        private static var _instancesCreated : int = 0;
         private var _items : Array = [];
         private var _contents : Dictionary = new Dictionary();
         private static var allLoaders : Object = {};
@@ -236,41 +225,41 @@ import br.com.stimuli.loading.BulkProgressEvent;
         *   The ratio (0->1) of items to load / items total.
         *   This number is always reliable.
         **/
-        public var loadedRatio : Number = 0;
+        private var _loadedRatio : Number = 0;
         /** Total number of items to load.*/
-        public var itemsTotal : int = 0;
+        private var _itemsTotal : int = 0;
         /** 
         *   Number of items alrealdy loaded.
         *   Failed or canceled items are not taken into consideration
         */
-        public var itemsLoaded : int = 0;
+        private var _itemsLoaded : int = 0;
         /** The sum of weights in all items to load.
         *   Each item's weight default to 1
         */
-        public var totalWeight : int = 0;
+        private var _totalWeight : int = 0;
         /** The total bytes to load.
         *   If the number of items to load is larger than the number of simultaneous connections, bytesTotal will be 0 untill all connections are opened and the number of bytes for all items is known.
         *   @see #bytesTotalCurrent
         */ 
-        public var bytesTotal : int = 0;
+        private var _bytesTotal : int = 0;
         /** The sum of all bytes loaded so far. 
         *  If itemsTotal is less than the number of connections, this will be the same as bytesTotal. Else, bytesTotalCurrent will be available as each loading is started.
         *   @see #bytesTotal
         */
-        public var bytesTotalCurrent : int = 0;
+        private var _bytesTotalCurrent : int = 0;
         /** The sum of all bytesLoaded for each item.
         */
-        public var bytesLoaded : int = 0;
+        private var _bytesLoaded : int = 0;
         /** The percentage (0->1) of bytes loaded.
         *   Until all connections are opened  this number is not reliable . If you are downloading more items than the number of simultaneous connections, use loadedRatio or weightPercent instead.
         *   @see #loadedRatio
         *   @see #weightPercent
         */   
-        public var percentLoaded : Number = 0;
+        private var _percentLoaded : Number = 0;
         /** The weighted percent of items loaded(0->1).
         *   This always returns a reliable value.
         */
-        public var weightPercent : Number;
+        private var _weightPercent : Number;
         
         /**The average latency (in miliseconds) for the entire loading.*/
         public var avgLatency : Number;
@@ -291,8 +280,10 @@ import br.com.stimuli.loading.BulkProgressEvent;
         /**The logging level <code>BulkLoader</code> will use.*/
         public static var logLevel: int = 3;
         
-        public var isRunning : Boolean;
+        private var _isRunning : Boolean;
         private var isFinished : Boolean;
+        
+        private static var _logFunction : Function = trace;
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
         *   
         *   @param name  A name that can be used later to reference this loader in a static context,
@@ -310,6 +301,8 @@ import br.com.stimuli.loading.BulkProgressEvent;
             this._numConnectons = numConnectons;
             BulkLoader.logLevel = logLevel;
             _name = name;
+            _instancesCreated ++;
+            _id = _instancesCreated;
         }
         
         /** Fetched a <code>BulkLoader</code> object created with the <code>name</code> parameter.
@@ -323,8 +316,8 @@ import br.com.stimuli.loading.BulkProgressEvent;
         
         
         private function hasItemInBulkLoader(key : *, atLoader : BulkLoader) : Boolean{
-            var item : LoadingItem = getItem(key);
-            if (item &&item.isLoaded) {
+            var item : LoadingItem = get(key);
+            if (item &&item._isLoaded) {
                 return true;
             }
             return false;
@@ -430,7 +423,7 @@ import br.com.stimuli.loading.BulkProgressEvent;
         *           <td>An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_LOADER</code> a LoaderContext should be passed.</td>
         *       </tr>
         *   </table>
-        *   @example Retriving contents:<listing version=3.0>
+        *   @example Retriving contents:<listing version="3.0">
 import br.stimuli.loaded.BulkLoader;
 var bulkLoader : BulkLoader = new BulkLoader("main");
 // simple item:
@@ -449,8 +442,9 @@ bulkLoader.add("languages.xml", {priority:10, onComplete:parseLanguages, id:"lan
 // Start the loading operation with only 3 simultaneous connections:
 bulkLoader.start(3)
    </listing>
+   *    
         */
-        public function add(url : *, props : Object= null ) : void {
+        public function add(url : *, props : Object= null ) : LoadingItem {
             props = props || {};
             if (url is String){
                 url = new URLRequest(url);
@@ -460,7 +454,7 @@ bulkLoader.start(3)
             }else if (!url is URLRequest){
                 throw new Error("[BulkLoader] cannot add object with bad type for url:'" + url.url);
             }
-            var item : LoadingItem = getItem(url);
+            var item : LoadingItem = get(url);
             // have already loaded this?
             if( item ){
                 // yes, find out at what stage we are, and call the needed callbacks
@@ -479,22 +473,19 @@ bulkLoader.start(3)
                          log("onError for url ", item.url.url, " threw an error:", e.getStackTrace() ,3);
                      }
                     
-                }else if (props.onComplete && item.isLoaded){
+                }else if (props.onComplete && item._isLoaded){
                     try{
                          props.onComplete();
                      }catch(e : Error){
                          log("onComplete for url ", item.url.url, " threw an error:", e.getStackTrace() ,3);
                      }
                 }
-                return;
+                return item;
             }
             
             item  = new LoadingItem(url, props["type"]);
             log("Added",item, 0);
             // properties from the props argument
-            item.onStart = props[ON_START];
-            item.onComplete = props[ON_COMPLETE];
-            item.onError = props[ON_ERROR];
             item.preventCache = props[PREVENT_CACHING];
             item.id = props[ID];
             item.priority = int(props[PRIORITY]) || 0;
@@ -508,10 +499,11 @@ bulkLoader.start(3)
             item.addEventListener(Event.OPEN, onItemStarted, false, 0, true);
             item.addEventListener(ProgressEvent.PROGRESS, onProgress, false, 0, true);
             _items.push(item);
-            itemsTotal += 1;
-            totalWeight += item.weight;
+            _itemsTotal += 1;
+            _totalWeight += item.weight;
             _items.sortOn(["priority", "addedTime"],  [Array.NUMERIC | Array.DESCENDING, Array.NUMERIC]);
             isFinished = false;
+            return item;
         }
         
         /** Start loading all items added previously
@@ -530,11 +522,6 @@ bulkLoader.start(3)
             }
             _connections = [];
             var max : int = Math.max(_numConnectons, _items.length);
-            for (var i:int = 0; i< _connections.length; i++){
-              //_connections[i] = _items[i];
-              //log("Will load", _items[i], 0);
-              //_items[i].load();
-            }
             loadNext();
             isRunning = true;
         }
@@ -572,11 +559,17 @@ bulkLoader.start(3)
             if(isFinished){
                 return false;
             }
+            // check for "stale items"
+            _connections.forEach(function(i : LoadingItem, ...rest) : void{
+                if(i.status == LoadingItem.STATUS_ERROR && i.numTries < i.maxTries){
+                    removeFromConnections(i);
+                }
+            });
             var next : Boolean = false;
             if (!toLoad){
                 // no given to load, search for the next one in line
                 for each (var checkItem:LoadingItem in _items){
-                   if (!checkItem.isLoading && checkItem.status != LoadingItem.STATUS_STOPPED){
+                   if (!checkItem._isLoading && checkItem.status != LoadingItem.STATUS_STOPPED){
                        toLoad = checkItem;
                        break;
                    }
@@ -588,7 +581,7 @@ bulkLoader.start(3)
                 if(_connections.length < numConnectons){
                     _connections.push(toLoad);
                     toLoad.load();
-                    log("Will load item:", toLoad);
+                    log("Will load item:", toLoad,1);
                 }
                 // if we've got any more connections to open, load the next item
                 if(_connections.length < numConnectons){
@@ -602,19 +595,12 @@ bulkLoader.start(3)
            var item : LoadingItem  = evt.target as LoadingItem;
            removeFromConnections(item);
            log("Loaded ", item, 1);
-           if(Boolean(item.onComplete) ) {
-              try{
-                 item.onComplete();
-             }catch(e : Error){
-                 log("onComplete for url ", item.url.url, " threw an error:", e.getStackTrace() ,3);
-             }
-            } 
             item.cleanListeners();
             _contents[item.url.url] = item.content;
             
             var next : Boolean= loadNext();
            var allDone : Boolean = isAllDoneP();
-           itemsLoaded ++;
+           _itemsLoaded ++;
            if(allDone) {
                onAllLoaded();
             }
@@ -629,7 +615,7 @@ bulkLoader.start(3)
           speedTotal = 0;
           var num : int = 0;
           for each(var item : LoadingItem in _items){
-              if (item.isLoaded && item.status != LoadingItem.STATUS_ERROR){
+              if (item._isLoaded && item.status != LoadingItem.STATUS_ERROR){
                   totalLatency += item.latency;
                   totalBytes += item.bytesTotal;
                   num ++;
@@ -647,10 +633,10 @@ bulkLoader.start(3)
             }else{
                 return false;
             }
-            if(item.isLoaded){
-                itemsLoaded --;
+            if(item._isLoaded){
+                _itemsLoaded --;
             }
-            itemsTotal --;
+            _itemsTotal --;
             return true;
         }
         
@@ -665,21 +651,11 @@ bulkLoader.start(3)
         
         private function onItemError(evt : IOErrorEvent) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
-           if(Boolean(item.onError))  {
-               try{
-                   item.onError();
-              }catch(e : Error){
-                  log("onError for url ", item.url.url, " threw an error!", e.getStackTrace(), 3);
-              }
-           }
            log("Error loading", item, 3);
-           if(item.numTries < item.maxTries){
-               item.status = null;
-               item.load();
-           }else{
-               log("After " + item.numTries + " I am giving up on " + item.url.url, 3);
-               removeFromConnections(item);
-           }
+           
+           log("After " + item.numTries + " I am giving up on " + item.url.url, 3);
+           removeFromConnections(item);
+           
         }
         
         private function onItemStarted(evt : Event) : void{
@@ -688,28 +664,21 @@ bulkLoader.start(3)
                 _contents[item.url.url] = item.stream;
             }
             log("Started loading", item, 1);
-           if(Boolean(item.onStart)) {
-               try{
-                  item.onStart();
-              }catch(e : Error){
-                  log("onStart for url ", item.url.url, " threw an error!", e.getStackTrace(), 3);
-              }
-           }
         }
         
         private function onProgress(evt : Event = null) : void{
-            bytesLoaded = bytesTotal = bytesTotalCurrent = 0;
-            weightPercent = 0;
-            itemsLoaded = 0;
+            _bytesLoaded = _bytesTotal = _bytesTotalCurrent = 0;
+            _weightPercent = 0;
+            _itemsLoaded = 0;
             var itemsStarted : int = 0;
             var weightLoaded : Number = 0;
             for each (var item:LoadingItem in _items){
               if (item.status == LoadingItem.STATUS_STARTED || item.status == LoadingItem.STATUS_FINISHED || item.status == LoadingItem.STATUS_STOPPED){
-                  bytesLoaded += item.bytesLoaded;
-                  bytesTotalCurrent += item.bytesTotal;
-                  weightLoaded += (item.bytesLoaded / item.bytesTotal) * item.weight;
+                  _bytesLoaded += item._bytesLoaded;
+                  _bytesTotalCurrent += item._bytesTotal;
+                  weightLoaded += (item._bytesLoaded / item._bytesTotal) * item.weight;
                   if(item.status == LoadingItem.STATUS_FINISHED) {
-                      itemsLoaded ++;
+                      _itemsLoaded ++;
                   }
                   itemsStarted ++;
               }
@@ -718,19 +687,22 @@ bulkLoader.start(3)
 
             // only set bytes total if all items have begun loading
             if (itemsStarted == _items.length){
-                bytesTotal = bytesTotalCurrent;
+                _bytesTotal = bytesTotalCurrent;
             }else{
-                bytesTotal = Number.POSITIVE_INFINITY;
+                _bytesTotal = Number.POSITIVE_INFINITY;
             }
-            weightPercent = weightLoaded / totalWeight;
+            _weightPercent = weightLoaded / totalWeight;
             var e : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
-            e.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, itemsLoaded, itemsTotal, weightPercent);
+            e.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, _itemsLoaded, itemsTotal, weightPercent);
+            if(evt){
+                dispatchEvent(evt);
+            }
             dispatchEvent(e);
         }
         
 
         
-        /** The number of simultaneous connections to use.
+        /** The number of simultaneous connections to use. This is per <code>BulkLoader</code> instance.
         *   @return The number of connections used.
         *   @see #start()
         */
@@ -755,20 +727,77 @@ bulkLoader.start(3)
             return _name; 
         }
         
+        public function get loadedRatio() : Number { 
+            return _loadedRatio; 
+        }        
+        
+        public function get itemsTotal() : int { 
+            return _itemsTotal; 
+        }
+        
+        public function get itemsLoaded() : int { 
+            return _itemsLoaded; 
+        }
+        
+        private function set itemsLoaded(value:int) : void { 
+            _itemsLoaded = value; 
+        }
+        public function get totalWeight() : int { 
+            return _totalWeight; 
+        }
+        
+        public function get bytesTotal() : int { 
+            return _bytesTotal; 
+        }
+        
+        public function get bytesLoaded() : int { 
+            return _bytesLoaded; 
+        }
+        
+        public function get bytesTotalCurrent() : int { 
+            return _bytesTotalCurrent; 
+        }
+        
+        public function get percentLoaded() : Number { 
+            return _percentLoaded; 
+        }
+        
+        public function get weightPercent() : Number { 
+            return _weightPercent; 
+        }
+        
+        public function get isRunning() : Boolean { 
+            return _isRunning; 
+        }
+
+        public function set isRunning(value:Boolean) : void { 
+            _isRunning = value; 
+        }
+        public static function get logFunction() : Function { 
+            return _logFunction; 
+        }
+        
+        public function set logFunction(value:Function) : void { 
+            _logFunction = value; 
+        }
+        
+        public function get id() : int { 
+            return _id; 
+        }
         /** ============================================================================== */
-        /** = Acessing content function                                                  = */
+        /** = Acessing content functions                                                 = */
         /** ============================================================================== */
         
         /** Helper functions to get loaded content. All helpers will be casted to the specific types. If a cast fails it will throw an error.
         *   
         */
         private function getContentAsType(key : *, type : Class,  clearMemory : Boolean = false) : *{
-            var item : LoadingItem = getItem(key);
+            var item : LoadingItem = get(key);
             if(!item){
                 return null;
             }
             try{
-                if (item.isLoaded || item.isVideo()) {
+                if (item._isLoaded || item.isVideo()) {
                     var res : * = type(item.content)
                     if(clearMemory){
                         remove(key);
@@ -852,7 +881,7 @@ bulkLoader.start(3)
         */
         public function getNetStreamMetaData(key : String, clearMemory : Boolean = false) : Object{
             var netStream : NetStream = getNetStream(key, clearMemory);
-            return  (Boolean(netStream) ? getItem(key).metaData : null);
+            return  (Boolean(netStream) ? get(key).metaData : null);
             
         }
         
@@ -883,7 +912,7 @@ bulkLoader.start(3)
         
         private function isAllDoneP() : Boolean{
             return _items.every(function(item : LoadingItem, ...rest):Boolean{
-                return item.isLoaded;
+                return item._isLoaded;
             });
         }
         
@@ -892,9 +921,9 @@ bulkLoader.start(3)
                 return;
             }
             var eComplete : BulkProgressEvent = new BulkProgressEvent(COMPLETE);
-            eComplete.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, itemsLoaded, itemsTotal, weightPercent);
+            eComplete.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, _itemsLoaded, itemsTotal, weightPercent);
             var eProgress : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
-            eProgress.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, itemsLoaded, itemsTotal, weightPercent);
+            eProgress.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, _itemsLoaded, itemsTotal, weightPercent);
             dispatchEvent(eProgress);
             dispatchEvent(eComplete);
             isRunning = false;
@@ -923,7 +952,7 @@ bulkLoader.start(3)
             stats.push("KiloBytes total:" + truncateNumber(bytesTotal/1024));
             stats.push("");
             for each (var item:LoadingItem in _items){
-                if (item.isLoaded){
+                if (item._isLoaded){
                     stats.push("\t- Item url:" + item.url.url + 
                     ", total time: " + item.timeToDownload +
                     ", latency:" + item.latency +
@@ -947,10 +976,10 @@ bulkLoader.start(3)
         *   @see #LOG_INFO
         *   @see #LOG_VERBOSE
         */   
-        protected static function log(...msg) : void{
+        internal static function log(...msg) : void{
             var level : int  = isNaN(msg[msg.length -1] ) ? 3 : int(msg.pop());
             if (level >= logLevel ){
-                trace("[BulkLoader]", msg.join(" "));
+                _logFunction("[BulkLoader] " + msg.join(" "));
             }
         }
         
@@ -958,7 +987,7 @@ bulkLoader.start(3)
         *   @param key A url (as a string or urlrequest) or an id to fetch
         *   @return The corresponding <code>LoadingItem</code> or null if one isn't found.
         */
-        private function getItem(key : *) : LoadingItem{
+        public function get(key : *) : LoadingItem{
             for each (var item : LoadingItem in _items){
                 if(item.id == key || item.url.url == key || item.url == key  ){
                     return item;
@@ -977,7 +1006,7 @@ bulkLoader.start(3)
             if (item is LoadingItem){
                 item = item;
             } else{
-                item = getItem(key);
+                item = get(key);
             }
             if(!item) {
                 return false;
@@ -1053,7 +1082,7 @@ bulkLoader.start(3)
         * @return A <code>Boolean</code> indicating if the object has been stopped.
         */
         public function pause(key : *,  loadsNext : Boolean = false) : Boolean{
-            var item : LoadingItem = key is LoadingItem ? key : getItem(key);
+            var item : LoadingItem = key is LoadingItem ? key : get(key);
             if(!item) {
                 return false;
             }
@@ -1090,7 +1119,7 @@ bulkLoader.start(3)
         *   @return If a item with that key has resumed loading.
         */
         public function resume(key : *) : Boolean{
-            var item : LoadingItem = key is LoadingItem ? key : getItem(key);
+            var item : LoadingItem = key is LoadingItem ? key : get(key);
             if(item && item.status == LoadingItem.STATUS_STOPPED ){
                 item.status = null;
                 return true;
@@ -1130,7 +1159,7 @@ bulkLoader.start(3)
         *   Returns a string identifing this loaded instace.
         */
         override public function toString() : String{
-            return "[BulkLoader] name:"+ name + "itemsTotal: " + itemsTotal + ", itemsLoaded: " + itemsLoaded; 
+            return "[BulkLoader] name:"+ name + "itemsTotal: " + itemsTotal + ", itemsLoaded: " + _itemsLoaded; 
         }
     }   
 }

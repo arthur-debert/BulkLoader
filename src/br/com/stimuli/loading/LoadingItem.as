@@ -53,69 +53,63 @@ package br.com.stimuli.loading {
     */  
     public class LoadingItem extends EventDispatcher {
 
-        public static const STATUS_STOPPED : String = "stopped";
-        public static const STATUS_STARTED : String = "started";
-        public static const STATUS_FINISHED : String = "finished";
-        public static const STATUS_ERROR : String = "error";
+        internal static const STATUS_STOPPED : String = "stopped";
+        internal static const STATUS_STARTED : String = "started";
+        internal static const STATUS_FINISHED : String = "finished";
+        internal static const STATUS_ERROR : String = "error";
 
         /**The type of loading to perform (see <code>BulkLoader.TYPES</code>).*/
-        public var type : String;
+        internal var type : String;
         /**The url to load the asset from.*/
-        public var url : URLRequest;
+        internal var url : URLRequest;
         /**An [optional] id to retrieve the item by.*/
-        public var id : String;
+        internal var id : String;
         /** The priority at which this item will be downloaded. Items with a higher priority will be downloaded first.*/
-        public var priority : int = 0;
+        private var _priority : int = 0;
         /**Indicated if item is loaded and ready to use..*/
-        public var isLoaded : Boolean;
+        internal var _isLoaded : Boolean;
         /**Indicated if loading has stated.*/
-        public var isLoading : Boolean;
+        internal var _isLoading : Boolean;
         /**At what stage this item is at ( canceled, started, finished or error).*/
-        public var status : String;
+        internal var status : String;
         /**Maximun number of tries in case it fails.*/
-        public var maxTries : int = 3;
+        internal var maxTries : int = 3;
         /**Current try number.*/
-        public var numTries : int = 0;
-        /**Callback to execute as soon as server starts the response.*/
-        public var onStart : Function;
-        /**Callback to execute as soon item is ready to use.*/
-        public var onComplete : Function;
-        /**Callback to execute if an error has ocurred.*/
-        public var onError : Function;
+        internal var numTries : int = 0;
         
         /**A relative unit of size, so that preloaders can show relative progress before all connections have started.*/
-        public var weight : int = 1;
+        internal var weight : int = 1;
         /**If a random string should be appended to the end of the url to prevent caching.*/
-        public var preventCache : Boolean;
+        internal var preventCache : Boolean;
         /**the number of bytes to load. Starts at -1.*/
-        public var bytesTotal : int = -1;
+        internal var _bytesTotal : int = -1;
         /**the number of bytes loaded so far. Starts at -1.*/
-        public var bytesLoaded : int = 0;
+        internal var _bytesLoaded : int = 0;
         /**The percentage of loading done (from 0 to 1).*/
-        public var percentLoaded : Number;
+        internal var _percentLoaded : Number;
         /**The percentage of loading done relative to the weight of this item(from 0 to 1).*/
-        public var weightPercentLoaded : Number;
+        internal var _weightPercentLoaded : Number;
         
-        public var addedTime : int ;
-        private var startTime : int ;
-        private var responseTime : Number;
+        private var _addedTime : int ;
+        private var _startTime : int ;
+        private var _responseTime : Number;
         /** The time (in seconds) that the server took and send begin streaming content.*/
-        public var latency : Number;
-        private var totalTime : int;
+        private var _latency : Number;
+        private var _totalTime : int;
         /** The total time (in seconds) this item took to load.*/
-        public var timeToDownload : int;
+        private var _timeToDownload : int;
         /** The speed (in kbs) for this download.*/
-        public var speed : Number;
+        private var _speed : Number;
         /** Internal object used to manage this download.*/
         private var loader : *;
         /** Internal object that holds the download content.*/
         private var _content : *;
         
-        public var context : * = null;
+        internal var context : * = null;
         // for video:
-        public var nc:NetConnection;
-        public var stream : NetStream;
-        public var dummyEventTrigger : Sprite;
+        private var nc:NetConnection;
+        internal var stream : NetStream;
+        private var dummyEventTrigger : Sprite;
         
         private var _metaData : Object;
         
@@ -196,20 +190,20 @@ package br.com.stimuli.loading {
                 loader.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);
                 loader.load(url);
             }
-            isLoading = true;
+            _isLoading = true;
             startTime = getTimer();
         }
         
         public function createNetStreamEvent(evt : Event) : void{
-            if(bytesTotal == bytesLoaded && bytesTotal > 8){
+            if(_bytesTotal == _bytesLoaded && _bytesTotal > 8){
                 dummyEventTrigger.removeEventListener(Event.ENTER_FRAME, createNetStreamEvent, false);
                 var completeEvent : Event = new Event(Event.COMPLETE);
                 onCompleteHandler(completeEvent);
-            }else if(bytesTotal == 0 && stream.bytesTotal > 4){
+            }else if(_bytesTotal == 0 && stream.bytesTotal > 4){
                 var startEvent : Event = new Event(Event.OPEN);
                 onStartedHandler(startEvent);
-                bytesLoaded = stream.bytesLoaded;
-                bytesTotal = stream.bytesTotal;
+                _bytesLoaded = stream.bytesLoaded;
+                _bytesTotal = stream.bytesTotal;
             }else{
                 var event : ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS, false, false, stream.bytesLoaded, stream.bytesTotal);
                 onProgressHandler(event)
@@ -234,15 +228,15 @@ package br.com.stimuli.loading {
         }
         
         public function onProgressHandler(evt : *) : void {
-           this.bytesLoaded = evt.bytesLoaded;
-           this.bytesTotal = evt.bytesTotal;
-           this.percentLoaded = this.bytesLoaded / this.bytesTotal;
-           this.weightPercentLoaded = percentLoaded * weight;
+           _bytesLoaded = evt.bytesLoaded;
+           _bytesTotal = evt.bytesTotal;
+           _percentLoaded = _bytesLoaded / _bytesTotal;
+           _weightPercentLoaded = _percentLoaded * weight;
            dispatchEvent(evt);
         }
         
         public function onCompleteHandler(evt : Event) : void {
-            totalTime = getTimer();
+            _totalTime = getTimer();
             timeToDownload = ((totalTime - responseTime) /1000);
             if(timeToDownload == 0){
                 timeToDownload = 0.2;
@@ -252,7 +246,7 @@ package br.com.stimuli.loading {
                 speed  = 3000;
             }
            status = STATUS_FINISHED;
-           isLoaded = true;
+           _isLoaded = true;
            if (loader is Loader){
                _content = loader.content;
            }else if (loader is URLLoader){
@@ -273,7 +267,9 @@ package br.com.stimuli.loading {
         public function onErrorHandler(evt : IOErrorEvent) : void{
             numTries ++;
             status = STATUS_ERROR;
-            dispatchEvent(evt);
+            if(numTries >= maxTries){
+                dispatchEvent(evt);
+            }
         }
         
         public function onStartedHandler(evt : Event) : void{
@@ -288,7 +284,7 @@ package br.com.stimuli.loading {
         }
         
         public function stop() : void{
-            if(isLoaded){
+            if(_isLoaded){
                 return;
             }
             try{
@@ -299,7 +295,7 @@ package br.com.stimuli.loading {
                 
             }
             status = STATUS_STOPPED;
-            isLoading = false;
+            _isLoading = false;
         }
         
         public function cleanListeners() : void {
@@ -327,6 +323,90 @@ package br.com.stimuli.loading {
             stop();
             cleanListeners();
             _content = null;
+        }
+        
+        
+        /* Public accessors
+        */
+        public function get bytesTotal() : int { 
+            return _bytesTotal; 
+        }
+        
+        public function get bytesLoaded() : int { 
+            return _bytesLoaded; 
+        }
+        
+        public function get percentLoaded() : Number { 
+            return _percentLoaded; 
+        }
+        
+        public function get weightPercentLoaded() : Number { 
+            return _weightPercentLoaded; 
+        }
+        
+        public function get priority() : int { 
+            return _priority; 
+        }
+        
+        public function set priority(value:int) : void { 
+            _priority = value; 
+        }
+        
+        public function get addedTime() : int { 
+            return _addedTime; 
+        }
+        
+        public function set addedTime(value:int) : void { 
+            _addedTime = value; 
+        }
+        
+        public function get startTime() : int { 
+            return _startTime; 
+        }
+        
+        public function set startTime(value:int) : void { 
+            _startTime = value; 
+        }
+        
+        public function get responseTime() : Number { 
+            return _responseTime; 
+        }
+        
+        public function set responseTime(value:Number) : void { 
+            _responseTime = value; 
+        }
+        /** The time (in seconds) that the server took and send begin streaming content.*/
+        
+        public function get latency() : Number { 
+            return _latency; 
+        }
+        
+        public function set latency(value:Number) : void { 
+            _latency = value; 
+        }
+        
+        public function get totalTime() : int { 
+            return _totalTime; 
+        }
+        
+        public function set totalTime(value:int) : void { 
+            _totalTime = value; 
+        }
+        /** The total time (in seconds) this item took to load.*/
+        public function get timeToDownload() : int { 
+            return _timeToDownload; 
+        }
+        
+        public function set timeToDownload(value:int) : void { 
+            _timeToDownload = value; 
+        }
+        /** The speed (in kbs) for this download.*/
+        public function get speed() : Number { 
+            return _speed; 
+        }
+        
+        public function set speed(value:Number) : void { 
+            _speed = value; 
         }
     }
     
