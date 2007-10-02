@@ -41,6 +41,28 @@ package br.com.stimuli.loading {
     import flash.utils.*;
     
     import br.com.stimuli.loading.BulkLoader;
+    
+    /**
+     *  Dispatched on download progress.
+     *
+     *  @eventType flash.events.ProgressEvent.PROGRESS
+     */
+    [Event(name="progress", type="flash.events.ProgressEvent.PROGRESS")]
+
+    /**
+     *  Dispatched when all the item has been fully downloaded and is ready for use..
+     *
+     *  @eventType flash.events.ProgressEvent.COMPLETE
+     */
+    [Event(name="complete", type="flash.events.ProgressEvent.COMPLETE")]
+    
+    /**
+     *  Dispatched when the connection has been stablished and the download has begun. For types that can be streamed such as videos (<code>NetStream</code>) and sound(<code>Sound</code>), it's content is will be available after this event has fired.
+     *
+     *  @eventType flash.events.ProgressEvent.COMPLETE
+     */
+    [Event(name="open", type="flash.events.Event.OPEN")]
+    
     /**
     *   An object used in <code>BulkLoader</code> instances.<p/>
     *   A reference to a <code>LoadingItem</code> object can be used to attach events for an individual item.
