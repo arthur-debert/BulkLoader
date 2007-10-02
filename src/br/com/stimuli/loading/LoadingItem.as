@@ -42,8 +42,8 @@ package br.com.stimuli.loading {
     
     import br.com.stimuli.loading.BulkLoader;
     /**
-    *   An object used internaly in <code>BulkLoader</code> instances.<p/>
-    *   This class is never exposed to the end-user.
+    *   An object used in <code>BulkLoader</code> instances.<p/>
+    *   A reference to a <code>LoadingItem</code> object can be used to attach events for an individual item.
     *
     *   @langversion ActionScript 3.0
     *   @playerversion Flash 9.0
@@ -102,7 +102,7 @@ package br.com.stimuli.loading {
         private var _speed : Number;
         /** Internal object used to manage this download.*/
         private var loader : *;
-        /** Internal object that holds the download content.*/
+
         private var _content : *;
         
         internal var context : * = null;
@@ -132,11 +132,14 @@ package br.com.stimuli.loading {
             this.url = url;
         }
         
+        /** The content resulting from this download. The data type for the <code>content</code> depends on the myme-type of the downloaded asset. For types that can be streamed such as videos (<code>NetStream</code>) and sound(<code>Sound</code>), it's content is available as soon as the connection is open. Otherwiser the content will be available after the download is done and the <code>Event.COMPLETE</code> is fired.
+        *   @return An object whose type depends on what the asset is.
+        */
         public function get content() : * { 
           return _content; 
         }
         
-        public function load() : void{
+        internal function load() : void{
             if (preventCache){
                 var cacheString : String = "BulkLoaderNoCache=" + int(Math.random()  * 100 * getTimer());
                 if(url.url.indexOf("?") == -1){
@@ -194,7 +197,7 @@ package br.com.stimuli.loading {
             startTime = getTimer();
         }
         
-        public function createNetStreamEvent(evt : Event) : void{
+        internal function createNetStreamEvent(evt : Event) : void{
             if(_bytesTotal == _bytesLoaded && _bytesTotal > 8){
                 dummyEventTrigger.removeEventListener(Event.ENTER_FRAME, createNetStreamEvent, false);
                 var completeEvent : Event = new Event(Event.COMPLETE);
@@ -210,7 +213,7 @@ package br.com.stimuli.loading {
             }
         }
         
-        public function onNetStatus(evt : NetStatusEvent) : void{
+        internal function onNetStatus(evt : NetStatusEvent) : void{
             stream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatus, false);
             if(evt.info.code == "NetStream.Play.Start"){
                 _content = stream;
@@ -219,7 +222,7 @@ package br.com.stimuli.loading {
             }
         }
         
-        public function onVideoMetadata(evt : *):void{
+        internal function onVideoMetadata(evt : *):void{
             _metaData = evt;
         };
         
@@ -227,7 +230,7 @@ package br.com.stimuli.loading {
             return _metaData; 
         }
         
-        public function onProgressHandler(evt : *) : void {
+        private function onProgressHandler(evt : *) : void {
            _bytesLoaded = evt.bytesLoaded;
            _bytesTotal = evt.bytesTotal;
            _percentLoaded = _bytesLoaded / _bytesTotal;
@@ -235,7 +238,7 @@ package br.com.stimuli.loading {
            dispatchEvent(evt);
         }
         
-        public function onCompleteHandler(evt : Event) : void {
+        private function onCompleteHandler(evt : Event) : void {
             _totalTime = getTimer();
             timeToDownload = ((totalTime - responseTime) /1000);
             if(timeToDownload == 0){
@@ -264,7 +267,7 @@ package br.com.stimuli.loading {
            dispatchEvent(evt);
         }
         
-        public function onErrorHandler(evt : IOErrorEvent) : void{
+        private function onErrorHandler(evt : IOErrorEvent) : void{
             numTries ++;
             status = STATUS_ERROR;
             if(numTries >= maxTries){
@@ -272,7 +275,7 @@ package br.com.stimuli.loading {
             }
         }
         
-        public function onStartedHandler(evt : Event) : void{
+        private function onStartedHandler(evt : Event) : void{
             responseTime = getTimer();
             latency = BulkLoader.truncateNumber((responseTime - startTime)/1000);
             status = STATUS_STARTED;
@@ -283,7 +286,7 @@ package br.com.stimuli.loading {
             return "LoadingItem url: " + url.url + ", type:" + type + ", status: " + status;
         }
         
-        public function stop() : void{
+        internal function stop() : void{
             if(_isLoaded){
                 return;
             }
@@ -298,7 +301,7 @@ package br.com.stimuli.loading {
             _isLoading = false;
         }
         
-        public function cleanListeners() : void {
+        internal function cleanListeners() : void {
             if (type != BulkLoader.TYPE_VIDEO){
                 loader.removeEventListener(ProgressEvent.PROGRESS, onProgressHandler, false);
                 loader.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
@@ -319,7 +322,7 @@ package br.com.stimuli.loading {
             return BulkLoader.VIDEO_TYPES.indexOf(type) > -1;
         }
         
-        public function destroy() : void{
+        internal function destroy() : void{
             stop();
             cleanListeners();
             _content = null;

@@ -363,24 +363,6 @@ import br.com.stimuli.loading.BulkProgressEvent;
         *       <th>Data type</th>
         *       <th>Description</th>
         *       <tr>
-        *           <td>onStart</td>
-        *           <td><a href="#ON_START">ON_START</a></td>
-        *           <td><code>Function</code></td>
-        *           <td>A callback to be executed as soon as this item begins loading.</td>
-        *       </tr>
-        *       <tr>
-        *           <td>onComplete</td>
-        *           <td><a href="#ON_COMPLETE">ON_COMPLETE</a></td>
-        *           <td><code>Function</code></td>
-        *           <td>A callback to be executed as the tem is done loading and is ready to use.</td>
-        *       </tr>
-        *       <tr>
-        *           <td>onError</td>
-        *           <td><a href="#ON_ERROR">ON_ERROR</a></td>
-        *           <td><code>Function</code></td>
-        *           <td>A callback to be executed if this item fails to load.</td>
-        *       </tr>
-        *       <tr>
         *           <td>preventCache</td>
         *           <td><a href="#PREVENT_CACHING">PREVENT_CACHING</a></td>
         *           <td><code>Boolean</code></td>
@@ -777,8 +759,11 @@ bulkLoader.start(3)
             return _logFunction; 
         }
         
-        public function set logFunction(value:Function) : void { 
-            _logFunction = value; 
+        /** The function to be called for loggin. The loggin function should receive one parameter, the string to be logged. The <code>logFunction</code> defaults to flash's regular trace function. You can use the logFunction to route traces to an alternative place (such as a textfield or some text component in your application). If the <code>logFunction</code> is set to something else that the global <code>trace</code> function, nothing will be traced. A custom <code>logFunction</code>  messages will still be filtered by the <code>logLevel</code> setting.
+        *   @param func  The function to be used on loggin.
+        */
+        public function set logFunction(func:Function) : void { 
+            _logFunction = func; 
         }
         
         public function get id() : int { 
@@ -902,7 +887,7 @@ bulkLoader.start(3)
         public function getSerializedData(key : *, encodingFunction : Function, clearMemory : Boolean = false) : *{
             try{
                 var raw : * = getContentAsType(key, Object, clearMemory);
-                var parsed : * = encodingFunction.apply(null, raw);
+                var parsed : * = encodingFunction.apply(null, [raw]);
                 return parsed;
             }catch (e : Error){
                 log("Failed to parse key:", key, "with encodingFunction:" + encodingFunction);
@@ -983,7 +968,7 @@ bulkLoader.start(3)
             }
         }
         
-        /** Used internaly to fetch an item with a given key.
+        /** Used  to fetch an item with a given key. The returned <code>LoadingItem</code> can be used to attach event listeners for the individual items (<code>Event.COMPLETE, ProgressEvent.PROGRESS, Event.START</code>).
         *   @param key A url (as a string or urlrequest) or an id to fetch
         *   @return The corresponding <code>LoadingItem</code> or null if one isn't found.
         */
