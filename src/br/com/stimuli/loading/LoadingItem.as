@@ -41,6 +41,7 @@ package br.com.stimuli.loading {
     import flash.utils.*;
     
     import br.com.stimuli.loading.BulkLoader;
+    import br.com.stimuli.loading.BulkErrorEvent;
     
     /**
      *  Dispatched on download progress.
@@ -126,7 +127,7 @@ package br.com.stimuli.loading {
         private var loader : *;
 
         private var _content : *;
-        
+        private var _httpStatus : int = 0;
         internal var context : * = null;
         // for video:
         private var nc:NetConnection;
@@ -186,13 +187,15 @@ package br.com.stimuli.loading {
                 loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgressHandler, false, 0, true);
                 loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
                 loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 0, true);
-                loader.contentLoaderInfo.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);
+                loader.contentLoaderInfo.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);  
+                loader.contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, onHttpStatusHandler, false, 0, true);
                 loader.load(url, context);
             }else if (loader is Sound){
                 loader.addEventListener(ProgressEvent.PROGRESS, onProgressHandler, false, 0, true);
                 loader.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
                 loader.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 0, true);
                 loader.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);
+                loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, onHttpStatusHandler, false, 0, true);
                 loader.load(url, context);
             }else if (loader is NetConnection){
                 loader.connect(null);
@@ -243,7 +246,10 @@ package br.com.stimuli.loading {
                 onStartedHandler(e);
             }
         }
-        
+
+        internal function onHttpStatusHandler(evt : HTTPStatusEvent) : void{
+            _httpStatus = evt.status;
+        }
         internal function onVideoMetadata(evt : *):void{
             _metaData = evt;
         };
@@ -289,12 +295,18 @@ package br.com.stimuli.loading {
            dispatchEvent(evt);
         }
         
-        private function onErrorHandler(evt : IOErrorEvent) : void{
+        private function onErrorHandler(evt : BulkErrorEvent) : void{
             numTries ++;
-            status = STATUS_ERROR;
+            status = STATUS_ERROR;   
             if(numTries >= maxTries){
-                dispatchEvent(evt);
+                var bulkErrorEvent : BulkErrorEvent = new BulkErrorEvent(BulkErrorEvent.ERROR);
+                bulkErrorEvent.errors = [this];
+                dispatchEvent(bulkErrorEvent);
+            }else{   
+                status = null
+                load();
             }
+           
         }
         
         private function onStartedHandler(evt : Event) : void{
@@ -324,11 +336,15 @@ package br.com.stimuli.loading {
         }
         
         internal function cleanListeners() : void {
-            if (type != BulkLoader.TYPE_VIDEO){
-                loader.removeEventListener(ProgressEvent.PROGRESS, onProgressHandler, false);
-                loader.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
-                loader.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
-                loader.removeEventListener(Event.OPEN, onStartedHandler, false);
+            if (type != BulkLoader.TYPE_VIDEO && loader){
+                var removalTarget : Object = loader;
+                if (loader is Loader){
+                    removalTarget = loader.contentLoaderInfo;
+                }
+                removalTarget.removeEventListener(ProgressEvent.PROGRESS, onProgressHandler, false);
+                removalTarget.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
+                removalTarget.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
+                removalTarget.removeEventListener(Event.OPEN, onStartedHandler, false);
             }else{
                 stream.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
                 if(dummyEventTrigger){
@@ -433,6 +449,13 @@ package br.com.stimuli.loading {
         public function set speed(value:Number) : void { 
             _speed = value; 
         }
+        
+        /* The httpStatus of the LoadingItem, as in int (0 if no status has been received) */
+        public function get httpStatus() : int { 
+            return _httpStatus; 
+        }                                     
+        
+        
     }
     
 }

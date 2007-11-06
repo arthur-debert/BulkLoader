@@ -41,6 +41,8 @@ import flash.utils.*;
 
 import br.com.stimuli.loading.LoadingItem;
 import br.com.stimuli.loading.BulkProgressEvent;
+import br.com.stimuli.loading.BulkErrorEvent;
+
     
 /**
  *  Dispatched on download progress by any of the items to download.
@@ -163,7 +165,12 @@ import br.com.stimuli.loading.BulkProgressEvent;
         *   @eventType complete
         */
 		public static const COMPLETE : String = "complete";
-		
+
+    	/** 
+        *   The name of the event 
+        *   @eventType error
+        */
+    	public static const ERROR : String = "error";		
 		// properties on adding a new url:
 		/** If <code>true</code> a random query (or post data parameter) will be added to prevent caching. Checked when adding a new item to load.
 		* @see #add()
@@ -216,7 +223,7 @@ import br.com.stimuli.loading.BulkProgressEvent;
         private var _items : Array = [];
         private var _contents : Dictionary = new Dictionary();
         private static var allLoaders : Object = {};
-        
+
         // Maximum number of simultaneous open requests
         private var _numConnectons : int = 7;
         private var _connections : Array;
@@ -477,7 +484,7 @@ bulkLoader.start(3)
             // internal, used to sort items of the same priority
             item.addedTime = getTimer();
             item.addEventListener(Event.COMPLETE, onItemComplete, false, 0, true);
-            item.addEventListener(IOErrorEvent.IO_ERROR, onItemError, false, 0, true);
+            item.addEventListener(ERROR, onItemError, false, 0, true);
             item.addEventListener(Event.OPEN, onItemStarted, false, 0, true);
             item.addEventListener(ProgressEvent.PROGRESS, onProgress, false, 0, true);
             _items.push(item);
@@ -618,7 +625,8 @@ bulkLoader.start(3)
             if(item._isLoaded){
                 _itemsLoaded --;
             }
-            _itemsTotal --;
+            _itemsTotal --;             
+            log("Removing " + item, 3)
             return true;
         }
         
@@ -631,13 +639,18 @@ bulkLoader.start(3)
            return false;
         }
         
-        private function onItemError(evt : IOErrorEvent) : void{
+        private function onItemError(evt : BulkErrorEvent) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
-           log("Error loading", item, 3);
+            log("After " + item.numTries + " I am giving up on " + item.url.url, 3);
+            log("Error loading", item, 3);
            
-           log("After " + item.numTries + " I am giving up on " + item.url.url, 3);
+
            removeFromConnections(item);
-           
+           var bulkErrorEvent : BulkErrorEvent = new BulkErrorEvent(BulkErrorEvent.ERROR);
+           bulkErrorEvent.errors = _items.filter(function(i : LoadingItem, ...rest):Boolean{
+                  return (i.status == LoadingItem.STATUS_ERROR);
+           });
+           dispatchEvent(bulkErrorEvent);
         }
         
         private function onItemStarted(evt : Event) : void{
@@ -997,6 +1010,7 @@ bulkLoader.start(3)
                 return false;
             }
             removeFromItems(item);
+            removeFromConnections(item);
             item.destroy();
             item = null;
             // checks is removing this item we are done?
