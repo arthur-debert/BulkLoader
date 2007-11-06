@@ -275,6 +275,9 @@ import br.com.stimuli.loading.BulkErrorEvent;
         private var speedTotal : Number;
         private var startTime : int ;
         private var endTime : int;
+        private var lastSpeedCheck : int;
+        private var lastBytesCheck : int;
+        private var _speed : Number;
         /**Time in seconds for the whole loading. Only available after everything is laoded*/
         public var totalTime : Number;
         
@@ -288,7 +291,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         public static var logLevel: int = 3;
         
         private var _isRunning : Boolean;
-        private var isFinished : Boolean;
+        private var _isFinished : Boolean;
         
         private static var _logFunction : Function = trace;
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
@@ -491,7 +494,7 @@ bulkLoader.start(3)
             _itemsTotal += 1;
             _totalWeight += item.weight;
             _items.sortOn(["priority", "addedTime"],  [Array.NUMERIC | Array.DESCENDING, Array.NUMERIC]);
-            isFinished = false;
+            _isFinished = false;
             return item;
         }
         
@@ -513,6 +516,8 @@ bulkLoader.start(3)
             var max : int = Math.max(_numConnectons, _items.length);
             loadNext();
             isRunning = true;
+            lastBytesCheck = 0;
+            lastSpeedCheck = getTimer();
         }
         
         /**  Register a new file extension to be loaded as a given type. This is used both in the guessing of types from the url and affects how loading is done for each type.
@@ -545,7 +550,7 @@ bulkLoader.start(3)
         
         // if toLoad is specified it be cut line
         private function loadNext(toLoad : LoadingItem = null) : Boolean{
-            if(isFinished){
+            if(_isFinished){
                 return false;
             }
             // check for "stale items"
@@ -677,7 +682,6 @@ bulkLoader.start(3)
                   }
                   itemsStarted ++;
               }
-
             }
 
             // only set bytes total if all items have begun loading
@@ -689,9 +693,6 @@ bulkLoader.start(3)
             _weightPercent = weightLoaded / totalWeight;
             var e : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
             e.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, _itemsLoaded, itemsTotal, weightPercent);
-            if(evt){
-                dispatchEvent(evt);
-            }
             dispatchEvent(e);
         }
         
@@ -764,13 +765,27 @@ bulkLoader.start(3)
         public function get isRunning() : Boolean { 
             return _isRunning; 
         }
-
+        
+        public function get isFinished() : Boolean{
+            return _isFinished;
+        }
         public function set isRunning(value:Boolean) : void { 
             _isRunning = value; 
         }
         public static function get logFunction() : Function { 
             return _logFunction; 
         }
+        
+        /* Returns the speed in kilobytes / second for all loadings
+        */
+        public function get speed() : Number{
+            var timeElapsed : int = getTimer() - lastSpeedCheck;
+            var bytesDelta : int = (bytesLoaded - lastBytesCheck) / 1024;
+            var speed : int = bytesDelta / (timeElapsed/1000);
+            lastSpeedCheck = timeElapsed;
+            lastBytesCheck = bytesLoaded;
+            return speed;
+        }                      
         
         /** The function to be called for loggin. The loggin function should receive one parameter, the string to be logged. The <code>logFunction</code> defaults to flash's regular trace function. You can use the logFunction to route traces to an alternative place (such as a textfield or some text component in your application). If the <code>logFunction</code> is set to something else that the global <code>trace</code> function, nothing will be traced. A custom <code>logFunction</code>  messages will still be filtered by the <code>logLevel</code> setting.
         *   @param func  The function to be used on loggin.
@@ -908,6 +923,18 @@ bulkLoader.start(3)
             return null;
         }
         
+        /** Gets the http status code for the loading item identified by key.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded. 
+        *   @return The Http status as an integer. If no item is found returns -1. If the http status cannot be determined but the item was found, returns 0.
+        */
+        public function getHttpStatus(key : *) : int{
+            var item : LoadingItem = get(key);
+            if(item){
+                return item.httpStatus;
+            }
+            return -1;
+        }
+        
         private function isAllDoneP() : Boolean{
             return _items.every(function(item : LoadingItem, ...rest):Boolean{
                 return item._isLoaded;
@@ -915,7 +942,7 @@ bulkLoader.start(3)
         }
         
         private function onAllLoaded() : void {
-            if(isFinished){
+            if(_isFinished){
                 return;
             }
             var eComplete : BulkProgressEvent = new BulkProgressEvent(COMPLETE);
@@ -930,7 +957,7 @@ bulkLoader.start(3)
             updateStats();
             _connections = null;
             traceStats();
-            isFinished = true;
+            _isFinished = true;
             log("Finished all", 1);
         }
         
