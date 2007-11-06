@@ -345,8 +345,8 @@ package br.com.stimuli.loading {
                 removalTarget.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
                 removalTarget.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
                 removalTarget.removeEventListener(Event.OPEN, onStartedHandler, false);
-            }else{
-                stream.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
+            }else if (type == BulkLoader.TYPE_VIDEO ) {
+                if (stream) stream.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
                 if(dummyEventTrigger){
                     dummyEventTrigger.removeEventListener(Event.ENTER_FRAME, createNetStreamEvent, false);
                     dummyEventTrigger = null;

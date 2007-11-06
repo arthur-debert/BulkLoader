@@ -636,6 +636,7 @@ bulkLoader.start(3)
         }
         
         private function removeFromConnections(item : *) : Boolean{
+            if(!_connections) return false;
             var removeIndex : int = _connections.indexOf(item)
             if(removeIndex > -1){
                 _connections.splice( removeIndex, 1); 
@@ -814,7 +815,7 @@ bulkLoader.start(3)
                     var res : * = type(item.content)
                     if(clearMemory){
                         remove(key);
-                    }
+                    }               
                     return res;
                 }
             }catch(e : Error){
@@ -1025,28 +1026,33 @@ bulkLoader.start(3)
         *   @param key A url (as a string or urlrequest) or an id to fetch
         *   @return <code>True</code> if an item with that key has been removed, and <code>false</code> othersiwe.
         *   */
-        public function remove(key : *) : Boolean{
+        public function remove(key : *) : Boolean{      
+            try{
+                var item : LoadingItem;
+                if (item is LoadingItem){
+                    item = item;
+                } else{
+                    item = get(key);
+                }      
+                if(!item) {
+                    return false;
+                }      
+                removeFromItems(item);
+                removeFromConnections(item);
+                item.destroy();
+                item = null;
+                // checks is removing this item we are done?
+                onProgress();
+                var allDone : Boolean = isAllDoneP();
+               if(allDone) {
+                   onAllLoaded();
+                }
+                return true;
+            }catch(e : Error){
+                log("Error while removing item from key:" + key, 0);
+            }                                                     
+            return false;
             
-            var item : LoadingItem;
-            if (item is LoadingItem){
-                item = item;
-            } else{
-                item = get(key);
-            }
-            if(!item) {
-                return false;
-            }
-            removeFromItems(item);
-            removeFromConnections(item);
-            item.destroy();
-            item = null;
-            // checks is removing this item we are done?
-            onProgress();
-            var allDone : Boolean = isAllDoneP();
-           if(allDone) {
-               onAllLoaded();
-            }
-            return true;
         }
         
         /** Deletes all loading and loaded objects. This will stop all connections and delete from the cache all of it's items (no content will be accessible if <code>removeAll</code> is executed).
