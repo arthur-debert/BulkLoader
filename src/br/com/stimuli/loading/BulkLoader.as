@@ -293,6 +293,8 @@ import br.com.stimuli.loading.BulkErrorEvent;
         public static const LOG_INFO : int = 2;
         /**Will only trace errors. Defaut level*/
         public static const LOG_ERRORS : int = 3;
+        /**Nothing will be logged*/
+        public static const LOG_SILENT : int = 10;
         /**The logging level <code>BulkLoader</code> will use.*/
         public static var logLevel: int = 3;
         
@@ -455,34 +457,11 @@ bulkLoader.start(3)
             var item : LoadingItem = get(url);
             // have already loaded this?
             if( item ){
-                // yes, find out at what stage we are, and call the needed callbacks
-                if (props.onStart && item.status == LoadingItem.STATUS_STARTED){
-                    try{
-                         props.onStart();
-                     }catch(e : Error){
-                         log("onStart for url ", item.url.url, " threw an error:", e.getStackTrace() ,3);
-                     }
-                    
-                }
-                if (props.onError && item.status == LoadingItem.STATUS_ERROR){
-                    try{
-                         props.onError();
-                     }catch(e : Error){
-                         log("onError for url ", item.url.url, " threw an error:", e.getStackTrace() ,3);
-                     }
-                    
-                }else if (props.onComplete && item._isLoaded){
-                    try{
-                         props.onComplete();
-                     }catch(e : Error){
-                         log("onComplete for url ", item.url.url, " threw an error:", e.getStackTrace() ,3);
-                     }
-                }
                 return item;
             }
             
             item  = new LoadingItem(url, props["type"]);
-            log("Added",item, 0);
+            log("Added",item, LOG_VERBOSE);
             // properties from the props argument
             item.preventCache = props[PREVENT_CACHING];
             item.id = props[ID];
@@ -581,7 +560,7 @@ bulkLoader.start(3)
                 if(_connections.length < numConnectons){
                     _connections.push(toLoad);
                     toLoad.load();
-                    log("Will load item:", toLoad,1);
+                    log("Will load item:", toLoad, LOG_INFO);
                 }
                 // if we've got any more connections to open, load the next item
                 if(_connections.length < numConnectons){
@@ -594,8 +573,8 @@ bulkLoader.start(3)
         private function onItemComplete(evt : Event) : void {
            var item : LoadingItem  = evt.target as LoadingItem;
            removeFromConnections(item);
-           log("Loaded ", item, 1);
-           log("Items to load", getNotLoadedItems(), 0);
+           log("Loaded ", item, LOG_INFO);
+           log("Items to load", getNotLoadedItems(), LOG_VERBOSE);
             item.cleanListeners();
             _contents[item.url.url] = item.content;
             
@@ -638,7 +617,7 @@ bulkLoader.start(3)
                 _itemsLoaded --;
             }
             _itemsTotal --;             
-            log("Removing " + item, 3)
+            log("Removing " + item, LOG_VERBOSE)
             return true;
         }
         
@@ -654,8 +633,8 @@ bulkLoader.start(3)
         
         private function onItemError(evt : BulkErrorEvent) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
-            log("After " + item.numTries + " I am giving up on " + item.url.url, 3);
-            log("Error loading", item, 3);
+            log("After " + item.numTries + " I am giving up on " + item.url.url, LOG_ERRORS);
+            log("Error loading", item, LOG_ERRORS);
            
 
            removeFromConnections(item);
@@ -671,7 +650,7 @@ bulkLoader.start(3)
             if (item.isVideo()){
                 _contents[item.url.url] = item.stream;
             }
-            log("Started loading", item, 1);
+            log("Started loading", item, LOG_INFO);
         }
         
         private function onProgress(evt : Event = null) : void{
@@ -832,7 +811,7 @@ bulkLoader.start(3)
                     return res;
                 }
             }catch(e : Error){
-                log("Failed to get content with url: '"+ key + "'as type:", type, 3);
+                log("Failed to get content with url: '"+ key + "'as type:", type, LOG_ERRORS);
             }
             
             return null;
@@ -921,7 +900,7 @@ bulkLoader.start(3)
             try{
                 return getBitmap(key,  clearMemory).bitmapData;
             }catch (e : Error){
-                log("Failed to get bitmapData with url:", key);
+                log("Failed to get bitmapData with url:", key, LOG_ERRORS);
             }
             return  null;
         }
@@ -932,7 +911,7 @@ bulkLoader.start(3)
                 var parsed : * = encodingFunction.apply(null, [raw]);
                 return parsed;
             }catch (e : Error){
-                log("Failed to parse key:", key, "with encodingFunction:" + encodingFunction);
+                log("Failed to parse key:", key, "with encodingFunction:" + encodingFunction, LOG_ERRORS);
             }
             return null;
         }
@@ -972,7 +951,7 @@ bulkLoader.start(3)
             _connections = null;
             traceStats();
             _isFinished = true;
-            log("Finished all", 1);
+            log("Finished all", LOG_INFO);
         }
         
         /** If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3). Outputs a host of statistics about the loading operation
@@ -1001,7 +980,7 @@ bulkLoader.start(3)
             }
             stats.push("************************************");
             var statsString : String = stats.join("\n");
-            log(statsString, 1);
+            log(statsString, LOG_VERBOSE);
             return statsString;
         }
         
@@ -1062,7 +1041,7 @@ bulkLoader.start(3)
                 }
                 return true;
             }catch(e : Error){
-                log("Error while removing item from key:" + key, 0);
+                log("Error while removing item from key:" + key, LOG_INFO);
             }                                                     
             return false;
             
@@ -1146,7 +1125,7 @@ bulkLoader.start(3)
                 pause(item);
             }
             isRunning = false;
-            log("Stopping all items", 1);
+            log("Stopping all items", LOG_INFO);
         }
         
         /** Stops loading all items from all <code>BulkLoader</code> instances.
@@ -1176,7 +1155,7 @@ bulkLoader.start(3)
         *   @return <code>True</code> if any item was stopped and resumed, false otherwise
         */
         public function resumeAll() : Boolean{
-            log("Resuming all items", 1);
+            log("Resuming all items", LOG_VERBOSE);
             var affected : Boolean = false;
             _items.forEach(function(item : LoadingItem, ...rest):void{
                 if(item.status == LoadingItem.STATUS_STOPPED){

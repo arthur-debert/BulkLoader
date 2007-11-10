@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,XML_TYPES,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,logLevel,numConnectons,contents,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,logFunction,speed,id,getLoader,hasItem,whichLoaderHasItem,add,start,registerNewType,getNotLoadedItems,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,traceStats,log,get,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,truncateNumber,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,XML_TYPES,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,LOG_SILENT,logLevel,numConnectons,contents,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,logFunction,speed,id,getLoader,hasItem,whichLoaderHasItem,add,start,registerNewType,getNotLoadedItems,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,traceStats,log,get,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,truncateNumber,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -537,6 +537,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LOG_INFO">LOG_INFO</a> : int = 2<div class="summaryTableDescription">[static]Ouputs noteworthy events such as when an item is started / finished loading.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LOG_SILENT">LOG_SILENT</a> : int = 10<div class="summaryTableDescription">[static]Nothing will be logged</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -2008,6 +2012,14 @@ bulkLoader.start(3)
 </table>
 <div class="detailBody">
 <code>public static const LOG_INFO:int = 2</code><p>Ouputs noteworthy events such as when an item is started / finished loading.</p></div>
+<a name="LOG_SILENT"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">LOG_SILENT</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const LOG_SILENT:int = 10</code><p>Nothing will be logged</p></div>
 <a name="LOG_VERBOSE"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
