@@ -143,7 +143,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         /** List of file extensions that will be automagically treated as text for loading.
         *   Availabe types: txt, js, xml, php, asp .
         */
-        internal static var TEXT_TYPES : Array = ["txt", "js", "xml", "php", "asp" ];
+        internal static var TEXT_TYPES : Array = ["txt", "js", "xml", "php", "asp", "py" ];
         /** List of file extensions that will be automagically treated as video for loading. 
         *  Availabe types: flv. 
         */
@@ -153,7 +153,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         */
         internal static var SOUND_TYPES : Array = ["mp3"];
         
-        private static var XML_TYPES : Array = ["xml"];
+        internal static var XML_TYPES : Array = ["xml"];
         
         /** 
         *   The name of the event 
@@ -165,6 +165,12 @@ import br.com.stimuli.loading.BulkErrorEvent;
         *   @eventType complete
         */
 		public static const COMPLETE : String = "complete";
+		
+		/** 
+        *   The name of the event 
+        *   @eventType httpStatus
+        */
+		public static const HTTP_STATUS : String = "httpStatus";
 
     	/** 
         *   The name of the event 
@@ -589,6 +595,7 @@ bulkLoader.start(3)
            var item : LoadingItem  = evt.target as LoadingItem;
            removeFromConnections(item);
            log("Loaded ", item, 1);
+           log("Items to load", getNotLoadedItems(), 0);
             item.cleanListeners();
             _contents[item.url.url] = item.content;
             
@@ -773,10 +780,16 @@ bulkLoader.start(3)
         public function set isRunning(value:Boolean) : void { 
             _isRunning = value; 
         }
+        
         public static function get logFunction() : Function { 
             return _logFunction; 
         }
         
+        public function getNotLoadedItems () : Array{
+            return _items.filter(function(i : LoadingItem, ...rest):Boolean{
+                return i.status != LoadingItem.STATUS_FINISHED;
+            });
+        }
         /* Returns the speed in kilobytes / second for all loadings
         */
         public function get speed() : Number{
@@ -913,7 +926,7 @@ bulkLoader.start(3)
             return  null;
         }
         
-        public function getSerializedData(key : *, encodingFunction : Function, clearMemory : Boolean = false) : *{
+        public function getSerializedData(key : *,  clearMemory : Boolean = false, encodingFunction : Function = null) : *{
             try{
                 var raw : * = getContentAsType(key, Object, clearMemory);
                 var parsed : * = encodingFunction.apply(null, [raw]);

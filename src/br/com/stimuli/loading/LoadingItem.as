@@ -135,22 +135,38 @@ package br.com.stimuli.loading {
         private var dummyEventTrigger : Sprite;
         
         private var _metaData : Object;
+        private var internalType : String;
         
+        private static var classes : Object = {
+            "loader": Loader,
+            "xml": URLLoader,
+            "video":NetConnection,
+            "sound": Sound,
+            "text": URLLoader
+        }
         public function LoadingItem(url : URLRequest, type : String){
             
             if (type) {
                 this.type = type.toLowerCase();
             }else{
-                
+                // no type is given, try to guess from the url
                 var searchString : String = url.url.indexOf("?") > -1 ? url.url.substring(0, url.url.indexOf("?")) : url.url;
                 this.type = searchString.substring(searchString.lastIndexOf(".") + 1).toLowerCase();
-                
             }
-            if (BulkLoader.AVAILABLE_TYPES.indexOf(this.type) == -1 ){
-                this.type = "txt";
+            if(!Boolean(this.type) ){
+                this.type = BulkLoader.TYPE_TEXT;
             }
-            if(type=="image"){
-                type = "loader";
+            // find out from the type, what we will be using for loading (the internalType)
+            if(this.type == BulkLoader.TYPE_LOADER || BulkLoader.LOADER_TYPES.indexOf(this.type) > -1){
+                internalType = BulkLoader.TYPE_LOADER;
+            }else if (this.type == BulkLoader.TYPE_SOUND ||BulkLoader.SOUND_TYPES.indexOf(this.type) > -1){
+                internalType = BulkLoader.TYPE_SOUND;
+            }else if (this.type == BulkLoader.TYPE_VIDEO ||BulkLoader.VIDEO_TYPES.indexOf(this.type) > -1){
+                internalType = BulkLoader.TYPE_VIDEO;
+            }else if (this.type == BulkLoader.TYPE_XML ||BulkLoader.XML_TYPES.indexOf(this.type) > -1){
+                internalType = BulkLoader.TYPE_XML;
+            }else{
+                internalType = BulkLoader.TYPE_TEXT;
             }
             this.url = url;
         }
@@ -171,16 +187,8 @@ package br.com.stimuli.loading {
                     url.url += "&" + cacheString;
                 }
             }
-            var loaderClass : Class ;
-            if (BulkLoader.LOADER_TYPES.indexOf(type) > -1){
-                loaderClass = Loader;
-            }else if (BulkLoader.TEXT_TYPES.indexOf(type) > -1){
-                loaderClass = URLLoader;
-            }else if (BulkLoader.VIDEO_TYPES.indexOf(type) > -1){
-                loaderClass = NetConnection;
-            }else if (BulkLoader.SOUND_TYPES.indexOf(type) > -1){
-                loaderClass = Sound;
-            }
+            
+            var loaderClass : Class  = LoadingItem.classes[internalType];
             loader = new loaderClass();
             
             if (loader is Loader){
@@ -249,6 +257,7 @@ package br.com.stimuli.loading {
 
         internal function onHttpStatusHandler(evt : HTTPStatusEvent) : void{
             _httpStatus = evt.status;
+            dispatchEvent(evt);
         }
         internal function onVideoMetadata(evt : *):void{
             _metaData = evt;
@@ -357,7 +366,23 @@ package br.com.stimuli.loading {
         }
         
         public function isVideo(): Boolean{
-            return BulkLoader.VIDEO_TYPES.indexOf(type) > -1;
+            return internalType == BulkLoader.TYPE_VIDEO;
+        }
+        
+        public function isSound(): Boolean{
+            return internalType == BulkLoader.TYPE_SOUND;
+        }
+        
+        public function isText(): Boolean{
+            return internalType == BulkLoader.TYPE_TEXT;
+        }
+        
+        public function isXML(): Boolean{
+            return internalType == BulkLoader.TYPE_XML;
+        }
+        
+        public function isLoader(): Boolean{
+            return internalType == BulkLoader.TYPE_LOADER;
         }
         
         internal function destroy() : void{
@@ -454,8 +479,6 @@ package br.com.stimuli.loading {
         public function get httpStatus() : int { 
             return _httpStatus; 
         }                                     
-        
-        
     }
     
 }

@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,PROGRESS,COMPLETE,ERROR,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,logLevel,numConnectons,contents,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,logFunction,speed,id,getLoader,hasItem,whichLoaderHasItem,add,start,registerNewType,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,traceStats,log,get,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,truncateNumber,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,XML_TYPES,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,logLevel,numConnectons,contents,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,logFunction,speed,id,getLoader,hasItem,whichLoaderHasItem,add,start,registerNewType,getNotLoadedItems,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,traceStats,log,get,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,truncateNumber,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -210,6 +210,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#weightPercent">weightPercent</a> : Number<div class="summaryTableDescription">[read-only]</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#XML_TYPES">XML_TYPES</a> : Array<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
 </table>
 </div>
 <a name="methodSummary"></a>
@@ -302,7 +306,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#getSerializedData()">getSerializedData</a>(key:*, encodingFunction:Function, clearMemory:Boolean = false):*</div>
+<a class="signatureLink" href="#getNotLoadedItems()">getNotLoadedItems</a>():Array</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getSerializedData()">getSerializedData</a>(key:*, clearMemory:Boolean = false, encodingFunction:Function = null):*</div>
 <div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
@@ -508,6 +519,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#HEADERS">HEADERS</a> : String = "headers"<div class="summaryTableDescription">[static] An array of RequestHeader objects to be used when contructing the <code>URLRequest</code> object.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#HTTP_STATUS">HTTP_STATUS</a> : String = "httpStatus"<div class="summaryTableDescription">[static] 
+          The name of the event 
+          </div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -892,6 +909,15 @@ showHideInherited();
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get weightPercent():Number</code>
 <br>
+</div>
+<a name="XML_TYPES"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">XML_TYPES</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var XML_TYPES:Array</code>
 </div>
 <a name="constructorDetail"></a>
 <div class="detailSectionHeader">Constructor detail</div>
@@ -1304,6 +1330,22 @@ bulkLoader.start(3)
 </tr>
 </table>
 </div>
+<a name="getNotLoadedItems()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getNotLoadedItems</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getNotLoadedItems():Array</code>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code></td>
+</tr>
+</table>
+</div>
 <a name="getSerializedData()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1311,7 +1353,7 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public function getSerializedData(key:*, encodingFunction:Function, clearMemory:Boolean = false):*</code><span class="label">Parameters</span>
+<code>public function getSerializedData(key:*, clearMemory:Boolean = false, encodingFunction:Function = null):*</code><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20px"></td><td><code><span class="label">key</span>:*</code></td>
@@ -1320,13 +1362,13 @@ bulkLoader.start(3)
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">encodingFunction</span>:Function</code></td>
+<td width="20px"></td><td><code><span class="label">clearMemory</span>:Boolean</code> (default = <code>false</code>)<code></code></td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">clearMemory</span>:Boolean</code> (default = <code>false</code>)<code></code></td>
+<td width="20px"></td><td><code><span class="label">encodingFunction</span>:Function</code> (default = <code>null</code>)<code></code></td>
 </tr>
 </table>
 <p></p>
@@ -1917,6 +1959,16 @@ bulkLoader.start(3)
 <a href="../loading/BulkLoader.html#add()" target="">add()</a>
 </div>
 </div>
+<a name="HTTP_STATUS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">HTTP_STATUS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const HTTP_STATUS:String = "httpStatus"</code><p> 
+          The name of the event 
+          </p></div>
 <a name="ID"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
