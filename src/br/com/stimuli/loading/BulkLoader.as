@@ -295,13 +295,19 @@ import br.com.stimuli.loading.BulkErrorEvent;
         public static const LOG_ERRORS : int = 3;
         /**Nothing will be logged*/
         public static const LOG_SILENT : int = 10;
-        /**The logging level <code>BulkLoader</code> will use.*/
-        public static var logLevel: int = 3;
+        /**The logging level <code>BulkLoader</code> will use. 
+        * @see #LOG_VERBOSE
+        * @see #LOG_SILENT
+        * @see #LOG_ERRORS
+        * @see #LOG_INFO
+        */
+        public var logLevel: int = 3;
         
         private var _isRunning : Boolean;
         private var _isFinished : Boolean;
         
-        private static var _logFunction : Function = trace;
+
+        private var _logFunction : Function = trace;
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
         *   
         *   @param name  A name that can be used later to reference this loader in a static context,
@@ -317,7 +323,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
             }
             allLoaders[name] = this;
             this._numConnectons = numConnectons;
-            BulkLoader.logLevel = logLevel;
+            this.logLevel = logLevel;
             _name = name;
             _instancesCreated ++;
             _id = _instancesCreated;
@@ -760,7 +766,12 @@ bulkLoader.start(3)
             _isRunning = value; 
         }
         
-        public static function get logFunction() : Function { 
+        /** The function to be used in logging. By default it's the same as the global function <code>trace</code>. The log function signature is:
+        *   <pre>
+        *   public function myLogFunction(msg : String) : void{}
+        *   </pre>
+        */
+        public function get logFunction() : Function { 
             return _logFunction; 
         }
         
@@ -994,7 +1005,7 @@ bulkLoader.start(3)
         *   @see #LOG_INFO
         *   @see #LOG_VERBOSE
         */   
-        internal static function log(...msg) : void{
+        internal function log(...msg) : void{
             var level : int  = isNaN(msg[msg.length -1] ) ? 3 : int(msg.pop());
             if (level >= logLevel ){
                 _logFunction("[BulkLoader] " + msg.join(" "));
