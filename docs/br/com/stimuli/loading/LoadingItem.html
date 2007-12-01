@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="LoadingItem,br.com.stimuli.loading.LoadingItem,STATUS_STOPPED,STATUS_STARTED,STATUS_FINISHED,STATUS_ERROR,type,url,id,_isLoaded,_isLoading,status,maxTries,numTries,weight,preventCache,_bytesTotal,_bytesLoaded,_percentLoaded,_weightPercentLoaded,context,stream,content,metaData,bytesTotal,bytesLoaded,percentLoaded,weightPercentLoaded,priority,addedTime,startTime,responseTime,latency,totalTime,timeToDownload,speed,httpStatus,load,createNetStreamEvent,onNetStatus,onHttpStatusHandler,onVideoMetadata,toString,stop,cleanListeners,isVideo,isSound,isText,isXML,isLoader,destroy" name="keywords">
+<meta content="LoadingItem,br.com.stimuli.loading.LoadingItem,STATUS_STOPPED,STATUS_STARTED,STATUS_FINISHED,STATUS_ERROR,type,url,id,_isLoaded,_isLoading,status,maxTries,numTries,weight,preventCache,_bytesTotal,_bytesLoaded,_percentLoaded,_weightPercentLoaded,context,stream,pausedAtStart,content,metaData,bytesTotal,bytesLoaded,percentLoaded,weightPercentLoaded,priority,addedTime,startTime,responseTime,latency,totalTime,timeToDownload,speed,httpStatus,load,createNetStreamEvent,onNetStatus,onHttpStatusHandler,onVideoMetadata,toString,stop,cleanListeners,isVideo,isSound,isText,isXML,isLoader,destroy" name="keywords">
 <title>br.com.stimuli.loading.LoadingItem</title>
 </head>
 <body>
@@ -113,6 +113,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#numTries">numTries</a> : int = 0<div class="summaryTableDescription">Current try number.</div>
+</td><td class="summaryTableOwnerCol">LoadingItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#pausedAtStart">pausedAtStart</a> : Boolean = false<div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">LoadingItem</td>
 </tr>
 <tr class="">
@@ -514,6 +518,15 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public var numTries:int = 0</code><p>Current try number.</p></div>
+<a name="pausedAtStart"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">pausedAtStart</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public var pausedAtStart:Boolean = false</code>
+</div>
 <a name="_percentLoaded"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>

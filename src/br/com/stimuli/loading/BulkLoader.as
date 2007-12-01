@@ -2,7 +2,7 @@
 *   
 *   
 *   @author Arthur Debert
-*   @version 0.4
+*   @version 0.9.1
 */
 
 /**
@@ -137,7 +137,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         *   Availabe types: swf, jpg, jpeg, gif, png. */
         internal static var AVAILABLE_TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png", "flv", "mp3", "xml", "txt", "js" ];
         /** List of file extensions that will be automagically use a <code>Loader</code> object for loading.
-        *   Availabe types: txt, js, xml, php, asp .
+        *   Availabe types: swf, jpg, jpeg, gif, png, image.
         */
         internal static var LOADER_TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png" , "image"];
         /** List of file extensions that will be automagically treated as text for loading.
@@ -145,13 +145,13 @@ import br.com.stimuli.loading.BulkErrorEvent;
         */
         internal static var TEXT_TYPES : Array = ["txt", "js", "xml", "php", "asp", "py" ];
         /** List of file extensions that will be automagically treated as video for loading. 
-        *  Availabe types: flv. 
+        *  Availabe types: flv, f4v, f4p. 
         */
-        internal static var VIDEO_TYPES : Array = ["flv"];
+        internal static var VIDEO_TYPES : Array = ["flv", "f4v", "f4p"];
         /** List of file extensions that will be automagically treated as sound for loading.
-        *  Availabe types: mp3.
+        *  Availabe types: mp3, f4a, f4b.
         */
-        internal static var SOUND_TYPES : Array = ["mp3"];
+        internal static var SOUND_TYPES : Array = ["mp3", "f4a", "f4b"];
         
         internal static var XML_TYPES : Array = ["xml"];
         
@@ -177,6 +177,13 @@ import br.com.stimuli.loading.BulkErrorEvent;
         *   @eventType error
         */
     	public static const ERROR : String = "error";		
+    	
+    	/** 
+        *   The name of the event 
+        *   @eventType error
+        */
+    	public static const OPEN : String = "open";
+    	
 		// properties on adding a new url:
 		/** If <code>true</code> a random query (or post data parameter) will be added to prevent caching. Checked when adding a new item to load.
 		* @see #add()
@@ -214,6 +221,12 @@ import br.com.stimuli.loading.BulkErrorEvent;
 		* @default 3
 		*/
         public static const WEIGHT : String = "weight";
+        
+        /* An <code>Boolean</code> that if true and applied on a video item will pause the video on the start of the loading operation.
+		* @see #add()
+		* @default false
+		*/
+        public static const PAUSED_AT_START : String = "pausedAtStart";
 		
 		
         
@@ -428,6 +441,12 @@ import br.com.stimuli.loading.BulkErrorEvent;
         *           <td><code>LoaderContext or SoundLoaderContext</code></td>
         *           <td>An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_LOADER</code> a LoaderContext should be passed.</td>
         *       </tr>
+        *       <tr>
+        *           <td>pausedAtStart</td.
+        *           <td><a href="#PAUSED_AT_START">PAUSED_AT_START</a></td>
+        *           <td><code>Boolean</code></td>
+        *           <td>If true, the nestream will be paused when loading has begun.</td>
+        *       </tr>
         *   </table>
         *   @example Retriving contents:<listing version="3.0">
 import br.stimuli.loaded.BulkLoader;
@@ -475,6 +494,7 @@ bulkLoader.start(3)
             item.maxTries = props[MAX_TRIES] || 3;
             item.weight = int(props[WEIGHT]) || 1;
             item.context = props[CONTEXT] || null;
+            item.pausedAtStart = props[PAUSED_AT_START] || false;
             // internal, used to sort items of the same priority
             item.addedTime = getTimer();
             item.addEventListener(Event.COMPLETE, onItemComplete, false, 0, true);
@@ -657,6 +677,7 @@ bulkLoader.start(3)
                 _contents[item.url.url] = item.stream;
             }
             log("Started loading", item, LOG_INFO);
+            dispatchEvent(evt);
         }
         
         private function onProgress(evt : Event = null) : void{

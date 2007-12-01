@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,XML_TYPES,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,LOG_SILENT,logLevel,numConnectons,contents,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,logFunction,speed,id,getLoader,hasItem,whichLoaderHasItem,add,start,registerNewType,getNotLoadedItems,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,traceStats,log,get,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,truncateNumber,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,XML_TYPES,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,OPEN,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,PAUSED_AT_START,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,LOG_SILENT,logLevel,numConnectons,contents,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,logFunction,speed,id,getLoader,hasItem,whichLoaderHasItem,add,start,registerNewType,getNotLoadedItems,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,traceStats,log,get,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,truncateNumber,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -552,6 +552,16 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#OPEN">OPEN</a> : String = "open"<div class="summaryTableDescription">[static] 
+          The name of the event 
+          </div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PAUSED_AT_START">PAUSED_AT_START</a> : String = "pausedAtStart"<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#PREVENT_CACHING">PREVENT_CACHING</a> : String = "preventCache"<div class="summaryTableDescription">[static] If <code>true</code> a random query (or post data parameter) will be added to prevent caching.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
@@ -755,7 +765,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public static var LOADER_TYPES:Array</code><p> List of file extensions that will be automagically use a <code>Loader</code> object for loading.
-          Availabe types: txt, js, xml, php, asp .
+          Availabe types: swf, jpg, jpeg, gif, png, image.
         </p></div>
 <a name="logFunction"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -857,7 +867,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public static var SOUND_TYPES:Array</code><p> List of file extensions that will be automagically treated as sound for loading.
-         Availabe types: mp3.
+         Availabe types: mp3, f4a, f4b.
         </p></div>
 <a name="speed"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -917,7 +927,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public static var VIDEO_TYPES:Array</code><p> List of file extensions that will be automagically treated as video for loading. 
-         Availabe types: flv. 
+         Availabe types: flv, f4v, f4p. 
         </p></div>
 <a name="weightPercent"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1050,6 +1060,12 @@ showHideInherited();
                   <td><a href="#CONTEXT">CONTEXT</a></td>
                   <td><code>LoaderContext or SoundLoaderContext</code></td>
                   <td>An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_LOADER</code> a LoaderContext should be passed.</td>
+              </tr>
+              <tr>
+                  <td>pausedAtStart</td.
+                  <td><a href="#PAUSED_AT_START">PAUSED_AT_START</a></td>
+                  <td><code>Boolean</code></td>
+                  <td>If true, the nestream will be paused when loading has begun.</td>
               </tr>
           </table>
           </td>
@@ -2060,6 +2076,25 @@ bulkLoader.start(3)
 <div class="seeAlso">
 <a href="../loading/BulkLoader.html#add()" target="">add()</a>
 </div>
+</div>
+<a name="OPEN"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">OPEN</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const OPEN:String = "open"</code><p> 
+          The name of the event 
+          </p></div>
+<a name="PAUSED_AT_START"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">PAUSED_AT_START</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const PAUSED_AT_START:String = "pausedAtStart"</code>
 </div>
 <a name="PREVENT_CACHING"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">

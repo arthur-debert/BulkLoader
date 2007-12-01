@@ -2,7 +2,7 @@
 *   
 *   
 *   @author Arthur Debert
-*   @version 0.4
+*   @version 0.9.1
 */
 
 /*
@@ -60,7 +60,7 @@ package br.com.stimuli.loading {
     /**
      *  Dispatched when the connection has been stablished and the download has begun. For types that can be streamed such as videos (<code>NetStream</code>) and sound(<code>Sound</code>), it's content is will be available after this event has fired.
      *
-     *  @eventType flash.events.ProgressEvent.COMPLETE
+     *  @eventType flash.events.Event.OPEN
      */
     [Event(name="open", type="flash.events.Event.OPEN")]
     
@@ -133,6 +133,7 @@ package br.com.stimuli.loading {
         private var nc:NetConnection;
         internal var stream : NetStream;
         private var dummyEventTrigger : Sprite;
+        internal var pausedAtStart : Boolean = false;
         
         private var _metaData : Object;
         private var internalType : String;
@@ -304,7 +305,7 @@ package br.com.stimuli.loading {
            dispatchEvent(evt);
         }
         
-        private function onErrorHandler(evt : BulkErrorEvent) : void{
+        private function onErrorHandler(evt : Event) : void{
             numTries ++;
             status = STATUS_ERROR;   
             if(numTries >= maxTries){
@@ -322,6 +323,9 @@ package br.com.stimuli.loading {
             responseTime = getTimer();
             latency = BulkLoader.truncateNumber((responseTime - startTime)/1000);
             status = STATUS_STARTED;
+            if(pausedAtStart && stream){
+                stream.pause();
+            }
             dispatchEvent(evt);
         }
         
@@ -353,7 +357,7 @@ package br.com.stimuli.loading {
                 removalTarget.removeEventListener(ProgressEvent.PROGRESS, onProgressHandler, false);
                 removalTarget.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
                 removalTarget.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
-                removalTarget.removeEventListener(Event.OPEN, onStartedHandler, false);
+                removalTarget.removeEventListener(BulkLoader.OPEN, onStartedHandler, false);
             }else if (type == BulkLoader.TYPE_VIDEO ) {
                 if (stream) stream.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
                 if(dummyEventTrigger){
