@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="LoadingItem,br.com.stimuli.loading.LoadingItem,STATUS_STOPPED,STATUS_STARTED,STATUS_FINISHED,STATUS_ERROR,type,url,id,_isLoaded,_isLoading,status,maxTries,numTries,weight,preventCache,_bytesTotal,_bytesLoaded,_percentLoaded,_weightPercentLoaded,context,stream,pausedAtStart,content,metaData,bytesTotal,bytesLoaded,percentLoaded,weightPercentLoaded,priority,addedTime,startTime,responseTime,latency,totalTime,timeToDownload,speed,httpStatus,load,createNetStreamEvent,onNetStatus,onHttpStatusHandler,onVideoMetadata,toString,stop,cleanListeners,isVideo,isSound,isText,isXML,isLoader,destroy" name="keywords">
+<meta content="LoadingItem,br.com.stimuli.loading.LoadingItem,content,type,id,toString,isVideo,isSound,isText,isXML,isLoader" name="keywords">
 <title>br.com.stimuli.loading.LoadingItem</title>
 </head>
 <body>
@@ -19,7 +19,7 @@
 <td align="left" class="titleTableTitle">BulkLoader Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../index-list.html')" href="../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../index.html?br/com/stimuli/loading/LoadingItem.html&amp;br/com/stimuli/loading/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../images/logo.jpg"></td>
 </tr>
 <tr class="titleTableRow2">
-<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;LoadingItem</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#eventSummary">Events</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;LoadingItem</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#eventSummary">Events</a></td>
 </tr>
 <tr class="titleTableRow3">
 <td colspan="2">&nbsp;</td>
@@ -27,7 +27,7 @@
 </table>
 <script type="text/javascript" language="javascript">
 <!--
-if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class LoadingItem"); titleBar_setSubNav(true,true,false,false,true,false,true,false,false,false,false,false,false,false);}
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class LoadingItem"); titleBar_setSubNav(false,true,false,false,true,false,true,false,false,false,false,false,false,false);}
 --></script>
 <div class="MainContent">
 <table cellspacing="0" cellpadding="0" class="classHeaderTable">
@@ -56,131 +56,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#addedTime">addedTime</a> : int<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_bytesLoaded">_bytesLoaded</a> : int = 0<div class="summaryTableDescription">the number of bytes loaded so far.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bytesLoaded">bytesLoaded</a> : int<div class="summaryTableDescription">[read-only]</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_bytesTotal">_bytesTotal</a> : int = -1<div class="summaryTableDescription">the number of bytes to load.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bytesTotal">bytesTotal</a> : int<div class="summaryTableDescription">[read-only]</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#content">content</a> : *<div class="summaryTableDescription">[read-only] The content resulting from this download.</div>
 </td><td class="summaryTableOwnerCol">LoadingItem</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#context">context</a> : * = null<div class="summaryTableDescription"></div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#id">id</a> : String<div class="summaryTableDescription">[read-only] The id this item was assigned.</div>
 </td><td class="summaryTableOwnerCol">LoadingItem</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#httpStatus">httpStatus</a> : int<div class="summaryTableDescription">[read-only]</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#id">id</a> : String<div class="summaryTableDescription">An [optional] id to retrieve the item by.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_isLoaded">_isLoaded</a> : Boolean<div class="summaryTableDescription">Indicated if item is loaded and ready to use..</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_isLoading">_isLoading</a> : Boolean<div class="summaryTableDescription">Indicated if loading has stated.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#latency">latency</a> : Number<div class="summaryTableDescription"> The time (in seconds) that the server took and send begin streaming content.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#maxTries">maxTries</a> : int = 3<div class="summaryTableDescription">Maximun number of tries in case it fails.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#metaData">metaData</a> : Object<div class="summaryTableDescription">[read-only]</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#numTries">numTries</a> : int = 0<div class="summaryTableDescription">Current try number.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#pausedAtStart">pausedAtStart</a> : Boolean = false<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_percentLoaded">_percentLoaded</a> : Number<div class="summaryTableDescription">The percentage of loading done (from 0 to 1).</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#percentLoaded">percentLoaded</a> : Number<div class="summaryTableDescription">[read-only]</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#preventCache">preventCache</a> : Boolean<div class="summaryTableDescription">If a random string should be appended to the end of the url to prevent caching.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#priority">priority</a> : int<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#responseTime">responseTime</a> : Number<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#speed">speed</a> : Number<div class="summaryTableDescription"> The speed (in kbs) for this download.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#startTime">startTime</a> : int<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#status">status</a> : String<div class="summaryTableDescription">At what stage this item is at ( canceled, started, finished or error).</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#stream">stream</a> : NetStream<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#timeToDownload">timeToDownload</a> : int<div class="summaryTableDescription"> The total time (in seconds) this item took to load.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#totalTime">totalTime</a> : int<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#type">type</a> : String<div class="summaryTableDescription">The type of loading to perform (see <code>BulkLoader.TYPES</code>).</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#url">url</a> : URLRequest<div class="summaryTableDescription">The url to load the asset from.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#weight">weight</a> : int = 1<div class="summaryTableDescription">A relative unit of size, so that preloaders can show relative progress before all connections have started.</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_weightPercentLoaded">_weightPercentLoaded</a> : Number<div class="summaryTableDescription">The percentage of loading done relative to the weight of this item(from 0 to 1).</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#weightPercentLoaded">weightPercentLoaded</a> : Number<div class="summaryTableDescription">[read-only]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#type">type</a> : String<div class="summaryTableDescription">[read-only] The type of this item.</div>
 </td><td class="summaryTableOwnerCol">LoadingItem</td>
 </tr>
 </table>
@@ -196,27 +80,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#LoadingItem()">LoadingItem</a>(url:URLRequest, type:String)</div>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#cleanListeners()">cleanListeners</a>():void</div>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#createNetStreamEvent()">createNetStreamEvent</a>(evt:Event):void</div>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#destroy()">destroy</a>():void</div>
 <div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">LoadingItem</td>
 </tr>
@@ -252,41 +115,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#isXML()">isXML</a>():Boolean</div>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#load()">load</a>():void</div>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#onHttpStatusHandler()">onHttpStatusHandler</a>(evt:HTTPStatusEvent):void</div>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#onNetStatus()">onNetStatus</a>(evt:NetStatusEvent):void</div>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#onVideoMetadata()">onVideoMetadata</a>(evt:*):void</div>
-<div class="summaryTableDescription"></div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#stop()">stop</a>():void</div>
 <div class="summaryTableDescription"></div>
 </td><td class="summaryTableOwnerCol">LoadingItem</td>
 </tr>
@@ -332,31 +160,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 </div>
-<a name="constantSummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Public Constants</div>
-<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#STATUS_ERROR">STATUS_ERROR</a> : String = "error"<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#STATUS_FINISHED">STATUS_FINISHED</a> : String = "finished"<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#STATUS_STARTED">STATUS_STARTED</a> : String = "started"<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#STATUS_STOPPED">STATUS_STOPPED</a> : String = "stopped"<div class="summaryTableDescription">[static]</div>
-</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-</table>
-</div>
 <script type="text/javascript" language="javascript">
 <!--
 showHideInherited();
@@ -364,64 +167,10 @@ showHideInherited();
 <div class="MainContent">
 <a name="propertyDetail"></a>
 <div class="detailSectionHeader">Property detail</div>
-<a name="addedTime"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">addedTime</td><td class="detailHeaderType">property</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>addedTime:int</code>&nbsp;&nbsp;[read-write]<span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get addedTime():int</code>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set addedTime(value:int):void</code>
-<br>
-</div>
-<a name="_bytesLoaded"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_bytesLoaded</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _bytesLoaded:int = 0</code><p>the number of bytes loaded so far. Starts at -1.</p></div>
-<a name="bytesLoaded"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">bytesLoaded</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>bytesLoaded:int</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get bytesLoaded():int</code>
-<br>
-</div>
-<a name="_bytesTotal"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_bytesTotal</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _bytesTotal:int = -1</code><p>the number of bytes to load. Starts at -1.</p></div>
-<a name="bytesTotal"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">bytesTotal</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>bytesTotal:int</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get bytesTotal():int</code>
-<br>
-</div>
 <a name="content"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">content</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">content</td><td class="detailHeaderType">property</td>
 </tr>
 </table>
 <div class="detailBody">
@@ -431,27 +180,6 @@ showHideInherited();
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get content():*</code>
 <br>
 </div>
-<a name="context"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">context</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var context:* = null</code>
-</div>
-<a name="httpStatus"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">httpStatus</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>httpStatus:int</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get httpStatus():int</code>
-<br>
-</div>
 <a name="id"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -459,201 +187,10 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public var id:String</code><p>An [optional] id to retrieve the item by.</p></div>
-<a name="_isLoaded"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_isLoaded</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _isLoaded:Boolean</code><p>Indicated if item is loaded and ready to use..</p></div>
-<a name="_isLoading"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_isLoading</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _isLoading:Boolean</code><p>Indicated if loading has stated.</p></div>
-<a name="latency"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">latency</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>latency:Number</code>&nbsp;&nbsp;[read-write]<p> The time (in seconds) that the server took and send begin streaming content.</p><span class="label">Implementation</span>
+<code>id:String</code>&nbsp;&nbsp;[read-only]<p> The id this item was assigned. This is use in all of BulkLoader.getXXX(key) functions
+        </p><span class="label">Implementation</span>
 <br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get latency():Number</code>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set latency(value:Number):void</code>
-<br>
-</div>
-<a name="maxTries"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">maxTries</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var maxTries:int = 3</code><p>Maximun number of tries in case it fails.</p></div>
-<a name="metaData"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">metaData</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>metaData:Object</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get metaData():Object</code>
-<br>
-</div>
-<a name="numTries"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">numTries</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var numTries:int = 0</code><p>Current try number.</p></div>
-<a name="pausedAtStart"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">pausedAtStart</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var pausedAtStart:Boolean = false</code>
-</div>
-<a name="_percentLoaded"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_percentLoaded</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _percentLoaded:Number</code><p>The percentage of loading done (from 0 to 1).</p></div>
-<a name="percentLoaded"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">percentLoaded</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>percentLoaded:Number</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get percentLoaded():Number</code>
-<br>
-</div>
-<a name="preventCache"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">preventCache</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var preventCache:Boolean</code><p>If a random string should be appended to the end of the url to prevent caching.</p></div>
-<a name="priority"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">priority</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>priority:int</code>&nbsp;&nbsp;[read-write]<span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get priority():int</code>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set priority(value:int):void</code>
-<br>
-</div>
-<a name="responseTime"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">responseTime</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>responseTime:Number</code>&nbsp;&nbsp;[read-write]<span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get responseTime():Number</code>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set responseTime(value:Number):void</code>
-<br>
-</div>
-<a name="speed"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">speed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>speed:Number</code>&nbsp;&nbsp;[read-write]<p> The speed (in kbs) for this download.</p><span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get speed():Number</code>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set speed(value:Number):void</code>
-<br>
-</div>
-<a name="startTime"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">startTime</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>startTime:int</code>&nbsp;&nbsp;[read-write]<span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get startTime():int</code>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set startTime(value:int):void</code>
-<br>
-</div>
-<a name="status"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">status</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var status:String</code><p>At what stage this item is at ( canceled, started, finished or error).</p></div>
-<a name="stream"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">stream</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var stream:NetStream</code>
-</div>
-<a name="timeToDownload"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">timeToDownload</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>timeToDownload:int</code>&nbsp;&nbsp;[read-write]<p> The total time (in seconds) this item took to load.</p><span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get timeToDownload():int</code>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set timeToDownload(value:int):void</code>
-<br>
-</div>
-<a name="totalTime"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">totalTime</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>totalTime:int</code>&nbsp;&nbsp;[read-write]<span class="label">Implementation</span>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get totalTime():int</code>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set totalTime(value:int):void</code>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get id():String</code>
 <br>
 </div>
 <a name="type"></a>
@@ -663,42 +200,15 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public var type:String</code><p>The type of loading to perform (see <code>BulkLoader.TYPES</code>).</p></div>
-<a name="url"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">url</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var url:URLRequest</code><p>The url to load the asset from.</p></div>
-<a name="weight"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">weight</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var weight:int = 1</code><p>A relative unit of size, so that preloaders can show relative progress before all connections have started.</p></div>
-<a name="_weightPercentLoaded"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">_weightPercentLoaded</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public var _weightPercentLoaded:Number</code><p>The percentage of loading done relative to the weight of this item(from 0 to 1).</p></div>
-<a name="weightPercentLoaded"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">weightPercentLoaded</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>weightPercentLoaded:Number</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<code>type:String</code>&nbsp;&nbsp;[read-only]<p> The type of this item.
+          </p><span class="label">Implementation</span>
 <br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get weightPercentLoaded():Number</code>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get type():String</code>
 <br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">BulkLoader.AVAILABLE_TYPES</div>
 </div>
 <a name="constructorDetail"></a>
 <div class="detailSectionHeader">Constructor detail</div>
@@ -724,42 +234,10 @@ showHideInherited();
 </div>
 <a name="methodDetail"></a>
 <div class="detailSectionHeader">Method detail</div>
-<a name="cleanListeners()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">cleanListeners</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function cleanListeners():void</code>
-</div>
-<a name="createNetStreamEvent()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">createNetStreamEvent</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function createNetStreamEvent(evt:Event):void</code><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">evt</span>:Event</code></td>
-</tr>
-</table>
-</div>
-<a name="destroy()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">destroy</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function destroy():void</code>
-</div>
 <a name="isLoader()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">isLoader</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">isLoader</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
 </tr>
 </table>
 <div class="detailBody">
@@ -836,66 +314,6 @@ showHideInherited();
 </tr>
 </table>
 </div>
-<a name="load()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">load</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function load():void</code>
-</div>
-<a name="onHttpStatusHandler()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">onHttpStatusHandler</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function onHttpStatusHandler(evt:HTTPStatusEvent):void</code><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">evt</span>:HTTPStatusEvent</code></td>
-</tr>
-</table>
-</div>
-<a name="onNetStatus()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">onNetStatus</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function onNetStatus(evt:NetStatusEvent):void</code><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">evt</span>:NetStatusEvent</code></td>
-</tr>
-</table>
-</div>
-<a name="onVideoMetadata()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">onVideoMetadata</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function onVideoMetadata(evt:*):void</code><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">evt</span>:*</code></td>
-</tr>
-</table>
-</div>
-<a name="stop()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">stop</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function stop():void</code>
-</div>
 <a name="toString()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -949,44 +367,6 @@ showHideInherited();
 <p></p><p>
       Dispatched on download progress.
            </p></div>
-<a name="constantDetail"></a>
-<div class="detailSectionHeader">Constant detail</div>
-<a name="STATUS_ERROR"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">STATUS_ERROR</td><td class="detailHeaderType">constant</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static const STATUS_ERROR:String = "error"</code>
-</div>
-<a name="STATUS_FINISHED"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">STATUS_FINISHED</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static const STATUS_FINISHED:String = "finished"</code>
-</div>
-<a name="STATUS_STARTED"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">STATUS_STARTED</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static const STATUS_STARTED:String = "started"</code>
-</div>
-<a name="STATUS_STOPPED"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">STATUS_STOPPED</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static const STATUS_STOPPED:String = "stopped"</code>
-</div>
 <br>
 <br>
 <hr>

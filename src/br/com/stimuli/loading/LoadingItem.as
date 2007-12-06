@@ -75,64 +75,109 @@ package br.com.stimuli.loading {
     *   @since  15.09.2007
     */  
     public class LoadingItem extends EventDispatcher {
-
+        /** @private */
         internal static const STATUS_STOPPED : String = "stopped";
+        /** @private */
         internal static const STATUS_STARTED : String = "started";
+        /** @private */
         internal static const STATUS_FINISHED : String = "finished";
+        /** @private */
         internal static const STATUS_ERROR : String = "error";
 
-        /**The type of loading to perform (see <code>BulkLoader.TYPES</code>).*/
-        internal var type : String;
-        /**The url to load the asset from.*/
+        /** The type of loading to perform (see <code>BulkLoader.TYPES</code>).
+        * @private */
+        internal var _type : String;
+        // The url to load the asset from.
+        /** @private */
         internal var url : URLRequest;
-        /**An [optional] id to retrieve the item by.*/
-        internal var id : String;
-        /** The priority at which this item will be downloaded. Items with a higher priority will be downloaded first.*/
-        private var _priority : int = 0;
-        /**Indicated if item is loaded and ready to use..*/
+        /** @private */
+        internal var _id : String;
+
+        /** @private */
+        internal var _priority : int = 0;
+        /** @private */
+        
+        ///**Indicated if item is loaded and ready to use..*/
         internal var _isLoaded : Boolean;
-        /**Indicated if loading has stated.*/
+        /**Indicated if loading has stated.
+        * @private 
+        */
         internal var _isLoading : Boolean;
-        /**At what stage this item is at ( canceled, started, finished or error).*/
+        /** @private 
+        *   At what stage this item is at ( canceled, started, finished or error).
+        */
         internal var status : String;
-        /**Maximun number of tries in case it fails.*/
+        // 
+        /** @private 
+        *   Maximun number of tries in case it fails.
+        *   */
         internal var maxTries : int = 3;
-        /**Current try number.*/
+        /**Current try number.
+        *   @private
+        */
         internal var numTries : int = 0;
         
-        /**A relative unit of size, so that preloaders can show relative progress before all connections have started.*/
+        /**A relative unit of size, so that preloaders can show relative progress before all connections have started.
+        * @private
+        */
         internal var weight : int = 1;
-        /**If a random string should be appended to the end of the url to prevent caching.*/
+        /**If a random string should be appended to the end of the url to prevent caching.
+        *   @private
+        */
         internal var preventCache : Boolean;
-        /**the number of bytes to load. Starts at -1.*/
+        /**the number of bytes to load. Starts at -1.
+        *   @private
+        */
         internal var _bytesTotal : int = -1;
-        /**the number of bytes loaded so far. Starts at -1.*/
+        /**the number of bytes loaded so far. Starts at -1.
+        * @private
+        */
         internal var _bytesLoaded : int = 0;
-        /**The percentage of loading done (from 0 to 1).*/
+        /**The percentage of loading done (from 0 to 1).
+        * @private   
+        */
         internal var _percentLoaded : Number;
-        /**The percentage of loading done relative to the weight of this item(from 0 to 1).*/
+        /**The percentage of loading done relative to the weight of this item(from 0 to 1).
+        *   @private
+        */
         internal var _weightPercentLoaded : Number;
-        
-        private var _addedTime : int ;
+        /**
+        *   @private
+        */
+        internal var _addedTime : int ;
         private var _startTime : int ;
         private var _responseTime : Number;
-        /** The time (in seconds) that the server took and send begin streaming content.*/
-        private var _latency : Number;
+        /** The time (in seconds) that the server took and send begin streaming content.
+            @private
+        */
+        internal var _latency : Number;
         private var _totalTime : int;
         /** The total time (in seconds) this item took to load.*/
         private var _timeToDownload : int;
-        /** The speed (in kbs) for this download.*/
-        private var _speed : Number;
+        /** The speed (in kbs) for this download.
+        *   @private
+        *   */
+        internal var _speed : Number;
         /** Internal object used to manage this download.*/
         private var loader : *;
 
         private var _content : *;
         private var _httpStatus : int = 0;
+        /**
+        *   @private
+        */
         internal var context : * = null;
         // for video:
         private var nc:NetConnection;
+        
+        /**
+        *   @private
+        */
         internal var stream : NetStream;
         private var dummyEventTrigger : Sprite;
+        /**
+        *   @private
+        */
         internal var pausedAtStart : Boolean = false;
         
         private var _metaData : Object;
@@ -148,23 +193,23 @@ package br.com.stimuli.loading {
         public function LoadingItem(url : URLRequest, type : String){
             
             if (type) {
-                this.type = type.toLowerCase();
+                this._type = type.toLowerCase();
             }else{
                 // no type is given, try to guess from the url
                 var searchString : String = url.url.indexOf("?") > -1 ? url.url.substring(0, url.url.indexOf("?")) : url.url;
-                this.type = searchString.substring(searchString.lastIndexOf(".") + 1).toLowerCase();
+                this._type = searchString.substring(searchString.lastIndexOf(".") + 1).toLowerCase();
             }
-            if(!Boolean(this.type) ){
-                this.type = BulkLoader.TYPE_TEXT;
+            if(!Boolean(this._type) ){
+                this._type = BulkLoader.TYPE_TEXT;
             }
             // find out from the type, what we will be using for loading (the internalType)
-            if(this.type == BulkLoader.TYPE_LOADER || BulkLoader.LOADER_TYPES.indexOf(this.type) > -1){
+            if(this._type == BulkLoader.TYPE_LOADER || BulkLoader.LOADER_TYPES.indexOf(this._type) > -1){
                 internalType = BulkLoader.TYPE_LOADER;
-            }else if (this.type == BulkLoader.TYPE_SOUND ||BulkLoader.SOUND_TYPES.indexOf(this.type) > -1){
+            }else if (this._type == BulkLoader.TYPE_SOUND ||BulkLoader.SOUND_TYPES.indexOf(this._type) > -1){
                 internalType = BulkLoader.TYPE_SOUND;
-            }else if (this.type == BulkLoader.TYPE_VIDEO ||BulkLoader.VIDEO_TYPES.indexOf(this.type) > -1){
+            }else if (this._type == BulkLoader.TYPE_VIDEO ||BulkLoader.VIDEO_TYPES.indexOf(this._type) > -1){
                 internalType = BulkLoader.TYPE_VIDEO;
-            }else if (this.type == BulkLoader.TYPE_XML ||BulkLoader.XML_TYPES.indexOf(this.type) > -1){
+            }else if (this._type == BulkLoader.TYPE_XML ||BulkLoader.XML_TYPES.indexOf(this._type) > -1){
                 internalType = BulkLoader.TYPE_XML;
             }else{
                 internalType = BulkLoader.TYPE_TEXT;
@@ -178,7 +223,9 @@ package br.com.stimuli.loading {
         public function get content() : * { 
           return _content; 
         }
-        
+        /**
+        *   @private
+        */
         internal function load() : void{
             if (preventCache){
                 var cacheString : String = "BulkLoaderNoCache=" + int(Math.random()  * 100 * getTimer());
@@ -228,9 +275,11 @@ package br.com.stimuli.loading {
                 loader.load(url);
             }
             _isLoading = true;
-            startTime = getTimer();
+            _startTime = getTimer();
         }
-        
+        /**
+        *   @private
+        */
         internal function createNetStreamEvent(evt : Event) : void{
             if(_bytesTotal == _bytesLoaded && _bytesTotal > 8){
                 dummyEventTrigger.removeEventListener(Event.ENTER_FRAME, createNetStreamEvent, false);
@@ -247,6 +296,9 @@ package br.com.stimuli.loading {
             }
         }
         
+        /**
+        *   @private
+        */
         internal function onNetStatus(evt : NetStatusEvent) : void{
             stream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatus, false);
             if(evt.info.code == "NetStream.Play.Start"){
@@ -255,19 +307,29 @@ package br.com.stimuli.loading {
                 onStartedHandler(e);
             }
         }
-
+        /**
+        *   @private
+        */
         internal function onHttpStatusHandler(evt : HTTPStatusEvent) : void{
             _httpStatus = evt.status;
             dispatchEvent(evt);
         }
+        /**
+        *   @private
+        */
         internal function onVideoMetadata(evt : *):void{
             _metaData = evt;
         };
         
+        /**
+        *   @private
+        */
         public function get metaData() : Object { 
             return _metaData; 
         }
-        
+        /**
+        *   @private
+        */
         private function onProgressHandler(evt : *) : void {
            _bytesLoaded = evt.bytesLoaded;
            _bytesTotal = evt.bytesTotal;
@@ -278,20 +340,20 @@ package br.com.stimuli.loading {
         
         private function onCompleteHandler(evt : Event) : void {
             _totalTime = getTimer();
-            timeToDownload = ((totalTime - responseTime) /1000);
-            if(timeToDownload == 0){
-                timeToDownload = 0.2;
+            _timeToDownload = ((_totalTime - _responseTime) /1000);
+            if(_timeToDownload == 0){
+                _timeToDownload = 0.2;
             }
-            speed = BulkLoader.truncateNumber((bytesTotal / 1024) / (timeToDownload));
-            if (timeToDownload == 0){
-                speed  = 3000;
+            _speed = BulkLoader.truncateNumber((bytesTotal / 1024) / (_timeToDownload));
+            if (_timeToDownload == 0){
+                _speed  = 3000;
             }
            status = STATUS_FINISHED;
            _isLoaded = true;
            if (loader is Loader){
                _content = loader.content;
            }else if (loader is URLLoader){
-               if(type == BulkLoader.TYPE_XML){
+               if(_type == BulkLoader.TYPE_XML){
                    _content = new XML(loader.data);
                }else{
                    _content = loader.data;
@@ -320,8 +382,8 @@ package br.com.stimuli.loading {
         }
         
         private function onStartedHandler(evt : Event) : void{
-            responseTime = getTimer();
-            latency = BulkLoader.truncateNumber((responseTime - startTime)/1000);
+            _responseTime = getTimer();
+            _latency = BulkLoader.truncateNumber((_responseTime - _startTime)/1000);
             status = STATUS_STARTED;
             if(pausedAtStart && stream){
                 stream.pause();
@@ -330,9 +392,12 @@ package br.com.stimuli.loading {
         }
         
         public override function toString() : String{
-            return "LoadingItem url: " + url.url + ", type:" + type + ", status: " + status;
+            return "LoadingItem url: " + url.url + ", type:" + _type + ", status: " + status;
         }
         
+        /**
+        *   @private
+        */
         internal function stop() : void{
             if(_isLoaded){
                 return;
@@ -347,9 +412,11 @@ package br.com.stimuli.loading {
             status = STATUS_STOPPED;
             _isLoading = false;
         }
-        
+        /**
+        *   @private
+        */
         internal function cleanListeners() : void {
-            if (type != BulkLoader.TYPE_VIDEO && loader){
+            if (_type != BulkLoader.TYPE_VIDEO && loader){
                 var removalTarget : Object = loader;
                 if (loader is Loader){
                     removalTarget = loader.contentLoaderInfo;
@@ -358,7 +425,7 @@ package br.com.stimuli.loading {
                 removalTarget.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
                 removalTarget.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
                 removalTarget.removeEventListener(BulkLoader.OPEN, onStartedHandler, false);
-            }else if (type == BulkLoader.TYPE_VIDEO ) {
+            }else if (_type == BulkLoader.TYPE_VIDEO ) {
                 if (stream) stream.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
                 if(dummyEventTrigger){
                     dummyEventTrigger.removeEventListener(Event.ENTER_FRAME, createNetStreamEvent, false);
@@ -389,6 +456,9 @@ package br.com.stimuli.loading {
             return internalType == BulkLoader.TYPE_LOADER;
         }
         
+        /**
+        *   @private
+        */
         internal function destroy() : void{
             stop();
             cleanListeners();
@@ -396,93 +466,110 @@ package br.com.stimuli.loading {
         }
         
         
-        /* Public accessors
+        /** Public accessors
+        *   @private
         */
-        public function get bytesTotal() : int { 
+        internal function get bytesTotal() : int { 
             return _bytesTotal; 
         }
         
-        public function get bytesLoaded() : int { 
+        /**
+        *   @private
+        */
+        internal function get bytesLoaded() : int { 
             return _bytesLoaded; 
         }
         
-        public function get percentLoaded() : Number { 
+        /**
+        *   @private
+        */
+        internal function get percentLoaded() : Number { 
             return _percentLoaded; 
         }
         
-        public function get weightPercentLoaded() : Number { 
+        /**
+        *   @private
+        */
+        internal function get weightPercentLoaded() : Number { 
             return _weightPercentLoaded; 
         }
-        
+        /** The priority at which this item will be downloaded. Items with a higher priority will be downloaded first.
+        *   @private
+        */
         public function get priority() : int { 
             return _priority; 
         }
         
-        public function set priority(value:int) : void { 
-            _priority = value; 
+        /** The type of this item.
+        *   @see BulkLoader.AVAILABLE_TYPES
+        */
+        public function get type() : String{
+            return _type;
         }
-        
+        /**
+        *   @private
+        */
         public function get addedTime() : int { 
             return _addedTime; 
         }
-        
-        public function set addedTime(value:int) : void { 
-            _addedTime = value; 
-        }
-        
+    
+        /**
+        *   @private
+        */
         public function get startTime() : int { 
             return _startTime; 
         }
         
-        public function set startTime(value:int) : void { 
-            _startTime = value; 
-        }
-        
+        /**
+        *   @private
+        */
         public function get responseTime() : Number { 
             return _responseTime; 
         }
         
-        public function set responseTime(value:Number) : void { 
-            _responseTime = value; 
-        }
-        /** The time (in seconds) that the server took and send begin streaming content.*/
         
+        /** The time (in seconds) that the server took and send begin streaming content.
+        *   @private
+        */
         public function get latency() : Number { 
             return _latency; 
         }
         
-        public function set latency(value:Number) : void { 
-            _latency = value; 
-        }
-        
+        /**
+        *   @private
+        */
         public function get totalTime() : int { 
             return _totalTime; 
         }
         
-        public function set totalTime(value:int) : void { 
-            _totalTime = value; 
-        }
-        /** The total time (in seconds) this item took to load.*/
+        /** The total time (in seconds) this item took to load.
+        *   @private
+        */
         public function get timeToDownload() : int { 
             return _timeToDownload; 
         }
         
-        public function set timeToDownload(value:int) : void { 
-            _timeToDownload = value; 
-        }
-        /** The speed (in kbs) for this download.*/
+        /** The speed (in kbs) for this download.
+        *   @private
+        */
         public function get speed() : Number { 
             return _speed; 
         }
         
-        public function set speed(value:Number) : void { 
-            _speed = value; 
-        }
-        
-        /* The httpStatus of the LoadingItem, as in int (0 if no status has been received) */
+        /** The httpStatus of the LoadingItem, as in int (0 if no status has been received).
+        *   @private
+        */
         public function get httpStatus() : int { 
             return _httpStatus; 
-        }                                     
+        }       
+        
+        /** The id this item was assigned. This is use in all of BulkLoader.getXXX(key) functions
+        */
+        public function get id() : String { 
+            return _id; 
+        }
+        
+        
     }
     
 }

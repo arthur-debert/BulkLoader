@@ -489,14 +489,14 @@ bulkLoader.start(3)
             log("Added",item, LOG_VERBOSE);
             // properties from the props argument
             item.preventCache = props[PREVENT_CACHING];
-            item.id = props[ID];
-            item.priority = int(props[PRIORITY]) || 0;
+            item._id = props[ID];
+            item._priority = int(props[PRIORITY]) || 0;
             item.maxTries = props[MAX_TRIES] || 3;
             item.weight = int(props[WEIGHT]) || 1;
             item.context = props[CONTEXT] || null;
             item.pausedAtStart = props[PAUSED_AT_START] || false;
             // internal, used to sort items of the same priority
-            item.addedTime = getTimer();
+            item._addedTime = getTimer();
             item.addEventListener(Event.COMPLETE, onItemComplete, false, 0, true);
             item.addEventListener(ERROR, onItemError, false, 0, true);
             item.addEventListener(Event.OPEN, onItemStarted, false, 0, true);
@@ -1039,7 +1039,7 @@ bulkLoader.start(3)
         */
         public function get(key : *) : LoadingItem{
             for each (var item : LoadingItem in _items){
-                if(item.id == key || item.url.url == key || item.url == key  ){
+                if(item._id == key || item.url.url == key || item.url == key  ){
                     return item;
                 }
             }
@@ -1215,7 +1215,7 @@ bulkLoader.start(3)
         *   Returns a string identifing this loaded instace.
         */
         override public function toString() : String{
-            return "[BulkLoader] name:"+ name + "itemsTotal: " + itemsTotal + ", itemsLoaded: " + _itemsLoaded; 
+            return "[BulkLoader] name:"+ name + ", itemsTotal: " + itemsTotal + ", itemsLoaded: " + _itemsLoaded; 
         }
     }   
 }
