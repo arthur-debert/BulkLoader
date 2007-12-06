@@ -504,7 +504,7 @@ bulkLoader.start(3)
             _items.push(item);
             _itemsTotal += 1;
             _totalWeight += item.weight;
-            _items.sortOn(["priority", "addedTime"],  [Array.NUMERIC | Array.DESCENDING, Array.NUMERIC]);
+            sortItemsByPriority();
             _isFinished = false;
             return item;
         }
@@ -821,6 +821,28 @@ bulkLoader.start(3)
         
         public function get id() : int { 
             return _id; 
+        }
+        
+        /** Updates the priority of item identified by key with a new value, the queue will be re resorted right away.
+        *   Changing priorities will not stop currently opened connections.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded.
+        *   @param new The priority to assign to the item.
+        *   @return The <code>true</code> if an item with that key was found, <code>false</code> othersiwe.
+        */
+        public function changeItemPriority(key : String, newPriority : int) : Boolean{
+            var item : LoadingItem = get(key);
+            if (!item){
+                return false;
+            }
+            item._priority = newPriority;
+            sortItemsByPriority();
+            return true;
+        }
+        
+        /** Updates the priority queue
+        */
+        public function sortItemsByPriority() : void{
+            _items.sortOn(["priority", "addedTime"],  [Array.NUMERIC | Array.DESCENDING, Array.NUMERIC]);
         }
         /** ============================================================================== */
         /** = Acessing content functions                                                 = */
