@@ -1075,14 +1075,15 @@ bulkLoader.start(3)
         public function remove(key : *) : Boolean{      
             try{
                 var item : LoadingItem;
-                if (item is LoadingItem){
-                    item = item;
+                if (key is LoadingItem){
+                    item = key;
                 } else{
                     item = get(key);
                 }      
                 if(!item) {
                     return false;
                 }      
+                
                 removeFromItems(item);
                 removeFromConnections(item);
                 item.destroy();
@@ -1095,7 +1096,7 @@ bulkLoader.start(3)
                 }
                 return true;
             }catch(e : Error){
-                log("Error while removing item from key:" + key, LOG_INFO);
+                log("Error while removing item from key:" + key, LOG_ERRORS);
             }                                                     
             return false;
             
@@ -1143,15 +1144,17 @@ bulkLoader.start(3)
         *   After removing, it will try to restart loading if there are still items to load.
         *   @ return In any items have been removed.
         */
-        public function removeFailedItems(): Boolean{
-            var badLoads : Array = _items.filter(function (item : LoadingItem, ...rest) : Boolean{
+        public function removeFailedItems(): int{
+            var numCleared : int = 0;
+            var badItems : Array = _items.filter(function (item : LoadingItem, ...rest) : Boolean{
                 return (item.status == LoadingItem.STATUS_ERROR);
             });
-            badLoads.forEach(function(item : LoadingItem, ...rest):void{
-               remove(item); 
+            numCleared = badItems.length;
+            badItems.forEach(function (item : LoadingItem, ...rest) : void{
+                remove(item); 
             });
             loadNext();
-            return badLoads.length > 0;
+            return numCleared;
         }
         
         /** Stop loading the item identified by <code>key</code>. This will not remove the item from the <code>BulkLoader</code>. Note that progress notification will jump around, as the stopped item will still count as something to load, but it's byte count will be 0.
