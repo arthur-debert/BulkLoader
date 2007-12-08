@@ -727,6 +727,14 @@ bulkLoader.start(3)
           return _contents; 
         }
         
+        /** Returns a copy of all <code>LoadingItem</code> in this intance. This function makes a copy to avoid 
+        *   users messing with _items (removing items and so forth). Those can be done through functions in BulkLoader.
+        *   @return A array that is a shallow copy of all items in the BulkLoader.
+        */
+        public function get items() : Array { 
+            return _items.slice(); 
+        }
+        
         /**
 		* The name by which this loader instance can be identified.
 		* This property is used so you can get a reference to this instance from other classes in your code without having to save and pass it yourself, throught the static method BulkLoader.getLoader(name) .<p/>
@@ -844,6 +852,8 @@ bulkLoader.start(3)
         public function sortItemsByPriority() : void{
             _items.sortOn(["priority", "addedTime"],  [Array.NUMERIC | Array.DESCENDING, Array.NUMERIC]);
         }
+        
+        
         /** ============================================================================== */
         /** = Acessing content functions                                                 = */
         /** ============================================================================== */

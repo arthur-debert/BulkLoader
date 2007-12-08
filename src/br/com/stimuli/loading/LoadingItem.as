@@ -506,6 +506,12 @@ package br.com.stimuli.loading {
         public function get type() : String{
             return _type;
         }
+        
+        /** A Boolean that indicates if the item is fully loaded and ready for consumption.
+        */
+        public function get isLoaded() : Boolean { 
+            return _isLoaded; 
+        }
         /**
         *   @private
         */
