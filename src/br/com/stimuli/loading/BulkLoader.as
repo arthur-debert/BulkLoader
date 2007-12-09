@@ -795,6 +795,17 @@ bulkLoader.start(3)
             _isRunning = value; 
         }
         
+        /** Returns the highest priority for all items in this BulkLoader instance. This will check all items, 
+        *   including cancelled items and already downloaded items.
+        */
+        public function get highestPriority() : int{
+            var highest : int  = int.MIN_VALUE;
+            for each (var item : LoadingItem in _items){
+                if (item.priority > highest) highest = item.priority;
+            }
+            return highest;
+        }
+        
         /** The function to be used in logging. By default it's the same as the global function <code>trace</code>. The log function signature is:
         *   <pre>
         *   public function myLogFunction(msg : String) : void{}
