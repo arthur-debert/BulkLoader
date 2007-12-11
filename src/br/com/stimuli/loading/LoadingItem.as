@@ -432,8 +432,6 @@ package br.com.stimuli.loading {
                     dummyEventTrigger = null;
                 }
             }
-
-            loader = null;
         }
         
         public function isVideo(): Boolean{
@@ -463,6 +461,7 @@ package br.com.stimuli.loading {
             stop();
             cleanListeners();
             _content = null;
+            loader = null;
         }
         
         
