@@ -681,12 +681,24 @@ bulkLoader.start(3)
         }
         
         private function onProgress(evt : Event = null) : void{
+            var e : BulkProgressEvent = getProgressForItems(_items);
+            dispatchEvent(e);
+        }
+        
+        /** Calculates the progress for a specific set of items. 
+        *   @param keys An <code>Array</code> containing keys (ids or urls) or <code>LoadingItem</code> objects to measure progress of.
+        *   @return A <code>BulkProgressEvent</code> object with the current progress status.
+        *   @see BulkProgressEvent
+        */
+        public function getProgressForItems(keys : Array) : BulkProgressEvent{
             _bytesLoaded = _bytesTotal = _bytesTotalCurrent = 0;
             _weightPercent = 0;
             _itemsLoaded = 0;
             var itemsStarted : int = 0;
             var weightLoaded : Number = 0;
-            for each (var item:LoadingItem in _items){
+            for each (var item:* in keys){
+              item = item is LoadingItem ? item : get(item);
+              if (!item) continue;
               if (item.status == LoadingItem.STATUS_STARTED || item.status == LoadingItem.STATUS_FINISHED || item.status == LoadingItem.STATUS_STOPPED){
                   _bytesLoaded += item._bytesLoaded;
                   _bytesTotalCurrent += item._bytesTotal;
@@ -707,10 +719,8 @@ bulkLoader.start(3)
             _weightPercent = weightLoaded / totalWeight;
             var e : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
             e.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, _itemsLoaded, itemsTotal, weightPercent);
-            dispatchEvent(e);
+            return e;
         }
-        
-
         
         /** The number of simultaneous connections to use. This is per <code>BulkLoader</code> instance.
         *   @return The number of connections used.

@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,XML_TYPES,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,OPEN,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,PAUSED_AT_START,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,LOG_SILENT,logLevel,numConnectons,contents,items,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,highestPriority,logFunction,speed,id,getLoader,hasItem,whichLoaderHasItem,add,start,registerNewType,getNotLoadedItems,changeItemPriority,sortItemsByPriority,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,traceStats,log,get,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,truncateNumber,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,XML_TYPES,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,OPEN,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,PAUSED_AT_START,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,LOG_SILENT,logLevel,numConnectons,contents,items,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,highestPriority,logFunction,speed,id,getLoader,hasItem,whichLoaderHasItem,add,start,registerNewType,getProgressForItems,getNotLoadedItems,changeItemPriority,sortItemsByPriority,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,traceStats,log,get,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,truncateNumber,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -323,6 +323,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#getNotLoadedItems()">getNotLoadedItems</a>():Array</div>
 <div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getProgressForItems()">getProgressForItems</a>(keys:Array):<a href="../loading/BulkProgressEvent.html">BulkProgressEvent</a>
+</div>
+<div class="summaryTableDescription"> Calculates the progress for a specific set of items.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -715,7 +723,7 @@ showHideInherited();
 <div class="detailBody">
 <code>highestPriority:int</code>&nbsp;&nbsp;[read-only]<p> Returns the highest priority for all items in this BulkLoader instance. This will check all items, 
           including cancelled items and already downloaded items.
-         </p><span class="label">Implementation</span>
+        </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get highestPriority():int</code>
 <br>
@@ -1465,6 +1473,39 @@ bulkLoader.start(3)
 <td width="20"></td><td><code>Array</code></td>
 </tr>
 </table>
+</div>
+<a name="getProgressForItems()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getProgressForItems</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getProgressForItems(keys:Array):<a href="../loading/BulkProgressEvent.html">BulkProgressEvent</a></code><p> Calculates the progress for a specific set of items. 
+          </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">keys</span>:Array</code> &mdash; An <code>Array</code> containing keys (ids or urls) or <code>LoadingItem</code> objects to measure progress of.
+          </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../loading/BulkProgressEvent.html">BulkProgressEvent</a></code> &mdash; 
+                        A <code>BulkProgressEvent</code> object with the current progress status.
+          
+                        
+                     </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="BulkProgressEvent.html" target="">BulkProgressEvent</a>
+</div>
 </div>
 <a name="getSerializedData()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
