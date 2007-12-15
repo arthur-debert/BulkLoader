@@ -184,6 +184,14 @@ import br.com.stimuli.loading.BulkErrorEvent;
         */
     	public static const OPEN : String = "open";
     	
+    	/** 
+        *   The name of the event 
+        *   @eventType error
+        */
+    	public static const CAN_BEGIN_PLAYING : String = "canBeginPlaying";
+    	
+    	
+    	
 		// properties on adding a new url:
 		/** If <code>true</code> a random query (or post data parameter) will be added to prevent caching. Checked when adding a new item to load.
 		* @see #add()
@@ -335,7 +343,9 @@ import br.com.stimuli.loading.BulkErrorEvent;
                 throw new Error ("BulkLoader with name'" + name +"' has already been created.");
             }
             allLoaders[name] = this;
-            this._numConnectons = numConnectons;
+            if (numConnectons > 0){
+                this._numConnectons = numConnectons;
+            }
             this.logLevel = logLevel;
             _name = name;
             _instancesCreated ++;
@@ -497,7 +507,9 @@ bulkLoader.start(3)
             item.pausedAtStart = props[PAUSED_AT_START] || false;
             // internal, used to sort items of the same priority
             item._addedTime = getTimer();
-            item.addEventListener(Event.COMPLETE, onItemComplete, false, 0, true);
+            // add a lower priority than default, else the event for all items complete will fire before
+            // individual listerners attached to the item
+            item.addEventListener(Event.COMPLETE, onItemComplete, false, int.MIN_VALUE, true);
             item.addEventListener(ERROR, onItemError, false, 0, true);
             item.addEventListener(Event.OPEN, onItemStarted, false, 0, true);
             item.addEventListener(ProgressEvent.PROGRESS, onProgress, false, 0, true);
@@ -531,6 +543,49 @@ bulkLoader.start(3)
             lastSpeedCheck = getTimer();
         }
         
+        
+        /** Forces the item specified by key to be loaded right away. This will stop any open connection as needed.
+        *   If needed, the connection to be closed will be the one with the lower priority. In case of a tie, the one
+        *   that has more bytes to complete will be removed. The item to load now will be automatically be set the highest priority value in this BulkLoader instance.
+        *   @param key The url request, url as a string or a id  from which the asset was created.
+        *   @return <code>True</code> if an item with that key is found, <code>false</code> otherwise.
+        */
+        public function loadNow(key : *) : Boolean{
+            var item : LoadingItem ;
+            if (key is LoadingItem){
+                item = key;
+            }else{
+                item = get(key);
+            }
+            if(!item){
+                return false;
+            }
+            // is this item already loaded or loading?
+            if (item.status == LoadingItem.STATUS_FINISHED ||
+                item.status == LoadingItem.STATUS_STARTED){
+                return true;
+            } 
+            // do we need to remove an item from the open connections?
+            if (_connections.length >= numConnectons){
+                //which item should we remove?
+                var itemToRemove : LoadingItem = getLeastUrgentOpenedItem();
+                removeFromConnections(itemToRemove);
+                itemToRemove.status = null;
+            }
+            // update the item's piority so that subsequent calls to loadNow don't close a 
+            // connection we've just started to load
+            item._priority = highestPriority;
+            loadNext(item);
+            return true;
+        }
+        
+        /** Figures out which item to remove from open connections, comparation is done by priority
+        *   and then by bytes remaining
+        */
+        private function getLeastUrgentOpenedItem() : LoadingItem{
+            var toRemove : LoadingItem = LoadingItem(_connections.sortOn(["priority", "bytesRemaining"],  [Array.NUMERIC, Array.DESCENDING , Array.NUMERIC])[0]);
+            return toRemove;
+        }
         /**  Register a new file extension to be loaded as a given type. This is used both in the guessing of types from the url and affects how loading is done for each type.
         *   @param  extension   The file extension to be used (can include the dot or not)
         *   @param  atType      Which type this extension will be associated with. 

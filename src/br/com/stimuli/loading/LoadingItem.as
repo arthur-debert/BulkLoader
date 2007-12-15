@@ -65,6 +65,13 @@ package br.com.stimuli.loading {
     [Event(name="open", type="flash.events.Event.OPEN")]
     
     /**
+     *  Dispatched when the the netStream can be played until the end with no interuption expected. Only fires for TYPE_VIDEO items and will only fire once.
+     *
+     *  @eventType br.com.stimuli.loading.BulkLoader.CAN_BEGIN_PLAYING
+     */
+    [Event(name="canBeginPlaying", type="br.com.stimuli.loading.BulkLoader.CAN_BEGIN_PLAYING")]
+    
+    /**
     *   An object used in <code>BulkLoader</code> instances.<p/>
     *   A reference to a <code>LoadingItem</code> object can be used to attach events for an individual item.
     *
@@ -103,6 +110,13 @@ package br.com.stimuli.loading {
         * @private 
         */
         internal var _isLoading : Boolean;
+        
+        /** Indicates if we've already fired an event letting users know that the netstream can
+        *   begin playing (has enough buffer to play with no interruptions)
+        *   @private
+        */
+        private var _canBeginStreaming : Boolean = false;
+        
         /** @private 
         *   At what stage this item is at ( canceled, started, finished or error).
         */
@@ -133,6 +147,8 @@ package br.com.stimuli.loading {
         * @private
         */
         internal var _bytesLoaded : int = 0;
+        
+        internal var _bytesRemaining : int = -1;
         /**The percentage of loading done (from 0 to 1).
         * @private   
         */
@@ -333,9 +349,31 @@ package br.com.stimuli.loading {
         private function onProgressHandler(evt : *) : void {
            _bytesLoaded = evt.bytesLoaded;
            _bytesTotal = evt.bytesTotal;
+           _bytesRemaining = _bytesTotal - bytesLoaded;
            _percentLoaded = _bytesLoaded / _bytesTotal;
            _weightPercentLoaded = _percentLoaded * weight;
+           // if it's a video, check if we predict that time until finish loading
+           // is enough to play video back
+           if (isVideo() && metaData && !_canBeginStreaming){
+               var timeElapsed : int = getTimer() - responseTime;
+               var currentSpeed : Number = bytesLoaded / (timeElapsed/1000);
+               // be cautios, give a 20% error margin for estimated download time:
+               var estimatedTimeRemaining : Number = _bytesRemaining / (currentSpeed * 0.8);
+               var videoTimeToDownload : Number = metaData.duration - stream.bufferLength;
+               if (videoTimeToDownload > estimatedTimeRemaining){
+                   fireCanBeginStreamingEvent();
+               }
+           }
            dispatchEvent(evt);
+        }
+        
+        private function fireCanBeginStreamingEvent() : void{
+            if(_canBeginStreaming){
+                return;
+            }
+            _canBeginStreaming = true;
+            var evt : Event = new Event(BulkLoader.CAN_BEGIN_PLAYING);
+            dispatchEvent(evt);
         }
         
         private function onCompleteHandler(evt : Event) : void {
@@ -387,6 +425,7 @@ package br.com.stimuli.loading {
             status = STATUS_STARTED;
             if(pausedAtStart && stream){
                 stream.pause();
+                stream.seek(0);
             }
             dispatchEvent(evt);
         }
@@ -477,6 +516,13 @@ package br.com.stimuli.loading {
         */
         internal function get bytesLoaded() : int { 
             return _bytesLoaded; 
+        }
+        
+        /**
+        *   @private
+        */
+        internal function get bytesRemaining() : int { 
+            return _bytesRemaining; 
         }
         
         /**
