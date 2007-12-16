@@ -2,7 +2,7 @@
 *   
 *   
 *   @author Arthur Debert
-*   @version 0.9.1
+*   @version 0.9.3.1
 */
 
 /**
@@ -117,6 +117,9 @@ import br.com.stimuli.loading.BulkErrorEvent;
     
     
     public class BulkLoader extends EventDispatcher {
+        
+        /** Version. Useful for debugging. */
+        public static const VERSION : String = "rev 88 (0.9.3.1)";
         
         /** Tells this class to use a <code>Loader</code> object to load the item.*/
         public static const TYPE_IMAGE : String = "loader";
