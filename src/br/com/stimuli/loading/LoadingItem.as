@@ -425,7 +425,6 @@ package br.com.stimuli.loading {
             status = STATUS_STARTED;
             if(pausedAtStart && stream){
                 stream.pause();
-                stream.seek(0);
             }
             dispatchEvent(evt);
         }
