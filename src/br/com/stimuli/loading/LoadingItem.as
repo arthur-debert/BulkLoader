@@ -427,6 +427,9 @@ package br.com.stimuli.loading {
                 stream.pause();
             }
             dispatchEvent(evt);
+            if( isSound()){
+                _content = loader;
+            }
         }
         
         public override function toString() : String{
