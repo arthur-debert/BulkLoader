@@ -426,10 +426,10 @@ package br.com.stimuli.loading {
             if(pausedAtStart && stream){
                 stream.pause();
             }
-            dispatchEvent(evt);
             if( isSound()){
                 _content = loader;
             }
+            dispatchEvent(evt);
         }
         
         public override function toString() : String{
