@@ -240,7 +240,8 @@ import br.com.stimuli.loading.BulkErrorEvent;
         public static const PAUSED_AT_START : String = "pausedAtStart";
 		
 		
-        
+        private static const AVAILABLE_PROPS : Array = [
+            PAUSED_AT_START, WEIGHT, MAX_TRIES, HEADERS, ID, PRIORITY, PREVENT_CACHING, CONTEXT, CAN_BEGIN_PLAYING, "type"];
 		/**
 		* The name by which this loader instance can be identified.
 		* This property is used so you can get a reference to this instance from other classes in your code without having to save and pass it yourself, throught the static method BulkLoader.getLoader(name) .<p/>
@@ -255,7 +256,8 @@ import br.com.stimuli.loading.BulkErrorEvent;
         private static var allLoaders : Object = {};
 
         // Maximum number of simultaneous open requests
-        private var _numConnectons : int = 7;
+        public static const DEFAULT_NUM_CONNECTIONS : int = 7;
+        private var _numConnectons : int = DEFAULT_NUM_CONNECTIONS;
         private var _connections : Array;
         
         /** 
@@ -509,6 +511,12 @@ bulkLoader.start(3)
             item.context = props[CONTEXT] || null;
             item.pausedAtStart = props[PAUSED_AT_START] || false;
             // internal, used to sort items of the same priority
+            // checks that we are not adding any inexistent props, aka, typos on props :
+            for (var propName :String in props){
+                if (AVAILABLE_PROPS.indexOf(propName) == -1){
+                    log("add got a wrong property name: " + propName + ", with value:" + props[propName]);
+                }
+            }
             item._addedTime = getTimer();
             // add a lower priority than default, else the event for all items complete will fire before
             // individual listerners attached to the item
@@ -946,7 +954,7 @@ bulkLoader.start(3)
                 return null;
             }
             try{
-                if (item._isLoaded || item.isVideo()) {
+                if (item._isLoaded || item.isStreamable()) {
                     var res : * = type(item.content)
                     if(clearMemory){
                         remove(key);
@@ -1159,6 +1167,7 @@ bulkLoader.start(3)
         *   @return The corresponding <code>LoadingItem</code> or null if one isn't found.
         */
         public function get(key : *) : LoadingItem{
+            if(!key) return null;
             for each (var item : LoadingItem in _items){
                 if(item._id == key || item.url.url == key || item.url == key  ){
                     return item;

@@ -211,25 +211,10 @@ package br.com.stimuli.loading {
             if (type) {
                 this._type = type.toLowerCase();
             }else{
-                // no type is given, try to guess from the url
-                var searchString : String = url.url.indexOf("?") > -1 ? url.url.substring(0, url.url.indexOf("?")) : url.url;
-                this._type = searchString.substring(searchString.lastIndexOf(".") + 1).toLowerCase();
+                this._type = guessType(url.url);
+                
             }
-            if(!Boolean(this._type) ){
-                this._type = BulkLoader.TYPE_TEXT;
-            }
-            // find out from the type, what we will be using for loading (the internalType)
-            if(this._type == BulkLoader.TYPE_LOADER || BulkLoader.LOADER_TYPES.indexOf(this._type) > -1){
-                internalType = BulkLoader.TYPE_LOADER;
-            }else if (this._type == BulkLoader.TYPE_SOUND ||BulkLoader.SOUND_TYPES.indexOf(this._type) > -1){
-                internalType = BulkLoader.TYPE_SOUND;
-            }else if (this._type == BulkLoader.TYPE_VIDEO ||BulkLoader.VIDEO_TYPES.indexOf(this._type) > -1){
-                internalType = BulkLoader.TYPE_VIDEO;
-            }else if (this._type == BulkLoader.TYPE_XML ||BulkLoader.XML_TYPES.indexOf(this._type) > -1){
-                internalType = BulkLoader.TYPE_XML;
-            }else{
-                internalType = BulkLoader.TYPE_TEXT;
-            }
+            internalType = getInternalType(this._type);
             this.url = url;
         }
         
@@ -491,8 +476,19 @@ package br.com.stimuli.loading {
             return internalType == BulkLoader.TYPE_XML;
         }
         
+        public function isImage() : Boolean{
+            return isLoader() && content is Bitmap;
+        }
+        
+        public function isSWF() : Boolean{
+            return isLoader() && content is MovieClip;
+        }
         public function isLoader(): Boolean{
             return internalType == BulkLoader.TYPE_LOADER;
+        }
+        
+        public function isStreamable() : Boolean{
+            return isVideo() || isSound() || isSWF();
         }
         
         /**
@@ -622,7 +618,39 @@ package br.com.stimuli.loading {
             return _id; 
         }
         
-        
+        /** @private
+        *  Simply tries to guess the type from the file ending. Will remove query strings on urls
+        */ 
+        internal static function guessType(urlAsString : String) : String{
+            // no type is given, try to guess from the url
+            var searchString : String = urlAsString.indexOf("?") > -1 ? urlAsString.substring(0, urlAsString.indexOf("?")) : urlAsString;
+            var _type : String = searchString.substring(searchString.lastIndexOf(".") + 1).toLowerCase();
+            
+        if(!Boolean(_type) ){
+            _type = BulkLoader.TYPE_TEXT;
+        }
+            return _type;
     }
     
-}
+    /** @private
+    *   Converts a type visible for users:"jpg", "image", "flv" into a type useful internally "loader", "text" etc...
+    */
+        internal static function getInternalType(fromType : String) : String{
+            var internalType : String ;
+            // find out from the type, what we will be using for loading (the internalType)
+            if(fromType == BulkLoader.TYPE_LOADER || BulkLoader.LOADER_TYPES.indexOf(fromType) > -1){
+                internalType = BulkLoader.TYPE_LOADER;
+            }else if (fromType == BulkLoader.TYPE_SOUND ||BulkLoader.SOUND_TYPES.indexOf(fromType) > -1){
+                internalType = BulkLoader.TYPE_SOUND;
+            }else if (fromType == BulkLoader.TYPE_VIDEO ||BulkLoader.VIDEO_TYPES.indexOf(fromType) > -1){
+                internalType = BulkLoader.TYPE_VIDEO;
+            }else if (fromType == BulkLoader.TYPE_XML ||BulkLoader.XML_TYPES.indexOf(fromType) > -1){
+                internalType = BulkLoader.TYPE_XML;
+            }else{
+                internalType = BulkLoader.TYPE_TEXT;
+            }
+
+            return internalType;
+        }
+    
+}}

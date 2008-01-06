@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BulkLoader >
+	<name>mainLoader</name>
+	<numConnections>5</numConnections>
+	<logLevel>1</logLevel>
+	<complete>handlerFromXML</complete>
+	<files>
+		<file>
+			<url>http://www.emptywhite.com/bulkloader-assets/cats.jpg</url>
+			<id>bg</id>
+		</file>
+		<file>
+			<maxTries>8.5</maxTries>
+			<url>http://www.emptywhite.com/bulkloader-assets/shoes.jpg</url>
+			<id>photo1</id>
+		</file>
+		<file>
+			<preventCache>true</preventCache>
+			<weight>2</weight>
+			<url>http://www.emptywhite.com/bulkloader-assets/samplexml.xml</url>
+			<id>config</id>
+		</file>
+		<file priority="200">
+			<priority>-100</priority>
+			<url>http://www.emptywhite.com/bulkloader-assets/movie.flv</url>
+			<pausedAtStart>yes</pausedAtStart>
+			<id>the-video</id>
+			<open>onVideoStarted</open>
+			<complete>onVideoComplete</complete>
+		</file>
+		<file>
+			<id>soundtrack</id>
+			<url>http://www.emptywhite.com/bulkloader-assets/chopin.mp3</url>
+			<priority>100</priority>
+			<headers>
+				<header>
+					<name>Auth</name>
+					<value>somebody!</value>
+				</header>
+			</headers>
+		</file>
+	</files>
+</BulkLoader>
