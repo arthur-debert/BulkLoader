@@ -1103,8 +1103,6 @@ bulkLoader.start(3)
             eComplete.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, _itemsLoaded, itemsTotal, weightPercent);
             var eProgress : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
             eProgress.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, _itemsLoaded, itemsTotal, weightPercent);
-            dispatchEvent(eProgress);
-            dispatchEvent(eComplete);
             isRunning = false;
             endTime = getTimer();
             totalTime = BulkLoader.truncateNumber((endTime - startTime) /1000);
@@ -1113,6 +1111,8 @@ bulkLoader.start(3)
             traceStats();
             _isFinished = true;
             log("Finished all", LOG_INFO);
+            dispatchEvent(eProgress);
+            dispatchEvent(eComplete);
         }
         
         /** If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3). Outputs a host of statistics about the loading operation
