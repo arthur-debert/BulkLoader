@@ -1219,6 +1219,8 @@ bulkLoader.start(3)
             delete allLoaders[name];
             _items = _connections = null;
             _contents = null;
+            _items = [];
+            _contents = new Dictionary();
         }
         
         /** Deletes all content from all instances of <code>BulkLoader</code> class. This will stop any pending loading operations as well as free memory.
