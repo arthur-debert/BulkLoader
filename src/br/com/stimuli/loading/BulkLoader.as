@@ -955,7 +955,10 @@ bulkLoader.start(3)
             }
             try{
                 if (item._isLoaded || item.isStreamable()) {
-                    var res : * = type(item.content)
+                    var res : * = item.content as type;
+                    if (res == null){
+                        throw new Error("bad cast");
+                    }
                     if(clearMemory){
                         remove(key);
                     }               

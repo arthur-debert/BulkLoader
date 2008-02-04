@@ -200,11 +200,11 @@ package br.com.stimuli.loading {
         private var internalType : String;
         
         private static var classes : Object = {
-            "loader": Loader,
-            "xml": URLLoader,
-            "video":NetConnection,
-            "sound": Sound,
-            "text": URLLoader
+            loader: Loader,
+            xml: URLLoader,
+            video:NetConnection,
+            sound: Sound,
+            text: URLLoader
         }
         public function LoadingItem(url : URLRequest, type : String){
             
