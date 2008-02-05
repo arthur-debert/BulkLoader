@@ -667,16 +667,14 @@ bulkLoader.start(3)
            removeFromConnections(item);
            log("Loaded ", item, LOG_INFO);
            log("Items to load", getNotLoadedItems(), LOG_VERBOSE);
-            item.cleanListeners();
-            _contents[item.url.url] = item.content;
-            
-            var next : Boolean= loadNext();
+           item.cleanListeners();
+           _contents[item.url.url] = item.content;
+           var next : Boolean= loadNext();
            var allDone : Boolean = isAllDoneP();
            _itemsLoaded ++;
            if(allDone) {
                onAllLoaded();
             }
-
         }
         
         private function updateStats() : void {
@@ -1110,7 +1108,7 @@ bulkLoader.start(3)
             endTime = getTimer();
             totalTime = BulkLoader.truncateNumber((endTime - startTime) /1000);
             updateStats();
-            _connections = null;
+            _connections = [];
             traceStats();
             _isFinished = true;
             log("Finished all", LOG_INFO);
