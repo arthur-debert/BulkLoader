@@ -169,7 +169,7 @@ package br.com.stimuli.loading.loadingtypes {
         public var _speed : Number;
 
         public var _content : *;
-        public var _httpStatus : int = 0;
+        public var _httpStatus : int = -1;
         /**
         *   @private
         */

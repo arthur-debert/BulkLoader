@@ -36,9 +36,14 @@ package br.com.stimuli.loading.loadingtypes {
             loader.load(url, context);
 		};
 		
+        override public function onHttpStatusHandler(evt : HTTPStatusEvent) : void{
+            _httpStatus = evt.status;
+            trace("{LoadingItem}::method() _httpStatus", _httpStatus, evt);
+            dispatchEvent(evt);
+        }
+        
         override public function onCompleteHandler(evt : Event) : void {
             _content = loader.content;
-            trace("{ImageItem}::method() onCompleteHandler", onCompleteHandler);
             super.onCompleteHandler(evt);
         };
         

@@ -8,7 +8,9 @@ package br.com.stimuli.loading.tests {
 	import flash.utils.*;
 	public class BulkLoaderTestSuite extends TestSuite {
 	    var testClasses : Array = [
+	        LoaderItemAVM1MovieTest,
 	        CollectionTestCase, 
+	        LoaderImageItemTest,
 	        InstanceRetrivalTestCase, 
 	        VideoContentPausedAtStartTestCase, 
 	        VideoContentTest
