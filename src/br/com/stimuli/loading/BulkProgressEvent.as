@@ -86,8 +86,8 @@ package br.com.stimuli.loading {
             this.itemsLoaded = itemsLoaded;
             this.itemsTotal = itemsTotal;
             this.weightPercent = weightPercent;
-            this.percentLoaded = (bytesLoaded / bytesTotal);
-            ratioLoaded = itemsLoaded / itemsTotal;
+            this.percentLoaded = bytesTotal > 0 ? (bytesLoaded / bytesTotal) : 0;
+            ratioLoaded = itemsTotal == 0 ? 0 : itemsLoaded / itemsTotal;
         }
         
         /* Returns an identical copy of this object

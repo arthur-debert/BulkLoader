@@ -39,7 +39,7 @@ import flash.display.*;
 import flash.media.Sound;
 import flash.utils.*;
 
-import br.com.stimuli.loading.LoadingItem;
+import br.com.stimuli.loading.loadingtypes.*;
 import br.com.stimuli.loading.BulkProgressEvent;
 import br.com.stimuli.loading.BulkErrorEvent;
 
@@ -138,25 +138,25 @@ import br.com.stimuli.loading.BulkErrorEvent;
         
         /** List of all file extensions that the <code>BulkLoader</code> knows how to guess.
         *   Availabe types: swf, jpg, jpeg, gif, png. */
-        internal static var AVAILABLE_TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png", "flv", "mp3", "xml", "txt", "js" ];
+        public static var AVAILABLE_TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png", "flv", "mp3", "xml", "txt", "js" ];
         /** List of file extensions that will be automagically use a <code>Loader</code> object for loading.
         *   Availabe types: swf, jpg, jpeg, gif, png, image.
         */
-        internal static var LOADER_TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png" , "image"];
+        public static var LOADER_TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png" , "image"];
         /** List of file extensions that will be automagically treated as text for loading.
         *   Availabe types: txt, js, xml, php, asp .
         */
-        internal static var TEXT_TYPES : Array = ["txt", "js", "xml", "php", "asp", "py" ];
+        public static var TEXT_TYPES : Array = ["txt", "js", "xml", "php", "asp", "py" ];
         /** List of file extensions that will be automagically treated as video for loading. 
         *  Availabe types: flv, f4v, f4p. 
         */
-        internal static var VIDEO_TYPES : Array = ["flv", "f4v", "f4p"];
+        public static var VIDEO_TYPES : Array = ["flv", "f4v", "f4p"];
         /** List of file extensions that will be automagically treated as sound for loading.
         *  Availabe types: mp3, f4a, f4b.
         */
-        internal static var SOUND_TYPES : Array = ["mp3", "f4a", "f4b"];
+        public static var SOUND_TYPES : Array = ["mp3", "f4a", "f4b"];
         
-        internal static var XML_TYPES : Array = ["xml"];
+        public static var XML_TYPES : Array = ["xml"];
         
         /** 
         *   The name of the event 
@@ -193,6 +193,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         */
     	public static const CAN_BEGIN_PLAYING : String = "canBeginPlaying";
     	
+    	public static const CHECK_POLICY_FILE : String = "checkPolicyFile"
     	
     	
 		// properties on adding a new url:
@@ -334,6 +335,14 @@ import br.com.stimuli.loading.BulkErrorEvent;
         
 
         private var _logFunction : Function = trace;
+        
+        public static var typeClasses : Object = {
+            loader: ImageItem,
+            xml: URLItem,
+            video: VideoItem,
+            sound: SoundItem,
+            text: URLItem
+        }
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
         *   
         *   @param name  A name that can be used later to reference this loader in a static context,
@@ -346,6 +355,8 @@ import br.com.stimuli.loading.BulkErrorEvent;
         public function BulkLoader(name : String, numConnectons : int = 7, logLevel : int = 3){
             if (Boolean(allLoaders[name])){
                 throw new Error ("BulkLoader with name'" + name +"' has already been created.");
+            }else if (!name ){
+                throw new Error ("Cannot create a BulkLoader instance without a name");
             }
             allLoaders[name] = this;
             if (numConnectons > 0){
@@ -485,6 +496,9 @@ bulkLoader.start(3)
    *    
         */
         public function add(url : *, props : Object= null ) : LoadingItem {
+            if(!url || !String(url)){
+                throw new Error("[BulkLoader] Cannot add an item with a null url")
+            }
             props = props || {};
             if (url is String){
                 url = new URLRequest(url);
@@ -494,29 +508,25 @@ bulkLoader.start(3)
             }else if (!url is URLRequest){
                 throw new Error("[BulkLoader] cannot add object with bad type for url:'" + url.url);
             }
-            var item : LoadingItem = get(url);
+            var item : LoadingItem = get(props[ID] || url);
             // have already loaded this?
             if( item ){
                 return item;
             }
+            var type, internalType : String;
+            if (props["type"]) {
+                type = props["type"].toLowerCase();
+            }else{
+                type = guessType(url.url);
+                
+            }
+            internalType = getInternalType(type);
             
-            item  = new LoadingItem(url, props["type"]);
+            item  = new typeClasses[internalType] (url, type, internalType);
+            item.parseOptions(props);
             log("Added",item, LOG_VERBOSE);
             // properties from the props argument
-            item.preventCache = props[PREVENT_CACHING];
-            item._id = props[ID];
-            item._priority = int(props[PRIORITY]) || 0;
-            item.maxTries = props[MAX_TRIES] || 3;
-            item.weight = int(props[WEIGHT]) || 1;
-            item.context = props[CONTEXT] || null;
-            item.pausedAtStart = props[PAUSED_AT_START] || false;
-            // internal, used to sort items of the same priority
-            // checks that we are not adding any inexistent props, aka, typos on props :
-            for (var propName :String in props){
-                if (AVAILABLE_PROPS.indexOf(propName) == -1){
-                    log("add got a wrong property name: " + propName + ", with value:" + props[propName]);
-                }
-            }
+            
             item._addedTime = getTimer();
             // add a lower priority than default, else the event for all items complete will fire before
             // individual listerners attached to the item
@@ -631,6 +641,7 @@ bulkLoader.start(3)
                 return false;
             }
             // check for "stale items"
+            //trace("{BulkLoader}::method() _connections", _connections);
             _connections.forEach(function(i : LoadingItem, ...rest) : void{
                 if(i.status == LoadingItem.STATUS_ERROR && i.numTries < i.maxTries){
                     removeFromConnections(i);
@@ -737,9 +748,7 @@ bulkLoader.start(3)
         
         private function onItemStarted(evt : Event) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
-            if (item.isVideo()){
-                _contents[item.url.url] = item.stream;
-            }
+            
             log("Started loading", item, LOG_INFO);
             dispatchEvent(evt);
         }
@@ -1049,7 +1058,7 @@ bulkLoader.start(3)
         */
         public function getNetStreamMetaData(key : String, clearMemory : Boolean = false) : Object{
             var netStream : NetStream = getNetStream(key, clearMemory);
-            return  (Boolean(netStream) ? get(key).metaData : null);
+            return  (Boolean(netStream) ? (get(key) as Object).metaData : null);
             
         }
         
@@ -1205,7 +1214,7 @@ bulkLoader.start(3)
                 }
                 return true;
             }catch(e : Error){
-                log("Error while removing item from key:" + key, LOG_ERRORS);
+                log("Error while removing item from key:" + key, e.getStackTrace(),  LOG_ERRORS);
             }                                                     
             return false;
             
@@ -1353,5 +1362,44 @@ bulkLoader.start(3)
         override public function toString() : String{
             return "[BulkLoader] name:"+ name + ", itemsTotal: " + itemsTotal + ", itemsLoaded: " + _itemsLoaded; 
         }
+        
+        /** @private
+        *  Simply tries to guess the type from the file ending. Will remove query strings on urls
+        */ 
+        public static function guessType(urlAsString : String) : String{
+            // no type is given, try to guess from the url
+            var searchString : String = urlAsString.indexOf("?") > -1 ? urlAsString.substring(0, urlAsString.indexOf("?")) : urlAsString;
+            var _type : String = searchString.substring(searchString.lastIndexOf(".") + 1).toLowerCase();
+
+        if(!Boolean(_type) ){
+            _type = BulkLoader.TYPE_TEXT;
+        }
+            return _type;
+        }
+
+        /** @private
+        *   Converts a type visible for users:"jpg", "image", "flv" into a type useful internally "loader", "text" etc...
+        */
+         public static function getInternalType(fromType : String) : String{
+            var internalType : String ;
+            // find out from the type, what we will be using for loading (the internalType)
+            if(fromType == BulkLoader.TYPE_LOADER || BulkLoader.LOADER_TYPES.indexOf(fromType) > -1){
+                internalType = BulkLoader.TYPE_LOADER;
+            }else if (fromType == BulkLoader.TYPE_SOUND ||BulkLoader.SOUND_TYPES.indexOf(fromType) > -1){
+                internalType = BulkLoader.TYPE_SOUND;
+            }else if (fromType == BulkLoader.TYPE_VIDEO ||BulkLoader.VIDEO_TYPES.indexOf(fromType) > -1){
+                internalType = BulkLoader.TYPE_VIDEO;
+            }else if (fromType == BulkLoader.TYPE_XML ||BulkLoader.XML_TYPES.indexOf(fromType) > -1){
+                internalType = BulkLoader.TYPE_XML;
+            }else{
+                internalType = BulkLoader.TYPE_TEXT;
+            }
+
+            return internalType;
+        }
     }   
+    
+    
 }
+
+

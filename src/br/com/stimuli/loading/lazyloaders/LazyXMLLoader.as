@@ -1,5 +1,6 @@
-package br.com.stimuli.loading{
+package br.com.stimuli.lazyloaders.loading{
     import br.com.stimuli.loading.*;
+    import br.com.stimuli.loading.lazyloaders.*;
     import flash.events.*;
 	import flash.net.*;
 	import flash.display.*;
