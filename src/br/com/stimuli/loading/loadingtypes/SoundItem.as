@@ -34,12 +34,13 @@ package br.com.stimuli.loading.loadingtypes {
             loader.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
             loader.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 0, true);
             loader.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);
-            loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, onHttpStatusHandler, false, 0, true);
             loader.load(url, context);
 		};
 		
 		override public function onStartedHandler(evt : Event) : void{
+            _content = loader;
             super.onStartedHandler(evt);
+            trace("{SoundItem}::method() context", context);
         };
         
         override public function onCompleteHandler(evt : Event) : void {
@@ -62,13 +63,17 @@ package br.com.stimuli.loading.loadingtypes {
             if (loader){
                 loader.removeEventListener(ProgressEvent.PROGRESS, onProgressHandler, false);
                 loader.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
-                loader.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
+                loader.removeEventListener(IOErrorEvent.IO_ERROR, super.onErrorHandler, false);
                 loader.removeEventListener(BulkLoader.OPEN, onStartedHandler, false);
             }
             
         }
         
-        override public function isImage(): Boolean{
+        override public function isStreamable(): Boolean{
+            return true;
+        }
+        
+        override public function isSound(): Boolean{
             return true;
         }
         

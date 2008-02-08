@@ -91,15 +91,11 @@ package br.com.stimuli.loading.tests {
         
         public function testGetHTTPStatusFromItem() :void{
             var item : * = _bulkLoader.get("photo");
-            trace("{LoaderImageItemTest}::method() item", item);
-            trace("{LoaderImageItemTest}::method() item", item.httpStatus);
-            assertNotNull(item.httpStatus);
-            assertTrue(item.httpStatus  > 0 );
+            assertTrue(item.httpStatus  > -1 );
         }
         
-        /*public function testGetHTTPStatusFromLoader() :void{
-            assertNotNull(_bulkLoader.getHttpStatus("photo"))
-            assertTrue(_bulkLoader.getHttpStatus("photo")  > 0 );
-        }*/
+        public function testGetHTTPStatusFromLoader() :void{
+            assertTrue(_bulkLoader.getHttpStatus("photo")  > -1 );
+        }
 	}
 }

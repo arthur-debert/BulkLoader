@@ -32,13 +32,12 @@ package br.com.stimuli.loading.loadingtypes {
             loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
             loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 0, true);
             loader.contentLoaderInfo.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);  
-            loader.contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, onHttpStatusHandler, false, 0, true);
+            loader.contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, super.onHttpStatusHandler, false, 0, true);
             loader.load(url, context);
 		};
 		
-        override public function onHttpStatusHandler(evt : HTTPStatusEvent) : void{
+        public function _onHttpStatusHandler(evt : HTTPStatusEvent) : void{
             _httpStatus = evt.status;
-            trace("{LoadingItem}::method() _httpStatus", _httpStatus, evt);
             dispatchEvent(evt);
         }
         
@@ -65,6 +64,7 @@ package br.com.stimuli.loading.loadingtypes {
                 removalTarget.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
                 removalTarget.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
                 removalTarget.removeEventListener(BulkLoader.OPEN, onStartedHandler, false);
+                removalTarget.removeEventListener(HTTPStatusEvent.HTTP_STATUS, super.onHttpStatusHandler, false);
             }
             
         }

@@ -961,7 +961,7 @@ bulkLoader.start(3)
                 return null;
             }
             try{
-                if (item._isLoaded || item.isStreamable()) {
+                if (item._isLoaded || item.isStreamable() && item.status == LoadingItem.STATUS_STARTED) {
                     var res : * = item.content as type;
                     if (res == null){
                         throw new Error("bad cast");
@@ -1227,7 +1227,7 @@ bulkLoader.start(3)
                 remove(item);
             }
             delete allLoaders[name];
-            _items = _connections = null;
+            _items = _connections = [];
             _contents = null;
             _items = [];
             _contents = new Dictionary();
