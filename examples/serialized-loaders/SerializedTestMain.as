@@ -22,8 +22,9 @@ package{
         }
         
         public function onLazyLoaded(evt : Event) : void{
-            trace("serialized data is ready!")
+
             bulkLoader = evt.target.bulkLoader;
+                        trace("serialized data is ready!", bulkLoader)
             bulkLoader.addEventListener(BulkLoader.PROGRESS, onAllProgress);
             bulkLoader.start();
         }

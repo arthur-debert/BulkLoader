@@ -43,7 +43,7 @@ package br.com.stimuli.loading{
     	    var logLevel : int = Boolean(String(xml.logLevel)) ? int(xml.logLevel) : BulkLoader.LOG_ERRORS;
     	    trace("{LazyXMLLoader}::method() logLevel", logLevel);
     	    var numConnections : int = Boolean(String(xml.numConnections)) ? int(xml.numConnections) : BulkLoader.DEFAULT_NUM_CONNECTIONS;
-    		var _bulkLoader : BulkLoader = new BulkLoader(String(xml.@name), numConnections, logLevel);
+    		var _bulkLoader : BulkLoader = new BulkLoader(String(xml.name), numConnections, logLevel);
     		var possibleHandlerName : String;
     		var theNode : XMLList;
     		var hasNode : Boolean
