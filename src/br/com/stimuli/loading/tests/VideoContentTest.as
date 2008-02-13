@@ -13,19 +13,39 @@ package br.com.stimuli.loading.tests {
 		public var startEventFiredTime : Number;
 		public var netStreamAtStart : NetStream;
 		public var name : String;
+		public var ioError : Event;
+		
 		public function VideoContentTest(name) : void {
 		  super(name);
+		  this.name= name;
 		}
 		// Override the run method and begin the request for remote data
 		public override function run():void {
-            _bulkLoader = new BulkLoader("assync-test");
-	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", checkPolicyFile:true});
+            _bulkLoader = new BulkLoader(name);
+            
+            var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/movie.flv";
+            var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-movie.flv"
+            var theURL : String = goodURL;
+            if (this.name == 'testIOError'){
+                theURL = badURL;
+            }
+        
+	 		
+	 		_bulkLoader.add(theURL, {id:"the-movie", checkPolicyFile:true});
 	 		_bulkLoader.get("the-movie").addEventListener(BulkLoader.OPEN, onVideoStartHandler);
+	 		_bulkLoader.get("the-movie").addEventListener(BulkLoader.ERROR, onIOError);
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
 		}
 
+        public function onIOError(evt : Event) : void{
+            ioError = evt;
+            // call the on complete manually 
+            completeHandler(evt);
+            tearDown();
+        }
+        
 		protected override function completeHandler(event:Event):void {
 			super.run();
 		}
@@ -110,6 +130,10 @@ package br.com.stimuli.loading.tests {
             // now try again
             net = _bulkLoader.getNetStream("the-movie");
             assertNull(net);
+        }
+        
+        public function testIOError() : void{
+            assertNotNull(ioError);
         }
 	}
 }

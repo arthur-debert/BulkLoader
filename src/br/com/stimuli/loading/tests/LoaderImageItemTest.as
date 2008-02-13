@@ -13,20 +13,36 @@ package br.com.stimuli.loading.tests {
 		public var lastProgress : Number = 0;
 
 		public var name : String;
+		public var ioError : Event;
 		public function LoaderImageItemTest(name) : void {
 		  super(name);
+		  this.name = name;
 		}
 		// Override the run method and begin the request for remote data
 		public override function run():void {
-            _bulkLoader = new BulkLoader("assync-test");
-	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/shoes.jpg", {id:"photo"});
-	 		
+            _bulkLoader = new BulkLoader(name);
+            var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/shoes.jpg";
+            var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-image.jpg"
+            var theURL : String = goodURL;
+            if (this.name == 'testIOError'){
+                theURL = badURL;
+            }
+            
+	 		_bulkLoader.add(theURL, {id:"photo"});
+            _bulkLoader.get("photo").addEventListener(BulkLoader.ERROR, onIOError);
 	 		
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
 		}
 
+        public function onIOError(evt : Event) : void{
+            ioError = evt;
+            // call the on complete manually 
+            completeHandler(evt);
+            tearDown();
+        }
+        
 		protected override function completeHandler(event:Event):void {
 			super.run();
 		}
@@ -96,6 +112,10 @@ package br.com.stimuli.loading.tests {
         
         public function testGetHTTPStatusFromLoader() :void{
             assertTrue(_bulkLoader.getHttpStatus("photo")  > -1 );
+        }
+        
+        public function testIOError() : void{
+            assertNotNull(ioError);
         }
 	}
 }

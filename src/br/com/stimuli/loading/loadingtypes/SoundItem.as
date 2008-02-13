@@ -40,7 +40,7 @@ package br.com.stimuli.loading.loadingtypes {
 		override public function onStartedHandler(evt : Event) : void{
             _content = loader;
             super.onStartedHandler(evt);
-            trace("{SoundItem}::method() context", context);
+            //trace("{SoundItem}::method() context", context);
         };
         
         override public function onCompleteHandler(evt : Event) : void {

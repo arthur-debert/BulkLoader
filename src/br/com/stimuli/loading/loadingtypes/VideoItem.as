@@ -71,7 +71,7 @@ package br.com.stimuli.loading.loadingtypes {
         */
         public function createNetStreamEvent(evt : Event) : void{
             if(_bytesTotal == _bytesLoaded && _bytesTotal > 8){
-                dummyEventTrigger.removeEventListener(Event.ENTER_FRAME, createNetStreamEvent, false);
+                if (dummyEventTrigger) dummyEventTrigger.removeEventListener(Event.ENTER_FRAME, createNetStreamEvent, false);
                 var completeEvent : Event = new Event(Event.COMPLETE);
                 onCompleteHandler(completeEvent);
             }else if(_bytesTotal == 0 && stream.bytesTotal > 4){
@@ -79,7 +79,7 @@ package br.com.stimuli.loading.loadingtypes {
                 onStartedHandler(startEvent);
                 _bytesLoaded = stream.bytesLoaded;
                 _bytesTotal = stream.bytesTotal;
-            }else{
+            }else if (stream){
                 var event : ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS, false, false, stream.bytesLoaded, stream.bytesTotal);
                 // if it's a video, check if we predict that time until finish loading
                    // is enough to play video back
@@ -122,7 +122,10 @@ package br.com.stimuli.loading.loadingtypes {
         };
         
         override public function cleanListeners() : void {
-            if (stream) stream.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
+            if (stream) {
+                stream.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
+                stream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatus, false);
+            }
             if(dummyEventTrigger){
                 dummyEventTrigger.removeEventListener(Event.ENTER_FRAME, createNetStreamEvent, false);
                 dummyEventTrigger = null;
@@ -137,7 +140,11 @@ package br.com.stimuli.loading.loadingtypes {
         }
         
         override public function destroy() : void{
+            if(stream){
+                //stream.client = null;
+            }
             cleanListeners();
+            stream = null;
             super.destroy();
         }
         
@@ -150,6 +157,8 @@ package br.com.stimuli.loading.loadingtypes {
                 _content = stream;
                 var e : Event = new Event(Event.OPEN);
                 onStartedHandler(e);
+            }else if(evt.info.code == "NetStream.Play.StreamNotFound"){
+                onErrorHandler(evt);
             }
         }
         

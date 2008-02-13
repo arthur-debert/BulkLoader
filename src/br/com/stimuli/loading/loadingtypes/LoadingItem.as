@@ -262,7 +262,6 @@ package br.com.stimuli.loading.loadingtypes {
         
         public function onErrorHandler(evt : Event) : void{
             numTries ++;
-            trace("{LoadingItem}::method() numTries", numTries);
             status = STATUS_ERROR;   
             if(numTries >= maxTries){
                 var bulkErrorEvent : BulkErrorEvent = new BulkErrorEvent(BulkErrorEvent.ERROR);
