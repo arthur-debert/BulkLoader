@@ -1,6 +1,3 @@
-/* AS3
-	Copyright 2008 __MyCompanyName__.
-*/
 package br.com.stimuli.loading.tests {
 	import asunit.framework.TestSuite;
 	import flash.events.*;
@@ -8,11 +5,11 @@ package br.com.stimuli.loading.tests {
 	import flash.utils.*;
 	public class BulkLoaderTestSuite extends TestSuite {
 	    var testClasses : Array = [
+	        CollectionTestCase, 
 	        XMLItemTest,
 	        URLItemTest,
 	        AudioContentTest,
 	        LoaderItemAVM1MovieTest,
-	        CollectionTestCase, 
 	        LoaderImageItemTest,
 	        InstanceRetrivalTestCase, 
 	        VideoContentPausedAtStartTestCase, 
@@ -21,6 +18,8 @@ package br.com.stimuli.loading.tests {
 	    
 	    var testsRun : Object = {} ;
         public static var LOADING_VERBOSE  : Boolean = false;
+        
+        
         public function BulkLoaderTestSuite() {
 		    super();
             testClasses.forEach(function(cl : Class, ...rest):void{addTestsFromClass(cl)})

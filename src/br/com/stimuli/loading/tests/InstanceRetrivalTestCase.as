@@ -5,6 +5,7 @@ package br.com.stimuli.loading.tests {
     import flash.net.*;
     	public class InstanceRetrivalTestCase extends TestCase {
     		private var _bulkLoader:BulkLoader;
+    		private var _bulkLoader2:BulkLoader;
             private var soundURL : URLRequest ;
     		/**
      		 * Constructor
@@ -24,7 +25,9 @@ package br.com.stimuli.loading.tests {
     	 		soundURL = new URLRequest("http://www.emptywhite.com/bulkloader-assets/chopin.mp3");
     	 		_bulkLoader.add(soundURL, {id:"the-sound"});
     	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true});
-    	 		_bulkLoader.start();
+                _bulkLoader.start();
+                _bulkLoader2 = BulkLoader.createUniqueNamedLoader()
+    	 		
     	 	}
 
     		/**
@@ -72,7 +75,11 @@ package br.com.stimuli.loading.tests {
                 assertNull(BulkLoader.getLoader("bad-loader"));
             }
             
-            
+            public function createManyUniqueNameInstances() : void{
+                for (var i:int = 0; i<200; i++){
+                    BulkLoader.createUniqueNamedLoader();
+                }
+            }
     	}
     
 	

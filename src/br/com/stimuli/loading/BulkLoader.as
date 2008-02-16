@@ -259,7 +259,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         // Maximum number of simultaneous open requests
         public static const DEFAULT_NUM_CONNECTIONS : int = 7;
         private var _numConnectons : int = DEFAULT_NUM_CONNECTIONS;
-        private var _connections : Array;
+        public var _connections : Array;
         
         /** 
         *   The ratio (0->1) of items to load / items total.
@@ -328,7 +328,8 @@ import br.com.stimuli.loading.BulkErrorEvent;
         * @see #LOG_ERRORS
         * @see #LOG_INFO
         */
-        public var logLevel: int = 3;
+        public static const DEFALUT_LOG_LEVEL : int = 3;
+        public var logLevel: int = DEFALUT_LOG_LEVEL;
         
         private var _isRunning : Boolean;
         private var _isFinished : Boolean;
@@ -352,7 +353,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         *   @see #numConnectons
         *   @see #log()
         */
-        public function BulkLoader(name : String, numConnectons : int = 7, logLevel : int = 3){
+        public function BulkLoader(name : String, numConnectons : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL){
             if (Boolean(allLoaders[name])){
                 throw new Error ("BulkLoader with name'" + name +"' has already been created.");
             }else if (!name ){
@@ -368,6 +369,13 @@ import br.com.stimuli.loading.BulkErrorEvent;
             _id = _instancesCreated;
         }
         
+        public static function createUniqueNamedLoader( numConnectons : int=BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL) : BulkLoader{
+            return new BulkLoader(BulkLoader.getUniqueName(), numConnectons, logLevel);
+        }
+        
+        public static function getUniqueName() : String{
+            return "BulkLoader-" + _instancesCreated;
+        }
         /** Fetched a <code>BulkLoader</code> object created with the <code>name</code> parameter.
         *   This is usefull if you must access loades assets from another scope, without having to pass direct references to this loader.
         *   @param  name The name of the loader to be fetched.
@@ -377,8 +385,9 @@ import br.com.stimuli.loading.BulkErrorEvent;
             return BulkLoader.allLoaders[name] as BulkLoader;
         }
         
-        
-        private function hasItemInBulkLoader(key : *, atLoader : BulkLoader) : Boolean{
+        /* @private
+        */
+        public function _hasItemInBulkLoader(key : *, atLoader : BulkLoader) : Boolean{
             var item : LoadingItem = get(key);
             if (item &&item._isLoaded) {
                 return true;
@@ -400,7 +409,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
                 loaders = [this];
             }
             for each (var l : BulkLoader in loaders){
-                if (hasItemInBulkLoader(key, l )) return true;
+                if (_hasItemInBulkLoader(key, l )) return true;
             }
             return false;
         }
@@ -411,7 +420,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         */
         public static function whichLoaderHasItem(key : *) : BulkLoader{
             for each (var l : BulkLoader in allLoaders){
-                if (l.hasItemInBulkLoader(key, l )) return l;
+                if (l._hasItemInBulkLoader(key, l )) return l;
             }
             return null;
         }

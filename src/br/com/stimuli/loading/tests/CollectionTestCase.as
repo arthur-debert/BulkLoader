@@ -71,8 +71,47 @@ package br.com.stimuli.loading.tests {
                 assertNotNull( error);
             }
             
+            public function testRemoveOneItem() : void{
+                var lenghtBeforeRemoving : int = _bulkLoader.items.length;
+                _bulkLoader.remove("the-movie");
+                var lenghtAfterRemoving : int = _bulkLoader.items.length;
+                assertEquals(lenghtBeforeRemoving, lenghtAfterRemoving + 1);
+            }
 
+            public function testRemoveAllLength() : void{
+                _bulkLoader.removeAll();
+                assertTrue(_bulkLoader.items.length == 0)
+            }
             
+            public function testConnectionsNotNullOnRemoveAll() : void{
+                _bulkLoader.removeAll();
+                assertTrue(_bulkLoader._connections.length == 0)
+            }
+            
+            public function testPauseAllIsRunning() : void{
+                assertTrue(_bulkLoader.isRunning)
+                _bulkLoader.pauseAll();
+                assertFalse(_bulkLoader.isRunning)
+            }
+            
+            public function testPauseHarmlessAfterAllIsLoaded() : void{
+                _bulkLoader.pauseAll();
+                // we need to be able to get access to loaded items:
+                assertNotNull(_bulkLoader.get("the-sound"));
+                assertNotNull(_bulkLoader.get("the-movie"));
+            }
+            
+            public function testHasItemInLoader() : void{
+                trace(0)
+                return;
+                assertTrue(_bulkLoader._hasItemInBulkLoader("the-sound", _bulkLoader));
+                trace(1)
+                assertFalse(_bulkLoader._hasItemInBulkLoader("badkey", _bulkLoader));
+                trace(2)
+                var newLoader : BulkLoader = new BulkLoader("otherLoader");
+                trace(3)
+                assertFalse(newLoader._hasItemInBulkLoader("the-sound", newLoader));
+            }
     	}
     
 	
