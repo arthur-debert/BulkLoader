@@ -74,7 +74,9 @@ package br.com.stimuli.loading.tests {
 		    assertTrue(item.alpha is Number);
         }
         
-
+        public function testItemIsLoaded() : void{
+            assertTrue(_bulkLoader.get("avm1movie")._isLoaded)
+        }
         
             
         

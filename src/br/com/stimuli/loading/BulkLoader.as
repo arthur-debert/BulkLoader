@@ -389,7 +389,6 @@ import br.com.stimuli.loading.BulkErrorEvent;
         */
         public static function _hasItemInBulkLoader(key : *, atLoader : BulkLoader) : Boolean{
             var item : LoadingItem = atLoader.get(key);
-            if(item ) trace("{BulkLoader}::method() item._isLoaded", item._isLoaded);
             if (item &&item._isLoaded) {
                 return true;
             }
@@ -1410,9 +1409,5 @@ bulkLoader.start(3)
 
             return internalType;
         }
-    }   
-    
-    
+    }      
 }
-
-

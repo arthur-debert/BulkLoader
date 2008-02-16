@@ -194,7 +194,6 @@ package br.com.stimuli.loading.loadingtypes {
             maxTries = props[BulkLoader.MAX_TRIES] || 3;
             weight = int(props[BulkLoader.WEIGHT]) || 1;
             
-            // internal, used to sort items of the same priority
             // checks that we are not adding any inexistent props, aka, typos on props :
             var allowedProps : Array = BulkLoader.GENERAL_AVAILABLE_PROPS.concat(specificAvailableProps);
             propertyParsingErrors = [];

@@ -110,5 +110,6 @@ package br.com.stimuli.loading.tests {
         public function testItemIsLoaded() : void{
             assertTrue(_bulkLoader.get("the-sound")._isLoaded)
         }
+        
 	}
 }

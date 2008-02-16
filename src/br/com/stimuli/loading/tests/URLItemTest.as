@@ -111,5 +111,9 @@ package br.com.stimuli.loading.tests {
         public function testIOError() : void{
             assertNotNull(ioError);
         }
+        
+        public function testItemIsLoaded() : void{
+            assertTrue(_bulkLoader.get("text").isLoaded)
+        }
 	}
 }
