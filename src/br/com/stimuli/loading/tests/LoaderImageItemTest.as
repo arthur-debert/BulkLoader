@@ -56,7 +56,7 @@ package br.com.stimuli.loading.tests {
 			var delta : Number = current - lastProgress;
 			if (current > lastProgress && delta > 0.099){
 			    lastProgress = current;
-			    trace(current * 100 , "% loaded") ;
+			    if (BulkLoaderTestSuite.LOADING_VERBOSE) trace(current * 100 , "% loaded") ;
 			}
 			for each(var propName : String in ["percentLoaded", "weightPercent", "ratioLoaded"] ){
 			    if (isNaN(event[propName]) ){

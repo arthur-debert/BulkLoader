@@ -8,21 +8,21 @@ package br.com.stimuli.loading.tests {
 	import br.com.stimuli.loading.BulkLoader;
     import br.com.stimuli.loading.loadingtypes.*;
 
-	public class URLItemTest extends AsynchronousTestCase {
+	public class XMLItemTest extends AsynchronousTestCase {
 		public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
 
 		public var name : String;
 		public var ioError : Event;
-		public function URLItemTest(name) : void {
+		public function XMLItemTest(name) : void {
 		  super(name);
 		  this.name = name;
 		}
 		// Override the run method and begin the request for remote data
 		public override function run():void {
             _bulkLoader = new BulkLoader(name);
-            var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/some-text.txt";
-            var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-text.txt"
+            var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/samplexml.xml";
+            var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-samplexml.xml"
             var theURL : String = goodURL;
             if (this.name == 'testIOError'){
                 theURL = badURL;
@@ -76,19 +76,19 @@ package br.com.stimuli.loading.tests {
 		}
 		
 		public function testContentExists():void {
-		    var item : String = _bulkLoader.getText("text");
+		    var item : String = _bulkLoader.getXML("text");
 		    assertNotNull(item);
 		}
 		
         public function testContent() : void{
-            var item : String = _bulkLoader.getText("text");
-		    assertTrue(item == "hello bulk!");
+            var item : XML = _bulkLoader.getXML("text");
+		    assertTrue(item is XML);
 
         }
         
         public function testDefaultGetType() : void{
             var item : * = _bulkLoader.getContent("text");
-		    assertTrue(item is String);
+		    assertTrue(item is XML);
         }
         
         public function testClearMemoryRemovesItem(): void{

@@ -6,10 +6,10 @@ package br.com.stimuli.loading.loadingtypes {
     import flash.net.*;
     import flash.events.*;
     import flash.utils.*;
-	public class URLItem extends LoadingItem {
+	public class XMLItem extends LoadingItem {
         public var loader : URLLoader;
         
-		public function URLItem(url : URLRequest, type : String, internalType : String){
+		public function XMLItem(url : URLRequest, type : String, internalType : String){
 			super(url, type, internalType);
 		}
 		
@@ -39,7 +39,7 @@ package br.com.stimuli.loading.loadingtypes {
         };
         
         override public function onCompleteHandler(evt : Event) : void {
-            _content = loader.data;
+            _content = new XML(loader.data);
             super.onCompleteHandler(evt);
         };
         

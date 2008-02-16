@@ -338,7 +338,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         
         public static var typeClasses : Object = {
             loader: ImageItem,
-            xml: URLItem,
+            xml: XMLItem,
             video: VideoItem,
             sound: SoundItem,
             text: URLItem

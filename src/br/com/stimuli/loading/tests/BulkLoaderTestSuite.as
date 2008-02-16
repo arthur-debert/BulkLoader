@@ -8,6 +8,7 @@ package br.com.stimuli.loading.tests {
 	import flash.utils.*;
 	public class BulkLoaderTestSuite extends TestSuite {
 	    var testClasses : Array = [
+	        XMLItemTest,
 	        URLItemTest,
 	        AudioContentTest,
 	        LoaderItemAVM1MovieTest,
@@ -19,7 +20,7 @@ package br.com.stimuli.loading.tests {
 	    ];
 	    
 	    var testsRun : Object = {} ;
-        
+        public static var LOADING_VERBOSE  : Boolean = false;
         public function BulkLoaderTestSuite() {
 		    super();
             testClasses.forEach(function(cl : Class, ...rest):void{addTestsFromClass(cl)})

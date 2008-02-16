@@ -54,7 +54,7 @@ package br.com.stimuli.loading.tests {
 			var current = Math.floor((event as Object).percentLoaded * 100) /100;
 			if (current > lastProgress){
 			    lastProgress = current;
-			    trace( current * 100 , "% loaded") ;
+			    if (BulkLoaderTestSuite.LOADING_VERBOSE) trace(current * 100 , "% loaded") ;
 			}
 			for each(var propName : String in ["percentLoaded", "weightPercent", "ratioLoaded"] ){
 			    if (isNaN(event[propName]) ){
