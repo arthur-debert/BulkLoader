@@ -30,8 +30,8 @@ package br.com.stimuli.loading.loadingtypes {
         private var _canBeginStreaming : Boolean = false;
         
         
-		public function VideoItem(url : URLRequest, type : String, internalType : String){
-			super(url, type, internalType);
+		public function VideoItem(url : URLRequest, type : String){
+			super(url, type);
 			
 		}
 		

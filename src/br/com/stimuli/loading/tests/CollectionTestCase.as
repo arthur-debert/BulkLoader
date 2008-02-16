@@ -102,14 +102,13 @@ package br.com.stimuli.loading.tests {
             }
             
             public function testHasItemInLoader() : void{
-                trace(0)
                 return;
                 assertTrue(_bulkLoader._hasItemInBulkLoader("the-sound", _bulkLoader));
-                trace(1)
+                
                 assertFalse(_bulkLoader._hasItemInBulkLoader("badkey", _bulkLoader));
-                trace(2)
+                
                 var newLoader : BulkLoader = new BulkLoader("otherLoader");
-                trace(3)
+                
                 assertFalse(newLoader._hasItemInBulkLoader("the-sound", newLoader));
             }
     	}

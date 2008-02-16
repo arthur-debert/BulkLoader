@@ -10,8 +10,8 @@ package br.com.stimuli.loading.loadingtypes {
 	public class SoundItem extends LoadingItem {
         public var loader : Sound;
         
-		public function SoundItem(url : URLRequest, type : String, internalType : String){
-			super(url, type, internalType);
+		public function SoundItem(url : URLRequest, type : String){
+			super(url, type);
 		}
 		
 		override public function parseOptions(props : Object)  : Array{

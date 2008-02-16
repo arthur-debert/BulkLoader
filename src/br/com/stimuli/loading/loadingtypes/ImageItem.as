@@ -9,9 +9,9 @@ package br.com.stimuli.loading.loadingtypes {
 	public class ImageItem extends LoadingItem {
         public var loader : Loader;
         
-		public function ImageItem(url : URLRequest, type : String, internalType : String){
+		public function ImageItem(url : URLRequest, type : String){
 			specificAvailableProps = [BulkLoader.CONTEXT];
-			super(url, type, internalType);
+			super(url, type);
 		}
 		
 		override public function parseOptions(props : Object)  : Array{

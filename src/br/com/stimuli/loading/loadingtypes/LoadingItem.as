@@ -175,14 +175,11 @@ package br.com.stimuli.loading.loadingtypes {
         */
         public var context : * = null;
         
-        public var internalType : String;
-        
         public var specificAvailableProps : Array = [];
         
         public var propertyParsingErrors : Array;
-        public function LoadingItem(url : URLRequest, type : String, internalType : String){
+        public function LoadingItem(url : URLRequest, type : String){
             this._type = type;
-            this.internalType = internalType;
             this.url = url;
         }
         
@@ -388,7 +385,7 @@ package br.com.stimuli.loading.loadingtypes {
         }
         
         /** The type of this item.
-        *   @see BulkLoader.AVAILABLE_TYPES
+        *   @see BulkLoader.AVAILABLE_EXTENSIONS
         */
         public function get type() : String{
             return _type;

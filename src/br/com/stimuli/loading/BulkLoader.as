@@ -122,11 +122,10 @@ import br.com.stimuli.loading.BulkErrorEvent;
         public static const VERSION : String = "rev 88 (0.9.3.1)";
         
         /** Tells this class to use a <code>Loader</code> object to load the item.*/
-        public static const TYPE_IMAGE : String = "loader";
+        public static const TYPE_IMAGE : String = "image";
         /** Tells this class to use a <code>Loader</code> object to load the item.*/
-        public static const TYPE_SWF : String = "loader";
-        /** Tells this class to use a <code>Loader</code> object to load the item.*/
-        public static const TYPE_LOADER : String = "loader";
+        public static const TYPE_MOVIECLIP : String = "movieclip";
+        
         /** Tells this class to use a <code>Sound</code> object to load the item.*/
         public static const TYPE_SOUND : String = "sound";
         /** Tells this class to use a <code>URLRequest</code> object to load the item.*/
@@ -136,28 +135,32 @@ import br.com.stimuli.loading.BulkErrorEvent;
         /** Tells this class to use a <code>NetStream</code> object to load the item.*/
         public static const TYPE_VIDEO : String = "video";
         
+        public static const AVAILABLE_TYPES : Array = [TYPE_VIDEO, TYPE_XML, TYPE_TEXT, TYPE_SOUND, TYPE_MOVIECLIP, TYPE_IMAGE]
         /** List of all file extensions that the <code>BulkLoader</code> knows how to guess.
         *   Availabe types: swf, jpg, jpeg, gif, png. */
-        public static var AVAILABLE_TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png", "flv", "mp3", "xml", "txt", "js" ];
+        public static var AVAILABLE_EXTENSIONS : Array = ["swf", "jpg", "jpeg", "gif", "png", "flv", "mp3", "xml", "txt", "js" ];
         /** List of file extensions that will be automagically use a <code>Loader</code> object for loading.
         *   Availabe types: swf, jpg, jpeg, gif, png, image.
         */
-        public static var LOADER_TYPES : Array = ["swf", "jpg", "jpeg", "gif", "png" , "image"];
+        public static var IMAGE_EXTENSIONS : Array = [ "jpg", "jpeg", "gif", "png" , "image"];
+        
+        public static var MOVIECLIP_EXTENSIONS : Array = ['swf'];
         /** List of file extensions that will be automagically treated as text for loading.
         *   Availabe types: txt, js, xml, php, asp .
         */
-        public static var TEXT_TYPES : Array = ["txt", "js", "xml", "php", "asp", "py" ];
+        public static var TEXT_EXTENSIONS : Array = ["txt", "js", "xml", "php", "asp", "py" ];
         /** List of file extensions that will be automagically treated as video for loading. 
         *  Availabe types: flv, f4v, f4p. 
         */
-        public static var VIDEO_TYPES : Array = ["flv", "f4v", "f4p"];
+        public static var VIDEO_EXTENSIONS : Array = ["flv", "f4v", "f4p"];
         /** List of file extensions that will be automagically treated as sound for loading.
         *  Availabe types: mp3, f4a, f4b.
         */
-        public static var SOUND_TYPES : Array = ["mp3", "f4a", "f4b"];
+        public static var SOUND_EXTENSIONS : Array = ["mp3", "f4a", "f4b"];
         
-        public static var XML_TYPES : Array = ["xml"];
+        public static var XML_EXTENSIONS : Array = ["xml"];
         
+        public static var customTypesExtensions : Object;
         /** 
         *   The name of the event 
         *   @eventType progress
@@ -205,7 +208,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
 		* @see #add()
 		*/
 		public static const HEADERS : String = "headers";
-		/** An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_LOADER</code> a LoaderContext should be passed. Checked when adding a new item to load.
+		/** An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_IMAGE</code> a LoaderContext should be passed. Checked when adding a new item to load.
 		* @see #add()
 		*/
 		public static const CONTEXT : String = "context";
@@ -318,8 +321,10 @@ import br.com.stimuli.loading.BulkErrorEvent;
         public static const LOG_VERBOSE : int = 0;
         /**Ouputs noteworthy events such as when an item is started / finished loading.*/
         public static const LOG_INFO : int = 2;
+        /**Ouputs noteworthy events such as when an item is started / finished loading.*/
+        public static const LOG_WARNINGS : int = 3;
         /**Will only trace errors. Defaut level*/
-        public static const LOG_ERRORS : int = 3;
+        public static const LOG_ERRORS : int = 4;
         /**Nothing will be logged*/
         public static const LOG_SILENT : int = 10;
         /**The logging level <code>BulkLoader</code> will use. 
@@ -328,7 +333,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         * @see #LOG_ERRORS
         * @see #LOG_INFO
         */
-        public static const DEFALUT_LOG_LEVEL : int = 3;
+        public static const DEFALUT_LOG_LEVEL : int = LOG_ERRORS;
         public var logLevel: int = DEFALUT_LOG_LEVEL;
         
         private var _isRunning : Boolean;
@@ -338,7 +343,8 @@ import br.com.stimuli.loading.BulkErrorEvent;
         private var _logFunction : Function = trace;
         
         public static var typeClasses : Object = {
-            loader: ImageItem,
+            image: ImageItem,
+            movieclip: ImageItem,
             xml: XMLItem,
             video: VideoItem,
             sound: SoundItem,
@@ -474,7 +480,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         *           <td>context</td.
         *           <td><a href="#CONTEXT">CONTEXT</a></td>
         *           <td><code>LoaderContext or SoundLoaderContext</code></td>
-        *           <td>An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_LOADER</code> a LoaderContext should be passed.</td>
+        *           <td>An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_IMAGE</code> a LoaderContext should be passed.</td>
         *       </tr>
         *       <tr>
         *           <td>pausedAtStart</td.
@@ -522,19 +528,23 @@ bulkLoader.start(3)
             if( item ){
                 return item;
             }
-            var type, internalType : String;
+            var type : String;
             if (props["type"]) {
                 type = props["type"].toLowerCase();
-            }else{
+                // does this type exist?
+                if (AVAILABLE_TYPES.indexOf(type)==-1){
+                    log("add received an unknown type:", type, "and will cast it to text", LOG_WARNINGS);
+                }
+            }
+            if (!type){
                 type = guessType(url.url);
                 
             }
-            internalType = getInternalType(type);
-            
-            item  = new typeClasses[internalType] (url, type, internalType);
+            trace("***GUESSING url:", url.url, ", type:", type);
+            item  = new typeClasses[type] (url, type);
             var errors : Array = item.parseOptions(props);
             for each (var error : String in errors){
-                log(error, LOG_ERRORS);
+                log(error, LOG_WARNINGS);
             }
             log("Added",item, LOG_VERBOSE);
             // properties from the props argument
@@ -619,29 +629,47 @@ bulkLoader.start(3)
             var toRemove : LoadingItem = LoadingItem(_connections.sortOn(["priority", "bytesRemaining"],  [Array.NUMERIC, Array.DESCENDING , Array.NUMERIC])[0]);
             return toRemove;
         }
-        /**  Register a new file extension to be loaded as a given type. This is used both in the guessing of types from the url and affects how loading is done for each type.
+        /**  Register a new file extension to be loaded as a given type. This is used both in the guessing of types from the url and affects how loading is done for each type. 
+        *   If you are adding an extension to be of a type you are creating, you must pass the <code>withClass</code> parameter, which should be a class that extends LoadingItem.
         *   @param  extension   The file extension to be used (can include the dot or not)
         *   @param  atType      Which type this extension will be associated with. 
-        *   
-        *   @see #TYPE_LOADER
+        *   @param  withClass   For new types (not new extensions) wich class that extends LoadingItem should be used to mange this item.
+        *   @see #TYPE_IMAGE
         *   @see #TYPE_VIDEO
         *   @see #TYPE_SOUND
         *   @see #TYPE_TEXT
+        *   @see #LoadingItem
         *   
         *   @return A <code>Boolean</code> indicating if the new extension was registered.
         */
-        public static function registerNewType( extension : String, atType : String) : Boolean {
+        public static function registerNewType( extension : String, atType : String, withClass : Class) : Boolean {
           if (extension.charAt(0) == ".") extension = extension.substring(1);
-          var objects : Array ;
+          
+          // is this a new type?
+          if (AVAILABLE_TYPES.indexOf(atType) == -1){
+              // new type: we need a class for that:
+              if (!Boolean(withClass)){
+                  throw new Error("[BulkLoader]: When adding a new type and extension, you must determine which class to use");
+              }
+              // add that class to the available classes
+              typeClasses[atType] = withClass;
+              if(!customTypesExtensions[atType]){
+                  customTypesExtensions[atType] = [];
+              }
+              customTypesExtensions[atType].push( extension);
+              return true;
+          }
+          var extensions : Array ;
+          
           var options : Object = {
-              TYPE_LOADER   : LOADER_TYPES,
-              TYPE_VIDEO    : VIDEO_TYPES,
-              TYPE_SOUND    : SOUND_TYPES,
-              TYPE_TEXT     : TEXT_TYPES
+              IMAGE_EXTENSIONS : TYPE_IMAGE,
+              VIDEO_EXTENSIONS : TYPE_VIDEO,
+              SOUND_EXTENSIONS : TYPE_SOUND,
+              TEXT_EXTENSIONS  : TYPE_TEXT
           };
-          objects = options[atType];
-          if (objects && objects.indexOf(extension) == -1){
-              objects.push(extension);
+          extensions = options[atType];
+          if (extensions && extensions.indexOf(extension) == -1){
+              extensions.push(extension);
               return true;
           }
           return false;
@@ -1376,38 +1404,41 @@ bulkLoader.start(3)
         }
         
         /** @private
-        *  Simply tries to guess the type from the file ending. Will remove query strings on urls
+        *  Simply tries to guess the type from the file extension. Will remove query strings on urls. 
+        *  If no extension is found, will default to type "text" and will trace a warning (must have LOG_WARNINGS or lower set).
         */ 
         public static function guessType(urlAsString : String) : String{
             // no type is given, try to guess from the url
             var searchString : String = urlAsString.indexOf("?") > -1 ? urlAsString.substring(0, urlAsString.indexOf("?")) : urlAsString;
-            var _type : String = searchString.substring(searchString.lastIndexOf(".") + 1).toLowerCase();
-
-        if(!Boolean(_type) ){
-            _type = BulkLoader.TYPE_TEXT;
-        }
-            return _type;
-        }
-
-        /** @private
-        *   Converts a type visible for users:"jpg", "image", "flv" into a type useful internally "loader", "text" etc...
-        */
-         public static function getInternalType(fromType : String) : String{
-            var internalType : String ;
-            // find out from the type, what we will be using for loading (the internalType)
-            if(fromType == BulkLoader.TYPE_LOADER || BulkLoader.LOADER_TYPES.indexOf(fromType) > -1){
-                internalType = BulkLoader.TYPE_LOADER;
-            }else if (fromType == BulkLoader.TYPE_SOUND ||BulkLoader.SOUND_TYPES.indexOf(fromType) > -1){
-                internalType = BulkLoader.TYPE_SOUND;
-            }else if (fromType == BulkLoader.TYPE_VIDEO ||BulkLoader.VIDEO_TYPES.indexOf(fromType) > -1){
-                internalType = BulkLoader.TYPE_VIDEO;
-            }else if (fromType == BulkLoader.TYPE_XML ||BulkLoader.XML_TYPES.indexOf(fromType) > -1){
-                internalType = BulkLoader.TYPE_XML;
-            }else{
-                internalType = BulkLoader.TYPE_TEXT;
+            var extension : String = searchString.substring(searchString.lastIndexOf(".") + 1).toLowerCase();
+            var type : String;
+            if(!Boolean(extension) ){
+                extension = BulkLoader.TYPE_TEXT;
             }
-
-            return internalType;
+            if(extension == BulkLoader.TYPE_IMAGE || BulkLoader.IMAGE_EXTENSIONS.indexOf(extension) > -1){
+                type = BulkLoader.TYPE_IMAGE;
+            }else if (extension == BulkLoader.TYPE_SOUND ||BulkLoader.SOUND_EXTENSIONS.indexOf(extension) > -1){
+                type = BulkLoader.TYPE_SOUND;
+            }else if (extension == BulkLoader.TYPE_VIDEO ||BulkLoader.VIDEO_EXTENSIONS.indexOf(extension) > -1){
+                type = BulkLoader.TYPE_VIDEO;
+            }else if (extension == BulkLoader.TYPE_XML ||BulkLoader.XML_EXTENSIONS.indexOf(extension) > -1){
+                type = BulkLoader.TYPE_XML;
+            }else if (extension == BulkLoader.TYPE_MOVIECLIP ||BulkLoader.MOVIECLIP_EXTENSIONS.indexOf(extension) > -1){
+                type = BulkLoader.TYPE_MOVIECLIP;
+            }else{
+                // is this on a new extension?
+                for(var checkType : String in customTypesExtensions){
+                    for each(var checkExt : String in customTypesExtensions[checkType]){
+                        if (checkExt == extension){
+                            type = checkType;
+                            break;
+                        }
+                        if(type) break;
+                    }
+                }
+                if (!type) type = BulkLoader.TYPE_TEXT;
+            }
+            return type;
         }
     }      
 }
