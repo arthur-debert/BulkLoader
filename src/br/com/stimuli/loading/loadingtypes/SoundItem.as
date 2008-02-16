@@ -18,13 +18,6 @@ package br.com.stimuli.loading.loadingtypes {
 		override public function parseOptions(props : Object)  : Array{
 		    context = props[BulkLoader.CONTEXT] || null;
 		    
-            // internal, used to sort items of the same priority
-            // checks that we are not adding any inexistent props, aka, typos on props :
-            for (var propName :String in props){
-                /*if (AVAILABLE_PROPS.indexOf(propName) == -1){
-                                    log("add got a wrong property name: " + propName + ", with value:" + props[propName]);
-                                }*/
-            }
             return super.parseOptions(props);
         }
         

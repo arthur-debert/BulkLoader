@@ -16,6 +16,7 @@ package br.com.stimuli.loading.loadingtypes {
 		
 		override public function parseOptions(props : Object)  : Array{
             context = props[BulkLoader.CONTEXT] || null;
+            
             return super.parseOptions(props);
         }
         
