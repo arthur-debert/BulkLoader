@@ -85,6 +85,7 @@ package br.com.stimuli.loading.tests {
 		    assertTrue(sound is Sound);
 		    assertEquals(sound, sound1)
 		}
+		
 		public function testSoundContent():void {
             var soundItem : * = _bulkLoader.getSound("the-sound");
 		    assertNotNull(soundItem);

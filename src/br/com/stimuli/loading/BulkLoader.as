@@ -387,8 +387,8 @@ import br.com.stimuli.loading.BulkErrorEvent;
         
         /* @private
         */
-        public function _hasItemInBulkLoader(key : *, atLoader : BulkLoader) : Boolean{
-            var item : LoadingItem = get(key);
+        public static function _hasItemInBulkLoader(key : *, atLoader : BulkLoader) : Boolean{
+            var item : LoadingItem = atLoader.get(key);
             if (item &&item._isLoaded) {
                 return true;
             }
@@ -420,7 +420,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         */
         public static function whichLoaderHasItem(key : *) : BulkLoader{
             for each (var l : BulkLoader in allLoaders){
-                if (l._hasItemInBulkLoader(key, l )) return l;
+                if (BulkLoader._hasItemInBulkLoader(key, l )) return l;
             }
             return null;
         }
