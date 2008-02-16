@@ -177,7 +177,9 @@ package br.com.stimuli.loading.loadingtypes {
         
         public var internalType : String;
         
+        public var specificAvailableProps : Array = [];
         
+        public var propertyParsingErrors : Array;
         public function LoadingItem(url : URLRequest, type : String, internalType : String){
             this._type = type;
             this.internalType = internalType;
@@ -185,7 +187,7 @@ package br.com.stimuli.loading.loadingtypes {
         }
         
         
-        public function parseOptions(props : Object)  : void{
+        public function parseOptions(props : Object)  : Array{
             preventCache = props[BulkLoader.PREVENT_CACHING];
             _id = props[BulkLoader.ID];
             _priority = int(props[BulkLoader.PRIORITY]) || 0;
@@ -194,11 +196,15 @@ package br.com.stimuli.loading.loadingtypes {
             
             // internal, used to sort items of the same priority
             // checks that we are not adding any inexistent props, aka, typos on props :
+            var allowedProps : Array = BulkLoader.GENERAL_AVAILABLE_PROPS.concat(specificAvailableProps);
+            propertyParsingErrors = [];
             for (var propName :String in props){
-                /*if (AVAILABLE_PROPS.indexOf(propName) == -1){
-                                    log("add got a wrong property name: " + propName + ", with value:" + props[propName]);
-                                }*/
+                
+                if (allowedProps.indexOf(propName) == -1){
+                    propertyParsingErrors.push(this + ": got a wrong property name: " + propName + ", with value:" + props[propName]);
+                }
             }
+            return propertyParsingErrors;
         }
         
         /** The content resulting from this download. The data type for the <code>content</code> depends on the myme-type of the downloaded asset. For types that can be streamed such as videos (<code>NetStream</code>) and sound(<code>Sound</code>), it's content is available as soon as the connection is open. Otherwiser the content will be available after the download is done and the <code>Event.COMPLETE</code> is fired.

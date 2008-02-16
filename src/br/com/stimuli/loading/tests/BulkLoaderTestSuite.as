@@ -5,15 +5,16 @@ package br.com.stimuli.loading.tests {
 	import flash.utils.*;
 	public class BulkLoaderTestSuite extends TestSuite {
 	    var testClasses : Array = [
-	        CollectionTestCase, 
-	        XMLItemTest,
-	        URLItemTest,
-	        AudioContentTest,
-	        LoaderItemAVM1MovieTest,
-	        LoaderImageItemTest,
+	    BulkStartTest,
+	        /*CollectionTestCase, 
+	                   XMLItemTest,
+	                   URLItemTest,
+	                   AudioContentTest,
+	                   LoaderItemAVM1MovieTest,*/
+	                   LoaderImageItemTest,
 	        InstanceRetrivalTestCase, 
-	        VideoContentPausedAtStartTestCase, 
-	        VideoContentTest
+            /*VideoContentPausedAtStartTestCase, 
+            VideoContentTest*/
 	    ];
 	    
 	    var testsRun : Object = {} ;

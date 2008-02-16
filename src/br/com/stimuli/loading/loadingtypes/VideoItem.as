@@ -35,7 +35,7 @@ package br.com.stimuli.loading.loadingtypes {
 			
 		}
 		
-		override public function parseOptions(props : Object)  : void{
+		override public function parseOptions(props : Object)  : Array{
             pausedAtStart = props[BulkLoader.PAUSED_AT_START] || false;
             _checkPolicyFile = props[BulkLoader.CHECK_POLICY_FILE] || false;
             // internal, used to sort items of the same priority
@@ -45,7 +45,7 @@ package br.com.stimuli.loading.loadingtypes {
                                     log("add got a wrong property name: " + propName + ", with value:" + props[propName]);
                                 }*/
             }
-            super.parseOptions(props);
+            return super.parseOptions(props);
         }
         
 		override public function load() : void{

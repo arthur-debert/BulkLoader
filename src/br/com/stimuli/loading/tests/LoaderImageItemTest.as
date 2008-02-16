@@ -14,6 +14,8 @@ package br.com.stimuli.loading.tests {
 
 		public var name : String;
 		public var ioError : Event;
+		
+		public var theImageItem : ImageItem;
 		public function LoaderImageItemTest(name) : void {
 		  super(name);
 		  this.name = name;
@@ -28,7 +30,7 @@ package br.com.stimuli.loading.tests {
                 theURL = badURL;
             }
             
-	 		_bulkLoader.add(theURL, {id:"photo"});
+	 		theImageItem = _bulkLoader.add(theURL, {id:"photo"}) as ImageItem;
             _bulkLoader.get("photo").addEventListener(BulkLoader.ERROR, onIOError);
 	 		
 	 		_bulkLoader.start();
@@ -116,6 +118,16 @@ package br.com.stimuli.loading.tests {
         
         public function testIOError() : void{
             assertNotNull(ioError);
+        }
+        
+        
+        public function testInexistentOptionParseError() : void{
+            var theBadItem : LoadingItem = _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"beginAsPaused":true});
+            assertTrue(theBadItem.propertyParsingErrors.length > 0);
+        }
+        
+        public function testCorrectOptionsParse() : void{
+            assertTrue(theImageItem.propertyParsingErrors.length == 0);
         }
 	}
 }

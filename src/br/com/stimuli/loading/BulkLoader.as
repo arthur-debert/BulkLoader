@@ -241,7 +241,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         public static const PAUSED_AT_START : String = "pausedAtStart";
 		
 		
-        private static const AVAILABLE_PROPS : Array = [
+        public static const GENERAL_AVAILABLE_PROPS : Array = [
             PAUSED_AT_START, WEIGHT, MAX_TRIES, HEADERS, ID, PRIORITY, PREVENT_CACHING, CONTEXT, CAN_BEGIN_PLAYING, "type"];
 		/**
 		* The name by which this loader instance can be identified.
@@ -258,7 +258,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
 
         // Maximum number of simultaneous open requests
         public static const DEFAULT_NUM_CONNECTIONS : int = 7;
-        private var _numConnectons : int = DEFAULT_NUM_CONNECTIONS;
+        public var _numConnectons : int = DEFAULT_NUM_CONNECTIONS;
         public var _connections : Array;
         
         /** 
@@ -389,6 +389,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         */
         public static function _hasItemInBulkLoader(key : *, atLoader : BulkLoader) : Boolean{
             var item : LoadingItem = atLoader.get(key);
+            if(item ) trace("{BulkLoader}::method() item._isLoaded", item._isLoaded);
             if (item &&item._isLoaded) {
                 return true;
             }
@@ -532,7 +533,10 @@ bulkLoader.start(3)
             internalType = getInternalType(type);
             
             item  = new typeClasses[internalType] (url, type, internalType);
-            item.parseOptions(props);
+            var errors : Array = item.parseOptions(props);
+            for each (var error : String in errors){
+                log(error, LOG_ERRORS);
+            }
             log("Added",item, LOG_VERBOSE);
             // properties from the props argument
             
@@ -1174,7 +1178,7 @@ bulkLoader.start(3)
         *   @see #LOG_INFO
         *   @see #LOG_VERBOSE
         */   
-        internal function log(...msg) : void{
+        public function log(...msg) : void{
             var level : int  = isNaN(msg[msg.length -1] ) ? 3 : int(msg.pop());
             if (level >= logLevel ){
                 _logFunction("[BulkLoader] " + msg.join(" "));

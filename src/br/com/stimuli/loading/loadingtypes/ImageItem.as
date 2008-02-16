@@ -10,19 +10,13 @@ package br.com.stimuli.loading.loadingtypes {
         public var loader : Loader;
         
 		public function ImageItem(url : URLRequest, type : String, internalType : String){
+			specificAvailableProps = [BulkLoader.CONTEXT];
 			super(url, type, internalType);
 		}
 		
-		override public function parseOptions(props : Object)  : void{
+		override public function parseOptions(props : Object)  : Array{
             context = props[BulkLoader.CONTEXT] || null;
-            // internal, used to sort items of the same priority
-            // checks that we are not adding any inexistent props, aka, typos on props :
-            for (var propName :String in props){
-                /*if (AVAILABLE_PROPS.indexOf(propName) == -1){
-                                    log("add got a wrong property name: " + propName + ", with value:" + props[propName]);
-                                }*/
-            }
-            super.parseOptions(props);
+            return super.parseOptions(props);
         }
         
 		override public function load() : void{
@@ -78,6 +72,7 @@ package br.com.stimuli.loading.loadingtypes {
             _content = null;
             loader = null;
         }
+        
         
 	}
 	
