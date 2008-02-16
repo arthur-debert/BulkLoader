@@ -245,7 +245,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
 		
 		
         public static const GENERAL_AVAILABLE_PROPS : Array = [
-            PAUSED_AT_START, WEIGHT, MAX_TRIES, HEADERS, ID, PRIORITY, PREVENT_CACHING, CONTEXT, CAN_BEGIN_PLAYING, "type"];
+             WEIGHT, MAX_TRIES, HEADERS, ID, PRIORITY, PREVENT_CACHING, "type"];
 		/**
 		* The name by which this loader instance can be identified.
 		* This property is used so you can get a reference to this instance from other classes in your code without having to save and pass it yourself, throught the static method BulkLoader.getLoader(name) .<p/>
@@ -333,7 +333,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         * @see #LOG_ERRORS
         * @see #LOG_INFO
         */
-        public static const DEFALUT_LOG_LEVEL : int = LOG_ERRORS;
+        public static const DEFALUT_LOG_LEVEL : int = LOG_WARNINGS;
         public var logLevel: int = DEFALUT_LOG_LEVEL;
         
         private var _isRunning : Boolean;
@@ -540,7 +540,7 @@ bulkLoader.start(3)
                 type = guessType(url.url);
                 
             }
-            trace("***GUESSING url:", url.url, ", type:", type);
+            //trace("***GUESSING url:", url.url, ", type:", type);
             item  = new typeClasses[type] (url, type);
             var errors : Array = item.parseOptions(props);
             for each (var error : String in errors){
@@ -643,18 +643,20 @@ bulkLoader.start(3)
         *   @return A <code>Boolean</code> indicating if the new extension was registered.
         */
         public static function registerNewType( extension : String, atType : String, withClass : Class) : Boolean {
+            //TODO: TEST THIS TROUGHLY!
           if (extension.charAt(0) == ".") extension = extension.substring(1);
           
           // is this a new type?
           if (AVAILABLE_TYPES.indexOf(atType) == -1){
               // new type: we need a class for that:
-              if (!Boolean(withClass)){
+              if (!Boolean(withClass) || !(withClass is LoadingItem)){
                   throw new Error("[BulkLoader]: When adding a new type and extension, you must determine which class to use");
               }
               // add that class to the available classes
               typeClasses[atType] = withClass;
               if(!customTypesExtensions[atType]){
                   customTypesExtensions[atType] = [];
+                  AVAILABLE_TYPES.push(atType);
               }
               customTypesExtensions[atType].push( extension);
               return true;

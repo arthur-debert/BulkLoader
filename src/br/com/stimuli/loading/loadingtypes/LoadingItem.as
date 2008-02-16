@@ -175,12 +175,15 @@ package br.com.stimuli.loading.loadingtypes {
         */
         public var context : * = null;
         
-        public var specificAvailableProps : Array = [];
+        public var specificAvailableProps : Array ;
         
         public var propertyParsingErrors : Array;
         public function LoadingItem(url : URLRequest, type : String){
             this._type = type;
             this.url = url;
+            if(!specificAvailableProps){
+                specificAvailableProps = [];
+            }
         }
         
         

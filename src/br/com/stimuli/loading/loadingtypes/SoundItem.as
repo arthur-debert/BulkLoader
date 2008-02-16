@@ -11,6 +11,7 @@ package br.com.stimuli.loading.loadingtypes {
         public var loader : Sound;
         
 		public function SoundItem(url : URLRequest, type : String){
+		    specificAvailableProps = [BulkLoader.CONTEXT];
 			super(url, type);
 		}
 		

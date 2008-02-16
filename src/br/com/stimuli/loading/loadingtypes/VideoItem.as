@@ -31,6 +31,7 @@ package br.com.stimuli.loading.loadingtypes {
         
         
 		public function VideoItem(url : URLRequest, type : String){
+		    specificAvailableProps = [BulkLoader.CHECK_POLICY_FILE, BulkLoader.PAUSED_AT_START];
 			super(url, type);
 			
 		}
