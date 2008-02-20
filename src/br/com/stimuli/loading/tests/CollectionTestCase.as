@@ -3,12 +3,14 @@
 */
 package br.com.stimuli.loading.tests {
 	import asunit.framework.TestCase;
-    import br.com.stimuli.loading.BulkLoader;
+    import br.com.stimuli.loading.*;
     import br.com.stimuli.loading.loadingtypes.LoadingItem;
     import flash.net.*;
+    import flash.events.*;
     	public class CollectionTestCase extends TestCase {
     		private var _bulkLoader:BulkLoader;
             private var soundURL : URLRequest ;
+            public var name : String;
     		/**
      		 * Constructor
      		 *
@@ -16,6 +18,7 @@ package br.com.stimuli.loading.tests {
      		 */
      		public function CollectionTestCase(testMethod:String) {
      			super(testMethod);
+     			name = testMethod;
      		}
 
     		/**
@@ -23,7 +26,7 @@ package br.com.stimuli.loading.tests {
     	 	 * Invoked by TestCase.runMethod function.
     	 	 */
     		protected override function setUp():void {
-    	 		_bulkLoader = new BulkLoader("test-loader");
+    	 		_bulkLoader = new BulkLoader(BulkLoader.getUniqueName());
     	 		soundURL = new URLRequest("http://www.emptywhite.com/bulkloader-assets/chopin.mp3");
     	 		_bulkLoader.add(soundURL, {id:"the-sound"});
     	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true});
@@ -34,6 +37,8 @@ package br.com.stimuli.loading.tests {
     	 	 * Clean up after test, delete instance of class that we were testing.
     	 	 */
     	 	protected override function tearDown():void {
+            var theMovie : LoadingItem = _bulkLoader.get("the-movie");
+			if(theMovie) theMovie.stop();
     	 		_bulkLoader.removeAll();
     	 	}
 
@@ -110,6 +115,80 @@ package br.com.stimuli.loading.tests {
                 var newLoader : BulkLoader = new BulkLoader("otherLoader");
                 
                 assertFalse(newLoader._hasItemInBulkLoader("the-sound", newLoader));
+            }
+            
+            public function testAddWithBadURLType() : void{
+                var error : Error;
+                try{
+                    var item : LoadingItem = _bulkLoader.add(new Event("dsds"));
+                }catch (e : Error){
+                    error = e;
+                }
+                assertNotNull( error);
+            }
+            
+            public function testIsFinhisedAfterLoaded() : void{
+                assertFalse(_bulkLoader.isFinished);
+            }
+            
+            public function testTotalWight() : void{
+                var totalWeight : int = _bulkLoader.totalWeight;
+                _bulkLoader.add("some");
+                assertEquals(totalWeight + 1, _bulkLoader.totalWeight);
+                totalWeight += 1;
+                _bulkLoader.add("some-more", {"weight": 10});
+                assertEquals(totalWeight + 10, _bulkLoader.totalWeight );
+            }
+            
+            public function testItemsTotal() : void{
+                var itemsTotal : int = _bulkLoader.itemsTotal;
+                _bulkLoader.add("some");
+                assertEquals(itemsTotal + 1, _bulkLoader.itemsTotal);
+                itemsTotal += 1;
+                _bulkLoader.add("some-more", {"weight": 10});
+                assertEquals(itemsTotal + 1, _bulkLoader.itemsTotal );
+            }
+            
+        /*public function testSortPriorityOnAdd() : void{
+                    
+                    _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/shoes.jpg", {"priority":200, id:"photo"});
+                    _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"priority":-200, id:"xml"});
+                    assertEquals(_bulkLoader.items[_bulkLoader.itemsTotal -1] , _bulkLoader.get("xml"));
+                    assertEquals(_bulkLoader.items[0] , _bulkLoader.get("photo"));
+                    _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.txt", {"priority":-200, id:"txt"});
+                    assertTrue(_bulkLoader.items.indexOf(_bulkLoader.get("xml")) < _bulkLoader.items.indexOf(_bulkLoader.get("text")));
+                }*/
+            
+            public function testGetLeastUrgentItem() : void{
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.jpg", {"priority":-200, id:"text"});
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/shoes.jpg", {"priority":-200, id:"photo"});
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"priority":200, id:"xml"});
+                _bulkLoader.start();
+                assertEquals(_bulkLoader._getLeastUrgentOpenedItem() , _bulkLoader.get("text"));
+            }
+                        
+            /*            public function testHighestPriority() : void{
+                            assertEquals(_bulkLoader.highestPriority, 0);
+                            _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.jpg", {"priority":-200, id:"text"});
+                            assertEquals(_bulkLoader.highestPriority,  0);
+                            _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"priority":200, id:"xml"});
+                            assertEquals(_bulkLoader.highestPriority , 200);
+                            
+                        }
+                        */
+                        public function testLogFunctionSet() : void{
+                            var myFunction : Function = function(msg:String){
+                                trace("myFunction", msg);
+                            }
+                            _bulkLoader.logFunction = myFunction;
+                            assertEquals(_bulkLoader.logFunction, myFunction)
+                        }
+            
+            public function testChangeItemPriority() : void{
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/shoes.jpg", { id:"photo"});
+                assertTrue(_bulkLoader.items[0] != _bulkLoader.get("photo"))
+                _bulkLoader.changeItemPriority("photo", 100);
+                assertEquals(_bulkLoader.items[0], _bulkLoader.get("photo"))
             }
     	}
     

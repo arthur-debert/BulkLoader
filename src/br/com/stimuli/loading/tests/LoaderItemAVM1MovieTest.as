@@ -15,10 +15,11 @@ package br.com.stimuli.loading.tests {
 		public var name : String;
 		public function LoaderItemAVM1MovieTest(name) : void {
 		  super(name);
+		  this.name = name;
 		}
 		// Override the run method and begin the request for remote data
 		public override function run():void {
-            _bulkLoader = new BulkLoader("assync-test");
+            _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
 	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/avm1movie.swf", {id:"avm1movie"});
 	 		
 	 		
@@ -28,6 +29,8 @@ package br.com.stimuli.loading.tests {
 		}
 
 		protected override function completeHandler(event:Event):void {
+		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
+	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
 			super.run();
 		}
 		

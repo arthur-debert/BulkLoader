@@ -16,10 +16,11 @@ package br.com.stimuli.loading.tests {
 		// Override the run method and begin the request for remote data
 		public function VideoContentPausedAtStartTestCase(name) : void {
 		  super(name);
+		  this.name = name;
 		}
 		
 		public override function run():void {
-            _bulkLoader = new BulkLoader("assync-test");
+            _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
 	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true});
 	 		_bulkLoader.get("the-movie").addEventListener(BulkLoader.OPEN, onVideoStartHandler);
 	 		_bulkLoader.start();
@@ -28,6 +29,8 @@ package br.com.stimuli.loading.tests {
 		}
 
 		protected override function completeHandler(event:Event):void {
+		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
+	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
 			super.run();
 		}
 

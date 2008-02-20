@@ -5,16 +5,16 @@ package br.com.stimuli.loading.tests {
 	import flash.utils.getTimer;
 	import flash.display.*;
 	import asunit.framework.*;
-	import br.com.stimuli.loading.BulkLoader;
+	import br.com.stimuli.loading.*;
     import br.com.stimuli.loading.loadingtypes.*;
 
-	public class XMLItemTest extends AsynchronousTestCase {
+	public class ProgressEventsTest extends AsynchronousTestCase {
 		public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
 
 		public var name : String;
 		public var ioError : Event;
-		public function XMLItemTest(name) : void {
+		public function ProgressEventsTest(name) : void {
 		  super(name);
 		  this.name = name;
 		}
@@ -30,7 +30,8 @@ package br.com.stimuli.loading.tests {
             
 	 		_bulkLoader.add(theURL, {id:"text"});
             _bulkLoader.get("text").addEventListener(BulkLoader.ERROR, onIOError);
-	 		
+	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/shoes.jpg", {id:"photo"});
+
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
@@ -62,7 +63,7 @@ package br.com.stimuli.loading.tests {
 			}
 			for each(var propName : String in ["percentLoaded", "weightPercent", "ratioLoaded"] ){
 			    if (isNaN(event[propName]) ){
-			        trace(propName, "is not a number" , event[propName]);
+			        trace(propName, "is not a number" );
 			        assertFalse(isNaN(event[propName]));
 			    }
 			}
@@ -77,45 +78,22 @@ package br.com.stimuli.loading.tests {
 			_bulkLoader.removeAll();	
 		}
 		
-		public function testContentExists():void {
-		    var item : String = _bulkLoader.getXML("text");
-		    assertNotNull(item);
-		}
-		
-        public function testContent() : void{
-            var item : XML = _bulkLoader.getXML("text");
-		    assertTrue(item is XML);
-
+		public function testGetProgressForItems() : void{
+		    _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/chopin.mp3", {id:"sound"});
+            var e : BulkProgressEvent = _bulkLoader.getProgressForItems(["text", "photo"]);
+            assertNotNull(e);
         }
         
-        public function testDefaultGetType() : void{
-            var item : * = _bulkLoader.getContent("text");
-		    assertTrue(item is XML);
+        public function testGetProgressForItemsPercentLoaded() : void{
+            _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/chopin.mp3", {id:"sound"});
+            var e : BulkProgressEvent = _bulkLoader.getProgressForItems(["text", "photo"]);
+            assertEquals(e.percentLoaded,1);
         }
         
-        public function testClearMemoryRemovesItem(): void{
-            var item : String = _bulkLoader.getContent("text", true) ;
-		    assertNotNull(item);
-            // now try again
-            item = _bulkLoader.getContent("text");
-            assertNull(item);
-        }
-        
-        public function testGetHTTPStatusFromItem() :void{
-            var item : * = _bulkLoader.get("text");
-            assertTrue(item.httpStatus  > -1 );
-        }
-        
-        public function testGetHTTPStatusFromLoader() :void{
-            assertTrue(_bulkLoader.getHttpStatus("text")  > -1 );
-        }
-        
-        public function testIOError() : void{
-            assertNotNull(ioError);
-        }
-        
-        public function testItemIsLoaded() : void{
-            assertTrue(_bulkLoader.get("text")._isLoaded)
+        public function testGetProgressForItemsRatioLoaded() : void{
+            _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/chopin.mp3", {id:"sound"});
+            var e : BulkProgressEvent = _bulkLoader.getProgressForItems(["text", "photo"]);
+            assertEquals(e.ratioLoaded,1);
         }
 	}
 }

@@ -98,7 +98,7 @@ package br.com.stimuli.loading.loadingtypes {
         public var url : URLRequest;
         /** @private */
         public var _id : String;
-
+        public var _additionIndex : int ;
         /** @private */
         public var _priority : int = 0;
         /** @private */

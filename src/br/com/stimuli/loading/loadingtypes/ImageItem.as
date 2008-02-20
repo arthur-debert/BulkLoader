@@ -25,7 +25,7 @@ package br.com.stimuli.loading.loadingtypes {
 		    loader = new Loader();
 		    loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgressHandler, false, 0, true);
             loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
-            loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 0, true);
+            loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 100, true);
             loader.contentLoaderInfo.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);  
             loader.contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, super.onHttpStatusHandler, false, 0, true);
             loader.load(url, context);
@@ -34,6 +34,10 @@ package br.com.stimuli.loading.loadingtypes {
         public function _onHttpStatusHandler(evt : HTTPStatusEvent) : void{
             _httpStatus = evt.status;
             dispatchEvent(evt);
+        }
+        
+        override public function onErrorHandler(evt : Event) : void{
+            super.onErrorHandler(evt);
         }
         
         override public function onCompleteHandler(evt : Event) : void {

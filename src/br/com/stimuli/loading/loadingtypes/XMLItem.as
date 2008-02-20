@@ -27,6 +27,11 @@ package br.com.stimuli.loading.loadingtypes {
             loader.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);
             loader.load(url);
 		};
+		
+		override public function onErrorHandler(evt : Event) : void{
+            super.onErrorHandler(evt);
+        }
+        
 		override public function onStartedHandler(evt : Event) : void{
             super.onStartedHandler(evt);
         };

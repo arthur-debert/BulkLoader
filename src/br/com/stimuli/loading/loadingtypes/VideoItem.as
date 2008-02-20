@@ -107,8 +107,8 @@ package br.com.stimuli.loading.loadingtypes {
         
         override public function stop() : void{
             try{
-                if(nc){
-                    nc.close();
+                if(stream){
+                    stream.close();
                 }
             }catch(e : Error){
                 

@@ -20,7 +20,7 @@ package br.com.stimuli.loading.tests {
 		}
 		// Override the run method and begin the request for remote data
 		public override function run():void {
-            _bulkLoader = new BulkLoader(name);
+            _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
             var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/some-text.txt";
             var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-text.txt"
             var theURL : String = goodURL;
@@ -44,6 +44,8 @@ package br.com.stimuli.loading.tests {
         }
         
 		protected override function completeHandler(event:Event):void {
+		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
+	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
 			super.run();
 		}
 		

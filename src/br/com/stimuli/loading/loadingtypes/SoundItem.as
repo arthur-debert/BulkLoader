@@ -37,6 +37,11 @@ package br.com.stimuli.loading.loadingtypes {
             //trace("{SoundItem}::method() context", context);
         };
         
+        override public function onErrorHandler(evt : Event) : void{
+            trace("{SoundItem}::onErrorHandler", onErrorHandler);
+            super.onErrorHandler(evt);
+        }
+        
         override public function onCompleteHandler(evt : Event) : void {
             _content = loader
             super.onCompleteHandler(evt);
@@ -57,7 +62,7 @@ package br.com.stimuli.loading.loadingtypes {
             if (loader){
                 loader.removeEventListener(ProgressEvent.PROGRESS, onProgressHandler, false);
                 loader.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
-                loader.removeEventListener(IOErrorEvent.IO_ERROR, super.onErrorHandler, false);
+                loader.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
                 loader.removeEventListener(BulkLoader.OPEN, onStartedHandler, false);
             }
             
