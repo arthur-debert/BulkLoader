@@ -1,12 +1,12 @@
 package br.com.stimuli.loading.tests {
-	import flash.net.URLRequest;
-	import flash.net.*;
-	import flash.events.*;
-	import flash.utils.getTimer;
-	import flash.display.*;
 	import asunit.framework.*;
+	
 	import br.com.stimuli.loading.*;
-    import br.com.stimuli.loading.loadingtypes.*;
+	import br.com.stimuli.loading.loadingtypes.*;
+	
+	import flash.display.*;
+	import flash.events.*;
+	import flash.net.*;
 
 	public class ProgressEventsTest extends AsynchronousTestCase {
 		public var _bulkLoader : BulkLoader;
@@ -14,7 +14,7 @@ package br.com.stimuli.loading.tests {
 
 		public var name : String;
 		public var ioError : Event;
-		public function ProgressEventsTest(name) : void {
+		public function ProgressEventsTest(name : String) : void {
 		  super(name);
 		  this.name = name;
 		}
@@ -55,7 +55,7 @@ package br.com.stimuli.loading.tests {
 		*/
 		protected override function progressHandler(event:ProgressEvent):void {
 		    //var evt : * = event as Object;
-			var current = Math.floor((event as Object).percentLoaded * 100) /100;
+			var current :Number = Math.floor((event as Object).percentLoaded * 100) /100;
 			var delta : Number = current - lastProgress;
 			if (current > lastProgress && delta > 0.099){
 			    lastProgress = current;

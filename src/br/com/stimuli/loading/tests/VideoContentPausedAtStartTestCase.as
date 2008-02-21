@@ -1,11 +1,12 @@
 package br.com.stimuli.loading.tests {
-	import flash.net.URLRequest;
-	import flash.net.*;
-	import flash.events.*;
-    import flash.utils.getTimer;
 	import asunit.framework.*;
+	
 	import br.com.stimuli.loading.BulkLoader;
-    import br.com.stimuli.loading.loadingtypes.*;
+	import br.com.stimuli.loading.loadingtypes.*;
+	
+	import flash.events.*;
+	import flash.net.*;
+	import flash.utils.getTimer;
 
 	public class VideoContentPausedAtStartTestCase extends AsynchronousTestCase {
 	    public var _bulkLoader : BulkLoader;
@@ -14,7 +15,7 @@ package br.com.stimuli.loading.tests {
 		public var netStreamAtStart : NetStream;
 		public var name : String;
 		// Override the run method and begin the request for remote data
-		public function VideoContentPausedAtStartTestCase(name) : void {
+		public function VideoContentPausedAtStartTestCase(name: String) : void {
 		  super(name);
 		  this.name = name;
 		}
@@ -39,7 +40,7 @@ package br.com.stimuli.loading.tests {
 		*/
 		protected override function progressHandler(event:ProgressEvent):void {
 		    //var evt : * = event as Object;
-			var current = Math.floor((event as Object).percentLoaded * 100) /100;
+			var current :Number = Math.floor((event as Object).percentLoaded * 100) /100;
 			var delta : Number = current - lastProgress;
 			if (current > lastProgress && delta > 0.099){
 			    lastProgress = current;

@@ -15,7 +15,7 @@ package br.com.stimuli.loading.tests {
 		public var name : String;
 		public var ioError : Event;
 		
-		public function VideoContentTest(name) : void {
+		public function VideoContentTest(name: String) : void {
 		  super(name);
 		  this.name= name;
 		}
@@ -57,7 +57,7 @@ package br.com.stimuli.loading.tests {
 		*/
 		protected override function progressHandler(event:ProgressEvent):void {
 		    //var evt : * = event as Object;
-			var current = Math.floor((event as Object).percentLoaded * 100) /100;
+			var current :Number= Math.floor((event as Object).percentLoaded * 100) /100;
 			var delta : Number = current - lastProgress;
 			if (current > lastProgress && delta > 0.099){
 			    lastProgress = current;
@@ -138,6 +138,11 @@ package br.com.stimuli.loading.tests {
         
         public function testItemIsLoaded() : void{
             assertTrue(_bulkLoader.get("the-movie")._isLoaded)
+        }
+        
+        public function testIsVideo() : void{
+            assertTrue(_bulkLoader.get("the-movie").isVideo());
+            
         }
 	}
 }

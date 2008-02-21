@@ -75,7 +75,7 @@ package br.com.stimuli.loading.tests {
     		*/
     		protected override function progressHandler(event:ProgressEvent):void {
     		    //var evt : * = event as Object;
-    			var current = Math.floor((event as Object).percentLoaded * 100) /100;
+    			var current : Number = Math.floor((event as Object).percentLoaded * 100) /100;
     			var delta : Number = current - lastProgress;
     			if (current > lastProgress && delta > 0.099){
     			    lastProgress = current;

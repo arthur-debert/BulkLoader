@@ -268,6 +268,7 @@ package br.com.stimuli.loading.loadingtypes {
         public function onErrorHandler(evt : Event) : void{
             numTries ++;
             status = STATUS_ERROR;   
+            evt.stopPropagation();
             if(numTries >= maxTries){
                 var bulkErrorEvent : BulkErrorEvent = new BulkErrorEvent(BulkErrorEvent.ERROR);
                 bulkErrorEvent.errors = [this];

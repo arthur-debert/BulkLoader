@@ -1,11 +1,11 @@
 package br.com.stimuli.loading.tests {
-	import flash.net.URLRequest;
-	import flash.net.URLLoader;
+	import asunit.framework.*;
+	
+	import br.com.stimuli.loading.BulkLoader;
+	import br.com.stimuli.loading.loadingtypes.*;
+	
 	import flash.events.*;
 	import flash.media.Sound;
-	import asunit.framework.*;
-	import br.com.stimuli.loading.BulkLoader;
-    import br.com.stimuli.loading.loadingtypes.*;
 
 	public class AudioContentTest extends AsynchronousTestCase {
 		public var _bulkLoader : BulkLoader;
@@ -15,7 +15,7 @@ package br.com.stimuli.loading.tests {
 		
 		public var ioError : Event;
 		public var name : String;
-		public function AudioContentTest(name) : void {
+		public function AudioContentTest(name : String) : void {
 		  super(name);
 		  this.name  = name;
 		}
@@ -53,7 +53,7 @@ package br.com.stimuli.loading.tests {
 		*/
 		protected override function progressHandler(event:ProgressEvent):void {
 		    //var evt : * = event as Object;
-			var current = Math.floor((event as Object).percentLoaded * 100) /100;
+			var current : Number = Math.floor((event as Object).percentLoaded * 100) /100;
 			if (current > lastProgress){
 			    lastProgress = current;
 			    if (BulkLoaderTestSuite.LOADING_VERBOSE) trace(current * 100 , "% loaded") ;

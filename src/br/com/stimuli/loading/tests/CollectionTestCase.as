@@ -177,7 +177,7 @@ package br.com.stimuli.loading.tests {
                         }
                         */
                         public function testLogFunctionSet() : void{
-                            var myFunction : Function = function(msg:String){
+                            var myFunction : Function = function(msg:String):void{
                                 trace("myFunction", msg);
                             }
                             _bulkLoader.logFunction = myFunction;
@@ -189,6 +189,24 @@ package br.com.stimuli.loading.tests {
                 assertTrue(_bulkLoader.items[0] != _bulkLoader.get("photo"))
                 _bulkLoader.changeItemPriority("photo", 100);
                 assertEquals(_bulkLoader.items[0], _bulkLoader.get("photo"))
+            }
+            
+            public function testRemovePausedItems ():void{
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.jpg", {"priority":-200, id:"text"});
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/shoes.jpg", {"priority":-200, id:"photo"});
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexm l.xml", {"priority":200, id:"xml"});
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexm l.xml", {"priority":200, id:"xml2"});
+                _bulkLoader.pause("text");
+                _bulkLoader.pause("photo");
+                _bulkLoader.pause("xml");
+                _bulkLoader.removePausedItems();
+                assertNull(_bulkLoader.get("text"));
+                assertNull(_bulkLoader.get("photo"));
+                assertNull(_bulkLoader.get("xml"));
+                // now make sure we have not removed the wrong ones:
+                assertNotNull(_bulkLoader.get("the-movie"));
+                assertNotNull(_bulkLoader.get("xml2"));
+            
             }
     	}
     

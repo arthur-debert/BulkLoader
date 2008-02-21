@@ -252,11 +252,11 @@ import br.com.stimuli.loading.BulkErrorEvent;
 		* Each name should be unique, as instantiating a BulkLoader with a name already taken will throw an error.
 		* @ see getLoaders
 		*/
-        private var _name : String;
-        private var _id : int;
-        private static var _instancesCreated : int = 0;
-        private var _items : Array = [];
-        private var _contents : Dictionary = new Dictionary();
+        public var _name : String;
+        public var _id : int;
+        public static var _instancesCreated : int = 0;
+        public var _items : Array = [];
+        public var _contents : Dictionary = new Dictionary();
         public static var _allLoaders : Object = {};
         public var _additionIndex : int = 0;
         // Maximum number of simultaneous open requests
@@ -268,18 +268,18 @@ import br.com.stimuli.loading.BulkErrorEvent;
         *   The ratio (0->1) of items to load / items total.
         *   This number is always reliable.
         **/
-        private var _loadedRatio : Number = 0;
+        public var _loadedRatio : Number = 0;
         /** Total number of items to load.*/
-        private var _itemsTotal : int = 0;
+        public var _itemsTotal : int = 0;
         /** 
         *   Number of items alrealdy loaded.
         *   Failed or canceled items are not taken into consideration
         */
-        private var _itemsLoaded : int = 0;
+        public var _itemsLoaded : int = 0;
         /** The sum of weights in all items to load.
         *   Each item's weight default to 1
         */
-        private var _totalWeight : int = 0;
+        public var _totalWeight : int = 0;
         /** The total bytes to load.
         *   If the number of items to load is larger than the number of simultaneous connections, bytesTotal will be 0 untill all connections are opened and the number of bytes for all items is known.
         *   @see #bytesTotalCurrent
@@ -1294,8 +1294,6 @@ bulkLoader.start(3)
             for each (var item : LoadingItem in _items){
                 remove(item);
             }
-            /*trace("{BulkLoader}::method() name", name);
-                        trace("{BulkLoader}::method() _allLoaders", _allLoaders);*/
             delete _allLoaders[name];
             _items = _connections = [];
             _contents = new Dictionary();
@@ -1318,7 +1316,6 @@ bulkLoader.start(3)
         *   @ return <code>True</code> if any items have been removed, <code>false</code> otherwise.
         */
         public function removePausedItems() : Boolean{
-            // TODO: test me
             var stoppedLoads : Array = _items.filter(function (item : LoadingItem, ...rest) : Boolean{
                 return (item.status == LoadingItem.STATUS_STOPPED);
             });
@@ -1334,7 +1331,6 @@ bulkLoader.start(3)
         *   @ return In any items have been removed.
         */
         public function removeFailedItems(): int{
-            // TODO: test me
             var numCleared : int = 0;
             var badItems : Array = _items.filter(function (item : LoadingItem, ...rest) : Boolean{
                 return (item.status == LoadingItem.STATUS_ERROR);
@@ -1481,7 +1477,7 @@ bulkLoader.start(3)
             }
             theNames.sort();
             trace("All loaders");
-            theNames.forEach(function(item, ...rest):void{trace("\t", item)})
+            theNames.forEach(function(item:*, ...rest):void{trace("\t", item)})
             trace("===========");
         }
         
@@ -1491,6 +1487,14 @@ bulkLoader.start(3)
                 num ++;
             }
             trace("BulkLoader has ", num, "instances");
+        }
+        
+        public static function __debug_printStackTrace() : void{
+            try{
+                throw new Error("stack trace");
+            }catch(e : Error){
+                trace(e.getStackTrace());
+            }
         }
     }      
     
