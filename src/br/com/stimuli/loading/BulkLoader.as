@@ -597,7 +597,7 @@ bulkLoader.start(3)
         *   @return <code>True</code> if an item with that key is found, <code>false</code> otherwise.
         */
         public function loadNow(key : *) : Boolean{
-            //TODO: Test me TOUGH
+            //TODO: Test me TOUGH loadNOW
             var item : LoadingItem ;
             if (key is LoadingItem){
                 item = key;
@@ -647,7 +647,7 @@ bulkLoader.start(3)
         *   @return A <code>Boolean</code> indicating if the new extension was registered.
         */
         public static function registerNewType( extension : String, atType : String, withClass : Class) : Boolean {
-            //TODO: TEST THIS TROUGHLY! Tough
+            //TODO: TEST THIS TROUGHLY! Tough registerNewType
           if (extension.charAt(0) == ".") extension = extension.substring(1);
           
           // is this a new type?
@@ -800,7 +800,7 @@ bulkLoader.start(3)
         }
         
         private function onProgress(evt : Event = null) : void{
-            // TODO: check these values are correct! tough
+            // TODO: check these values are correct! tough onProgress
             var e : BulkProgressEvent = getProgressForItems(_items);
             // update values:
             _bytesLoaded = e.bytesLoaded;
@@ -972,7 +972,7 @@ bulkLoader.start(3)
         /* Returns the speed in kilobytes / second for all loadings
         */
         public function get speed() : Number{
-            // TODO: test me
+            // TODO: test get speed
             var timeElapsed : int = getTimer() - lastSpeedCheck;
             var bytesDelta : int = (bytesLoaded - lastBytesCheck) / 1024;
             var speed : int = bytesDelta / (timeElapsed/1000);
@@ -1354,6 +1354,7 @@ bulkLoader.start(3)
                 return false;
             }
             item.stop();
+            log("STOPPED ITEM:" , item, LOG_INFO)
             var result : Boolean = removeFromConnections(item);
             if(loadsNext){
                 loadNext();
@@ -1375,8 +1376,7 @@ bulkLoader.start(3)
         *   @see #stopAllItems()
         *   @see #stopItem()
         */
-        public static function pause_allLoaders() : void{
-            // TODO: test me
+        public static function pauseAllLoaders() : void{
             for each (var atLoader : BulkLoader in _allLoaders){
                 atLoader.pauseAll();
             }
@@ -1387,10 +1387,10 @@ bulkLoader.start(3)
         *   @return If a item with that key has resumed loading.
         */
         public function resume(key : *) : Boolean{
-            // TODO: test me
             var item : LoadingItem = key is LoadingItem ? key : get(key);
             if(item && item.status == LoadingItem.STATUS_STOPPED ){
                 item.status = null;
+                loadNext();
                 return true;
             }
             return false;
@@ -1400,7 +1400,7 @@ bulkLoader.start(3)
         *   @return <code>True</code> if any item was stopped and resumed, false otherwise
         */
         public function resumeAll() : Boolean{
-            // TODO: test me
+            // TODO: test resumeAll
             log("Resuming all items", LOG_VERBOSE);
             var affected : Boolean = false;
             _items.forEach(function(item : LoadingItem, ...rest):void{

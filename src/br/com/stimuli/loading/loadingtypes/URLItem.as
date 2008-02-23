@@ -42,7 +42,6 @@ package br.com.stimuli.loading.loadingtypes {
                     loader.close();
                 }
             }catch(e : Error){
-                
             }
             super.stop();
         };

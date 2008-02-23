@@ -3,21 +3,25 @@ package br.com.stimuli.loading.tests {
 	import flash.events.*;
 	import br.com.stimuli.loading.tests.*;
 	import flash.utils.*;
+	import flash.media.SoundMixer;
 	public class BulkLoaderTestSuite extends TestSuite {
 	    public var testClasses : Array = [
-	    RemoveFailedItemTest/*,
-	            CollectionTestCase,
-	            InstanceRetrivalTestCase, 
-	            ProgressEventsTest, 
-	            GuessTypeTest,
-	            BulkStartTest,
-	            XMLItemTest,
-	            URLItemTest,
-	            AudioContentTest,
-	            LoaderItemAVM1MovieTest,
-	            LoaderImageItemTest,
-	            VideoContentPausedAtStartTestCase, 
-	            VideoContentTest*/
+        ResumeAllTest
+	    ResumeTest,
+        PauseAllResumeTest,
+        RemoveFailedItemTest,
+        CollectionTestCase,
+        InstanceRetrivalTestCase, 
+        ProgressEventsTest, 
+        GuessTypeTest,
+        BulkStartTest,
+        XMLItemTest,
+        URLItemTest,
+        AudioContentTest,
+        LoaderItemAVM1MovieTest,
+        LoaderImageItemTest,
+        VideoContentPausedAtStartTestCase, 
+        VideoContentTest
 	    ];
 	    
 	    public var testsRun : Object = {} ;
@@ -26,6 +30,7 @@ package br.com.stimuli.loading.tests {
         
         public function BulkLoaderTestSuite() {
 		    super();
+		    SoundMixer.soundTransform.volume = 0.1;
             testClasses.forEach(function(cl : Class, ...rest):void{addTestsFromClass(cl)})
 	 		for (var prop : String in testsRun){
 	 		    trace(prop.substring(6, prop.length -1) + " (" + testsRun[prop].length + ")", ":");

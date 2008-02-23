@@ -263,6 +263,7 @@ package br.com.stimuli.loading.loadingtypes {
            status = STATUS_FINISHED;
            _isLoaded = true;
            dispatchEvent(evt);
+           evt.stopPropagation();
         }
         
         public function onErrorHandler(evt : Event) : void{
