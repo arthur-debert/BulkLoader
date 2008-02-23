@@ -597,7 +597,6 @@ bulkLoader.start(3)
         *   @return <code>True</code> if an item with that key is found, <code>false</code> otherwise.
         */
         public function loadNow(key : *) : Boolean{
-            //TODO: Test me TOUGH loadNOW
             var item : LoadingItem ;
             if (key is LoadingItem){
                 item = key;
@@ -1011,7 +1010,8 @@ bulkLoader.start(3)
         /** Updates the priority queue
         */
         public function sortItemsByPriority() : void{
-            // FIXME: addedTime not taken into consideration
+            // addedTime might not be precise, if subsequent add() calls are whithin getTimer precision
+            // range, so we use _additionIndex
             _items.sortOn(["priority", "_additionIndex"],  [Array.NUMERIC | Array.DESCENDING, Array.NUMERIC  ]);
         }
         
