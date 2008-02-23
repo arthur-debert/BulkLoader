@@ -464,5 +464,11 @@ package br.com.stimuli.loading.loadingtypes {
             return _id; 
         }
         
-        
+        public function getStats() : String{
+            return "Item url:" + url.url + 
+            ", total time: " + _timeToDownload +
+            "(s), latency:" + _latency +
+            "(s), speed: " + _speed + 
+            " kb/s, size: " + BulkLoader.truncateNumber(_bytesTotal/1024) + " kb";
+        }
 }}

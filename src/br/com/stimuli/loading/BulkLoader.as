@@ -740,7 +740,7 @@ bulkLoader.start(3)
           var totalLatency : Number = 0;
           var totalBytes : int = 0;
           speedTotal = 0;
-          var num : int = 0;
+          var num : Number = 0;
           for each(var item : LoadingItem in _items){
               if (item._isLoaded && item.status != LoadingItem.STATUS_ERROR){
                   totalLatency += item.latency;
@@ -1186,7 +1186,7 @@ bulkLoader.start(3)
             totalTime = BulkLoader.truncateNumber((endTime - startTime) /1000);
             updateStats();
             _connections = [];
-            traceStats();
+            getStats();
             _isFinished = true;
             log("Finished all", LOG_INFO);
             dispatchEvent(eProgress);
@@ -1198,25 +1198,19 @@ bulkLoader.start(3)
         *   @see #LOG_ERRORS
         *   @see #logLevel
         */
-        public function traceStats() : String{
+        public function getStats() : String{
             var stats : Array = [];
             stats.push("\n************************************");
             stats.push("All items loaded(" + itemsTotal + ")");
-            stats.push("Total time(s): " + totalTime);
-            stats.push("Average latency(s): " + int(avgLatency *1000));
+            stats.push("Total time(s):       " + totalTime);
+            stats.push("Average latency(s):  " + truncateNumber(avgLatency));
             stats.push("Average speed(kb/s): " + truncateNumber(speedAvg));
-            stats.push("Median speed(kb/s): " + truncateNumber(speedTotal));
-            stats.push("KiloBytes total:" + truncateNumber(bytesTotal/1024));
-            stats.push("");
-            for each (var item:LoadingItem in _items){
-                if (item._isLoaded){
-                    stats.push("\t- Item url:" + item.url.url + 
-                    ", total time: " + item.timeToDownload +
-                    ", latency:" + item.latency +
-                    ", speed: " +item.speed + 
-                    ", kbs total: " + truncateNumber(item.bytesTotal/1024))
-                }
-            }
+            stats.push("Median speed(kb/s):  " + truncateNumber(speedTotal));
+            stats.push("KiloBytes total:     " + truncateNumber(bytesTotal/1024));
+            var itemsInfo : Array = _items.map(function(item :LoadingItem, ...rest) : String{
+                return "\t" + item.getStats();
+            })
+            stats.push(itemsInfo.join("\n"))
             stats.push("************************************");
             var statsString : String = stats.join("\n");
             log(statsString, LOG_VERBOSE);
@@ -1400,7 +1394,6 @@ bulkLoader.start(3)
         *   @return <code>True</code> if any item was stopped and resumed, false otherwise
         */
         public function resumeAll() : Boolean{
-            // TODO: test resumeAll
             log("Resuming all items", LOG_VERBOSE);
             var affected : Boolean = false;
             _items.forEach(function(item : LoadingItem, ...rest):void{

@@ -41,6 +41,7 @@ package br.com.stimuli.loading.tests {
         }
         
 		protected override function completeHandler(event:Event):void {
+		    trace(_bulkLoader.getStats());
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
 			super.run();
