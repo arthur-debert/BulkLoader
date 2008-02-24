@@ -79,12 +79,12 @@ import br.com.stimuli.loading.BulkErrorEvent;
     // event fired when all items have been loaded
     bulkLoader.addEventListener(BulkLoader.COMPLETE, onCompleteHandler);
     // event fired when loading progress has been made:
-    bulkLoader.addEventListener(BulkLoader.PROGRESS, onProgressHandler);
+    bulkLoader.addEventListener(BulkLoader.PROGRESS, _onProgressHandler);
 
     // start loading all items
     bulkLoader.start();
 
-    function onProgressHandler(evt : ProgressEvent) : void{
+    function _onProgressHandler(evt : ProgressEvent) : void{
         trace("Loaded" , evt.bytesLoaded," of ",  evt.bytesTotal);
     }
 
@@ -253,18 +253,25 @@ import br.com.stimuli.loading.BulkErrorEvent;
 		* @ see getLoaders
 		*/
         public var _name : String;
+        /* @private */
         public var _id : int;
+        /* @private */
         public static var _instancesCreated : int = 0;
+        /* @private */
         public var _items : Array = [];
+        /* @private */
         public var _contents : Dictionary = new Dictionary();
+        /* @private */
         public static var _allLoaders : Object = {};
+        /* @private */
         public var _additionIndex : int = 0;
         // Maximum number of simultaneous open requests
         public static const DEFAULT_NUM_CONNECTIONS : int = 7;
         public var _numConnectons : int = DEFAULT_NUM_CONNECTIONS;
         public var _connections : Array;
         
-        /** 
+        /**  
+        *   @private
         *   The ratio (0->1) of items to load / items total.
         *   This number is always reliable.
         **/
@@ -284,36 +291,36 @@ import br.com.stimuli.loading.BulkErrorEvent;
         *   If the number of items to load is larger than the number of simultaneous connections, bytesTotal will be 0 untill all connections are opened and the number of bytes for all items is known.
         *   @see #bytesTotalCurrent
         */ 
-        private var _bytesTotal : int = 0;
+        public var _bytesTotal : int = 0;
         /** The sum of all bytes loaded so far. 
         *  If itemsTotal is less than the number of connections, this will be the same as bytesTotal. Else, bytesTotalCurrent will be available as each loading is started.
         *   @see #bytesTotal
         */
-        private var _bytesTotalCurrent : int = 0;
+        public var _bytesTotalCurrent : int = 0;
         /** The sum of all bytesLoaded for each item.
         */
-        private var _bytesLoaded : int = 0;
+        public var _bytesLoaded : int = 0;
         /** The percentage (0->1) of bytes loaded.
         *   Until all connections are opened  this number is not reliable . If you are downloading more items than the number of simultaneous connections, use loadedRatio or weightPercent instead.
         *   @see #loadedRatio
         *   @see #weightPercent
         */   
-        private var _percentLoaded : Number = 0;
+        public var _percentLoaded : Number = 0;
         /** The weighted percent of items loaded(0->1).
         *   This always returns a reliable value.
         */
-        private var _weightPercent : Number;
+        public var _weightPercent : Number;
         
         /**The average latency (in miliseconds) for the entire loading.*/
         public var avgLatency : Number;
         /**The average speed (in kb/s) for the entire loading.*/
         public var speedAvg : Number;
-        private var speedTotal : Number;
-        private var startTime : int ;
-        private var endTime : int;
-        private var lastSpeedCheck : int;
-        private var lastBytesCheck : int;
-        private var _speed : Number;
+        public var speedTotal : Number;
+        public var startTime : int ;
+        public var endTime : int;
+        public var lastSpeedCheck : int;
+        public var lastBytesCheck : int;
+        public var _speed : Number;
         /**Time in seconds for the whole loading. Only available after everything is laoded*/
         public var totalTime : Number;
         
@@ -335,14 +342,18 @@ import br.com.stimuli.loading.BulkErrorEvent;
         */
         public static const DEFALUT_LOG_LEVEL : int = 20;
         public var logLevel: int = DEFALUT_LOG_LEVEL;
-        
+        /* @private */
         public var _allowsAutoIDFromFileName : Boolean = false;
-        private var _isRunning : Boolean;
-        private var _isFinished : Boolean;
+        /* @private */
+        public var _isRunning : Boolean;
+        /* @private */
+        public var _isFinished : Boolean;
         
-
-        private var _logFunction : Function = trace;
+        /* @private */
+        public var _logFunction : Function = trace;
+        /* @private */
         public var _stringSubstitutions : Object;
+        /* @private */
         public static var typeClasses : Object = {
             image: ImageItem,
             movieclip: ImageItem,
@@ -394,8 +405,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
             return BulkLoader._allLoaders[name] as BulkLoader;
         }
         
-        /* @private
-        */
+        /* @private */
         public static function _hasItemInBulkLoader(key : *, atLoader : BulkLoader) : Boolean{
             var item : LoadingItem = atLoader.get(key);
             if (item &&item._isLoaded) {
@@ -561,10 +571,10 @@ bulkLoader.start(3)
             //trace("{BulkLoader}::method() _addedTime", item._addedTime);
             // add a lower priority than default, else the event for all items complete will fire before
             // individual listerners attached to the item
-            item.addEventListener(Event.COMPLETE, onItemComplete, false, int.MIN_VALUE, true);
-            item.addEventListener(ERROR, onItemError, false, 0, true);
-            item.addEventListener(Event.OPEN, onItemStarted, false, 0, true);
-            item.addEventListener(ProgressEvent.PROGRESS, onProgress, false, 0, true);
+            item.addEventListener(Event.COMPLETE, _onItemComplete, false, int.MIN_VALUE, true);
+            item.addEventListener(ERROR, _onItemError, false, 0, true);
+            item.addEventListener(Event.OPEN, _onItemStarted, false, 0, true);
+            item.addEventListener(ProgressEvent.PROGRESS, _onProgress, false, 0, true);
             _items.push(item);
             _itemsTotal += 1;
             _totalWeight += item.weight;
@@ -580,7 +590,7 @@ bulkLoader.start(3)
         */   
         public function start(withConnections : int = -1 ) : void{
             if(_connections){
-                loadNext();
+                _loadNext();
                 return;
             }
             startTime = getTimer();
@@ -588,7 +598,7 @@ bulkLoader.start(3)
                 _numConnectons = withConnections;
             }
             _connections = [];
-            loadNext();
+            _loadNext();
             isRunning = true;
             lastBytesCheck = 0;
             lastSpeedCheck = getTimer();
@@ -620,13 +630,13 @@ bulkLoader.start(3)
             if (_connections.length >= numConnectons){
                 //which item should we remove?
                 var itemToRemove : LoadingItem = _getLeastUrgentOpenedItem();
-                removeFromConnections(itemToRemove);
+                _removeFromConnections(itemToRemove);
                 itemToRemove.status = null;
             }
             // update the item's piority so that subsequent calls to loadNow don't close a 
             // connection we've just started to load
             item._priority = highestPriority;
-            loadNext(item);
+            _loadNext(item);
             return true;
         }
         
@@ -686,7 +696,7 @@ bulkLoader.start(3)
         }
         
         // if toLoad is specified it be cut line
-        private function loadNext(toLoad : LoadingItem = null) : Boolean{
+        public function _loadNext(toLoad : LoadingItem = null) : Boolean{
             if(_isFinished){
                 return false;
             }
@@ -694,7 +704,7 @@ bulkLoader.start(3)
             //trace("{BulkLoader}::method() _connections", _connections);
             _connections.forEach(function(i : LoadingItem, ...rest) : void{
                 if(i.status == LoadingItem.STATUS_ERROR && i.numTries < i.maxTries){
-                    removeFromConnections(i);
+                    _removeFromConnections(i);
                 }
             });
             var next : Boolean = false;
@@ -717,28 +727,28 @@ bulkLoader.start(3)
                 }
                 // if we've got any more connections to open, load the next item
                 if(_connections.length  < numConnectons){
-                    loadNext();
+                    _loadNext();
                 }
             }
             return next;
         }
         
-        private function onItemComplete(evt : Event) : void {
+        public function _onItemComplete(evt : Event) : void {
            var item : LoadingItem  = evt.target as LoadingItem;
-           removeFromConnections(item);
+           _removeFromConnections(item);
            log("Loaded ", item, LOG_INFO);
            log("Items to load", getNotLoadedItems(), LOG_VERBOSE);
            item.cleanListeners();
            _contents[item.url.url] = item.content;
-           var next : Boolean= loadNext();
-           var allDone : Boolean = isAllDoneP();
+           var next : Boolean= _loadNext();
+           var allDone : Boolean = _isAllDoneP();
            _itemsLoaded ++;
            if(allDone) {
-               onAllLoaded();
+               _onAllLoaded();
             }
         }
         
-        private function updateStats() : void {
+        public function _updateStats() : void {
           avgLatency = 0;
           speedAvg = 0;
           var totalLatency : Number = 0;
@@ -757,7 +767,7 @@ bulkLoader.start(3)
           speedAvg = speedTotal / num;
         }
         
-        private function removeFromItems(item : LoadingItem) : Boolean{
+        public function _removeFromItems(item : LoadingItem) : Boolean{
             var removeIndex : int = _items.indexOf(item);
             if(removeIndex > -1){
                 _items.splice( removeIndex, 1); 
@@ -772,7 +782,7 @@ bulkLoader.start(3)
             return true;
         }
         
-        private function removeFromConnections(item : *) : Boolean{
+        public function _removeFromConnections(item : *) : Boolean{
             if(!_connections) return false;
             var removeIndex : int = _connections.indexOf(item)
             if(removeIndex > -1){
@@ -782,13 +792,13 @@ bulkLoader.start(3)
            return false;
         }
         
-        private function onItemError(evt : BulkErrorEvent) : void{
+        public function _onItemError(evt : BulkErrorEvent) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
             log("After " + item.numTries + " I am giving up on " + item.url.url, LOG_ERRORS);
             log("Error loading", item, LOG_ERRORS);
            
 
-           removeFromConnections(item);
+           _removeFromConnections(item);
            var bulkErrorEvent : BulkErrorEvent = new BulkErrorEvent(BulkErrorEvent.ERROR);
            bulkErrorEvent.errors = _items.filter(function(i : LoadingItem, ...rest):Boolean{
                   return (i.status == LoadingItem.STATUS_ERROR);
@@ -796,15 +806,15 @@ bulkLoader.start(3)
            dispatchEvent(bulkErrorEvent);
         }
         
-        private function onItemStarted(evt : Event) : void{
+        public function _onItemStarted(evt : Event) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
             
             log("Started loading", item, LOG_INFO);
             dispatchEvent(evt);
         }
         
-        private function onProgress(evt : Event = null) : void{
-            // TODO: check these values are correct! tough onProgress
+        public function _onProgress(evt : Event = null) : void{
+            // TODO: check these values are correct! tough _onProgress
             var e : BulkProgressEvent = getProgressForItems(_items);
             // update values:
             _bytesLoaded = e.bytesLoaded;
@@ -910,7 +920,7 @@ bulkLoader.start(3)
             return _itemsLoaded; 
         }
         
-        private function set itemsLoaded(value:int) : void { 
+        public function set itemsLoaded(value:int) : void { 
             _itemsLoaded = value; 
         }
         public function get totalWeight() : int { 
@@ -1007,6 +1017,7 @@ bulkLoader.start(3)
             return _stringSubstitutions; 
         }
         
+        /** Blah string subs test on set*/
         public function set stringSubstitutions(value:Object) : void { 
             _stringSubstitutions = value; 
         }
@@ -1042,7 +1053,7 @@ bulkLoader.start(3)
         /** Helper functions to get loaded content. All helpers will be casted to the specific types. If a cast fails it will throw an error.
         *   
         */
-        private function getContentAsType(key : *, type : Class,  clearMemory : Boolean = false) : *{
+        public function _getContentAsType(key : *, type : Class,  clearMemory : Boolean = false) : *{
             var item : LoadingItem = get(key);
             if(!item){
                 return null;
@@ -1071,7 +1082,7 @@ bulkLoader.start(3)
         *   @return The content retrived from that url
         */
         public function getContent(key : String, clearMemory : Boolean = false) : *{
-            return getContentAsType(key,  Object,  clearMemory);
+            return _getContentAsType(key,  Object,  clearMemory);
         }
         
         /** Returns an XML object with the downloaded asset for the given key.
@@ -1080,7 +1091,7 @@ bulkLoader.start(3)
         *   @return The content retrived from that url casted to a XML object. Returns null if the cast fails.
         */
         public function getXML(key : *, clearMemory : Boolean = false) : XML{
-            return XML(getContentAsType(key, XML,  clearMemory));
+            return XML(_getContentAsType(key, XML,  clearMemory));
         }
         
         /** Returns a String object with the downloaded asset for the given key.
@@ -1089,7 +1100,7 @@ bulkLoader.start(3)
         *   @return The content retrived from that url casted to a String object. Returns null if the cast fails.
         */
         public function getText(key : *, clearMemory : Boolean = false) : String{
-            return String(getContentAsType(key, String, clearMemory));
+            return String(_getContentAsType(key, String, clearMemory));
         }
         
         /** Returns a Sound object with the downloaded asset for the given key.
@@ -1098,7 +1109,7 @@ bulkLoader.start(3)
         *   @return The content retrived from that url casted to a Sound object. Returns null if the cast fails.
         */
         public function getSound(key : *, clearMemory : Boolean = false) : Sound{
-            return Sound(getContentAsType(key, Sound,clearMemory));
+            return Sound(_getContentAsType(key, Sound,clearMemory));
         }
         
         /** Returns a Bitmap object with the downloaded asset for the given key.
@@ -1107,7 +1118,7 @@ bulkLoader.start(3)
         *   @return The content retrived from that url casted to a Bitmap object. Returns null if the cast fails.
         */
         public function getBitmap(key : String, clearMemory : Boolean = false) : Bitmap{
-            return Bitmap(getContentAsType(key, Bitmap, clearMemory));
+            return Bitmap(_getContentAsType(key, Bitmap, clearMemory));
         }
         
         /** Returns a <code>MovieClip</code> object with the downloaded asset for the given key.
@@ -1116,7 +1127,7 @@ bulkLoader.start(3)
         *   @return The content retrived from that url casted to a MovieClip object. Returns null if the cast fails.
         */
         public function getMovieClip(key : String, clearMemory : Boolean = false) : MovieClip{
-            return MovieClip(getContentAsType(key, MovieClip, clearMemory));
+            return MovieClip(_getContentAsType(key, MovieClip, clearMemory));
         }
 
         /** Returns a <code>AVM1Movie</code> object with the downloaded asset for the given key.
@@ -1125,7 +1136,7 @@ bulkLoader.start(3)
         *   @return The content retrived from that url casted to a AVM1Movie object. Returns null if the cast fails.
         */
         public function getAVM1Movie(key : String, clearMemory : Boolean = false) : AVM1Movie{
-            return AVM1Movie(getContentAsType(key, AVM1Movie, clearMemory));
+            return AVM1Movie(_getContentAsType(key, AVM1Movie, clearMemory));
         }
 
         
@@ -1135,7 +1146,7 @@ bulkLoader.start(3)
         *   @return The content retrived from that url casted to a NetStream object. Returns null if the cast fails.
         */
         public function getNetStream(key : String, clearMemory : Boolean = false) : NetStream{
-            return NetStream(getContentAsType(key, NetStream, clearMemory));
+            return NetStream(_getContentAsType(key, NetStream, clearMemory));
         }
         
         /** Returns a <code>Object</code> with meta data information for a given <code>NetStream</code> key.
@@ -1165,7 +1176,7 @@ bulkLoader.start(3)
         
         public function getSerializedData(key : *,  clearMemory : Boolean = false, encodingFunction : Function = null) : *{
             try{
-                var raw : * = getContentAsType(key, Object, clearMemory);
+                var raw : * = _getContentAsType(key, Object, clearMemory);
                 var parsed : * = encodingFunction.apply(null, [raw]);
                 return parsed;
             }catch (e : Error){
@@ -1186,13 +1197,13 @@ bulkLoader.start(3)
             return -1;
         }
         
-        private function isAllDoneP() : Boolean{
+        public function _isAllDoneP() : Boolean{
             return _items.every(function(item : LoadingItem, ...rest):Boolean{
                 return item._isLoaded;
             });
         }
         
-        private function onAllLoaded() : void {
+        public function _onAllLoaded() : void {
             if(_isFinished){
                 return;
             }
@@ -1203,7 +1214,7 @@ bulkLoader.start(3)
             isRunning = false;
             endTime = getTimer();
             totalTime = BulkLoader.truncateNumber((endTime - startTime) /1000);
-            updateStats();
+            _updateStats();
             _connections = [];
             getStats();
             _isFinished = true;
@@ -1283,15 +1294,15 @@ bulkLoader.start(3)
                     return false;
                 }      
                 
-                removeFromItems(item);
-                removeFromConnections(item);
+                _removeFromItems(item);
+                _removeFromConnections(item);
                 item.destroy();
                 item = null;
                 // checks is removing this item we are done?
-                onProgress();
-                var allDone : Boolean = isAllDoneP();
+                _onProgress();
+                var allDone : Boolean = _isAllDoneP();
                if(allDone) {
-                   onAllLoaded();
+                   _onAllLoaded();
                 }
                 return true;
             }catch(e : Error){
@@ -1335,7 +1346,7 @@ bulkLoader.start(3)
             stoppedLoads.forEach(function(item : LoadingItem, ...rest):void{
                remove(item); 
             });
-            loadNext();
+            _loadNext();
             return stoppedLoads.length > 0;
         }
         
@@ -1352,7 +1363,7 @@ bulkLoader.start(3)
             badItems.forEach(function (item : LoadingItem, ...rest) : void{
                 remove(item); 
             });
-            loadNext();
+            _loadNext();
             return numCleared;
         }
         
@@ -1368,9 +1379,9 @@ bulkLoader.start(3)
             }
             item.stop();
             log("STOPPED ITEM:" , item, LOG_INFO)
-            var result : Boolean = removeFromConnections(item);
+            var result : Boolean = _removeFromConnections(item);
             if(loadsNext){
-                loadNext();
+                _loadNext();
             }
             return result;
         }
@@ -1403,7 +1414,7 @@ bulkLoader.start(3)
             var item : LoadingItem = key is LoadingItem ? key : get(key);
             if(item && item.status == LoadingItem.STATUS_STOPPED ){
                 item.status = null;
-                loadNext();
+                _loadNext();
                 return true;
             }
             return false;
@@ -1421,7 +1432,7 @@ bulkLoader.start(3)
                     affected = true;
                 }
             });
-            loadNext();
+            _loadNext();
             return affected;
         }
         /** Utility function to truncate a number to the given number of decimal places.
