@@ -6,25 +6,25 @@ package br.com.stimuli.loading.tests {
 	import flash.media.SoundMixer;
 	public class BulkLoaderTestSuite extends TestSuite {
 	    public var testClasses : Array = [
-	    StringSubstituionTest
-	    ,        
-	    LoadNowTest,
-	    ResumeAllTest,
-	                    ResumeTest,
-	                    PauseAllResumeTest,
-	                    RemoveFailedItemTest,
-	                    CollectionTestCase,
-	                    InstanceRetrivalTestCase, 
-	                    ProgressEventsTest, 
-	                    GuessTypeTest,
-	                    BulkStartTest,
-	                    XMLItemTest,
-	                    URLItemTest,
-	                    AudioContentTest,
-	                    LoaderItemAVM1MovieTest,
-	                    LoaderImageItemTest,
-	                    VideoContentPausedAtStartTestCase, 
-	                    VideoContentTest
+	    AutoIdTest,
+        StringSubstituionTest,        
+        LoadNowTest,
+        ResumeAllTest,
+        ResumeTest,
+        PauseAllResumeTest,
+        RemoveFailedItemTest,
+        CollectionTestCase,
+        InstanceRetrivalTestCase, 
+        ProgressEventsTest, 
+        GuessTypeTest,
+        BulkStartTest,
+        XMLItemTest,
+        URLItemTest,
+        AudioContentTest,
+        LoaderItemAVM1MovieTest,
+        LoaderImageItemTest,
+        VideoContentPausedAtStartTestCase, 
+        VideoContentTest
 	    ];
 	    
 	    public var testsRun : Object = {} ;

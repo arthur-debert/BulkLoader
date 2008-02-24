@@ -336,6 +336,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         public static const DEFALUT_LOG_LEVEL : int = 20;
         public var logLevel: int = DEFALUT_LOG_LEVEL;
         
+        public var _allowsAutoIDFromFileName : Boolean = false;
         private var _isRunning : Boolean;
         private var _isFinished : Boolean;
         
@@ -544,6 +545,10 @@ bulkLoader.start(3)
             }
             //trace("***GUESSING url:", url.url, ", type:", type);
             item  = new typeClasses[type] (url, type);
+            if (!props["id"] && _allowsAutoIDFromFileName){
+                props["id"] = getFileName(url.url);
+                log("Adding automatic id from file name for item:", item , "( id= " + props["id"] + " )");
+            }
             var errors : Array = item.parseOptions(props);
             for each (var error : String in errors){
                 log(error, LOG_WARNINGS);
@@ -963,6 +968,13 @@ bulkLoader.start(3)
             return _logFunction; 
         }
         
+        public function get alowsAutoIDFromFileName() : Boolean { 
+            return _allowsAutoIDFromFileName; 
+        }
+        
+        public function set alowsAutoIDFromFileName(value:Boolean) : void { 
+            _allowsAutoIDFromFileName = value; 
+        }
         public function getNotLoadedItems () : Array{
             return _items.filter(function(i : LoadingItem, ...rest):Boolean{
                 return i.status != LoadingItem.STATUS_FINISHED;
@@ -1515,6 +1527,26 @@ bulkLoader.start(3)
             // buffer the tail of the string: text after the last substitution
             buffer.push(raw.substring(match.end));
             return buffer.join("");
+        }
+        
+        public static function getFileName(text : String) : String{
+            if (text.lastIndexOf("/") == text.length -1){
+                return getFileName(text.substring(0, text.length-1));
+            }
+            var startAt = text.lastIndexOf("/") + 1;
+            //if (startAt == -1) startAt = 0;
+            var croppedString : String = text.substring(startAt);
+            var lastIndex = croppedString.indexOf(".");
+            if (lastIndex == -1 ){
+                if (croppedString.indexOf("?") > -1){
+                    lastIndex = croppedString.indexOf("?") ;
+                }else{
+                    lastIndex = croppedString.length;
+                }
+            }
+
+            var finalPath : String = croppedString.substring(0, lastIndex);
+            return finalPath;
         }
         
         public static function __debug_print_loaders() : void{
