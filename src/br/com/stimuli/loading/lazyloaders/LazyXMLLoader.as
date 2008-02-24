@@ -1,5 +1,6 @@
-package br.com.stimuli.lazyloaders.loading{
+package br.com.stimuli.loading.lazyloaders{
     import br.com.stimuli.loading.*;
+    import br.com.stimuli.loading.loadingtypes.*;
     import br.com.stimuli.loading.lazyloaders.*;
     import flash.events.*;
 	import flash.net.*;
@@ -76,7 +77,7 @@ package br.com.stimuli.lazyloaders.loading{
     				} else if (nodeName == "context") {
     					// todo: catch for sound items
     					var context : Object;
-    					if (LoadingItem.guessType(String(itemNode.url)) == BulkLoader.TYPE_SOUND) {
+    					if (BulkLoader.guessType(String(itemNode.url)) == BulkLoader.TYPE_SOUND) {
     						context = new SoundLoaderContext();
     					} else {
     						context = new LoaderContext();

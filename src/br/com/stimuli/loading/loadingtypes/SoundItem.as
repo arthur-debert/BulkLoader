@@ -7,6 +7,8 @@ package br.com.stimuli.loading.loadingtypes {
     import flash.events.*;
     import flash.utils.*;
     import flash.media.Sound;
+    
+    /** @private */
 	public class SoundItem extends LoadingItem {
         public var loader : Sound;
         
@@ -15,10 +17,10 @@ package br.com.stimuli.loading.loadingtypes {
 			super(url, type);
 		}
 		
-		override public function parseOptions(props : Object)  : Array{
+		override public function _parseOptions(props : Object)  : Array{
 		    context = props[BulkLoader.CONTEXT] || null;
 		    
-            return super.parseOptions(props);
+            return super._parseOptions(props);
         }
         
 		override public function load() : void{

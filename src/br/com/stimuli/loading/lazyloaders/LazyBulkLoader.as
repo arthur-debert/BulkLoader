@@ -1,5 +1,5 @@
 
-package br.com.stimuli.lazyloaders.loading{
+package br.com.stimuli.loading.lazyloaders{
 
 	import flash.events.*;
 	import flash.net.*;
@@ -9,7 +9,7 @@ package br.com.stimuli.lazyloaders.loading{
 	import flash.system.LoaderContext;
 	import flash.system.ApplicationDomain;
 	import flash.media.SoundLoaderContext;
-
+    import br.com.stimuli.loading.BulkLoader;
 	
     
     /** A serialized version of af BulkLoader instance. This class allows you to keep external  files with a complete description of what loading items should be loaded. This class is not meant to be used directly, but used as a base classes for specific data transports (xml, json).

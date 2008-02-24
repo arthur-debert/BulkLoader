@@ -6,6 +6,7 @@ package br.com.stimuli.loading.loadingtypes {
     import flash.net.*;
     import flash.events.*;
     import flash.utils.*;
+    /** @private */
 	public class VideoItem extends LoadingItem {
 		// for video:
         private var nc:NetConnection;
@@ -36,11 +37,11 @@ package br.com.stimuli.loading.loadingtypes {
 			
 		}
 		
-		override public function parseOptions(props : Object)  : Array{
+		override public function _parseOptions(props : Object)  : Array{
             pausedAtStart = props[BulkLoader.PAUSED_AT_START] || false;
             _checkPolicyFile = props[BulkLoader.CHECK_POLICY_FILE] || false;
             
-            return super.parseOptions(props);
+            return super._parseOptions(props);
         }
         
 		override public function load() : void{

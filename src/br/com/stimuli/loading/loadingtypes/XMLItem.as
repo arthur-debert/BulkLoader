@@ -6,6 +6,7 @@ package br.com.stimuli.loading.loadingtypes {
     import flash.net.*;
     import flash.events.*;
     import flash.utils.*;
+    /** @private */
 	public class XMLItem extends LoadingItem {
         public var loader : URLLoader;
         
@@ -13,8 +14,8 @@ package br.com.stimuli.loading.loadingtypes {
 			super(url, type);
 		}
 		
-		override public function parseOptions(props : Object)  : Array{
-            return super.parseOptions(props);
+		override public function _parseOptions(props : Object)  : Array{
+            return super._parseOptions(props);
         }
         
 		override public function load() : void{

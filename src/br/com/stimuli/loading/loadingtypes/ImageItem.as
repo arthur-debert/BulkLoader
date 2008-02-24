@@ -6,6 +6,7 @@ package br.com.stimuli.loading.loadingtypes {
     import flash.net.*;
     import flash.events.*;
     import flash.utils.*;
+    /** @private */
 	public class ImageItem extends LoadingItem {
         public var loader : Loader;
         
@@ -14,10 +15,10 @@ package br.com.stimuli.loading.loadingtypes {
 			super(url, type);
 		}
 		
-		override public function parseOptions(props : Object)  : Array{
+		override public function _parseOptions(props : Object)  : Array{
             context = props[BulkLoader.CONTEXT] || null;
             
-            return super.parseOptions(props);
+            return super._parseOptions(props);
         }
         
 		override public function load() : void{

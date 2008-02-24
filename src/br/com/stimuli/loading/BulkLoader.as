@@ -33,15 +33,13 @@
 */
 package br.com.stimuli.loading {
     
-import flash.events.*;
-import flash.net.*;
-import flash.display.*;
-import flash.media.Sound;
-import flash.utils.*;
-
 import br.com.stimuli.loading.loadingtypes.*;
-import br.com.stimuli.loading.BulkProgressEvent;
-import br.com.stimuli.loading.BulkErrorEvent;
+
+import flash.display.*;
+import flash.events.*;
+import flash.media.Sound;
+import flash.net.*;
+import flash.utils.*;
 
     
 /**
@@ -160,7 +158,8 @@ import br.com.stimuli.loading.BulkErrorEvent;
         
         public static var XML_EXTENSIONS : Array = ["xml"];
         
-        public static var customTypesExtensions : Object;
+        /** @private */
+        public static var _customTypesExtensions : Object;
         /** 
         *   The name of the event 
         *   @eventType progress
@@ -246,68 +245,53 @@ import br.com.stimuli.loading.BulkErrorEvent;
 		
         public static const GENERAL_AVAILABLE_PROPS : Array = [
              WEIGHT, MAX_TRIES, HEADERS, ID, PRIORITY, PREVENT_CACHING, "type"];
-		/**
-		* The name by which this loader instance can be identified.
-		* This property is used so you can get a reference to this instance from other classes in your code without having to save and pass it yourself, throught the static method BulkLoader.getLoader(name) .<p/>
-		* Each name should be unique, as instantiating a BulkLoader with a name already taken will throw an error.
-		* @ see getLoaders
+		/** @private
 		*/
         public var _name : String;
-        /* @private */
+        /** @private */
         public var _id : int;
-        /* @private */
+        /** @private */
         public static var _instancesCreated : int = 0;
-        /* @private */
+        /** @private */
         public var _items : Array = [];
-        /* @private */
+        /** @private */
         public var _contents : Dictionary = new Dictionary();
-        /* @private */
+        /** @private */
         public static var _allLoaders : Object = {};
-        /* @private */
+        /** @private */
         public var _additionIndex : int = 0;
         // Maximum number of simultaneous open requests
         public static const DEFAULT_NUM_CONNECTIONS : int = 7;
+        /** @private */
         public var _numConnectons : int = DEFAULT_NUM_CONNECTIONS;
+        /** @private */
         public var _connections : Array;
         
         /**  
         *   @private
-        *   The ratio (0->1) of items to load / items total.
-        *   This number is always reliable.
         **/
         public var _loadedRatio : Number = 0;
-        /** Total number of items to load.*/
+        /** @private */
         public var _itemsTotal : int = 0;
-        /** 
-        *   Number of items alrealdy loaded.
-        *   Failed or canceled items are not taken into consideration
-        */
+        /**  @private        */
         public var _itemsLoaded : int = 0;
-        /** The sum of weights in all items to load.
-        *   Each item's weight default to 1
+        /** @private
         */
         public var _totalWeight : int = 0;
-        /** The total bytes to load.
-        *   If the number of items to load is larger than the number of simultaneous connections, bytesTotal will be 0 untill all connections are opened and the number of bytes for all items is known.
-        *   @see #bytesTotalCurrent
+        /** @private
         */ 
         public var _bytesTotal : int = 0;
-        /** The sum of all bytes loaded so far. 
-        *  If itemsTotal is less than the number of connections, this will be the same as bytesTotal. Else, bytesTotalCurrent will be available as each loading is started.
-        *   @see #bytesTotal
+        /** @private
         */
         public var _bytesTotalCurrent : int = 0;
-        /** The sum of all bytesLoaded for each item.
+        /** @private
         */
         public var _bytesLoaded : int = 0;
-        /** The percentage (0->1) of bytes loaded.
-        *   Until all connections are opened  this number is not reliable . If you are downloading more items than the number of simultaneous connections, use loadedRatio or weightPercent instead.
-        *   @see #loadedRatio
-        *   @see #weightPercent
+        /** @private
         */   
         public var _percentLoaded : Number = 0;
-        /** The weighted percent of items loaded(0->1).
-        *   This always returns a reliable value.
+        
+        /** @private
         */
         public var _weightPercent : Number;
         
@@ -315,11 +299,23 @@ import br.com.stimuli.loading.BulkErrorEvent;
         public var avgLatency : Number;
         /**The average speed (in kb/s) for the entire loading.*/
         public var speedAvg : Number;
-        public var speedTotal : Number;
-        public var startTime : int ;
-        public var endTime : int;
-        public var lastSpeedCheck : int;
-        public var lastBytesCheck : int;
+        /** @private
+        */
+        public var _speedTotal : Number;
+        /** @private
+        */
+        public var _startTime : int ;
+        /** @private
+        */
+        public var _endTIme : int;
+        /** @private
+        */
+        public var _lastSpeedCheck : int;
+        /** @private
+        */
+        public var _lastBytesCheck : int;
+        
+        /** @private */
         public var _speed : Number;
         /**Time in seconds for the whole loading. Only available after everything is laoded*/
         public var totalTime : Number;
@@ -341,20 +337,21 @@ import br.com.stimuli.loading.BulkErrorEvent;
         * @see #LOG_INFO
         */
         public static const DEFALUT_LOG_LEVEL : int = 20;
+        /** @private */
         public var logLevel: int = DEFALUT_LOG_LEVEL;
-        /* @private */
+        /** @private */
         public var _allowsAutoIDFromFileName : Boolean = false;
-        /* @private */
+        /** @private */
         public var _isRunning : Boolean;
-        /* @private */
+        /** @private */
         public var _isFinished : Boolean;
         
-        /* @private */
+        /** @private */
         public var _logFunction : Function = trace;
-        /* @private */
+        /** @private */
         public var _stringSubstitutions : Object;
-        /* @private */
-        public static var typeClasses : Object = {
+        /** @private */
+        public static var _typeClasses : Object = {
             image: ImageItem,
             movieclip: ImageItem,
             xml: XMLItem,
@@ -389,6 +386,12 @@ import br.com.stimuli.loading.BulkErrorEvent;
             _additionIndex = 0;
         }
         
+        /** Creates a BulkLoader instance with an unique name. This is useful for situations where you might be creating
+        *   many BulkLoader instances and it gets tricky to garantee that no other instance is using that name.
+        *   @param  numConnectons The number of maximum simultaneous connections to be open.
+        *   @param  logLevel At which level should traces be outputed. By default only errors will be traced.
+        *   @return A BulkLoader intance, with an unique name.
+        */
         public static function createUniqueNamedLoader( numConnectons : int=BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL) : BulkLoader{
             return new BulkLoader(BulkLoader.getUniqueName(), numConnectons, logLevel);
         }
@@ -405,7 +408,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
             return BulkLoader._allLoaders[name] as BulkLoader;
         }
         
-        /* @private */
+        /** @private */
         public static function _hasItemInBulkLoader(key : *, atLoader : BulkLoader) : Boolean{
             var item : LoadingItem = atLoader.get(key);
             if (item &&item._isLoaded) {
@@ -502,6 +505,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         *           <td>If true, the nestream will be paused when loading has begun.</td>
         *       </tr>
         *   </table>
+        *   You can use string substitutions (variable expandsion).
         *   @example Retriving contents:<listing version="3.0">
 import br.stimuli.loaded.BulkLoader;
 var bulkLoader : BulkLoader = new BulkLoader("main");
@@ -521,6 +525,7 @@ bulkLoader.add("languages.xml", {priority:10, onComplete:parseLanguages, id:"lan
 // Start the loading operation with only 3 simultaneous connections:
 bulkLoader.start(3)
    </listing>
+   *    @see #stringSubstitutions
    *    
         */
         public function add(url : *, props : Object= null ) : LoadingItem {
@@ -554,12 +559,12 @@ bulkLoader.start(3)
                 
             }
             //trace("***GUESSING url:", url.url, ", type:", type);
-            item  = new typeClasses[type] (url, type);
+            item  = new _typeClasses[type] (url, type);
             if (!props["id"] && _allowsAutoIDFromFileName){
                 props["id"] = getFileName(url.url);
                 log("Adding automatic id from file name for item:", item , "( id= " + props["id"] + " )");
             }
-            var errors : Array = item.parseOptions(props);
+            var errors : Array = item._parseOptions(props);
             for each (var error : String in errors){
                 log(error, LOG_WARNINGS);
             }
@@ -593,15 +598,15 @@ bulkLoader.start(3)
                 _loadNext();
                 return;
             }
-            startTime = getTimer();
+            _startTime = getTimer();
             if (withConnections  > 0){
                 _numConnectons = withConnections;
             }
             _connections = [];
             _loadNext();
             isRunning = true;
-            lastBytesCheck = 0;
-            lastSpeedCheck = getTimer();
+            _lastBytesCheck = 0;
+            _lastSpeedCheck = getTimer();
         }
         
         
@@ -640,7 +645,8 @@ bulkLoader.start(3)
             return true;
         }
         
-        /** Figures out which item to remove from open connections, comparation is done by priority
+        /** @private
+        *   Figures out which item to remove from open connections, comparation is done by priority
         *   and then by bytes remaining
         */
         public function _getLeastUrgentOpenedItem() : LoadingItem{
@@ -671,12 +677,12 @@ bulkLoader.start(3)
                   throw new Error("[BulkLoader]: When adding a new type and extension, you must determine which class to use");
               }
               // add that class to the available classes
-              typeClasses[atType] = withClass;
-              if(!customTypesExtensions[atType]){
-                  customTypesExtensions[atType] = [];
+              _typeClasses[atType] = withClass;
+              if(!_customTypesExtensions[atType]){
+                  _customTypesExtensions[atType] = [];
                   AVAILABLE_TYPES.push(atType);
               }
-              customTypesExtensions[atType].push( extension);
+              _customTypesExtensions[atType].push( extension);
               return true;
           }
           var extensions : Array ;
@@ -696,6 +702,7 @@ bulkLoader.start(3)
         }
         
         // if toLoad is specified it be cut line
+            /** @private */
         public function _loadNext(toLoad : LoadingItem = null) : Boolean{
             if(_isFinished){
                 return false;
@@ -733,6 +740,7 @@ bulkLoader.start(3)
             return next;
         }
         
+        /** @private */
         public function _onItemComplete(evt : Event) : void {
            var item : LoadingItem  = evt.target as LoadingItem;
            _removeFromConnections(item);
@@ -748,12 +756,13 @@ bulkLoader.start(3)
             }
         }
         
+        /** @private */
         public function _updateStats() : void {
           avgLatency = 0;
           speedAvg = 0;
           var totalLatency : Number = 0;
           var totalBytes : int = 0;
-          speedTotal = 0;
+          _speedTotal = 0;
           var num : Number = 0;
           for each(var item : LoadingItem in _items){
               if (item._isLoaded && item.status != LoadingItem.STATUS_ERROR){
@@ -762,11 +771,12 @@ bulkLoader.start(3)
                   num ++;
               }
           }
-          speedTotal = (totalBytes/1024) / totalTime;
+          _speedTotal = (totalBytes/1024) / totalTime;
           avgLatency = totalLatency / num;
-          speedAvg = speedTotal / num;
+          speedAvg = _speedTotal / num;
         }
         
+        /** @private */
         public function _removeFromItems(item : LoadingItem) : Boolean{
             var removeIndex : int = _items.indexOf(item);
             if(removeIndex > -1){
@@ -782,6 +792,7 @@ bulkLoader.start(3)
             return true;
         }
         
+        /** @private */
         public function _removeFromConnections(item : *) : Boolean{
             if(!_connections) return false;
             var removeIndex : int = _connections.indexOf(item)
@@ -792,6 +803,7 @@ bulkLoader.start(3)
            return false;
         }
         
+        /** @private */
         public function _onItemError(evt : BulkErrorEvent) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
             log("After " + item.numTries + " I am giving up on " + item.url.url, LOG_ERRORS);
@@ -805,7 +817,7 @@ bulkLoader.start(3)
            });
            dispatchEvent(bulkErrorEvent);
         }
-        
+        /** @private */
         public function _onItemStarted(evt : Event) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
             
@@ -813,6 +825,7 @@ bulkLoader.start(3)
             dispatchEvent(evt);
         }
         
+        /** @private */
         public function _onProgress(evt : Event = null) : void{
             // TODO: check these values are correct! tough _onProgress
             var e : BulkProgressEvent = getProgressForItems(_items);
@@ -907,15 +920,23 @@ bulkLoader.start(3)
         public function get name() : String { 
             return _name; 
         }
-        
+        /**  
+        *   The ratio (0->1) of items to load / items total.
+        *   This number is always reliable.
+        **/
         public function get loadedRatio() : Number { 
             return _loadedRatio; 
         }        
         
+        /** Total number of items to load.*/
         public function get itemsTotal() : int { 
             return _itemsTotal; 
         }
         
+        /** 
+        *   Number of items alrealdy loaded.
+        *   Failed or canceled items are not taken into consideration
+        */
         public function get itemsLoaded() : int { 
             return _itemsLoaded; 
         }
@@ -923,30 +944,55 @@ bulkLoader.start(3)
         public function set itemsLoaded(value:int) : void { 
             _itemsLoaded = value; 
         }
+        
+        /** The sum of weights in all items to load.
+        *   Each item's weight default to 1
+        */
         public function get totalWeight() : int { 
             return _totalWeight; 
         }
         
+        /** The total bytes to load.
+        *   If the number of items to load is larger than the number of simultaneous connections, bytesTotal will be 0 untill all connections are opened and the number of bytes for all items is known.
+        *   @see #bytesTotalCurrent
+        */
         public function get bytesTotal() : int { 
             return _bytesTotal; 
         }
         
+
+        /** The sum of all bytesLoaded for each item.
+        */
         public function get bytesLoaded() : int { 
             return _bytesLoaded; 
         }
         
+        /** The sum of all bytes loaded so far. 
+        *  If itemsTotal is less than the number of connections, this will be the same as bytesTotal. Else, bytesTotalCurrent will be available as each loading is started.
+        *   @see #bytesTotal
+        */
         public function get bytesTotalCurrent() : int { 
             return _bytesTotalCurrent; 
         }
         
+        /** The percentage (0->1) of bytes loaded.
+        *   Until all connections are opened  this number is not reliable . If you are downloading more items than the number of simultaneous connections, use loadedRatio or weightPercent instead.
+        *   @see #loadedRatio
+        *   @see #weightPercent
+        */
         public function get percentLoaded() : Number { 
             return _percentLoaded; 
         }
         
+        /** The weighted percent of items loaded(0->1).
+        *   This always returns a reliable value.
+        */
         public function get weightPercent() : Number { 
             return _weightPercent; 
         }
         
+        /** A boolean indicating if the instace has started and has not finished loading all items
+        */
         public function get isRunning() : Boolean { 
             return _isRunning; 
         }
@@ -978,27 +1024,48 @@ bulkLoader.start(3)
             return _logFunction; 
         }
         
-        public function get alowsAutoIDFromFileName() : Boolean { 
+        /** Determines if an autmatic id created from the file name. If true, when adding and item and NOT specifing an "id" props
+        *   for its properties, an id with the file name will be created altomatically.
+        *   @example Automatic id:<listing version="3.0">
+        *   bulkLoader.allowsAutoIDFromFileName = false;
+        *   var item : LoadingItem = bulkLoader.add("background.jpg")
+        *   trace(item.id) //  outputs: null
+        *   // now if allowsAutoIDFromFileName is set to true:
+        *   bulkLoader.allowsAutoIDFromFileName = true;
+        *   var item : LoadingItem = bulkLoader.add("background.jpg")
+        *   trace(item.id) //  outputs: background
+        *   // if you pass an id on the props, it will take precedence over auto created ids:
+        *   bulkLoader.allowsAutoIDFromFileName = id;
+        *   var item : LoadingItem = bulkLoader.add("background.jpg", {id:"small-bg"})
+        *   trace(item.id) //  outputs: small-bg
+        *   </listing>
+        */
+        public function get allowsAutoIDFromFileName() : Boolean { 
             return _allowsAutoIDFromFileName; 
         }
         
-        public function set alowsAutoIDFromFileName(value:Boolean) : void { 
+        public function set allowsAutoIDFromFileName(value:Boolean) : void { 
             _allowsAutoIDFromFileName = value; 
         }
+        
+        /** Returns items that haven't been fully loaded.
+        *   @return An array with all LoadingItems not fully loaded.
+        */
         public function getNotLoadedItems () : Array{
             return _items.filter(function(i : LoadingItem, ...rest):Boolean{
                 return i.status != LoadingItem.STATUS_FINISHED;
             });
         }
+        
         /* Returns the speed in kilobytes / second for all loadings
         */
         public function get speed() : Number{
             // TODO: test get speed
-            var timeElapsed : int = getTimer() - lastSpeedCheck;
-            var bytesDelta : int = (bytesLoaded - lastBytesCheck) / 1024;
+            var timeElapsed : int = getTimer() - _lastSpeedCheck;
+            var bytesDelta : int = (bytesLoaded - _lastBytesCheck) / 1024;
             var speed : int = bytesDelta / (timeElapsed/1000);
-            lastSpeedCheck = timeElapsed;
-            lastBytesCheck = bytesLoaded;
+            _lastSpeedCheck = timeElapsed;
+            _lastBytesCheck = bytesLoaded;
             return speed;
         }                      
         
@@ -1009,15 +1076,32 @@ bulkLoader.start(3)
             _logFunction = func; 
         }
         
+        /** The id of this bulkLoader instance
+        */
         public function get id() : int { 
             return _id; 
         }
 
+        /** The object, used as a hashed to substitute variables specified on the url used in <code>add</code>.
+        *   Allows to keep common part of urls on one spot only. If later the server path changes, you can 
+        *   change only the stringSubstitutions object to update all items.
+        *   This has to be set before the <code>add</code> calls are made, or else strings won't be expanded.
+        *   @example Variable sustitution:<listing version="3.0">
+        *   // All webservices will be at a common path:
+        *   bulkLoader.stringSubstitutions = {
+        *       "web_services": "http://somesite.com/webservices"
+        *   }
+        *   bulkLoader.add("{web_services}/getTime");
+        *   // this will be expanded to http://somesite.com/webservices/getTime
+        *   
+        *   </listing>
+        *   The format expected is {var_name} , where var_name is composed of alphanumeric characters and the underscore. Other characters (., *, [, ], etc) won't work, as they'll clash with the regex used in matching.
+        *   @see #add
+        */
         public function get stringSubstitutions() : Object { 
             return _stringSubstitutions; 
         }
         
-        /** Blah string subs test on set*/
         public function set stringSubstitutions(value:Object) : void { 
             _stringSubstitutions = value; 
         }
@@ -1046,11 +1130,11 @@ bulkLoader.start(3)
         }
         
         
-        /** ============================================================================== */
-        /** = Acessing content functions                                                 = */
-        /** ============================================================================== */
+        /* ============================================================================== */
+        /* = Acessing content functions                                                 = */
+        /* ============================================================================== */
         
-        /** Helper functions to get loaded content. All helpers will be casted to the specific types. If a cast fails it will throw an error.
+        /** @private Helper functions to get loaded content. All helpers will be casted to the specific types. If a cast fails it will throw an error.
         *   
         */
         public function _getContentAsType(key : *, type : Class,  clearMemory : Boolean = false) : *{
@@ -1196,13 +1280,13 @@ bulkLoader.start(3)
             }
             return -1;
         }
-        
+        /** @private  */
         public function _isAllDoneP() : Boolean{
             return _items.every(function(item : LoadingItem, ...rest):Boolean{
                 return item._isLoaded;
             });
         }
-        
+        /** @private  */
         public function _onAllLoaded() : void {
             if(_isFinished){
                 return;
@@ -1212,8 +1296,8 @@ bulkLoader.start(3)
             var eProgress : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
             eProgress.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, _itemsLoaded, itemsTotal, weightPercent);
             isRunning = false;
-            endTime = getTimer();
-            totalTime = BulkLoader.truncateNumber((endTime - startTime) /1000);
+            _endTIme = getTimer();
+            totalTime = BulkLoader.truncateNumber((_endTIme - _startTime) /1000);
             _updateStats();
             _connections = [];
             getStats();
@@ -1235,7 +1319,7 @@ bulkLoader.start(3)
             stats.push("Total time(s):       " + totalTime);
             stats.push("Average latency(s):  " + truncateNumber(avgLatency));
             stats.push("Average speed(kb/s): " + truncateNumber(speedAvg));
-            stats.push("Median speed(kb/s):  " + truncateNumber(speedTotal));
+            stats.push("Median speed(kb/s):  " + truncateNumber(_speedTotal));
             stats.push("KiloBytes total:     " + truncateNumber(bytesTotal/1024));
             var itemsInfo : Array = _items.map(function(item :LoadingItem, ...rest) : String{
                 return "\t" + item.getStats();
@@ -1247,7 +1331,8 @@ bulkLoader.start(3)
             return statsString;
         }
         
-        /** Outputs with a trace operation a message. 
+        /** @private
+        *   Outputs with a trace operation a message. 
         *   Depending on <code>logLevel</code> diferrent levels of messages will be outputed:
         *   <ul>logLevel = LOG_VERBOSE (0) : Everything is logged. Useful for debugging.
         *   <ul>logLevel = LOG_INFO (1) : Every load operation is logged (loading finished, started, statistics).
@@ -1435,7 +1520,8 @@ bulkLoader.start(3)
             _loadNext();
             return affected;
         }
-        /** Utility function to truncate a number to the given number of decimal places.
+        /** @private
+        *   Utility function to truncate a number to the given number of decimal places.
         *   @description 
         *   Number is truncated using the <code>Math.round</code> function.
         *   
@@ -1479,8 +1565,8 @@ bulkLoader.start(3)
                 type = BulkLoader.TYPE_MOVIECLIP;
             }else{
                 // is this on a new extension?
-                for(var checkType : String in customTypesExtensions){
-                    for each(var checkExt : String in customTypesExtensions[checkType]){
+                for(var checkType : String in _customTypesExtensions){
+                    for each(var checkExt : String in _customTypesExtensions[checkType]){
                         if (checkExt == extension){
                             type = checkType;
                             break;
@@ -1493,6 +1579,7 @@ bulkLoader.start(3)
             return type;
         }
         
+        /** @private  */
         public static function substituteURLString(raw : String, substitutions : Object) : String{
             if(!substitutions) return raw;
             var subRegex : RegExp = /(?P<var_name>\{\s*[^\}]*\})/g;
@@ -1522,7 +1609,7 @@ bulkLoader.start(3)
             }
             if (matches.length == 0){ return raw;};
             var buffer : Array = [];
-            var lastMatch, match : Object;  
+            var lastMatch : Object, match : Object;  
             // beggininf os string, if it doesn't start with a substitition
             var previous : String = raw.substr(0, matches[0].start);
             var subs : String;
@@ -1539,15 +1626,15 @@ bulkLoader.start(3)
             buffer.push(raw.substring(match.end));
             return buffer.join("");
         }
-        
+        /** @private  */
         public static function getFileName(text : String) : String{
             if (text.lastIndexOf("/") == text.length -1){
                 return getFileName(text.substring(0, text.length-1));
             }
-            var startAt = text.lastIndexOf("/") + 1;
+            var startAt : int = text.lastIndexOf("/") + 1;
             //if (startAt == -1) startAt = 0;
             var croppedString : String = text.substring(startAt);
-            var lastIndex = croppedString.indexOf(".");
+            var lastIndex :int = croppedString.indexOf(".");
             if (lastIndex == -1 ){
                 if (croppedString.indexOf("?") > -1){
                     lastIndex = croppedString.indexOf("?") ;
@@ -1560,6 +1647,7 @@ bulkLoader.start(3)
             return finalPath;
         }
         
+        /** @private  */
         public static function __debug_print_loaders() : void{
             var theNames : Array = []
             for each(var instNames : String in BulkLoader._allLoaders){
@@ -1570,7 +1658,7 @@ bulkLoader.start(3)
             theNames.forEach(function(item:*, ...rest):void{trace("\t", item)})
             trace("===========");
         }
-        
+        /** @private  */
         public static function __debug_print_num_loaders() : void{
             var num : int = 0;
             for each(var instNames : String in BulkLoader._allLoaders){
@@ -1579,6 +1667,7 @@ bulkLoader.start(3)
             trace("BulkLoader has ", num, "instances");
         }
         
+        /** @private  */
         public static function __debug_printStackTrace() : void{
             try{
                 throw new Error("stack trace");

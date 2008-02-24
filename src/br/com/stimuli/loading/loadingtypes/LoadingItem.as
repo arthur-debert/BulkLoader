@@ -42,7 +42,7 @@ package br.com.stimuli.loading.loadingtypes {
     import br.com.stimuli.loading.BulkLoader;
     import br.com.stimuli.loading.BulkErrorEvent;
     
-    /**
+    /** 
      *  Dispatched on download progress.
      *
      *  @eventType flash.events.ProgressEvent.PROGRESS
@@ -71,9 +71,10 @@ package br.com.stimuli.loading.loadingtypes {
     [Event(name="canBeginPlaying", type="br.com.stimuli.loading.BulkLoader.CAN_BEGIN_PLAYING")]
     
     /**
-    *   An object used in <code>BulkLoader</code> instances.<p/>
-    *   A reference to a <code>LoadingItem</code> object can be used to attach events for an individual item.
-    *
+    *   An class used in <code>BulkLoader</code> instances.<p/>.
+    *   A reference to a <code>LoadingItem</code> object can be used to attach events for an individual item, read it's id, type, content and urls from inside event handlers.
+    *   When implementing custom loading types, the new type should be a subclass of LoadingItem.
+    *   This class is just the base for specific loading types, but should provide the external interface for end users.
     *   @langversion ActionScript 3.0
     *   @playerversion Flash 9.0
     *
@@ -98,12 +99,14 @@ package br.com.stimuli.loading.loadingtypes {
         public var url : URLRequest;
         /** @private */
         public var _id : String;
+        /** @private */
         public var _additionIndex : int ;
         /** @private */
         public var _priority : int = 0;
         /** @private */
         
         ///**Indicated if item is loaded and ready to use..*/
+        /** @private */
         public var _isLoaded : Boolean;
         /**Indicated if loading has stated.
         * @private 
@@ -140,7 +143,7 @@ package br.com.stimuli.loading.loadingtypes {
         * @private
         */
         public var _bytesLoaded : int = 0;
-        
+        /** @private */
         public var _bytesRemaining : int = -1;
         /**The percentage of loading done (from 0 to 1).
         * @private   
@@ -154,12 +157,15 @@ package br.com.stimuli.loading.loadingtypes {
         *   @private
         */
         public var _addedTime : int ;
+        /** @private */
         public var _startTime : int ;
+        /** @private */
         public var _responseTime : Number;
         /** The time (in seconds) that the server took and send begin streaming content.
             @private
         */
         public var _latency : Number;
+        /** @private */
         public var _totalTime : int;
         /** The total time (in seconds) this item took to load.*/
         public var _timeToDownload : int;
@@ -167,16 +173,17 @@ package br.com.stimuli.loading.loadingtypes {
         *   @private
         *   */
         public var _speed : Number;
-
+        /** @private */
         public var _content : *;
+        /** @private */
         public var _httpStatus : int = -1;
         /**
         *   @private
         */
         public var context : * = null;
-        
+        /** @private */
         public var specificAvailableProps : Array ;
-        
+        /** @private */
         public var propertyParsingErrors : Array;
         public function LoadingItem(url : URLRequest, type : String){
             this._type = type;
@@ -186,8 +193,10 @@ package br.com.stimuli.loading.loadingtypes {
             }
         }
         
-        
-        public function parseOptions(props : Object)  : Array{
+        /**
+        *   @private
+        */
+        public function _parseOptions(props : Object)  : Array{
             preventCache = props[BulkLoader.PREVENT_CACHING];
             _id = props[BulkLoader.ID];
             _priority = int(props[BulkLoader.PRIORITY]) || 0;
@@ -249,7 +258,9 @@ package br.com.stimuli.loading.loadingtypes {
         }
         
         
-        
+        /**
+        *   @private
+        */
         public function onCompleteHandler(evt : Event) : void {
             _totalTime = getTimer();
             _timeToDownload = ((_totalTime - _responseTime) /1000);
@@ -265,7 +276,9 @@ package br.com.stimuli.loading.loadingtypes {
            dispatchEvent(evt);
            evt.stopPropagation();
         }
-        
+        /**
+        *   @private
+        */
         public function onErrorHandler(evt : Event) : void{
             numTries ++;
             status = STATUS_ERROR;   
@@ -280,7 +293,9 @@ package br.com.stimuli.loading.loadingtypes {
             }
            
         }
-        
+        /**
+        *   @private
+        */
         public function onStartedHandler(evt : Event) : void{
             _responseTime = getTimer();
             _latency = BulkLoader.truncateNumber((_responseTime - _startTime)/1000);
@@ -308,33 +323,46 @@ package br.com.stimuli.loading.loadingtypes {
         public  function cleanListeners() : void {
         }
         
+        
+        /** Returns true if content is of type video.
+        */
         public function isVideo(): Boolean{
             return false;
         }
         
+        /** Returns true if content is of type sound.
+        */
         public function isSound(): Boolean{
             return false;
         }
         
+        /** Returns true if content is of type text.
+        */
         public function isText(): Boolean{
             return false;
         }
-        
+        /** Returns true if content is of type xml.
+        */
         public function isXML(): Boolean{
             return false;
         }
-        
+        /** Returns true if content is of type image.
+        */        
         public function isImage() : Boolean{
             return false;
         }
-        
+        /** Returns true if content is of type movieclip.
+        */
         public function isSWF() : Boolean{
             return false;
         }
+        /** Returns true if uses a Loader instance internally. (such as swfs and images).
+        */
         public function isLoader(): Boolean{
             return false;
         }
-        
+        /** Returns true if this loading type should allow it's  content  to be accessed as soon as the server response starts. Should be true for sound and video types.
+        */
         public function isStreamable() : Boolean{
             return false;
         }
@@ -464,6 +492,8 @@ package br.com.stimuli.loading.loadingtypes {
             return _id; 
         }
         
+        /** Returns a string with time stats for this loading item.
+        */
         public function getStats() : String{
             return "Item url:" + url.url + 
             ", total time: " + _timeToDownload +
