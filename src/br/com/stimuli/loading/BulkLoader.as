@@ -341,7 +341,7 @@ import br.com.stimuli.loading.BulkErrorEvent;
         
 
         private var _logFunction : Function = trace;
-        
+        public var _stringSubstitutions : Object;
         public static var typeClasses : Object = {
             image: ImageItem,
             movieclip: ImageItem,
@@ -518,7 +518,7 @@ bulkLoader.start(3)
             }
             props = props || {};
             if (url is String){
-                url = new URLRequest(url);
+                url = new URLRequest(BulkLoader.substituteURLString(url, _stringSubstitutions));
                 if(props[HEADERS]){
                     url.requestHeaders = props[HEADERS];
                 }
@@ -990,7 +990,14 @@ bulkLoader.start(3)
         public function get id() : int { 
             return _id; 
         }
+
+        public function get stringSubstitutions() : Object { 
+            return _stringSubstitutions; 
+        }
         
+        public function set stringSubstitutions(value:Object) : void { 
+            _stringSubstitutions = value; 
+        }
         /** Updates the priority of item identified by key with a new value, the queue will be re resorted right away.
         *   Changing priorities will not stop currently opened connections.
         *   @param key The url request, url as a string or a id  from which the asset was loaded.
@@ -1461,6 +1468,53 @@ bulkLoader.start(3)
                 if (!type) type = BulkLoader.TYPE_TEXT;
             }
             return type;
+        }
+        
+        public static function substituteURLString(raw : String, substitutions : Object) : String{
+            if(!substitutions) return raw;
+            var subRegex : RegExp = /(?P<var_name>\{\s*[^\}]*\})/g;
+            var result : Object = subRegex.exec(raw);
+            var var_name : String = result? result.var_name : null;
+            var matches : Array = [];
+            var numRuns : int = 0;
+            while(Boolean(result ) && Boolean(result.var_name)){
+                if(result.var_name){
+                    var_name = result.var_name;
+                    var_name = var_name.replace("{", "");
+                    var_name = var_name.replace("}", "");
+                    var_name = var_name.replace( /\s*/g, "");
+                }
+                matches.push({
+                    start : result.index,
+                    end: result.index + result.var_name.length  ,
+                    changeTo: substitutions[var_name]
+                });
+                // be paranoid so we don't hang the player if the matching goes cockos
+                numRuns ++;
+                if(numRuns > 400) {
+                    break;
+                }
+                result = subRegex.exec(raw);
+                var_name = result? result.var_name : null;
+            }
+            if (matches.length == 0){ return raw;};
+            var buffer : Array = [];
+            var lastMatch, match : Object;  
+            // beggininf os string, if it doesn't start with a substitition
+            var previous : String = raw.substr(0, matches[0].start);
+            var subs : String;
+            for each(match in matches){
+                // finds out the previous string part and the next substitition
+                if (lastMatch){
+                    previous = raw.substring(lastMatch.end  ,  match.start);
+                }
+                buffer.push(previous);
+                buffer.push(match.changeTo);
+                lastMatch = match;
+            }
+            // buffer the tail of the string: text after the last substitution
+            buffer.push(raw.substring(match.end));
+            return buffer.join("");
         }
         
         public static function __debug_print_loaders() : void{
