@@ -21,7 +21,7 @@ package br.com.stimuli.loading.lazyloaders{
 		protected var _bulkLoader : BulkLoader;
 		internal static  const INT_TYPES : Array = ["maxTries", "priority"];
 		internal static  const NUMBER_TYPES : Array = ["weigth"];
-		internal static  const STRINGED_BOOLEAN : Array = ["preventCache", "pausedAtStart"];
+		internal static  const STRINGED_BOOLEAN : Array = ["preventCache", "pausedAtStart", "checkPolicyFile"];
         public var possibleHandlers : Array = [BulkLoader.COMPLETE, BulkLoader.PROGRESS, BulkLoader.ERROR, BulkLoader.OPEN];
 		public function LazyBulkLoader(url : *) {
 			if (url is String) {

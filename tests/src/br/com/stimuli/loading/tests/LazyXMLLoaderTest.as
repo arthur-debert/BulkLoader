@@ -18,6 +18,7 @@ package br.com.stimuli.loading.tests {
 		public var ioError : Event;
 		
 		public function LazyXMLLoaderTest(name : String) : void {
+		 // todo: test audio context,  loader context, events for entire loader, events for each item
 		  super(name);
 		  this.name = name;
 		}
@@ -91,6 +92,79 @@ package br.com.stimuli.loading.tests {
         public function testAutoID() : void{
             var bitmap : Bitmap = _bulkLoader.getBitmap("cats");
             assertNotNull(_bulkLoader.get("cats"));
+        }
+        
+        public function testFLV() : void{
+            var netStream : NetStream = _bulkLoader.getNetStream("movie");
+            assertNotNull(netStream);
+        }
+        
+        public function testFLVMetadata() : void{
+            var meta : Object = _bulkLoader.getNetStreamMetaData("movie");
+            assertNotNull(meta);
+        }
+        
+        public function testFLVCheckPolicyFile() : void{
+            var videoItem : VideoItem = _bulkLoader.get("movie") as VideoItem;
+            assertTrue(videoItem.checkPolicyFile);
+        }
+        
+        public function testMaxTries() : void{
+            var videoItem : VideoItem = _bulkLoader.get("movie") as VideoItem;
+            assertEquals(videoItem.maxTries, 5);
+        }
+        
+        public function testPriority() : void{
+            assertEquals(_bulkLoader.get("movie").priority, 100)
+        }
+        
+        public function testWeight() : void{
+            assertEquals(_bulkLoader.get("movie").weight, 4)
+        }
+        
+        public function testPreventCache() : void{
+            assertEquals(_bulkLoader.get("some-text").preventCache, true);
+            assertEquals(_bulkLoader.get("movie").preventCache, false);
+        }
+        
+        public function testText() : void{
+            assertNotNull(_bulkLoader.getText("some-text"));
+        }
+        
+        public function testSound() : void{
+            assertNotNull(_bulkLoader.getSound("the-sound"));
+        }
+        
+        public function testID() : void{
+            assertNotNull(_bulkLoader.getSound("the-sound"));
+        }
+        
+        public function testType() : void{
+            var item : LoadingItem =  _bulkLoader.get("untyped-image")
+            assertNotNull(item);
+            assertTrue(item.content is Bitmap);
+            assertTrue(item is ImageItem);
+        }
+        
+        public function testXML() : void{
+            var item : LoadingItem =  _bulkLoader.get("samplexml")
+            assertNotNull(item);
+        }
+        
+        public function testHeaders() : void{
+            var item : LoadingItem =  _bulkLoader.get("samplexml")
+            var headers : Array = item.url.requestHeaders;
+            assertNotNull(headers);
+            assertEquals(headers.length, 2 );
+            var header1 : URLRequestHeader = headers[0];
+            trace("{LazyXMLLoaderTest}::method() header1", header1);
+            trace("{LazyXMLLoaderTest}::method() header1.name", header1.name);
+            trace("{LazyXMLLoaderTest}::method() header1.value", header1.value);
+            assertEquals(header1.name, "header1");
+            assertEquals(header1.value, "value1");
+            var header2 : URLRequestHeader = headers[1];
+            assertEquals(header2.name, "header2");
+            assertEquals(header2.value, "value2");
         }
 	}
 }

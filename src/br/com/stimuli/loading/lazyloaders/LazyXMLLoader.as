@@ -72,8 +72,8 @@ package br.com.stimuli.loading.lazyloaders{
     				if (nodeName == "headers") {
     					headers = [];
     					for each (var headerNode:XML in configNode.children()) {
-    						headerName = String(headerNode.name);
-    						headerValue = String(headerNode.value) ;
+    						headerName = String(headerNode.name());
+    						headerValue = String(headerNode[0]) ;
     						header = new URLRequestHeader( headerName, headerValue);
     						headers.push(header);
     					}
