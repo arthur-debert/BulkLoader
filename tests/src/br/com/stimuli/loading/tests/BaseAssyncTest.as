@@ -79,9 +79,9 @@ package br.com.stimuli.loading.tests {
 		}
 		
 		public function testStartCanChangeConnections():void {
-		    var oldConnectionsNumber : int = _bulkLoader._numConnectons;
+		    var oldConnectionsNumber : int = _bulkLoader._numConnections;
 		    _bulkLoader.start(2);
-		    assertFalse(oldConnectionsNumber ==  _bulkLoader._numConnectons)
+		    assertFalse(oldConnectionsNumber ==  _bulkLoader._numConnections)
 		}
 		
 		public function testCorrectLogLevel() : void{

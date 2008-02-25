@@ -8,26 +8,28 @@ package br.com.stimuli.loading.tests {
 	/**@private*/
 	public class BulkLoaderTestSuite extends TestSuite {
 	    public var testClasses : Array = [
-	    OnCompleteTest,
-	    AutoIdTest,
-        StringSubstituionTest,        
-        LoadNowTest,
-        ResumeAllTest,
-        ResumeTest,
-        PauseAllResumeTest,
-        RemoveFailedItemTest,
-        CollectionTestCase,
-        InstanceRetrivalTestCase, 
-        ProgressEventsTest, 
-        GuessTypeTest,
-        BulkStartTest,
-        XMLItemTest,
-        URLItemTest,
-        AudioContentTest,
-        LoaderItemAVM1MovieTest,
-        LoaderImageItemTest,
-        VideoContentPausedAtStartTestCase, 
-        VideoContentTest
+	    LazyXMLLoaderTest/*,
+	            LazyXMLInternalsTest,
+	           OnCompleteTest,
+	           AutoIdTest,
+	            StringSubstituionTest,        
+	            LoadNowTest,
+	            ResumeAllTest,
+	            ResumeTest,
+	            PauseAllResumeTest,
+	            RemoveFailedItemTest,
+	            CollectionTestCase,
+	            InstanceRetrivalTestCase, 
+	            ProgressEventsTest, 
+	            GuessTypeTest,
+	            BulkStartTest,
+	            XMLItemTest,
+	            URLItemTest,
+	            AudioContentTest,
+	            LoaderItemAVM1MovieTest,
+	            LoaderImageItemTest,
+	            VideoContentPausedAtStartTestCase, 
+	            VideoContentTest*/
 	    ];
 	    
 	    public var testsRun : Object = {} ;

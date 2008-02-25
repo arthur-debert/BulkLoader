@@ -40,12 +40,17 @@ package br.com.stimuli.loading.lazyloaders{
     	    var xml : XML = new XML(withData);
     	    var name : String = String(xml.name);
     	    if (!Boolean(name)){
-    	        throw new Error("The serialized BulkLoader in '" + theURL.url + "' needs to define a name")
+    	        name = BulkLoader.getUniqueName();
     	    }
     	    var logLevel : int = Boolean(String(xml.logLevel)) ? int(xml.logLevel) : BulkLoader.LOG_ERRORS;
-    	    trace("{LazyXMLLoader}::method() logLevel", logLevel);
     	    var numConnections : int = Boolean(String(xml.numConnections)) ? int(xml.numConnections) : BulkLoader.DEFAULT_NUM_CONNECTIONS;
-    		var _bulkLoader : BulkLoader = new BulkLoader(String(xml.name), numConnections, logLevel);
+    		var _bulkLoader : BulkLoader = new BulkLoader(name, numConnections, logLevel);
+    		var substitutions : Object = {};
+    		for each (var substitutionXML: *in xml.stringSubstitutions.children()){
+    		  substitutions[substitutionXML.name()] = substitutionXML.toString();
+    		}
+    		_bulkLoader.stringSubstitutions = substitutions;
+    		_bulkLoader.allowsAutoIDFromFileName = toBoolean(xml.allowsAutoIDFromFileName);
     		var possibleHandlerName : String;
     		var theNode : XMLList;
     		var hasNode : Boolean

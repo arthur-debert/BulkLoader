@@ -263,7 +263,7 @@ import flash.utils.*;
         // Maximum number of simultaneous open requests
         public static const DEFAULT_NUM_CONNECTIONS : int = 7;
         /** @private */
-        public var _numConnectons : int = DEFAULT_NUM_CONNECTIONS;
+        public var _numConnections : int = DEFAULT_NUM_CONNECTIONS;
         /** @private */
         public var _connections : Array;
         
@@ -362,13 +362,13 @@ import flash.utils.*;
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
         *   
         *   @param name  A name that can be used later to reference this loader in a static context,
-        *   @param  numConnectons The number of maximum simultaneous connections to be open.
+        *   @param  numConnections The number of maximum simultaneous connections to be open.
         *   @param  logLevel At which level should traces be outputed. By default only errors will be traced.
         *   
-        *   @see #numConnectons
+        *   @see #numConnections
         *   @see #log()
         */
-        public function BulkLoader(name : String, numConnectons : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL){
+        public function BulkLoader(name : String, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL){
             if (Boolean(_allLoaders[name])){
                 __debug_print_loaders();
                 throw new Error ("BulkLoader with name'" + name +"' has already been created.");
@@ -376,8 +376,8 @@ import flash.utils.*;
                 throw new Error ("Cannot create a BulkLoader instance without a name");
             }
             _allLoaders[name] = this;
-            if (numConnectons > 0){
-                this._numConnectons = numConnectons;
+            if (numConnections > 0){
+                this._numConnections = numConnections;
             }
             this.logLevel = logLevel;
             _name = name;
@@ -388,12 +388,12 @@ import flash.utils.*;
         
         /** Creates a BulkLoader instance with an unique name. This is useful for situations where you might be creating
         *   many BulkLoader instances and it gets tricky to garantee that no other instance is using that name.
-        *   @param  numConnectons The number of maximum simultaneous connections to be open.
+        *   @param  numConnections The number of maximum simultaneous connections to be open.
         *   @param  logLevel At which level should traces be outputed. By default only errors will be traced.
         *   @return A BulkLoader intance, with an unique name.
         */
-        public static function createUniqueNamedLoader( numConnectons : int=BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL) : BulkLoader{
-            return new BulkLoader(BulkLoader.getUniqueName(), numConnectons, logLevel);
+        public static function createUniqueNamedLoader( numConnections : int=BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL) : BulkLoader{
+            return new BulkLoader(BulkLoader.getUniqueName(), numConnections, logLevel);
         }
         
         public static function getUniqueName() : String{
@@ -590,7 +590,7 @@ bulkLoader.start(3)
         
         /** Start loading all items added previously
         *   @param  withConnections [optional]The maximum number of connections to make at the same time. If specified, will override the parameter passed (if any) to the constructor.
-        *   @see #numConnectons
+        *   @see #numConnections
         *   @see #see #BulkLoader()
         */   
         public function start(withConnections : int = -1 ) : void{
@@ -600,7 +600,7 @@ bulkLoader.start(3)
             }
             _startTime = getTimer();
             if (withConnections  > 0){
-                _numConnectons = withConnections;
+                _numConnections = withConnections;
             }
             _connections = [];
             _loadNext();
@@ -632,7 +632,7 @@ bulkLoader.start(3)
                 return true;
             } 
             // do we need to remove an item from the open connections?
-            if (_connections.length >= numConnectons){
+            if (_connections.length >= numConnections){
                 //which item should we remove?
                 var itemToRemove : LoadingItem = _getLeastUrgentOpenedItem();
                 _removeFromConnections(itemToRemove);
@@ -727,13 +727,13 @@ bulkLoader.start(3)
             if (toLoad){
                 next = true;
                 isRunning = true;
-                if(_connections.length < numConnectons){
+                if(_connections.length < numConnections){
                     _connections.push(toLoad);
                     toLoad.load();
                     log("Will load item:", toLoad, LOG_INFO);
                 }
                 // if we've got any more connections to open, load the next item
-                if(_connections.length  < numConnectons){
+                if(_connections.length  < numConnections){
                     _loadNext();
                 }
             }
@@ -892,8 +892,8 @@ bulkLoader.start(3)
         *   @return The number of connections used.
         *   @see #start()
         */
-        public function get numConnectons() : int { 
-            return _numConnectons; 
+        public function get numConnections() : int { 
+            return _numConnections; 
         }
         /** Returns an object where the urls are the keys(as strings) and the loaded contents are the value for that key.
         *  Each value is typed as * an the client must check for the right typing.
