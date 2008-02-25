@@ -6,6 +6,7 @@
 //
 package {
     import br.com.stimuli.loading.*;
+    import br.com.stimuli.loading.lazyloaders.*;
     import flash.events.*;
 
     class MyXMLLoader extends LazyXMLLoader {

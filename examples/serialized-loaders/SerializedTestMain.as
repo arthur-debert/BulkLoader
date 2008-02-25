@@ -1,6 +1,7 @@
 package{
-    import br.com.stimuli.loading.LazyXMLLoader;
+    import br.com.stimuli.loading.lazyloaders.LazyXMLLoader;
     import br.com.stimuli.loading.*;
+    import br.com.stimuli.loading.loadingtypes.*;
     import br.com.stimuli.loading.BulkProgressEvent;
     import flash.events.*;
     import flash.display.*;
