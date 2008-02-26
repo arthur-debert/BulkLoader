@@ -22,9 +22,10 @@ package br.com.stimuli.loading.tests {
 		}
 		// Override the run method and begin the request for remote data
 		public override function run():void {
-            lazyLoader = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml");
+            lazyLoader = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml", BulkLoader.getUniqueName());
             lazyLoader.addEventListener("complete", completeHandler);
             lazyLoader.addEventListener("progress", progressHandler);
+            lazyLoader.fetch();
 		}
 
         public function onIOError(evt : Event) : void{

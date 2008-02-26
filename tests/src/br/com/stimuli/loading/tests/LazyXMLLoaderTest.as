@@ -6,6 +6,7 @@ package br.com.stimuli.loading.tests {
 	import flash.display.*;
 	import asunit.framework.*;
 	import br.com.stimuli.loading.BulkLoader;
+	import br.com.stimuli.loading.BulkProgressEvent;
     import br.com.stimuli.loading.loadingtypes.*;
     import br.com.stimuli.loading.lazyloaders.*;
 /**@private*/
@@ -15,6 +16,7 @@ package br.com.stimuli.loading.tests {
 
 		public var name : String;
 		public var ioError : Event;
+		public var numItemCompleteFires : int = 0;
 		
 		public function LazyXMLLoaderTest(name : String) : void {
 		 // todo: test audio context,  loader context, events for entire loader, events for each item
@@ -23,12 +25,24 @@ package br.com.stimuli.loading.tests {
 		}
 		// Override the run method and begin the request for remote data
 		public override function run():void {
-            _bulkLoader = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml");
+            _bulkLoader = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml", BulkLoader.getUniqueName(), 2, 0);
+            _bulkLoader.addEventListener(LazyBulkLoader.LAZY_COMPLETE, onLazyComplete);
             _bulkLoader.addEventListener("complete", completeHandler);
             _bulkLoader.addEventListener("progress", progressHandler);
-            _bulkLoader.start();
+            _bulkLoader.fetch();
 		}
 
+        public function onLazyComplete(evt : Event) : void{
+            trace("{LazyXMLLoaderTest}::method() onLazyComplete", onLazyComplete);
+            for each (var item : LoadingItem in _bulkLoader.items){
+                item.addEventListener("complete", incrementEventCount);
+            }
+        }
+        
+        public function incrementEventCount(evt : Event) : void{
+            numItemCompleteFires ++;
+        }
+        
         public function onIOError(evt : Event) : void{
             ioError = evt;
             // call the on complete manually 
@@ -39,7 +53,6 @@ package br.com.stimuli.loading.tests {
 
         
 		protected override function completeHandler(event:Event):void {
-		    trace("#### onlazyLoaded", completeHandler);
 			super.run();
 		}
 		
@@ -49,6 +62,7 @@ package br.com.stimuli.loading.tests {
 		protected override function progressHandler(event:ProgressEvent):void {
 		    var percentLoaded : Number = event.bytesLoaded/ event.bytesTotal;
 			var current :Number = Math.floor(percentLoaded * 100) /100;
+			trace(current, (event as Object).percentLoaded);
 			var delta : Number = current - lastProgress;
 			if (current > lastProgress && delta > 0.099){
 			    lastProgress = current;
@@ -64,18 +78,6 @@ package br.com.stimuli.loading.tests {
 			//_bulkLoader.removeAll();	
 			BulkLoader.removeAllLoaders();
 		}
-        
-        public function testName() : void{
-            assertEquals(_bulkLoader.name, "lazyTest");
-        }
-        
-        public function testLogLevel() : void{
-            assertEquals(_bulkLoader.logLevel, 10);
-        }
-        
-        public function testNumConnections() : void{
-            assertEquals(_bulkLoader.numConnections, 5);
-        }
         
         public function testImage() : void{
             var bitmap : Bitmap = _bulkLoader.getBitmap("cats");
@@ -158,6 +160,10 @@ package br.com.stimuli.loading.tests {
             var header2 : URLRequestHeader = headers[1];
             assertEquals(header2.name, "header2");
             assertEquals(header2.value, "value2");
+        }
+        
+        public function testIndividualItemEventFire() : void{
+            assertEquals(numItemCompleteFires, _bulkLoader.itemsTotal);
         }
 	}
 }

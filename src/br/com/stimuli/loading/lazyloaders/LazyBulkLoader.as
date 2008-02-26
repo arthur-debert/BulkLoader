@@ -11,90 +11,71 @@ package br.com.stimuli.loading.lazyloaders{
 	import flash.media.SoundLoaderContext;
     import br.com.stimuli.loading.BulkLoader;
 	
-    
+    /**
+     *  Dispatched when the external file representing this serialized bulk loader intance has been downloaded and parse. At
+     *  this point the user can get references to all <code>items</code> and attach events to them accordingly.
+     *
+     *  @eventType br.com.stimuli.loading.BulkProgressEvent.PROGRESS
+     */
+    [Event(name="lazyComplete", type="flash.events.Event")]
     /** A serialized version of af BulkLoader instance. This class allows you to keep external  files with a complete description of what loading items should be loaded. This class is not meant to be used directly, but used as a base classes for specific data transports (xml, json).
-    *   @private
+    *   
     */
-	dynamic public class LazyBulkLoader extends Proxy {
-	    namespace lazy_loader = "http://www.stimuli.com.br/projects/bulkloader/"
+	public class LazyBulkLoader extends BulkLoader {
+	    namespace lazy_loader = "http://code.google.com/p/bulk-loader/"
 		lazy_loader var _lazyTheURL : URLRequest;
+		/** @private */
 		lazy_loader var _lazyLoader : URLLoader;
-		lazy_loader var _bulkLoader : BulkLoader;
+		/** @private */
 		lazy_loader static  const INT_TYPES : Array = ["maxTries", "priority"];
+		/** @private */
 		lazy_loader static  const NUMBER_TYPES : Array = ["weigth"];
+		/** @private */
 		lazy_loader static  const STRINGED_BOOLEAN : Array = ["preventCache", "pausedAtStart", "checkPolicyFile"];
-        lazy_loader var possibleHandlers : Array = [BulkLoader.COMPLETE, BulkLoader.PROGRESS, BulkLoader.ERROR, BulkLoader.OPEN];
         
-		public function LazyBulkLoader(url : *) {
+        public static const LAZY_COMPLETE : String = "lazyComplete";
+		public function LazyBulkLoader(url : *, name : String, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL){
 			if (url is String) {
 				lazy_loader::_lazyTheURL = new URLRequest(url);
 			}
 			lazy_loader::_lazyTheURL = (lazy_loader::_lazyTheURL as URLRequest) || url;
-			lazy_loader::_lazyStart();
-			
-			lazy_loader::_bulkLoader = BulkLoader.createUniqueNamedLoader();
+			super(name, numConnections, logLevel);
 		}
         
-        flash_proxy override function callProperty(propName : *, ...rest) : *{
-            if (!lazy_loader::_bulkLoader){
-                trace("[LazyBulkLoader] Error: called method " , propName, " but bulkloader isn't loaded yet.")
-            }
-            var func : Function = lazy_loader::_bulkLoader[propName] as Function;
-            if (Boolean(func)){
-                return func.apply(lazy_loader::_bulkLoader, rest);
-            }
-        }
-        
-        flash_proxy override function getProperty(propName : *) : *{
-            if (!lazy_loader::_bulkLoader){
-                trace("[LazyBulkLoader] Error: called getProperty " , propName, " but bulkloader isn't loaded yet.")
-            }
-            return lazy_loader::_bulkLoader[propName];
-        }
-        
-        flash_proxy override function setProperty(propName : *, value : *) : void{
-            if (!lazy_loader::_bulkLoader){
-                trace("[LazyBulkLoader] Error: called setProperty " , propName, " but bulkloader isn't loaded yet.")
-            }
-            lazy_loader::_bulkLoader[propName] = value;
-        }
-        
-		lazy_loader  function _lazyStart():void {
+        /** Starts to fetch the external data that will define a BulkLoader instance when parsed. When the fetch operation
+        *   is done and the item is correctly parsed, it will dispatch an event with name <code>LAZY_COMPLETE</code>.
+        */
+		public function fetch():void {
 			lazy_loader::_lazyLoader = new URLLoader(lazy_loader::_lazyTheURL);
 			lazy_loader::_lazyLoader.addEventListener(Event.COMPLETE, lazy_loader::_lazyOnComplete, false, 0, true);
-			lazy_loader::_lazyLoader.addEventListener(ProgressEvent.PROGRESS, lazy_loader::_lazyOnProgress, false, 0, true);
 		}
 
-		lazy_loader  function _lazyOnProgress(evt : ProgressEvent):void {
-			//dispatchEvent(evt);
-		}
-
-        
-		lazy_loader  function _lazyOnComplete(evt : Event):void {
-            lazy_loader::_lazyCreateLoader(evt.target.data);
-            lazy_loader::_bulkLoader.start();
-			//dispatchEvent(new Event(Event.COMPLETE));
+        /** @private */
+		lazy_loader function _lazyOnComplete(evt : Event):void {
+            lazy_loader::_lazyParseLoader(evt.target.data);
+            dispatchEvent(new Event(LAZY_COMPLETE));
+            start();
 		}
 		
-		/** Useful subclasses should implement this method for a specific seralization method. 
+		/** Useful subclasses should implement this method for a specific seralization method. The <BulkLoader>.start method will be called right after
+		* the serialized data is parsed.
 		* @param withData   A <code>String</code> to be turned into a <code>BulkLoader</code> instance.
-		* @return A <code>BulkLoader</code> instance created from the the serialized content.
+		* @private
 		*/
-		lazy_loader  function _lazyCreateLoader(withData : String) : BulkLoader{
+		lazy_loader function _lazyParseLoader(withData : String) : void{
 		    throw new Error("subclasses should implement a useful method for this");
 		    return new BulkLoader("bad");
 		}
-
+		/** @private */
 		lazy_loader static function toBoolean(value : String):Boolean {
 			if (value == "true" || value == "1" || value == "yes") {
 				return true;
 			}
 			return false;
 		}
-		
 
-		 public function toString():String {
-			return "[LazyBulkLoader] url: " + lazy_loader::_lazyTheURL.url + ", bulkLoader:" + lazy_loader::_bulkLoader;
+		override public function toString():String {
+			return "[LazyBulkLoader] url: " + lazy_loader::_lazyTheURL.url + ", bulkloader: " + super.toString();
 		}
 	}
 }

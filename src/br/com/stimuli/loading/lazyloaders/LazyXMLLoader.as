@@ -13,45 +13,37 @@ package br.com.stimuli.loading.lazyloaders{
 
 /**
 *       @example Basic usage:<listing version="3.0">   
-    var lazy : LazyXMLLoader = new LazyXMLLoader("sample-lazy.xml");
-    lazy.addEventListener(Event.COMPLETE, onLazyLoaded);
+    var lazy : LazyXMLLoader = new LazyXMLLoader("sample-lazy.xml", "myBulkLoader");
+    // listen to when the lazy loader has loaded the external definition
+    lazy.addEventListener(Event.LAZY_LOADED, onLazyLoaded);
+    // add regular events to the BulkLoader instance
     lazy.addEventListener(ProgressEvent.PROGRESS, onLazyProgress);
-    lazy.start();
-
-    var bulkLoader : BulkLoader;
+    lazy.addEventListener(Event.LAZY_LOADED, onAllItemsLoaded);
+    
     function onLazyLoaded(evt : Event) : void{
-        bulkLoader = evt.target.bulkLoader;
-        bulkLoader.addEventListener(BulkLoader.COMPLETE, onAllLoaded);
-        bulkLoader.addEventListener(BulkLoader.PROGRESS, onLazyProgress);
-        bulkLoader.start();
+        // now you can add individual events for items
+        onLazyLoaded.get("config").addEventListener(BulkLoader.COMPLETE, onConfigLoaded);
+        ...
     }
     </listing>
     */
     dynamic public class LazyXMLLoader extends LazyBulkLoader {
-        /*use lazy_loader*/
-    	function LazyXMLLoader(url : *){
-    		super (url)
+    	function LazyXMLLoader(url : *, name : String, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL){
+    		super (url, name, numConnections, logLevel);
     	}
     
         /** Reads a xml as a string and create a complete bulk loader from it.
         *   @param withData The xml to be read as a string.
-        *   @return The <code>BulkLoader</code> instance to be used
+        *   @private
         */
-    	lazy_loader override function _lazyCreateLoader(withData : String) : BulkLoader{
+    	lazy_loader override function _lazyParseLoader(withData : String) : void{
     	    var xml : XML = new XML(withData);
-    	    var name : String = String(xml.name);
-    	    var logLevel : int = Boolean(String(xml.logLevel)) ? int(xml.logLevel) : BulkLoader.LOG_ERRORS;
-    	    var numConnections : int = Boolean(String(xml.numConnections)) ? int(xml.numConnections) : BulkLoader.DEFAULT_NUM_CONNECTIONS;
-    		lazy_loader::_bulkLoader._name = name;
-    		lazy_loader::_bulkLoader._numConnections = numConnections;
-    		lazy_loader::_bulkLoader.logLevel = logLevel;
-    		
     		var substitutions : Object = {};
     		for each (var substitutionXML: *in xml.stringSubstitutions.children()){
     		  substitutions[substitutionXML.name()] = substitutionXML.toString();
     		}
-    		lazy_loader::_bulkLoader.stringSubstitutions = substitutions;
-    		lazy_loader::_bulkLoader.allowsAutoIDFromFileName = lazy_loader::toBoolean(xml.allowsAutoIDFromFileName);
+    		stringSubstitutions = substitutions;
+    		allowsAutoIDFromFileName = lazy_loader::toBoolean(xml.allowsAutoIDFromFileName);
     		var possibleHandlerName : String;
     		var theNode : XMLList;
     		var hasNode : Boolean
@@ -103,34 +95,11 @@ package br.com.stimuli.loading.lazyloaders{
     				} else if (nodeName != "url") {
     					props[nodeName] = String(configNode);
     				}
+    				var theItem : LoadingItem = add(String(String(itemNode.url)), props);
     			}
-
-
-/*              for (var p:String in props) {
-                    trace('\t' + p + ": " + props[p]);
-                }*/
-    			var theItem : LoadingItem = lazy_loader::_bulkLoader.add(String(String(itemNode.url)), props);
-                // check for event handlers on that node:
-                for each(possibleHandlerName in lazy_loader::possibleHandlers){
-        		    theNode = itemNode[possibleHandlerName];
-        		    nodeName = String(theNode);
-        		    hasNode = Boolean(nodeName);
-        		    if (hasNode && this[nodeName] is Function){
-        		        theItem.addEventListener(possibleHandlerName, this[nodeName]);
-        		    }
-        		}
-
     		}
-    		
-    		for each(possibleHandlerName in lazy_loader::possibleHandlers){
-    		    theNode = xml[possibleHandlerName];
-    		    nodeName = String(theNode);
-    		    hasNode = Boolean(nodeName);
-    		    if (hasNode && this[nodeName] is Function){
-    		        lazy_loader::_bulkLoader.addEventListener(possibleHandlerName, this[nodeName]);
-    		    }
-    		}
-    		return lazy_loader::_bulkLoader;
+            
+
     	}
     }
 }
