@@ -27,7 +27,8 @@ package br.com.stimuli.loading.lazyloaders{
     }
     </listing>
     */
-    public class LazyXMLLoader extends LazyBulkLoader {
+    dynamic public class LazyXMLLoader extends LazyBulkLoader {
+        /*use lazy_loader*/
     	function LazyXMLLoader(url : *){
     		super (url)
     	}
@@ -36,21 +37,21 @@ package br.com.stimuli.loading.lazyloaders{
         *   @param withData The xml to be read as a string.
         *   @return The <code>BulkLoader</code> instance to be used
         */
-    	override public function createLoader(withData : String) : BulkLoader{
+    	lazy_loader override function _lazyCreateLoader(withData : String) : BulkLoader{
     	    var xml : XML = new XML(withData);
     	    var name : String = String(xml.name);
-    	    if (!Boolean(name)){
-    	        name = BulkLoader.getUniqueName();
-    	    }
     	    var logLevel : int = Boolean(String(xml.logLevel)) ? int(xml.logLevel) : BulkLoader.LOG_ERRORS;
     	    var numConnections : int = Boolean(String(xml.numConnections)) ? int(xml.numConnections) : BulkLoader.DEFAULT_NUM_CONNECTIONS;
-    		var _bulkLoader : BulkLoader = new BulkLoader(name, numConnections, logLevel);
+    		lazy_loader::_bulkLoader._name = name;
+    		lazy_loader::_bulkLoader._numConnections = numConnections;
+    		lazy_loader::_bulkLoader.logLevel = logLevel;
+    		
     		var substitutions : Object = {};
     		for each (var substitutionXML: *in xml.stringSubstitutions.children()){
     		  substitutions[substitutionXML.name()] = substitutionXML.toString();
     		}
-    		_bulkLoader.stringSubstitutions = substitutions;
-    		_bulkLoader.allowsAutoIDFromFileName = toBoolean(xml.allowsAutoIDFromFileName);
+    		lazy_loader::_bulkLoader.stringSubstitutions = substitutions;
+    		lazy_loader::_bulkLoader.allowsAutoIDFromFileName = lazy_loader::toBoolean(xml.allowsAutoIDFromFileName);
     		var possibleHandlerName : String;
     		var theNode : XMLList;
     		var hasNode : Boolean
@@ -90,14 +91,14 @@ package br.com.stimuli.loading.lazyloaders{
     					context.applicationDomain = ApplicationDomain.currentDomain;
     					props[BulkLoader.CONTEXT] = context;
 
-    				} else if (INT_TYPES.indexOf(nodeName) > -1) {
+    				} else if (lazy_loader::INT_TYPES.indexOf(nodeName) > -1) {
     					props[nodeName] = int(String(configNode));
     					//trace("(is int)");
-    				} else if (NUMBER_TYPES.indexOf(nodeName) > -1) {
+    				} else if (lazy_loader::NUMBER_TYPES.indexOf(nodeName) > -1) {
     					props[nodeName] = Number(String(configNode));
     					//trace("(is number)");
-    				} else if (STRINGED_BOOLEAN.indexOf(nodeName) > -1) {
-    					props[nodeName] = toBoolean(String(configNode));
+    				} else if (lazy_loader::STRINGED_BOOLEAN.indexOf(nodeName) > -1) {
+    					props[nodeName] = lazy_loader::toBoolean(String(configNode));
     					//trace("(is boolean)");
     				} else if (nodeName != "url") {
     					props[nodeName] = String(configNode);
@@ -108,9 +109,9 @@ package br.com.stimuli.loading.lazyloaders{
 /*              for (var p:String in props) {
                     trace('\t' + p + ": " + props[p]);
                 }*/
-    			var theItem : LoadingItem = _bulkLoader.add(String(String(itemNode.url)), props);
+    			var theItem : LoadingItem = lazy_loader::_bulkLoader.add(String(String(itemNode.url)), props);
                 // check for event handlers on that node:
-                for each(possibleHandlerName in possibleHandlers){
+                for each(possibleHandlerName in lazy_loader::possibleHandlers){
         		    theNode = itemNode[possibleHandlerName];
         		    nodeName = String(theNode);
         		    hasNode = Boolean(nodeName);
@@ -121,15 +122,15 @@ package br.com.stimuli.loading.lazyloaders{
 
     		}
     		
-    		for each(possibleHandlerName in possibleHandlers){
+    		for each(possibleHandlerName in lazy_loader::possibleHandlers){
     		    theNode = xml[possibleHandlerName];
     		    nodeName = String(theNode);
     		    hasNode = Boolean(nodeName);
     		    if (hasNode && this[nodeName] is Function){
-    		        _bulkLoader.addEventListener(possibleHandlerName, this[nodeName]);
+    		        lazy_loader::_bulkLoader.addEventListener(possibleHandlerName, this[nodeName]);
     		    }
     		}
-    		return _bulkLoader;
+    		return lazy_loader::_bulkLoader;
     	}
     }
 }

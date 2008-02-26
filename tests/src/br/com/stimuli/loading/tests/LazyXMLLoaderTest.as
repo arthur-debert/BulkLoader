@@ -10,8 +10,7 @@ package br.com.stimuli.loading.tests {
     import br.com.stimuli.loading.lazyloaders.*;
 /**@private*/
 	public class LazyXMLLoaderTest extends AsynchronousTestCase {
-		public var lazyLoader : LazyXMLLoader;
-		public var _bulkLoader : BulkLoader;
+		public var _bulkLoader : LazyXMLLoader;
 		public var lastProgress : Number = 0;
 
 		public var name : String;
@@ -24,10 +23,10 @@ package br.com.stimuli.loading.tests {
 		}
 		// Override the run method and begin the request for remote data
 		public override function run():void {
-            lazyLoader = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml");
-            lazyLoader.addEventListener("complete", onlazyLoaded);
-            lazyLoader.addEventListener("progress", progressHandler);
-            lazyLoader.start();
+            _bulkLoader = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml");
+            _bulkLoader.addEventListener("complete", completeHandler);
+            _bulkLoader.addEventListener("progress", progressHandler);
+            _bulkLoader.start();
 		}
 
         public function onIOError(evt : Event) : void{
@@ -37,13 +36,7 @@ package br.com.stimuli.loading.tests {
             tearDown();
         }
         
-        public function onlazyLoaded(event:Event) : void{
-            trace("#### onlazyLoaded", onlazyLoaded);
-            lazyLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
-		    _bulkLoader = lazyLoader.bulkLoader;
-		    _bulkLoader.start();
-		    _bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
-        }
+
         
 		protected override function completeHandler(event:Event):void {
 		    trace("#### onlazyLoaded", completeHandler);
@@ -68,7 +61,7 @@ package br.com.stimuli.loading.tests {
 		}
 		
 		protected override function tearDown():void {
-			_bulkLoader.removeAll();	
+			//_bulkLoader.removeAll();	
 			BulkLoader.removeAllLoaders();
 		}
         

@@ -11,7 +11,6 @@ package br.com.stimuli.loading.tests {
 /**@private*/
 	public class LazyXMLInternalsTest extends AsynchronousTestCase {
 		public var lazyLoader : LazyXMLLoader;
-		public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
 
 		public var name : String;
@@ -26,7 +25,6 @@ package br.com.stimuli.loading.tests {
             lazyLoader = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml");
             lazyLoader.addEventListener("complete", completeHandler);
             lazyLoader.addEventListener("progress", progressHandler);
-            lazyLoader.start();
 		}
 
         public function onIOError(evt : Event) : void{
@@ -37,8 +35,9 @@ package br.com.stimuli.loading.tests {
         }
         
 		protected override function completeHandler(event:Event):void {
+		    trace("ON TESTE@ completeHandler", completeHandler);
 		    lazyLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
-		    _bulkLoader = lazyLoader.bulkLoader;
+		    
 			super.run();
 		}
 		
@@ -62,12 +61,12 @@ package br.com.stimuli.loading.tests {
 		}
 		
 		protected override function tearDown():void {
-			_bulkLoader.removeAll();	
+			lazyLoader.removeAll();	
 			BulkLoader.removeAllLoaders();
 		}
         
         public function testXMLLoaded() : void{
-            assertNotNull(_bulkLoader);
+            assertNotNull(lazyLoader);
         }
         
         public function testProgressNotNull() : void{
