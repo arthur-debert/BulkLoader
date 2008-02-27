@@ -34,7 +34,7 @@ package br.com.stimuli.loading.tests {
     	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.txt", {id:"text", preventCache:true});
     	 		_bulkLoader.start();
     	 		// make sure loadNow wont fail before items are loaded:
-                _bulkLoader.loadNow("text");
+                _bulkLoader.loadNow("the-movie");
     	 		
     	 	}
 
