@@ -626,6 +626,9 @@ bulkLoader.start(3)
             if(!item){
                 return false;
             }
+            if(!_connections){
+                _connections = [];
+            }
             // is this item already loaded or loading?
             if (item.status == LoadingItem.STATUS_FINISHED ||
                 item.status == LoadingItem.STATUS_STARTED){

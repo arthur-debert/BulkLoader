@@ -144,7 +144,7 @@ package br.com.stimuli.loading.loadingtypes {
         */
         public var _bytesLoaded : int = 0;
         /** @private */
-        public var _bytesRemaining : int = -1;
+        public var _bytesRemaining : int = 10000000;
         /**The percentage of loading done (from 0 to 1).
         * @private   
         */

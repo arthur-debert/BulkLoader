@@ -25,7 +25,7 @@ package br.com.stimuli.loading.tests {
 		}
 		// Override the run method and begin the request for remote data
 		public override function run():void {
-            _bulkLoader = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml", BulkLoader.getUniqueName(), 2, 0);
+            _bulkLoader = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml", BulkLoader.getUniqueName(), 2, 10);
             _bulkLoader.addEventListener(LazyBulkLoader.LAZY_COMPLETE, onLazyComplete);
             _bulkLoader.addEventListener("complete", completeHandler);
             _bulkLoader.addEventListener("progress", progressHandler);
@@ -62,7 +62,7 @@ package br.com.stimuli.loading.tests {
 		protected override function progressHandler(event:ProgressEvent):void {
 		    var percentLoaded : Number = event.bytesLoaded/ event.bytesTotal;
 			var current :Number = Math.floor(percentLoaded * 100) /100;
-			trace(current, (event as Object).percentLoaded);
+			//trace(current, (event as Object).percentLoaded);
 			var delta : Number = current - lastProgress;
 			if (current > lastProgress && delta > 0.099){
 			    lastProgress = current;

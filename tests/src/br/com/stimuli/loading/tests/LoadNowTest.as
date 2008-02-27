@@ -33,6 +33,9 @@ package br.com.stimuli.loading.tests {
     	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true, priority:200, preventCache:true});
     	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.txt", {id:"text", preventCache:true});
     	 		_bulkLoader.start();
+    	 		// make sure loadNow wont fail before items are loaded:
+                _bulkLoader.loadNow("text");
+    	 		
     	 	}
 
     		/**

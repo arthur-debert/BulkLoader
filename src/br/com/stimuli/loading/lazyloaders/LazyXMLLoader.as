@@ -95,8 +95,8 @@ package br.com.stimuli.loading.lazyloaders{
     				} else if (nodeName != "url") {
     					props[nodeName] = String(configNode);
     				}
-    				var theItem : LoadingItem = add(String(String(itemNode.url)), props);
     			}
+    			var theItem : LoadingItem = add(String(String(itemNode.url)), props);
     		}
             
 
