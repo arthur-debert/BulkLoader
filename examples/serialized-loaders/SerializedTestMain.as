@@ -23,7 +23,7 @@ package{
             lazy.addEventListener(Event.COMPLETE, onAllLoaded);
             lazy.addEventListener(ProgressEvent.PROGRESS, onAllProgress);
             // tells lazy loader to start
-            lazy.fetch();
+            lazy.start();
 
         }
         
