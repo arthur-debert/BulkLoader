@@ -29,11 +29,10 @@ package br.com.stimuli.loading.tests {
             _bulkLoader.addEventListener(LazyBulkLoader.LAZY_COMPLETE, onLazyComplete);
             _bulkLoader.addEventListener("complete", completeHandler);
             _bulkLoader.addEventListener("progress", progressHandler);
-            _bulkLoader.fetch();
+            _bulkLoader.start();
 		}
 
         public function onLazyComplete(evt : Event) : void{
-            trace("{LazyXMLLoaderTest}::method() onLazyComplete", onLazyComplete);
             for each (var item : LoadingItem in _bulkLoader.items){
                 item.addEventListener("complete", incrementEventCount);
             }
@@ -153,9 +152,6 @@ package br.com.stimuli.loading.tests {
             assertNotNull(headers);
             assertEquals(headers.length, 2 );
             var header1 : URLRequestHeader = headers[0];
-            trace("{LazyXMLLoaderTest}::method() header1", header1);
-            trace("{LazyXMLLoaderTest}::method() header1.name", header1.name);
-            trace("{LazyXMLLoaderTest}::method() header1.value", header1.value);
             assertEquals(header1.name, "header1");
             assertEquals(header1.value, "value1");
             var header2 : URLRequestHeader = headers[1];

@@ -45,7 +45,10 @@ package br.com.stimuli.loading.lazyloaders{
         /** Starts to fetch the external data that will define a BulkLoader instance when parsed. When the fetch operation
         *   is done and the item is correctly parsed, it will dispatch an event with name <code>LAZY_COMPLETE</code>.
         */
-		public function fetch():void {
+		override public function start(numConnections : int = -1):void {
+		    if (numConnections > 0){
+		        this._numConnections = numConnections;
+		    }
 			lazy_loader::_lazyLoader = new URLLoader(lazy_loader::_lazyTheURL);
 			lazy_loader::_lazyLoader.addEventListener(Event.COMPLETE, lazy_loader::_lazyOnComplete, false, 0, true);
 		}
@@ -54,7 +57,7 @@ package br.com.stimuli.loading.lazyloaders{
 		lazy_loader function _lazyOnComplete(evt : Event):void {
             lazy_loader::_lazyParseLoader(evt.target.data);
             dispatchEvent(new Event(LAZY_COMPLETE));
-            start();
+            super.start();
 		}
 		
 		/** Useful subclasses should implement this method for a specific seralization method. The <BulkLoader>.start method will be called right after
