@@ -28,7 +28,7 @@ package br.com.stimuli.loading.lazyloaders{
     </listing>
     */
     dynamic public class LazyXMLLoader extends LazyBulkLoader {
-    	function LazyXMLLoader(url : *, name : String, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL){
+    	function LazyXMLLoader(url : *, name : String, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFAULT_LOG_LEVEL){
     		super (url, name, numConnections, logLevel);
     	}
     

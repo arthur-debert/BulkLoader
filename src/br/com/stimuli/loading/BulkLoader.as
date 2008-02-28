@@ -336,9 +336,9 @@ import flash.utils.*;
         * @see #LOG_ERRORS
         * @see #LOG_INFO
         */
-        public static const DEFALUT_LOG_LEVEL : int = 20;
+        public static const DEFAULT_LOG_LEVEL : int = 20;
         /** @private */
-        public var logLevel: int = DEFALUT_LOG_LEVEL;
+        public var logLevel: int = DEFAULT_LOG_LEVEL;
         /** @private */
         public var _allowsAutoIDFromFileName : Boolean = false;
         /** @private */
@@ -368,7 +368,7 @@ import flash.utils.*;
         *   @see #numConnections
         *   @see #log()
         */
-        public function BulkLoader(name : String, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL){
+        public function BulkLoader(name : String, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFAULT_LOG_LEVEL){
             if (Boolean(_allLoaders[name])){
                 __debug_print_loaders();
                 throw new Error ("BulkLoader with name'" + name +"' has already been created.");
@@ -392,7 +392,7 @@ import flash.utils.*;
         *   @param  logLevel At which level should traces be outputed. By default only errors will be traced.
         *   @return A BulkLoader intance, with an unique name.
         */
-        public static function createUniqueNamedLoader( numConnections : int=BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL) : BulkLoader{
+        public static function createUniqueNamedLoader( numConnections : int=BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFAULT_LOG_LEVEL) : BulkLoader{
             return new BulkLoader(BulkLoader.getUniqueName(), numConnections, logLevel);
         }
         

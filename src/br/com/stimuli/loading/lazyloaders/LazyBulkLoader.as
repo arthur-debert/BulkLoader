@@ -34,7 +34,7 @@ package br.com.stimuli.loading.lazyloaders{
 		lazy_loader static  const STRINGED_BOOLEAN : Array = ["preventCache", "pausedAtStart", "checkPolicyFile"];
         
         public static const LAZY_COMPLETE : String = "lazyComplete";
-		public function LazyBulkLoader(url : *, name : String, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFALUT_LOG_LEVEL){
+		public function LazyBulkLoader(url : *, name : String, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFAULT_LOG_LEVEL){
 			if (url is String) {
 				lazy_loader::_lazyTheURL = new URLRequest(url);
 			}
@@ -80,5 +80,13 @@ package br.com.stimuli.loading.lazyloaders{
 		override public function toString():String {
 			return "[LazyBulkLoader] url: " + lazy_loader::_lazyTheURL.url + ", bulkloader: " + super.toString();
 		}
+		
+		/* ,
+		"headers": 
+		[
+			{"header1": "value1"},
+			{"header2": "value2"}
+		]
+		*/
 	}
 }
