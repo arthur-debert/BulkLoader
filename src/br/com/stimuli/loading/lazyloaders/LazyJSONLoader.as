@@ -10,10 +10,9 @@ package br.com.stimuli.loading.lazyloaders{
 	import flash.system.LoaderContext;
 	import flash.system.ApplicationDomain;
 	import flash.media.SoundLoaderContext;
-    import com.adobe.serialization.json.JSON;
 /**
 *       @example Basic usage:<listing version="3.0">   
-    var lazy : LazyXMLLoader = new LazyXMLLoader("sample-lazy.xml", "myBulkLoader");
+    var lazy : LazyJSONLoader = new LazyJSONLoader("sample-lazy.json", "myBulkLoader");
     // listen to when the lazy loader has loaded the external definition
     lazy.addEventListener(Event.LAZY_LOADED, onLazyLoaded);
     // add regular events to the BulkLoader instance
@@ -41,8 +40,8 @@ package br.com.stimuli.loading.lazyloaders{
         public function get decodeFunc() : Function {
             if (!Boolean(_decodeFunc)){
                 // defaults to adobe`s corelib decoder:
-                var decoderClass : Object = JSON;getDefinitionByName("com.adobe.serialization.json.JSON");
-                _decodeFunc = decoderClass["decode"];
+                var decoderClass : Object = getDefinitionByName("com.adobe.serialization.json.JSON");
+                _decodeFunc = decoderClass.decode;
             } 
             return _decodeFunc; 
         }
@@ -75,22 +74,20 @@ package br.com.stimuli.loading.lazyloaders{
 					}
 					context.applicationDomain = ApplicationDomain.currentDomain;
 					props[BulkLoader.CONTEXT] = context;
-    			}else if (fileProp["header"]){
-    			    /*var oldHeaders  : Object = fileProp["header"];
-    			                     fileProp["header"]= [];*/
-    			    /*for(var headerName in oldHeaders){
-    			                         var theHeader : Object = {};
-    			                         theHeader[headerName] = oldHeaders[headerName]
-    			                         fileProp["header"].push(theHeader);
-    			                     }*/
-    			    trace("{LazyJSONLoader}::method() fileProp['header']", fileProp['header']);
+    			}else if (fileProp["headers"]){
+                    var oldHeaders  : Object = fileProp["headers"];
+                    fileProp["headers"]= [];
+    			    for each(var headerObject : Object in oldHeaders){
+    			        for (var headerName : String in headerObject){
+    			            var theHeader : URLRequestHeader = new URLRequestHeader(headerName, headerObject[headerName]);
+	                         fileProp["headers"].push(theHeader);
+    			        }
+    			    }
     			}
     			url = props["url"];
     			delete props["url"];
     			var theItem : LoadingItem = add(url, props);
-    			trace("{LazyJSONLoader}::method() theItem", theItem);
     		}
-    		trace("{LazyJSONLoader}::method() this", this);
     	}
     }
 }

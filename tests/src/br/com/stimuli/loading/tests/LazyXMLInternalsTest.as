@@ -25,7 +25,7 @@ package br.com.stimuli.loading.tests {
             lazyLoader = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml", BulkLoader.getUniqueName());
             lazyLoader.addEventListener("complete", completeHandler);
             lazyLoader.addEventListener("progress", progressHandler);
-            lazyLoader.fetch();
+            lazyLoader.start();
 		}
 
         public function onIOError(evt : Event) : void{
