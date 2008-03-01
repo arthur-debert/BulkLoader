@@ -1,0 +1,798 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="LazyJSONLoader,br.com.stimuli.loading.lazyloaders.LazyJSONLoader,decodeFunc,_lazyParseLoader" name="keywords">
+<title>br.com.stimuli.loading.lazyloaders.LazyJSONLoader</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'LazyJSONLoader - API Documentation';
+				var baseRef = '../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">BulkLoader Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../index.html?br/com/stimuli/loading/lazyloaders/LazyJSONLoader.html&amp;br/com/stimuli/loading/lazyloaders/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;LazyJSONLoader</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#eventSummary">Events</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class LazyJSONLoader"); titleBar_setSubNav(true,true,false,false,true,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">br.com.stimuli.loading.lazyloaders</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public dynamic  class LazyJSONLoader</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">LazyJSONLoader <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../images/inherit-arrow.gif"> <a href="LazyBulkLoader.html">LazyBulkLoader</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../images/inherit-arrow.gif"> <a href="../BulkLoader.html">BulkLoader</a> <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../images/inherit-arrow.gif"> flash.events.EventDispatcher</td>
+</tr>
+</table>
+<p></p>
+      <p></p>
+<br>
+<span class="label">Example</span>
+<br>Basic usage:<div class='listing'><pre>   
+    var lazy : LazyJSONLoader = new LazyJSONLoader("sample-lazy.json", "myBulkLoader");
+    // listen to when the lazy loader has loaded the external definition
+    lazy.addEventListener(Event.LAZY_LOADED, onLazyLoaded);
+    // add regular events to the BulkLoader instance
+    lazy.addEventListener(ProgressEvent.PROGRESS, onLazyProgress);
+    lazy.addEventListener(Event.LAZY_LOADED, onAllItemsLoaded);
+    
+    function onLazyLoaded(evt : Event) : void{
+        // now you can add individual events for items
+        onLazyLoaded.get("config").addEventListener(BulkLoader.COMPLETE, onConfigLoaded);
+        ...
+    }
+    </pre></div>
+    <p></p>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<div class="showHideLinks">
+<div class="hideInheritedProperty" id="hideInheritedProperty">
+<a onclick="javascript:setInheritedVisible(false,'Property');" href="#propertySummary" class="showHideLink"><img src="../../../../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Properties</a>
+</div>
+<div class="showInheritedProperty" id="showInheritedProperty">
+<a onclick="javascript:setInheritedVisible(true,'Property');" href="#propertySummary" class="showHideLink"><img src="../../../../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Properties</a>
+</div>
+</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#allowsAutoIDFromFileName">allowsAutoIDFromFileName</a> : Boolean<div class="summaryTableDescription"> Determines if an autmatic id created from the file name.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#AVAILABLE_EXTENSIONS">AVAILABLE_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static] List of all file extensions that the <code>BulkLoader</code> knows how to guess.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#avgLatency">avgLatency</a> : Number<div class="summaryTableDescription">The average latency (in miliseconds) for the entire loading.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#bytesLoaded">bytesLoaded</a> : int<div class="summaryTableDescription"> The sum of all bytesLoaded for each item.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#bytesTotal">bytesTotal</a> : int<div class="summaryTableDescription"> The total bytes to load.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#bytesTotalCurrent">bytesTotalCurrent</a> : int<div class="summaryTableDescription"> The sum of all bytes loaded so far.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#contents">contents</a> : Object<div class="summaryTableDescription"> Returns an object where the urls are the keys(as strings) and the loaded contents are the value for that key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#decodeFunc">decodeFunc</a> : Function<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">LazyJSONLoader</td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#highestPriority">highestPriority</a> : int<div class="summaryTableDescription"> Returns the highest priority for all items in this BulkLoader instance.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#id">id</a> : int<div class="summaryTableDescription"> The id of this bulkLoader instance
+        </div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#IMAGE_EXTENSIONS">IMAGE_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically use a <code>Loader</code> object for loading.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#isFinished">isFinished</a> : Boolean<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#isRunning">isRunning</a> : Boolean<div class="summaryTableDescription"> A boolean indicating if the instace has started and has not finished loading all items
+        </div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#items">items</a> : Array<div class="summaryTableDescription"> Returns a copy of all <code>LoadingItem</code> in this intance.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#itemsLoaded">itemsLoaded</a> : int<div class="summaryTableDescription"> 
+          Number of items alrealdy loaded.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#itemsTotal">itemsTotal</a> : int<div class="summaryTableDescription"> Total number of items to load.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#loadedRatio">loadedRatio</a> : Number<div class="summaryTableDescription">  
+          The ratio (0->1) of items to load / items total.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#logFunction">logFunction</a> : Function<div class="summaryTableDescription"> The function to be used in logging.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#MOVIECLIP_EXTENSIONS">MOVIECLIP_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#name">name</a> : String<div class="summaryTableDescription">
+  The name by which this loader instance can be identified.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#numConnections">numConnections</a> : int<div class="summaryTableDescription"> The number of simultaneous connections to use.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#percentLoaded">percentLoaded</a> : Number<div class="summaryTableDescription"> The percentage (0->1) of bytes loaded.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#SOUND_EXTENSIONS">SOUND_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically treated as sound for loading.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#speed">speed</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#speedAvg">speedAvg</a> : Number<div class="summaryTableDescription">The average speed (in kb/s) for the entire loading.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#stringSubstitutions">stringSubstitutions</a> : Object<div class="summaryTableDescription"> The object, used as a hashed to substitute variables specified on the url used in <code>add</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#TEXT_EXTENSIONS">TEXT_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically treated as text for loading.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#totalTime">totalTime</a> : Number<div class="summaryTableDescription">Time in seconds for the whole loading.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#totalWeight">totalWeight</a> : int<div class="summaryTableDescription"> The sum of weights in all items to load.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#VIDEO_EXTENSIONS">VIDEO_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically treated as video for loading.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#weightPercent">weightPercent</a> : Number<div class="summaryTableDescription"> The weighted percent of items loaded(0->1).</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedProperty">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#XML_EXTENSIONS">XML_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<div class="showHideLinks">
+<div class="hideInheritedMethod" id="hideInheritedMethod">
+<a onclick="javascript:setInheritedVisible(false,'Method');" href="#methodSummary" class="showHideLink"><img src="../../../../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Methods</a>
+</div>
+<div class="showInheritedMethod" id="showInheritedMethod">
+<a onclick="javascript:setInheritedVisible(true,'Method');" href="#methodSummary" class="showHideLink"><img src="../../../../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Methods</a>
+</div>
+</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#LazyJSONLoader()">LazyJSONLoader</a>(url:*, name:String, numConnections:int, logLevel:int)</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">LazyJSONLoader</td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#add()">add</a>(url:*, props:Object = null):<a href="../loadingtypes/LoadingItem.html">LoadingItem</a>
+</div>
+<div class="summaryTableDescription"> Adds a new assets to be loaded.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#changeItemPriority()">changeItemPriority</a>(key:String, newPriority:int):Boolean</div>
+<div class="summaryTableDescription"> Updates the priority of item identified by key with a new value, the queue will be re resorted right away.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#createUniqueNamedLoader()">createUniqueNamedLoader</a>(numConnections:int, logLevel:int):<a href="../../loading/BulkLoader.html">BulkLoader</a>
+</div>
+<div class="summaryTableDescription">[static] Creates a BulkLoader instance with an unique name.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#get()">get</a>(key:*):<a href="../loadingtypes/LoadingItem.html">LoadingItem</a>
+</div>
+<div class="summaryTableDescription"> Used  to fetch an item with a given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getAVM1Movie()">getAVM1Movie</a>(key:String, clearMemory:Boolean = false):AVM1Movie</div>
+<div class="summaryTableDescription"> Returns a <code>AVM1Movie</code> object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getBitmap()">getBitmap</a>(key:String, clearMemory:Boolean = false):Bitmap</div>
+<div class="summaryTableDescription"> Returns a Bitmap object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getBitmapData()">getBitmapData</a>(key:*, clearMemory:Boolean = false):BitmapData</div>
+<div class="summaryTableDescription"> Returns an BitmapData object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getContent()">getContent</a>(key:String, clearMemory:Boolean = false):*</div>
+<div class="summaryTableDescription"> Returns an untyped object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getHttpStatus()">getHttpStatus</a>(key:*):int</div>
+<div class="summaryTableDescription"> Gets the http status code for the loading item identified by key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getLoader()">getLoader</a>(name:String):<a href="../../loading/BulkLoader.html">BulkLoader</a>
+</div>
+<div class="summaryTableDescription">[static] Fetched a <code>BulkLoader</code> object created with the <code>name</code> parameter.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getMovieClip()">getMovieClip</a>(key:String, clearMemory:Boolean = false):MovieClip</div>
+<div class="summaryTableDescription"> Returns a <code>MovieClip</code> object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getNetStream()">getNetStream</a>(key:String, clearMemory:Boolean = false):NetStream</div>
+<div class="summaryTableDescription"> Returns a <code>NetStream</code> object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getNetStreamMetaData()">getNetStreamMetaData</a>(key:String, clearMemory:Boolean = false):Object</div>
+<div class="summaryTableDescription"> Returns a <code>Object</code> with meta data information for a given <code>NetStream</code> key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getNotLoadedItems()">getNotLoadedItems</a>():Array</div>
+<div class="summaryTableDescription"> Returns items that haven't been fully loaded.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getProgressForItems()">getProgressForItems</a>(keys:Array):<a href="../../loading/BulkProgressEvent.html">BulkProgressEvent</a>
+</div>
+<div class="summaryTableDescription"> Calculates the progress for a specific set of items.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getSerializedData()">getSerializedData</a>(key:*, clearMemory:Boolean = false, encodingFunction:Function = null):*</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getSound()">getSound</a>(key:*, clearMemory:Boolean = false):Sound</div>
+<div class="summaryTableDescription"> Returns a Sound object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getStats()">getStats</a>():String</div>
+<div class="summaryTableDescription"> If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3).</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getText()">getText</a>(key:*, clearMemory:Boolean = false):String</div>
+<div class="summaryTableDescription"> Returns a String object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getUniqueName()">getUniqueName</a>():String</div>
+<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getXML()">getXML</a>(key:*, clearMemory:Boolean = false):XML</div>
+<div class="summaryTableDescription"> Returns an XML object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#hasItem()">hasItem</a>(key:*, searchAll:Boolean = true):Boolean</div>
+<div class="summaryTableDescription"> Checks if there is <b>loaded</b> item in this <code>BulkLoader</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#loadNow()">loadNow</a>(key:*):Boolean</div>
+<div class="summaryTableDescription"> Forces the item specified by key to be loaded right away.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#pause()">pause</a>(key:*, loadsNext:Boolean = false):Boolean</div>
+<div class="summaryTableDescription"> Stop loading the item identified by <code>key</code>.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#pauseAll()">pauseAll</a>():void</div>
+<div class="summaryTableDescription"> Stops loading all items of this <code>BulkLoader</code> instance.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#pauseAllLoaders()">pauseAllLoaders</a>():void</div>
+<div class="summaryTableDescription">[static] Stops loading all items from all <code>BulkLoader</code> instances.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#registerNewType()">registerNewType</a>(extension:String, atType:String, withClass:Class):Boolean</div>
+<div class="summaryTableDescription">[static]  Register a new file extension to be loaded as a given type.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#reload()">reload</a>(key:*):Boolean</div>
+<div class="summaryTableDescription"> Forces the item specified by key to be reloaded right away.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#remove()">remove</a>(key:*):Boolean</div>
+<div class="summaryTableDescription"> This will delete this item from memory.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#removeAll()">removeAll</a>():void</div>
+<div class="summaryTableDescription"> Deletes all loading and loaded objects.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#removeAllLoaders()">removeAllLoaders</a>():void</div>
+<div class="summaryTableDescription">[static] Deletes all content from all instances of <code>BulkLoader</code> class.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#removeFailedItems()">removeFailedItems</a>():int</div>
+<div class="summaryTableDescription"> Removes all items that have not succesfully loaded.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#removePausedItems()">removePausedItems</a>():Boolean</div>
+<div class="summaryTableDescription"> Removes all items that have been stopped.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#resume()">resume</a>(key:*):Boolean</div>
+<div class="summaryTableDescription"> Resumes loading of the item.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#resumeAll()">resumeAll</a>():Boolean</div>
+<div class="summaryTableDescription"> Resumes all loading operations that were stopped.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#sortItemsByPriority()">sortItemsByPriority</a>():void</div>
+<div class="summaryTableDescription"> Updates the priority queue
+        </div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="LazyBulkLoader.html#start()">start</a>(numConnections:int = -1):void</div>
+<div class="summaryTableDescription"> Starts to fetch the external data that will define a BulkLoader instance when parsed.</div>
+</td><td class="summaryTableOwnerCol"><a href="LazyBulkLoader.html">LazyBulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="LazyBulkLoader.html#toString()">toString</a>():String</div>
+<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol"><a href="LazyBulkLoader.html">LazyBulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#whichLoaderHasItem()">whichLoaderHasItem</a>(key:*):<a href="../../loading/BulkLoader.html">BulkLoader</a>
+</div>
+<div class="summaryTableDescription">[static] Checks which <code>BulkLoader</code> has an item by the given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+</table>
+</div>
+<a name="eventSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Events</div>
+<div class="showHideLinks">
+<div class="hideInheritedEvent" id="hideInheritedEvent">
+<a onclick="javascript:setInheritedVisible(false,'Event');" href="#eventSummary" class="showHideLink"><img src="../../../../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Events</a>
+</div>
+<div class="showInheritedEvent" id="showInheritedEvent">
+<a onclick="javascript:setInheritedVisible(true,'Event');" href="#eventSummary" class="showHideLink"><img src="../../../../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Events</a>
+</div>
+</div>
+<table id="summaryTableEvent" class="summaryTable hideInheritedEvent" cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Event</th><th>Summary</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="hideInheritedEvent">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#event:complete">complete</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+  Dispatched when all items have been downloaded and parsed.</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedEvent">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="LazyBulkLoader.html#event:lazyComplete">lazyComplete</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+      Dispatched when the external file representing this serialized bulk loader intance has been downloaded and parse.</td><td class="summaryTableOwnerCol"><a href="LazyBulkLoader.html">LazyBulkLoader</a></td>
+</tr>
+<tr class="hideInheritedEvent">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#event:progress">progress</a>
+</div>
+</td><td class="summaryTableDescription summaryTableCol">
+  Dispatched on download progress by any of the items to download.</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<div class="showHideLinks">
+<div class="hideInheritedConstant" id="hideInheritedConstant">
+<a onclick="javascript:setInheritedVisible(false,'Constant');" href="#constantSummary" class="showHideLink"><img src="../../../../../images/expanded.gif" class="showHideLinkImage"> Hide Inherited Public Constants</a>
+</div>
+<div class="showInheritedConstant" id="showInheritedConstant">
+<a onclick="javascript:setInheritedVisible(true,'Constant');" href="#constantSummary" class="showHideLink"><img src="../../../../../images/collapsed.gif" class="showHideLinkImage"> Show Inherited Public Constants</a>
+</div>
+</div>
+<table id="summaryTableConstant" class="summaryTable hideInheritedConstant" cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#AVAILABLE_TYPES">AVAILABLE_TYPES</a> : Array<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#CAN_BEGIN_PLAYING">CAN_BEGIN_PLAYING</a> : String = "canBeginPlaying"<div class="summaryTableDescription">[static] 
+          The name of the event 
+          </div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#CHECK_POLICY_FILE">CHECK_POLICY_FILE</a> : String = "checkPolicyFile"<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#COMPLETE">COMPLETE</a> : String = "complete"<div class="summaryTableDescription">[static] 
+          The name of the event 
+          </div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#CONTEXT">CONTEXT</a> : String = "context"<div class="summaryTableDescription">[static] An object definig the loading context for this load operario.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#DEFAULT_LOG_LEVEL">DEFAULT_LOG_LEVEL</a> : int = 20<div class="summaryTableDescription">[static]The logging level <code>BulkLoader</code> will use.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#DEFAULT_NUM_CONNECTIONS">DEFAULT_NUM_CONNECTIONS</a> : int = 7<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#ERROR">ERROR</a> : String = "error"<div class="summaryTableDescription">[static] 
+          The name of the event 
+          </div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#GENERAL_AVAILABLE_PROPS">GENERAL_AVAILABLE_PROPS</a> : Array<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#HEADERS">HEADERS</a> : String = "headers"<div class="summaryTableDescription">[static] An array of RequestHeader objects to be used when contructing the <code>URLRequest</code> object.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#HTTP_STATUS">HTTP_STATUS</a> : String = "httpStatus"<div class="summaryTableDescription">[static] 
+          The name of the event 
+          </div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#ID">ID</a> : String = "id"<div class="summaryTableDescription">[static] A <code>String</code> to be used to identify an item to load, can be used in any method that fetches content (as the key parameters), stops, removes and resume items.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="LazyBulkLoader.html#LAZY_COMPLETE">LAZY_COMPLETE</a> : String = "lazyComplete"<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="LazyBulkLoader.html">LazyBulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#LOG_ERRORS">LOG_ERRORS</a> : int = 4<div class="summaryTableDescription">[static]Will only trace errors.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#LOG_INFO">LOG_INFO</a> : int = 2<div class="summaryTableDescription">[static]Ouputs noteworthy events such as when an item is started / finished loading.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#LOG_SILENT">LOG_SILENT</a> : int = 10<div class="summaryTableDescription">[static]Nothing will be logged</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#LOG_VERBOSE">LOG_VERBOSE</a> : int = 0<div class="summaryTableDescription">[static] LogLevel: Outputs everything that is happening.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#LOG_WARNINGS">LOG_WARNINGS</a> : int = 3<div class="summaryTableDescription">[static]Ouputs noteworthy events such as when an item is started / finished loading.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#MAX_TRIES">MAX_TRIES</a> : String = "maxTries"<div class="summaryTableDescription">[static] The number, as an <code>int</code>, to retry downloading an item in case it fails.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#OPEN">OPEN</a> : String = "open"<div class="summaryTableDescription">[static] 
+          The name of the event 
+          </div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#PAUSED_AT_START">PAUSED_AT_START</a> : String = "pausedAtStart"<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#PREVENT_CACHING">PREVENT_CACHING</a> : String = "preventCache"<div class="summaryTableDescription">[static] If <code>true</code> a random query (or post data parameter) will be added to prevent caching.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#PRIORITY">PRIORITY</a> : String = "priority"<div class="summaryTableDescription">[static] An <code>int</code> that controls which items are loaded first.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#PROGRESS">PROGRESS</a> : String = "progress"<div class="summaryTableDescription">[static] 
+          The name of the event 
+          </div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#TYPE_IMAGE">TYPE_IMAGE</a> : String = "image"<div class="summaryTableDescription">[static] Tells this class to use a <code>Loader</code> object to load the item.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#TYPE_MOVIECLIP">TYPE_MOVIECLIP</a> : String = "movieclip"<div class="summaryTableDescription">[static] Tells this class to use a <code>Loader</code> object to load the item.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#TYPE_SOUND">TYPE_SOUND</a> : String = "sound"<div class="summaryTableDescription">[static] Tells this class to use a <code>Sound</code> object to load the item.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#TYPE_TEXT">TYPE_TEXT</a> : String = "text"<div class="summaryTableDescription">[static] Tells this class to use a <code>URLRequest</code> object to load the item.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#TYPE_VIDEO">TYPE_VIDEO</a> : String = "video"<div class="summaryTableDescription">[static] Tells this class to use a <code>NetStream</code> object to load the item.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#TYPE_XML">TYPE_XML</a> : String = "xml"<div class="summaryTableDescription">[static] Tells this class to use a <code>XML</code> object to load the item.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#VERSION">VERSION</a> : String = "rev 88 (0.9.3.1)"<div class="summaryTableDescription">[static] Version.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedConstant">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#WEIGHT">WEIGHT</a> : String = "weight"<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="decodeFunc"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">decodeFunc</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>decodeFunc:Function</code>&nbsp;&nbsp;[read-write]<span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get decodeFunc():Function</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set decodeFunc(value:Function):void</code>
+<br>
+</div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="LazyJSONLoader()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">LazyJSONLoader</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function LazyJSONLoader(url:*, name:String, numConnections:int, logLevel:int)</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">url</span>:*</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">name</span>:String</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">numConnections</span>:int</code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">logLevel</span>:int</code></td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="_lazyParseLoader()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_lazyParseLoader</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>lazy_loader override function _lazyParseLoader(withData:String):void</code><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">withData</span>:String</code></td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">(c) Copyright 2007 Arthur Debert. All Rights Reserved. Project home: http://code.google.com/p/bulk-loader/ ; MIT LICENSE</center>
+</div>
+</body>
+</html>
+<!--(c) Copyright 2007 Arthur Debert. All Rights Reserved. Project home: http://code.google.com/p/bulk-loader/ ; MIT LICENSE-->

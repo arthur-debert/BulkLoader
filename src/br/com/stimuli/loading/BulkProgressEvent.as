@@ -53,12 +53,13 @@ package br.com.stimuli.loading {
 		
 		/** How many bytes have loaded so far.*/
 		public var bytesTotalCurrent : int;
-		/** The ratio (0-1) loaded (number of items loaded / number of items total) */
-		public var ratioLoaded : Number;
-		/** A number between 0 - 1 that indicates progress regarding bytes */
-	    public var percentLoaded : Number;
-	    /** A number between 0 - 1 that indicates progress regarding weights */
-	    public var weightPercent : Number;
+		/** @private */
+		public var _ratioLoaded : Number;
+		/** @private */
+		
+	    public var _percentLoaded : Number;
+	    /** @private */
+	    public var _weightPercent : Number;
 	    /** Number of items already loaded */
 	    public var itemsLoaded : int;
 	    /** Number of items to be loaded */
@@ -86,8 +87,8 @@ package br.com.stimuli.loading {
             this.itemsLoaded = itemsLoaded;
             this.itemsTotal = itemsTotal;
             this.weightPercent = weightPercent;
-            this.percentLoaded = (bytesLoaded / bytesTotal);
-            ratioLoaded = itemsLoaded / itemsTotal;
+            this.percentLoaded = bytesTotal > 0 ? (bytesLoaded / bytesTotal) : 0;
+            ratioLoaded = itemsTotal == 0 ? 0 : itemsLoaded / itemsTotal;
         }
         
         /* Returns an identical copy of this object
@@ -115,6 +116,35 @@ package br.com.stimuli.loading {
 		    return "BulkProgressEvent " + names.join(", ") + ";"
 		}
 		
+		/** A number between 0 - 1 that indicates progress regarding weights */
+		public function get weightPercent() : Number { 
+		  return _weightPercent; 
+		}
+		
+		
+		public function set weightPercent(value:Number) : void { 
+		if (isNaN(value) || !isFinite(value)) value = 0;		
+		  _weightPercent = value; 
+		}
+		
+		/** A number between 0 - 1 that indicates progress regarding bytes */
+		public function get percentLoaded() : Number { 
+		  return _percentLoaded; 
+		}
+		
+		public function set percentLoaded(value:Number) : void {
+		    if (isNaN(value) || !isFinite(value)) value = 0;		 
+		  _percentLoaded = value; 
+		}
+		/** The ratio (0-1) loaded (number of items loaded / number of items total) */
+		public function get ratioLoaded() : Number { 
+		  return _ratioLoaded; 
+		}
+		
+		public function set ratioLoaded(value:Number) : void { 
+           if (isNaN(value) || !isFinite(value)) value = 0;		
+		  _ratioLoaded = value; 
+		}
 		override public function toString() : String{
             return super.toString();
 		}

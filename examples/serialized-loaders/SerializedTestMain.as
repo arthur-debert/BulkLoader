@@ -1,6 +1,8 @@
 package{
-    import br.com.stimuli.loading.LazyXMLLoader;
+    import br.com.stimuli.loading.lazyloaders.LazyXMLLoader;
+    import br.com.stimuli.loading.lazyloaders.LazyBulkLoader;
     import br.com.stimuli.loading.*;
+    import br.com.stimuli.loading.loadingtypes.*;
     import br.com.stimuli.loading.BulkProgressEvent;
     import flash.events.*;
     import flash.display.*;
@@ -9,42 +11,46 @@ package{
     import flash.net.NetStream;
     
     public class SerializedTestMain extends MovieClip{
-        public var bulkLoader : BulkLoader;
-        public var lazy : MyXMLLoader;
+        public var lazy : LazyXMLLoader;
         
         public function SerializedTestMain() : void{
-            lazy  = new MyXMLLoader("sample-lazy.xml");
-            trace("lazy started", lazy);
-            lazy.addEventListener(Event.COMPLETE, onLazyLoaded);
-            lazy.addEventListener(ProgressEvent.PROGRESS, onLazyProgress);
+            // create a lazy instance
+            lazy  = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml", "theLazyLoader");
+            // special event so that can tell when the xml file is loaded and
+            // then attach events to indivudual items
+            lazy.addEventListener(LazyBulkLoader.LAZY_COMPLETE, onLazyInfoLoaded)
+            // these are just like events to the regular BulkLoader instance
+            lazy.addEventListener(Event.COMPLETE, onAllLoaded);
+            lazy.addEventListener(ProgressEvent.PROGRESS, onAllProgress);
+            // tells lazy loader to start
             lazy.start();
 
         }
         
-        public function onLazyLoaded(evt : Event) : void{
-
-            bulkLoader = evt.target.bulkLoader;
-                        trace("serialized data is ready!", bulkLoader)
-            bulkLoader.addEventListener(BulkLoader.PROGRESS, onAllProgress);
-            bulkLoader.start();
+        public function onLazyInfoLoaded(evt : Event) : void{
+            
+            trace("serialized data is ready!", lazy)
+            // attach an event listener specific for the video:
+            lazy.get("http://www.emptywhite.com/bulkloader-assets/movie.flv").addEventListener(BulkLoader.COMPLETE, onVideoComplete);
         }
-
-        public  function onLazyProgress(evt: ProgressEvent) : void{
-            trace("lazy progress", evt.bytesLoaded, evt.bytesTotal, evt.bytesLoaded/ evt.bytesTotal);
+        
+        public function onVideoComplete(evt : Event) : void{
+            var theStream : NetStream = evt.target.content;
+            trace("theStream", theStream);
+            //...
         }
-
-
+        
         public function onAllProgress(evt : BulkProgressEvent) : void{
-            //trace(evt.ratioLoaded);
+            trace(evt.ratioLoaded);
         }
 
         function onAllLoaded(evt : Event) : void{
-
+            trace("onAllLoaded", onAllLoaded);
             var xPos : int = 0;
             var yPos : int= 0;
-            for each (var item : LoadingItem in bulkLoader.items){
+            for each (var item : LoadingItem in lazy.items){
                 if (item.isImage()){
-                    var b : Bitmap = bulkLoader.getBitmap(item.id);
+                    var b : Bitmap = lazy.getBitmap(item.id);
                     //trace(item.loader.contentLoaderInfo.applicationDomain ==  ApplicationDomain.currentDomain );
                     addChild(b);
                     if (b.width > 200){
@@ -59,27 +65,9 @@ package{
                         }
                     }
                 }else if (item.isSound()){
-                    var sound : Sound = bulkLoader.getSound("soundtrack");
+                    var sound : Sound = lazy.getSound("sound-short");
                     sound.play();
-            }    else if (item.isVideo()){
-                    var video : Video = new Video();
-                    var netStream : NetStream = bulkLoader.getNetStream("the-video");
-                    netStream.resume();
-                    trace("{loader_test}::method()  video",  video, netStream);
-                    addChild(video);
-                    video.attachNetStream(netStream);
-                    if (video.width > 200){
-                        video.width = 200;
-                        video.scaleY = video.scaleX;
-                        video.x = xPos;
-                        video.y = yPos;
-                        xPos += video.width + 10;
-                        if(xPos > 800){
-                            xPos = 0;
-                            yPos += 200;
-                        }
-                    }
-                }
+            }    
             }
         }
 

@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,VERSION,TYPE_IMAGE,TYPE_SWF,TYPE_LOADER,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,LOADER_TYPES,TEXT_TYPES,VIDEO_TYPES,SOUND_TYPES,XML_TYPES,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,OPEN,CAN_BEGIN_PLAYING,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,PAUSED_AT_START,DEFAULT_NUM_CONNECTIONS,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_ERRORS,LOG_SILENT,logLevel,numConnectons,contents,items,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,highestPriority,logFunction,speed,id,getLoader,hasItem,whichLoaderHasItem,add,start,loadNow,registerNewType,getProgressForItems,getNotLoadedItems,changeItemPriority,sortItemsByPriority,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getAVM1Movie,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,traceStats,log,get,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,truncateNumber,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,VERSION,TYPE_IMAGE,TYPE_MOVIECLIP,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,AVAILABLE_EXTENSIONS,IMAGE_EXTENSIONS,MOVIECLIP_EXTENSIONS,TEXT_EXTENSIONS,VIDEO_EXTENSIONS,SOUND_EXTENSIONS,XML_EXTENSIONS,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,OPEN,CAN_BEGIN_PLAYING,CHECK_POLICY_FILE,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,PAUSED_AT_START,GENERAL_AVAILABLE_PROPS,DEFAULT_NUM_CONNECTIONS,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_WARNINGS,LOG_ERRORS,LOG_SILENT,DEFAULT_LOG_LEVEL,numConnections,contents,items,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,highestPriority,logFunction,allowsAutoIDFromFileName,speed,id,stringSubstitutions,createUniqueNamedLoader,getUniqueName,getLoader,hasItem,whichLoaderHasItem,add,start,reload,loadNow,registerNewType,getProgressForItems,getNotLoadedItems,changeItemPriority,sortItemsByPriority,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getAVM1Movie,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,getStats,get,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -40,6 +40,9 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr>
 <td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">BulkLoader <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../images/inherit-arrow.gif"> flash.events.EventDispatcher</td>
 </tr>
+<tr>
+<td class="classHeaderTableLabel">Subclasses</td><td><a href="lazyloaders/LazyBulkLoader.html">LazyBulkLoader</a></td>
+</tr>
 </table>
 <p></p>
       Manages loading for simultaneous items and multiple formats.
@@ -65,12 +68,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
     // event fired when all items have been loaded
     bulkLoader.addEventListener(BulkLoader.COMPLETE, onCompleteHandler);
     // event fired when loading progress has been made:
-    bulkLoader.addEventListener(BulkLoader.PROGRESS, onProgressHandler);
+    bulkLoader.addEventListener(BulkLoader.PROGRESS, _onProgressHandler);
 
     // start loading all items
     bulkLoader.start();
 
-    function onProgressHandler(evt : ProgressEvent) : void{
+    function _onProgressHandler(evt : ProgressEvent) : void{
         trace("Loaded" , evt.bytesLoaded," of ",  evt.bytesTotal);
     }
 
@@ -106,7 +109,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#AVAILABLE_TYPES">AVAILABLE_TYPES</a> : Array<div class="summaryTableDescription">[static] List of all file extensions that the <code>BulkLoader</code> knows how to guess.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#allowsAutoIDFromFileName">allowsAutoIDFromFileName</a> : Boolean<div class="summaryTableDescription"> Determines if an autmatic id created from the file name.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#AVAILABLE_EXTENSIONS">AVAILABLE_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static] List of all file extensions that the <code>BulkLoader</code> knows how to guess.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -114,15 +121,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bytesLoaded">bytesLoaded</a> : int<div class="summaryTableDescription">[read-only]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bytesLoaded">bytesLoaded</a> : int<div class="summaryTableDescription">[read-only] The sum of all bytesLoaded for each item.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bytesTotal">bytesTotal</a> : int<div class="summaryTableDescription">[read-only]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bytesTotal">bytesTotal</a> : int<div class="summaryTableDescription">[read-only] The total bytes to load.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bytesTotalCurrent">bytesTotalCurrent</a> : int<div class="summaryTableDescription">[read-only]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bytesTotalCurrent">bytesTotalCurrent</a> : int<div class="summaryTableDescription">[read-only] The sum of all bytes loaded so far.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -134,7 +141,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#id">id</a> : int<div class="summaryTableDescription">[read-only]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#id">id</a> : int<div class="summaryTableDescription">[read-only] The id of this bulkLoader instance
+        </div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#IMAGE_EXTENSIONS">IMAGE_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically use a <code>Loader</code> object for loading.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -142,7 +154,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#isRunning">isRunning</a> : Boolean<div class="summaryTableDescription"></div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#isRunning">isRunning</a> : Boolean<div class="summaryTableDescription"> A boolean indicating if the instace has started and has not finished loading all items
+        </div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -150,19 +163,17 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#itemsLoaded">itemsLoaded</a> : int<div class="summaryTableDescription">[read-only]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#itemsLoaded">itemsLoaded</a> : int<div class="summaryTableDescription"> 
+          Number of items alrealdy loaded.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#itemsTotal">itemsTotal</a> : int<div class="summaryTableDescription">[read-only]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#itemsTotal">itemsTotal</a> : int<div class="summaryTableDescription">[read-only] Total number of items to load.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#loadedRatio">loadedRatio</a> : Number<div class="summaryTableDescription">[read-only]</div>
-</td><td class="summaryTableOwnerCol">BulkLoader</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LOADER_TYPES">LOADER_TYPES</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically use a <code>Loader</code> object for loading.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#loadedRatio">loadedRatio</a> : Number<div class="summaryTableDescription">[read-only]  
+          The ratio (0->1) of items to load / items total.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -170,7 +181,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#logLevel">logLevel</a> : int = 3<div class="summaryTableDescription">The logging level <code>BulkLoader</code> will use.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#MOVIECLIP_EXTENSIONS">MOVIECLIP_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -179,15 +190,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#numConnectons">numConnectons</a> : int<div class="summaryTableDescription">[read-only] The number of simultaneous connections to use.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#numConnections">numConnections</a> : int<div class="summaryTableDescription">[read-only] The number of simultaneous connections to use.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#percentLoaded">percentLoaded</a> : Number<div class="summaryTableDescription">[read-only]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#percentLoaded">percentLoaded</a> : Number<div class="summaryTableDescription">[read-only] The percentage (0->1) of bytes loaded.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SOUND_TYPES">SOUND_TYPES</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically treated as sound for loading.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SOUND_EXTENSIONS">SOUND_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically treated as sound for loading.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -199,7 +210,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TEXT_TYPES">TEXT_TYPES</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically treated as text for loading.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#stringSubstitutions">stringSubstitutions</a> : Object<div class="summaryTableDescription"> The object, used as a hashed to substitute variables specified on the url used in <code>add</code>.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TEXT_EXTENSIONS">TEXT_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically treated as text for loading.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -207,19 +222,19 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#totalWeight">totalWeight</a> : int<div class="summaryTableDescription">[read-only]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#totalWeight">totalWeight</a> : int<div class="summaryTableDescription">[read-only] The sum of weights in all items to load.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#VIDEO_TYPES">VIDEO_TYPES</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically treated as video for loading.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#VIDEO_EXTENSIONS">VIDEO_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static] List of file extensions that will be automagically treated as video for loading.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#weightPercent">weightPercent</a> : Number<div class="summaryTableDescription">[read-only]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#weightPercent">weightPercent</a> : Number<div class="summaryTableDescription">[read-only] The weighted percent of items loaded(0->1).</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#XML_TYPES">XML_TYPES</a> : Array<div class="summaryTableDescription">[static]</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#XML_EXTENSIONS">XML_EXTENSIONS</a> : Array<div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 </table>
@@ -234,14 +249,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#BulkLoader()">BulkLoader</a>(name:String, numConnectons:int = 7, logLevel:int = 3)</div>
+<a class="signatureLink" href="#BulkLoader()">BulkLoader</a>(name:String, numConnections:int, logLevel:int)</div>
 <div class="summaryTableDescription"> Creates a new BulkLoader object identifiable by the <code>name</code> parameter.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#add()">add</a>(url:*, props:Object = null):<a href="../loading/LoadingItem.html">LoadingItem</a>
+<a class="signatureLink" href="#add()">add</a>(url:*, props:Object = null):<a href="loadingtypes/LoadingItem.html">LoadingItem</a>
 </div>
 <div class="summaryTableDescription"> Adds a new assets to be loaded.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
@@ -256,7 +271,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#get()">get</a>(key:*):<a href="../loading/LoadingItem.html">LoadingItem</a>
+<a class="signatureLink" href="#createUniqueNamedLoader()">createUniqueNamedLoader</a>(numConnections:int, logLevel:int):<a href="../loading/BulkLoader.html">BulkLoader</a>
+</div>
+<div class="summaryTableDescription">[static] Creates a BulkLoader instance with an unique name.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#get()">get</a>(key:*):<a href="loadingtypes/LoadingItem.html">LoadingItem</a>
 </div>
 <div class="summaryTableDescription"> Used  to fetch an item with a given key.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
@@ -329,7 +352,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#getNotLoadedItems()">getNotLoadedItems</a>():Array</div>
-<div class="summaryTableDescription"></div>
+<div class="summaryTableDescription"> Returns items that haven't been fully loaded.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -357,8 +380,22 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="#getStats()">getStats</a>():String</div>
+<div class="summaryTableDescription"> If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3).</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="#getText()">getText</a>(key:*, clearMemory:Boolean = false):String</div>
 <div class="summaryTableDescription"> Returns a String object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#getUniqueName()">getUniqueName</a>():String</div>
+<div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -385,13 +422,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#log()">log</a>(... msg):void</div>
-<div class="summaryTableDescription"> Outputs with a trace operation a message.</div>
-</td><td class="summaryTableOwnerCol">BulkLoader</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
 <a class="signatureLink" href="#pause()">pause</a>(key:*, loadsNext:Boolean = false):Boolean</div>
 <div class="summaryTableDescription"> Stop loading the item identified by <code>key</code>.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
@@ -413,8 +443,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#registerNewType()">registerNewType</a>(extension:String, atType:String):Boolean</div>
+<a class="signatureLink" href="#registerNewType()">registerNewType</a>(extension:String, atType:String, withClass:Class):Boolean</div>
 <div class="summaryTableDescription">[static]  Register a new file extension to be loaded as a given type.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#reload()">reload</a>(key:*):Boolean</div>
+<div class="summaryTableDescription"> Forces the item specified by key to be reloaded right away.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -493,20 +530,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="#traceStats()">traceStats</a>():String</div>
-<div class="summaryTableDescription"> If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3).</div>
-</td><td class="summaryTableOwnerCol">BulkLoader</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#truncateNumber()">truncateNumber</a>(raw:Number, decimals:int = 2):Number</div>
-<div class="summaryTableDescription">[static]<description><![CDATA[ Utility function to truncate a number to the given number of decimal places.</div>
-</td><td class="summaryTableOwnerCol">BulkLoader</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
 <a class="signatureLink" href="#whichLoaderHasItem()">whichLoaderHasItem</a>(key:*):<a href="../loading/BulkLoader.html">BulkLoader</a>
 </div>
 <div class="summaryTableDescription">[static] Checks which <code>BulkLoader</code> has an item by the given key.</div>
@@ -547,9 +570,17 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#AVAILABLE_TYPES">AVAILABLE_TYPES</a> : Array<div class="summaryTableDescription">[static]</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#CAN_BEGIN_PLAYING">CAN_BEGIN_PLAYING</a> : String = "canBeginPlaying"<div class="summaryTableDescription">[static] 
           The name of the event 
           </div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#CHECK_POLICY_FILE">CHECK_POLICY_FILE</a> : String = "checkPolicyFile"<div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -563,6 +594,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#DEFAULT_LOG_LEVEL">DEFAULT_LOG_LEVEL</a> : int = 20<div class="summaryTableDescription">[static]The logging level <code>BulkLoader</code> will use.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#DEFAULT_NUM_CONNECTIONS">DEFAULT_NUM_CONNECTIONS</a> : int = 7<div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
@@ -570,6 +605,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#ERROR">ERROR</a> : String = "error"<div class="summaryTableDescription">[static] 
           The name of the event 
           </div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#GENERAL_AVAILABLE_PROPS">GENERAL_AVAILABLE_PROPS</a> : Array<div class="summaryTableDescription">[static]</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -587,7 +626,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LOG_ERRORS">LOG_ERRORS</a> : int = 3<div class="summaryTableDescription">[static]Will only trace errors.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LOG_ERRORS">LOG_ERRORS</a> : int = 4<div class="summaryTableDescription">[static]Will only trace errors.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -600,6 +639,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LOG_VERBOSE">LOG_VERBOSE</a> : int = 0<div class="summaryTableDescription">[static] LogLevel: Outputs everything that is happening.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#LOG_WARNINGS">LOG_WARNINGS</a> : int = 3<div class="summaryTableDescription">[static]Ouputs noteworthy events such as when an item is started / finished loading.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -631,19 +674,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TYPE_IMAGE">TYPE_IMAGE</a> : String = "loader"<div class="summaryTableDescription">[static] Tells this class to use a <code>Loader</code> object to load the item.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TYPE_IMAGE">TYPE_IMAGE</a> : String = "image"<div class="summaryTableDescription">[static] Tells this class to use a <code>Loader</code> object to load the item.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TYPE_LOADER">TYPE_LOADER</a> : String = "loader"<div class="summaryTableDescription">[static] Tells this class to use a <code>Loader</code> object to load the item.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TYPE_MOVIECLIP">TYPE_MOVIECLIP</a> : String = "movieclip"<div class="summaryTableDescription">[static] Tells this class to use a <code>Loader</code> object to load the item.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TYPE_SOUND">TYPE_SOUND</a> : String = "sound"<div class="summaryTableDescription">[static] Tells this class to use a <code>Sound</code> object to load the item.</div>
-</td><td class="summaryTableOwnerCol">BulkLoader</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TYPE_SWF">TYPE_SWF</a> : String = "loader"<div class="summaryTableDescription">[static] Tells this class to use a <code>Loader</code> object to load the item.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -675,14 +714,46 @@ showHideInherited();
 <div class="MainContent">
 <a name="propertyDetail"></a>
 <div class="detailSectionHeader">Property detail</div>
-<a name="AVAILABLE_TYPES"></a>
+<a name="allowsAutoIDFromFileName"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">AVAILABLE_TYPES</td><td class="detailHeaderType">property</td>
+<td class="detailHeaderName">allowsAutoIDFromFileName</td><td class="detailHeaderType">property</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var AVAILABLE_TYPES:Array</code><p> List of all file extensions that the <code>BulkLoader</code> knows how to guess.
+<code>allowsAutoIDFromFileName:Boolean</code>&nbsp;&nbsp;[read-write]<p> Determines if an autmatic id created from the file name. If true, when adding and item and NOT specifing an "id" props
+          for its properties, an id with the file name will be created altomatically.
+          </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get allowsAutoIDFromFileName():Boolean</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set allowsAutoIDFromFileName(value:Boolean):void</code>
+<br>
+<br>
+<span class="label">Example</span>
+<br>Automatic id:<div class='listing'><pre>
+          bulkLoader.allowsAutoIDFromFileName = false;
+          var item : LoadingItem = bulkLoader.add("background.jpg")
+          trace(item.id) //  outputs: null
+          // now if allowsAutoIDFromFileName is set to true:
+          bulkLoader.allowsAutoIDFromFileName = true;
+          var item : LoadingItem = bulkLoader.add("background.jpg")
+          trace(item.id) //  outputs: background
+          // if you pass an id on the props, it will take precedence over auto created ids:
+          bulkLoader.allowsAutoIDFromFileName = id;
+          var item : LoadingItem = bulkLoader.add("background.jpg", {id:"small-bg"})
+          trace(item.id) //  outputs: small-bg
+          </pre></div>
+        <p></p>
+</div>
+<a name="AVAILABLE_EXTENSIONS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">AVAILABLE_EXTENSIONS</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var AVAILABLE_EXTENSIONS:Array</code><p> List of all file extensions that the <code>BulkLoader</code> knows how to guess.
           Availabe types: swf, jpg, jpeg, gif, png. </p></div>
 <a name="avgLatency"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -699,7 +770,8 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>bytesLoaded:int</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<code>bytesLoaded:int</code>&nbsp;&nbsp;[read-only]<p> The sum of all bytesLoaded for each item.
+        </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get bytesLoaded():int</code>
 <br>
@@ -711,10 +783,18 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>bytesTotal:int</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<code>bytesTotal:int</code>&nbsp;&nbsp;[read-only]<p> The total bytes to load.
+          If the number of items to load is larger than the number of simultaneous connections, bytesTotal will be 0 untill all connections are opened and the number of bytes for all items is known.
+          </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get bytesTotal():int</code>
 <br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#bytesTotalCurrent" target="">bytesTotalCurrent</a>
+</div>
 </div>
 <a name="bytesTotalCurrent"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -723,10 +803,18 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>bytesTotalCurrent:int</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<code>bytesTotalCurrent:int</code>&nbsp;&nbsp;[read-only]<p> The sum of all bytes loaded so far. 
+         If itemsTotal is less than the number of connections, this will be the same as bytesTotal. Else, bytesTotalCurrent will be available as each loading is started.
+          </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get bytesTotalCurrent():int</code>
 <br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#bytesTotal" target="">bytesTotal</a>
+</div>
 </div>
 <a name="contents"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -763,11 +851,22 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>id:int</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<code>id:int</code>&nbsp;&nbsp;[read-only]<p> The id of this bulkLoader instance
+        </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get id():int</code>
 <br>
 </div>
+<a name="IMAGE_EXTENSIONS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">IMAGE_EXTENSIONS</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var IMAGE_EXTENSIONS:Array</code><p> List of file extensions that will be automagically use a <code>Loader</code> object for loading.
+          Availabe types: swf, jpg, jpeg, gif, png, image.
+        </p></div>
 <a name="isFinished"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -787,7 +886,8 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>isRunning:Boolean</code>&nbsp;&nbsp;[read-write]<span class="label">Implementation</span>
+<code>isRunning:Boolean</code>&nbsp;&nbsp;[read-write]<p> A boolean indicating if the instace has started and has not finished loading all items
+        </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get isRunning():Boolean</code>
 <br>
@@ -815,9 +915,14 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>itemsLoaded:int</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<code>itemsLoaded:int</code>&nbsp;&nbsp;[read-write]<p> 
+          Number of items alrealdy loaded.
+          Failed or canceled items are not taken into consideration
+        </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get itemsLoaded():int</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set itemsLoaded(value:int):void</code>
 <br>
 </div>
 <a name="itemsTotal"></a>
@@ -827,7 +932,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>itemsTotal:int</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<code>itemsTotal:int</code>&nbsp;&nbsp;[read-only]<p> Total number of items to load.</p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get itemsTotal():int</code>
 <br>
@@ -839,21 +944,14 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>loadedRatio:Number</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<code>loadedRatio:Number</code>&nbsp;&nbsp;[read-only]<p>  
+          The ratio (0->1) of items to load / items total.
+          This number is always reliable.
+        </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get loadedRatio():Number</code>
 <br>
 </div>
-<a name="LOADER_TYPES"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">LOADER_TYPES</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static var LOADER_TYPES:Array</code><p> List of file extensions that will be automagically use a <code>Loader</code> object for loading.
-          Availabe types: swf, jpg, jpeg, gif, png, image.
-        </p></div>
 <a name="logFunction"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -872,26 +970,14 @@ showHideInherited();
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function set logFunction(value:Function):void</code>
 <br>
 </div>
-<a name="logLevel"></a>
+<a name="MOVIECLIP_EXTENSIONS"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">logLevel</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">MOVIECLIP_EXTENSIONS</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public var logLevel:int = 3</code><p>The logging level <code>BulkLoader</code> will use. 
-        </p><p>
-<span class="label">See also</span>
-</p>
-<div class="seeAlso">
-<a href="../loading/BulkLoader.html#LOG_VERBOSE" target="">LOG_VERBOSE</a>
-<br>
-<a href="../loading/BulkLoader.html#LOG_SILENT" target="">LOG_SILENT</a>
-<br>
-<a href="../loading/BulkLoader.html#LOG_ERRORS" target="">LOG_ERRORS</a>
-<br>
-<a href="../loading/BulkLoader.html#LOG_INFO" target="">LOG_INFO</a>
-</div>
+<code>public static var MOVIECLIP_EXTENSIONS:Array</code>
 </div>
 <a name="name"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -915,17 +1001,17 @@ showHideInherited();
 <a href="../loading/BulkLoader.html#getLoaders()" target="">getLoaders()</a>
 </div>
 </div>
-<a name="numConnectons"></a>
+<a name="numConnections"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">numConnectons</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">numConnections</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>numConnectons:int</code>&nbsp;&nbsp;[read-only]<p> The number of simultaneous connections to use. This is per <code>BulkLoader</code> instance.
+<code>numConnections:int</code>&nbsp;&nbsp;[read-only]<p> The number of simultaneous connections to use. This is per <code>BulkLoader</code> instance.
           </p><span class="label">Implementation</span>
 <br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get numConnectons():int</code>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get numConnections():int</code>
 <br>
 <p>
 <span class="label">See also</span>
@@ -941,19 +1027,29 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>percentLoaded:Number</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<code>percentLoaded:Number</code>&nbsp;&nbsp;[read-only]<p> The percentage (0->1) of bytes loaded.
+          Until all connections are opened  this number is not reliable . If you are downloading more items than the number of simultaneous connections, use loadedRatio or weightPercent instead.
+          </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get percentLoaded():Number</code>
 <br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#loadedRatio" target="">loadedRatio</a>
+<br>
+<a href="../loading/BulkLoader.html#weightPercent" target="">weightPercent</a>
 </div>
-<a name="SOUND_TYPES"></a>
+</div>
+<a name="SOUND_EXTENSIONS"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">SOUND_TYPES</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">SOUND_EXTENSIONS</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var SOUND_TYPES:Array</code><p> List of file extensions that will be automagically treated as sound for loading.
+<code>public static var SOUND_EXTENSIONS:Array</code><p> List of file extensions that will be automagically treated as sound for loading.
          Availabe types: mp3, f4a, f4b.
         </p></div>
 <a name="speed"></a>
@@ -976,14 +1072,51 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public var speedAvg:Number</code><p>The average speed (in kb/s) for the entire loading.</p></div>
-<a name="TEXT_TYPES"></a>
+<a name="stringSubstitutions"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">TEXT_TYPES</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">stringSubstitutions</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var TEXT_TYPES:Array</code><p> List of file extensions that will be automagically treated as text for loading.
+<code>stringSubstitutions:Object</code>&nbsp;&nbsp;[read-write]<p> The object, used as a hashed to substitute variables specified on the url used in <code>add</code>.
+          Allows to keep common part of urls on one spot only. If later the server path changes, you can 
+          change only the stringSubstitutions object to update all items.
+          This has to be set before the <code>add</code> calls are made, or else strings won't be expanded.
+          </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get stringSubstitutions():Object</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set stringSubstitutions(value:Object):void</code>
+<br>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#add" target="">add</a>
+</div>
+<br>
+<span class="label">Example</span>
+<br>Variable sustitution:<div class='listing'><pre>
+          // All webservices will be at a common path:
+          bulkLoader.stringSubstitutions = {
+              "web_services": "http://somesite.com/webservices"
+          }
+          bulkLoader.add("{web_services}/getTime");
+          // this will be expanded to http://somesite.com/webservices/getTime
+          
+          </pre></div>
+          The format expected is {var_name} , where var_name is composed of alphanumeric characters and the underscore. Other characters (.,  [, ], etc) won't work, as they'll clash with the regex used in matching.
+          <p></p>
+</div>
+<a name="TEXT_EXTENSIONS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TEXT_EXTENSIONS</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static var TEXT_EXTENSIONS:Array</code><p> List of file extensions that will be automagically treated as text for loading.
           Availabe types: txt, js, xml, php, asp .
         </p></div>
 <a name="totalTime"></a>
@@ -1001,19 +1134,21 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>totalWeight:int</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<code>totalWeight:int</code>&nbsp;&nbsp;[read-only]<p> The sum of weights in all items to load.
+          Each item's weight default to 1
+        </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get totalWeight():int</code>
 <br>
 </div>
-<a name="VIDEO_TYPES"></a>
+<a name="VIDEO_EXTENSIONS"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">VIDEO_TYPES</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">VIDEO_EXTENSIONS</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var VIDEO_TYPES:Array</code><p> List of file extensions that will be automagically treated as video for loading. 
+<code>public static var VIDEO_EXTENSIONS:Array</code><p> List of file extensions that will be automagically treated as video for loading. 
          Availabe types: flv, f4v, f4p. 
         </p></div>
 <a name="weightPercent"></a>
@@ -1023,19 +1158,21 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>weightPercent:Number</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<code>weightPercent:Number</code>&nbsp;&nbsp;[read-only]<p> The weighted percent of items loaded(0->1).
+          This always returns a reliable value.
+        </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get weightPercent():Number</code>
 <br>
 </div>
-<a name="XML_TYPES"></a>
+<a name="XML_EXTENSIONS"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">XML_TYPES</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">XML_EXTENSIONS</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public static var XML_TYPES:Array</code>
+<code>public static var XML_EXTENSIONS:Array</code>
 </div>
 <a name="constructorDetail"></a>
 <div class="detailSectionHeader">Constructor detail</div>
@@ -1046,7 +1183,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function BulkLoader(name:String, numConnectons:int = 7, logLevel:int = 3)</code><p> Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
+<code>public function BulkLoader(name:String, numConnections:int, logLevel:int)</code><p> Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
           
           </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -1058,14 +1195,14 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">numConnectons</span>:int</code> (default = <code>7</code>)<code></code> &mdash; numConnectons The number of maximum simultaneous connections to be open.
+<td width="20px"></td><td><code><span class="label">numConnections</span>:int</code> &mdash; numConnections The number of maximum simultaneous connections to be open.
           </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">logLevel</span>:int</code> (default = <code>3</code>)<code></code> &mdash; logLevel At which level should traces be outputed. By default only errors will be traced.
+<td width="20px"></td><td><code><span class="label">logLevel</span>:int</code> &mdash; logLevel At which level should traces be outputed. By default only errors will be traced.
           
           </td>
 </tr>
@@ -1074,7 +1211,7 @@ showHideInherited();
 <span class="label">See also</span>
 </p>
 <div class="seeAlso">
-<a href="../loading/BulkLoader.html#numConnectons" target="">numConnectons</a>
+<a href="../loading/BulkLoader.html#numConnections" target="">numConnections</a>
 <br>
 <a href="../loading/BulkLoader.html#log()" target="">log()</a>
 </div>
@@ -1088,7 +1225,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function add(url:*, props:Object = null):<a href="../loading/LoadingItem.html">LoadingItem</a></code><p> Adds a new assets to be loaded. The <code>BulkLoader</code> object will manage diferent assets type. If the right type cannot be infered from the url termination (e.g. the url ends with ".swf") the BulkLoader will relly on the <code>type</code> property of the <code>props</code> parameter. If both are set, the <code>type</code>  property of the props object will overrite the one defined in the <code>url</code>. In case none is specified and the url won't hint at it, the type <code>TYPE_TEXT</code> will be used.
+<code>public function add(url:*, props:Object = null):<a href="loadingtypes/LoadingItem.html">LoadingItem</a></code><p> Adds a new assets to be loaded. The <code>BulkLoader</code> object will manage diferent assets type. If the right type cannot be infered from the url termination (e.g. the url ends with ".swf") the BulkLoader will relly on the <code>type</code> property of the <code>props</code> parameter. If both are set, the <code>type</code>  property of the props object will overrite the one defined in the <code>url</code>. In case none is specified and the url won't hint at it, the type <code>TYPE_TEXT</code> will be used.
           
           </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -1146,7 +1283,7 @@ showHideInherited();
                   <td>context</td.
                   <td><a href="#CONTEXT">CONTEXT</a></td>
                   <td><code>LoaderContext or SoundLoaderContext</code></td>
-                  <td>An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_LOADER</code> a LoaderContext should be passed.</td>
+                  <td>An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_IMAGE</code> a LoaderContext should be passed.</td>
               </tr>
               <tr>
                   <td>pausedAtStart</td.
@@ -1155,6 +1292,7 @@ showHideInherited();
                   <td>If true, the nestream will be paused when loading has begun.</td>
               </tr>
           </table>
+          You can use string substitutions (variable expandsion).
           </td>
 </tr>
 </table>
@@ -1162,9 +1300,15 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="../loading/LoadingItem.html">LoadingItem</a></code></td>
+<td width="20"></td><td><code><a href="loadingtypes/LoadingItem.html">LoadingItem</a></code></td>
 </tr>
 </table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#stringSubstitutions" target="">stringSubstitutions</a>
+</div>
 <br>
 <span class="label">Example</span>
 <br>Retriving contents:<div class='listing'><pre>
@@ -1186,8 +1330,7 @@ bulkLoader.add("languages.xml", {priority:10, onComplete:parseLanguages, id:"lan
 // Start the loading operation with only 3 simultaneous connections:
 bulkLoader.start(3)
    </pre></div>
-      
-        <p></p>
+      <p></p>
 </div>
 <a name="changeItemPriority()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -1221,6 +1364,41 @@ bulkLoader.start(3)
 </tr>
 </table>
 </div>
+<a name="createUniqueNamedLoader()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">createUniqueNamedLoader</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function createUniqueNamedLoader(numConnections:int, logLevel:int):<a href="../loading/BulkLoader.html">BulkLoader</a></code><p> Creates a BulkLoader instance with an unique name. This is useful for situations where you might be creating
+          many BulkLoader instances and it gets tricky to garantee that no other instance is using that name.
+          </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">numConnections</span>:int</code> &mdash; numConnections The number of maximum simultaneous connections to be open.
+          </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">logLevel</span>:int</code> &mdash; logLevel At which level should traces be outputed. By default only errors will be traced.
+          </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../loading/BulkLoader.html">BulkLoader</a></code> &mdash; 
+                        A BulkLoader intance, with an unique name.
+        
+                        
+                     </td>
+</tr>
+</table>
+</div>
 <a name="get()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1228,7 +1406,7 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public function get(key:*):<a href="../loading/LoadingItem.html">LoadingItem</a></code><p> Used  to fetch an item with a given key. The returned <code>LoadingItem</code> can be used to attach event listeners for the individual items (<code>Event.COMPLETE, ProgressEvent.PROGRESS, Event.START</code>).
+<code>public function get(key:*):<a href="loadingtypes/LoadingItem.html">LoadingItem</a></code><p> Used  to fetch an item with a given key. The returned <code>LoadingItem</code> can be used to attach event listeners for the individual items (<code>Event.COMPLETE, ProgressEvent.PROGRESS, Event.START</code>).
           </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1240,7 +1418,7 @@ bulkLoader.start(3)
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="../loading/LoadingItem.html">LoadingItem</a></code> &mdash; 
+<td width="20"></td><td><code><a href="loadingtypes/LoadingItem.html">LoadingItem</a></code> &mdash; 
                         The corresponding <code>LoadingItem</code> or null if one isn't found.
         
                         
@@ -1524,12 +1702,13 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public function getNotLoadedItems():Array</code>
-<p></p>
+<code>public function getNotLoadedItems():Array</code><p> Returns items that haven't been fully loaded.
+          </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code>Array</code></td>
+<td width="20"></td><td><code>Array</code> &mdash; An array with all LoadingItems not fully loaded.
+        </td>
 </tr>
 </table>
 </div>
@@ -1630,6 +1809,31 @@ bulkLoader.start(3)
 </tr>
 </table>
 </div>
+<a name="getStats()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getStats</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getStats():String</code><p> If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3). Outputs a host of statistics about the loading operation
+          </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; A formated string with loading statistics.
+          </td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#LOG_ERRORS" target="">LOG_ERRORS</a>
+<br>
+<a href="../loading/BulkLoader.html#logLevel" target="">logLevel</a>
+</div>
+</div>
 <a name="getText()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1658,6 +1862,22 @@ bulkLoader.start(3)
 <tr>
 <td width="20"></td><td><code>String</code> &mdash; The content retrived from that url casted to a String object. Returns null if the cast fails.
         </td>
+</tr>
+</table>
+</div>
+<a name="getUniqueName()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getUniqueName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function getUniqueName():String</code>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
 </tr>
 </table>
 </div>
@@ -1749,37 +1969,6 @@ bulkLoader.start(3)
 </tr>
 </table>
 </div>
-<a name="log()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">log</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function log(... msg):void</code><p> Outputs with a trace operation a message. 
-          Depending on <code>logLevel</code> diferrent levels of messages will be outputed:
-          <ul>logLevel = LOG_VERBOSE (0) : Everything is logged. Useful for debugging.
-          <ul>logLevel = LOG_INFO (1) : Every load operation is logged (loading finished, started, statistics).
-          <ul>logLevel = LOG_ERRORS (3) : Only loading errors and callback erros will be traced. Useful in production.
-          </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code>... <span class="label">msg</span></code></td>
-</tr>
-</table>
-<p>
-<span class="label">See also</span>
-</p>
-<div class="seeAlso">
-<a href="../loading/BulkLoader.html#logLevel" target="">logLevel</a>
-<br>
-<a href="../loading/BulkLoader.html#LOG_ERRORS" target="">LOG_ERRORS</a>
-<br>
-<a href="../loading/BulkLoader.html#LOG_INFO" target="">LOG_INFO</a>
-<br>
-<a href="../loading/BulkLoader.html#LOG_VERBOSE" target="">LOG_VERBOSE</a>
-</div>
-</div>
 <a name="pause()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1844,7 +2033,8 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public static function registerNewType(extension:String, atType:String):Boolean</code><p>  Register a new file extension to be loaded as a given type. This is used both in the guessing of types from the url and affects how loading is done for each type.
+<code>public static function registerNewType(extension:String, atType:String, withClass:Class):Boolean</code><p>  Register a new file extension to be loaded as a given type. This is used both in the guessing of types from the url and affects how loading is done for each type. 
+          If you are adding an extension to be of a type you are creating, you must pass the <code>withClass</code> parameter, which should be a class that extends LoadingItem.
           </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1856,7 +2046,13 @@ bulkLoader.start(3)
 </tr>
 <tr>
 <td width="20px"></td><td><code><span class="label">atType</span>:String</code> &mdash; atType      Which type this extension will be associated with. 
-          
+          </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">withClass</span>:Class</code> &mdash; withClass   For new types (not new extensions) wich class that extends LoadingItem should be used to mange this item.
           </td>
 </tr>
 </table>
@@ -1872,14 +2068,40 @@ bulkLoader.start(3)
 <span class="label">See also</span>
 </p>
 <div class="seeAlso">
-<a href="../loading/BulkLoader.html#TYPE_LOADER" target="">TYPE_LOADER</a>
+<a href="../loading/BulkLoader.html#TYPE_IMAGE" target="">TYPE_IMAGE</a>
 <br>
 <a href="../loading/BulkLoader.html#TYPE_VIDEO" target="">TYPE_VIDEO</a>
 <br>
 <a href="../loading/BulkLoader.html#TYPE_SOUND" target="">TYPE_SOUND</a>
 <br>
 <a href="../loading/BulkLoader.html#TYPE_TEXT" target="">TYPE_TEXT</a>
+<br>
+<a href="../loading/BulkLoader.html#LoadingItem" target="">LoadingItem</a>
 </div>
+</div>
+<a name="reload()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">reload</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function reload(key:*):Boolean</code><p> Forces the item specified by key to be reloaded right away. This will stop any open connection as needed.
+          </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:*</code> &mdash; The url request, url as a string or a id  from which the asset was created.
+          </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code> &mdash; <code>True</code> if an item with that key is found, <code>false</code> otherwise.
+        </td>
+</tr>
+</table>
 </div>
 <a name="remove()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -2032,7 +2254,7 @@ bulkLoader.start(3)
 <span class="label">See also</span>
 </p>
 <div class="seeAlso">
-<a href="../loading/BulkLoader.html#numConnectons" target="">numConnectons</a>
+<a href="../loading/BulkLoader.html#numConnections" target="">numConnections</a>
 <br>
 <a href="../loading/BulkLoader.html#see" target="">BulkLoader()</a>
 </div>
@@ -2051,62 +2273,6 @@ bulkLoader.start(3)
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20"></td><td><code>String</code></td>
-</tr>
-</table>
-</div>
-<a name="traceStats()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">traceStats</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public function traceStats():String</code><p> If the <code>logLevel</code> if lower that <code>LOG_ERRORS</code>(3). Outputs a host of statistics about the loading operation
-          </p><p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>String</code> &mdash; A formated string with loading statistics.
-          </td>
-</tr>
-</table>
-<p>
-<span class="label">See also</span>
-</p>
-<div class="seeAlso">
-<a href="../loading/BulkLoader.html#LOG_ERRORS" target="">LOG_ERRORS</a>
-<br>
-<a href="../loading/BulkLoader.html#logLevel" target="">logLevel</a>
-</div>
-</div>
-<a name="truncateNumber()"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">truncateNumber</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static function truncateNumber(raw:Number, decimals:int = 2):Number</code><p> Utility function to truncate a number to the given number of decimal places.
-          </p><span class="label">Parameters</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20px"></td><td><code><span class="label">raw</span>:Number</code> &mdash; The number to truncate
-          </td>
-</tr>
-<tr>
-<td class="paramSpacer">&nbsp;</td>
-</tr>
-<tr>
-<td width="20px"></td><td><code><span class="label">decimals</span>:int</code> (default = <code>2</code>)<code></code> &mdash; The number of decimals place to preserve.
-          </td>
-</tr>
-</table>
-<p></p>
-<span class="label">Returns</span>
-<table border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="20"></td><td><code>Number</code> &mdash; The truncated number.
-        </td>
 </tr>
 </table>
 </div>
@@ -2164,16 +2330,34 @@ bulkLoader.start(3)
    </p></div>
 <a name="constantDetail"></a>
 <div class="detailSectionHeader">Constant detail</div>
+<a name="AVAILABLE_TYPES"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">AVAILABLE_TYPES</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const AVAILABLE_TYPES:Array</code>
+</div>
 <a name="CAN_BEGIN_PLAYING"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">CAN_BEGIN_PLAYING</td><td class="detailHeaderType">constant</td>
+<td class="detailHeaderName">CAN_BEGIN_PLAYING</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
 <code>public static const CAN_BEGIN_PLAYING:String = "canBeginPlaying"</code><p> 
           The name of the event 
           </p></div>
+<a name="CHECK_POLICY_FILE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">CHECK_POLICY_FILE</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const CHECK_POLICY_FILE:String = "checkPolicyFile"</code>
+</div>
 <a name="COMPLETE"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -2191,12 +2375,33 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public static const CONTEXT:String = "context"</code><p> An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_LOADER</code> a LoaderContext should be passed. Checked when adding a new item to load.
+<code>public static const CONTEXT:String = "context"</code><p> An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_IMAGE</code> a LoaderContext should be passed. Checked when adding a new item to load.
   </p><p>
 <span class="label">See also</span>
 </p>
 <div class="seeAlso">
 <a href="../loading/BulkLoader.html#add()" target="">add()</a>
+</div>
+</div>
+<a name="DEFAULT_LOG_LEVEL"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">DEFAULT_LOG_LEVEL</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const DEFAULT_LOG_LEVEL:int = 20</code><p>The logging level <code>BulkLoader</code> will use. 
+        </p><p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="../loading/BulkLoader.html#LOG_VERBOSE" target="">LOG_VERBOSE</a>
+<br>
+<a href="../loading/BulkLoader.html#LOG_SILENT" target="">LOG_SILENT</a>
+<br>
+<a href="../loading/BulkLoader.html#LOG_ERRORS" target="">LOG_ERRORS</a>
+<br>
+<a href="../loading/BulkLoader.html#LOG_INFO" target="">LOG_INFO</a>
 </div>
 </div>
 <a name="DEFAULT_NUM_CONNECTIONS"></a>
@@ -2218,6 +2423,15 @@ bulkLoader.start(3)
 <code>public static const ERROR:String = "error"</code><p> 
           The name of the event 
           </p></div>
+<a name="GENERAL_AVAILABLE_PROPS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">GENERAL_AVAILABLE_PROPS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const GENERAL_AVAILABLE_PROPS:Array</code>
+</div>
 <a name="HEADERS"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -2273,7 +2487,7 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public static const LOG_ERRORS:int = 3</code><p>Will only trace errors. Defaut level</p></div>
+<code>public static const LOG_ERRORS:int = 4</code><p>Will only trace errors. Defaut level</p></div>
 <a name="LOG_INFO"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -2298,6 +2512,14 @@ bulkLoader.start(3)
 </table>
 <div class="detailBody">
 <code>public static const LOG_VERBOSE:int = 0</code><p> LogLevel: Outputs everything that is happening. Usefull for debugging. </p></div>
+<a name="LOG_WARNINGS"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">LOG_WARNINGS</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const LOG_WARNINGS:int = 3</code><p>Ouputs noteworthy events such as when an item is started / finished loading.</p></div>
 <a name="MAX_TRIES"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -2380,15 +2602,15 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public static const TYPE_IMAGE:String = "loader"</code><p> Tells this class to use a <code>Loader</code> object to load the item.</p></div>
-<a name="TYPE_LOADER"></a>
+<code>public static const TYPE_IMAGE:String = "image"</code><p> Tells this class to use a <code>Loader</code> object to load the item.</p></div>
+<a name="TYPE_MOVIECLIP"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
-<td class="detailHeaderName">TYPE_LOADER</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+<td class="detailHeaderName">TYPE_MOVIECLIP</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
 </tr>
 </table>
 <div class="detailBody">
-<code>public static const TYPE_LOADER:String = "loader"</code><p> Tells this class to use a <code>Loader</code> object to load the item.</p></div>
+<code>public static const TYPE_MOVIECLIP:String = "movieclip"</code><p> Tells this class to use a <code>Loader</code> object to load the item.</p></div>
 <a name="TYPE_SOUND"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -2397,14 +2619,6 @@ bulkLoader.start(3)
 </table>
 <div class="detailBody">
 <code>public static const TYPE_SOUND:String = "sound"</code><p> Tells this class to use a <code>Sound</code> object to load the item.</p></div>
-<a name="TYPE_SWF"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">TYPE_SWF</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<code>public static const TYPE_SWF:String = "loader"</code><p> Tells this class to use a <code>Loader</code> object to load the item.</p></div>
 <a name="TYPE_TEXT"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>

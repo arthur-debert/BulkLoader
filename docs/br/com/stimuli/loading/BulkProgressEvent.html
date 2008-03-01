@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkProgressEvent,br.com.stimuli.loading.BulkProgressEvent,PROGRESS,COMPLETE,bytesTotalCurrent,ratioLoaded,percentLoaded,weightPercent,itemsLoaded,itemsTotal,name,setInfo,clone,loadingStatus,toString" name="keywords">
+<meta content="BulkProgressEvent,br.com.stimuli.loading.BulkProgressEvent,PROGRESS,COMPLETE,bytesTotalCurrent,itemsLoaded,itemsTotal,name,weightPercent,percentLoaded,ratioLoaded,setInfo,clone,loadingStatus,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkProgressEvent</title>
 </head>
 <body>
@@ -195,7 +195,13 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public var percentLoaded:Number</code><p> A number between 0 - 1 that indicates progress regarding bytes </p></div>
+<code>percentLoaded:Number</code>&nbsp;&nbsp;[read-write]<p> A number between 0 - 1 that indicates progress regarding bytes </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get percentLoaded():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set percentLoaded(value:Number):void</code>
+<br>
+</div>
 <a name="ratioLoaded"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -203,7 +209,13 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public var ratioLoaded:Number</code><p> The ratio (0-1) loaded (number of items loaded / number of items total) </p></div>
+<code>ratioLoaded:Number</code>&nbsp;&nbsp;[read-write]<p> The ratio (0-1) loaded (number of items loaded / number of items total) </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get ratioLoaded():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set ratioLoaded(value:Number):void</code>
+<br>
+</div>
 <a name="weightPercent"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -211,7 +223,13 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public var weightPercent:Number</code><p> A number between 0 - 1 that indicates progress regarding weights </p></div>
+<code>weightPercent:Number</code>&nbsp;&nbsp;[read-write]<p> A number between 0 - 1 that indicates progress regarding weights </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get weightPercent():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set weightPercent(value:Number):void</code>
+<br>
+</div>
 <a name="constructorDetail"></a>
 <div class="detailSectionHeader">Constructor detail</div>
 <a name="BulkProgressEvent()"></a>
