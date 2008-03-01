@@ -609,7 +609,42 @@ bulkLoader.start(3)
             _lastBytesCheck = 0;
             _lastSpeedCheck = getTimer();
         }
-        
+        /** Forces the item specified by key to be reloaded right away. This will stop any open connection as needed.
+        *   @param key The url request, url as a string or a id  from which the asset was created.
+        *   @return <code>True</code> if an item with that key is found, <code>false</code> otherwise.
+        */
+        public function reload(key : *) : Boolean{
+            var item : LoadingItem ;
+            if (key is LoadingItem){
+                item = key;
+            }else{
+                item = get(key);
+            }
+            if(!item){
+                return false;
+            }
+            _removeFromItems(item);
+            _removeFromConnections(item);
+            
+            item.stop();
+            item.cleanListeners();
+            item.status = null;
+            _isFinished = false;
+            item._addedTime = getTimer();
+            item._additionIndex = _additionIndex ++;
+            item.addEventListener(Event.COMPLETE, _onItemComplete, false, int.MIN_VALUE, true);
+            item.addEventListener(ERROR, _onItemError, false, 0, true);
+            item.addEventListener(Event.OPEN, _onItemStarted, false, 0, true);
+            item.addEventListener(ProgressEvent.PROGRESS, _onProgress, false, 0, true);
+            _items.push(item);
+            _itemsTotal += 1;
+            _totalWeight += item.weight;
+            sortItemsByPriority();
+            _isFinished = false;
+            loadNow(item);
+
+            return true;
+        }
         
         /** Forces the item specified by key to be loaded right away. This will stop any open connection as needed.
         *   If needed, the connection to be closed will be the one with the lower priority. In case of a tie, the one
@@ -792,6 +827,7 @@ bulkLoader.start(3)
                 _itemsLoaded --;
             }
             _itemsTotal --;             
+            _totalWeight -= item.weight;
             log("Removing " + item, LOG_VERBOSE)
             return true;
         }
@@ -1678,6 +1714,8 @@ bulkLoader.start(3)
                 trace(e.getStackTrace());
             }
         }
+        
+
     }      
     
  
