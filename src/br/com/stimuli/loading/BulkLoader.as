@@ -140,13 +140,13 @@ import flash.utils.*;
         /** List of file extensions that will be automagically use a <code>Loader</code> object for loading.
         *   Availabe types: swf, jpg, jpeg, gif, png, image.
         */
-        public static var IMAGE_EXTENSIONS : Array = [ "jpg", "jpeg", "gif", "png" , "image"];
+        public static var IMAGE_EXTENSIONS : Array = [ "jpg", "jpeg", "gif", "png"];
         
         public static var MOVIECLIP_EXTENSIONS : Array = ['swf'];
         /** List of file extensions that will be automagically treated as text for loading.
         *   Availabe types: txt, js, xml, php, asp .
         */
-        public static var TEXT_EXTENSIONS : Array = ["txt", "js", "xml", "php", "asp", "py" ];
+        public static var TEXT_EXTENSIONS : Array = ["txt", "js", "php", "asp", "py" ];
         /** List of file extensions that will be automagically treated as video for loading. 
         *  Availabe types: flv, f4v, f4p. 
         */
