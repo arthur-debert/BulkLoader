@@ -39,7 +39,8 @@ package br.com.stimuli.loading.tests {
     	 	protected override function tearDown():void {
             var theMovie : LoadingItem = _bulkLoader.get("the-movie");
 			if(theMovie) theMovie.stop();
-    	 		_bulkLoader.removeAll();
+            BulkLoader.removeAllLoaders();
+            //trace("REMOVED ALL _bulkLoader.itemsTotal", _bulkLoader.itemsTotal);
     	 	}
 
             /* ===================================================== */
@@ -57,6 +58,12 @@ package br.com.stimuli.loading.tests {
     	 	
             public function testCorrectNumber() : void{
                 assertEquals(_bulkLoader.items.length, 2);
+            }
+            
+            public function testCanAddTwoItemsSameURL() : void{
+                var oldNumber : int = _bulkLoader.itemsTotal;
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv");
+                assertEquals(oldNumber+ 1, _bulkLoader.itemsTotal);
             }
             
             public function testCannotAddTwoItemsWithTheSameID() : void{
@@ -149,15 +156,14 @@ package br.com.stimuli.loading.tests {
                 assertEquals(itemsTotal + 1, _bulkLoader.itemsTotal );
             }
             
-        /*public function testSortPriorityOnAdd() : void{
-                    
-                    _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/shoes.jpg", {"priority":200, id:"photo"});
-                    _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"priority":-200, id:"xml"});
-                    assertEquals(_bulkLoader.items[_bulkLoader.itemsTotal -1] , _bulkLoader.get("xml"));
-                    assertEquals(_bulkLoader.items[0] , _bulkLoader.get("photo"));
-                    _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.txt", {"priority":-200, id:"txt"});
-                    assertTrue(_bulkLoader.items.indexOf(_bulkLoader.get("xml")) < _bulkLoader.items.indexOf(_bulkLoader.get("text")));
-                }*/
+            public function testSortPriorityOnAdd() : void{            
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/shoes.jpg", {"priority":200, id:"photo"});
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"priority":-200, id:"xml"});
+                assertEquals(_bulkLoader.items[_bulkLoader.itemsTotal -1] , _bulkLoader.get("xml"));
+                assertEquals(_bulkLoader.items[0] , _bulkLoader.get("photo"));
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.txt", {"priority":-200, id:"txt"});
+                assertTrue(_bulkLoader.items.indexOf(_bulkLoader.get("xml")) > _bulkLoader.items.indexOf(_bulkLoader.get("text")));
+            }
             
             public function testGetLeastUrgentItem() : void{
                 _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.jpg", {"priority":-200, id:"text"});
@@ -167,22 +173,22 @@ package br.com.stimuli.loading.tests {
                 assertEquals(_bulkLoader._getLeastUrgentOpenedItem() , _bulkLoader.get("text"));
             }
                         
-            /*            public function testHighestPriority() : void{
-                            assertEquals(_bulkLoader.highestPriority, 0);
-                            _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.jpg", {"priority":-200, id:"text"});
-                            assertEquals(_bulkLoader.highestPriority,  0);
-                            _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"priority":200, id:"xml"});
-                            assertEquals(_bulkLoader.highestPriority , 200);
-                            
-                        }
-                        */
-                        public function testLogFunctionSet() : void{
-                            var myFunction : Function = function(msg:String):void{
-                                trace("myFunction", msg);
-                            }
-                            _bulkLoader.logFunction = myFunction;
-                            assertEquals(_bulkLoader.logFunction, myFunction)
-                        }
+            public function testHighestPriority() : void{
+                assertEquals(_bulkLoader.highestPriority, 0);
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.jpg", {"priority":-200, id:"text"});
+                assertEquals(_bulkLoader.highestPriority,  0);
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"priority":200, id:"xml"});
+                assertEquals(_bulkLoader.highestPriority , 200);    
+            }
+            
+
+            public function testLogFunctionSet() : void{
+                var myFunction : Function = function(msg:String):void{
+                    trace("myFunction", msg);
+                }
+                _bulkLoader.logFunction = myFunction;
+                assertEquals(_bulkLoader.logFunction, myFunction)
+            }
             
             public function testChangeItemPriority() : void{
                 _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/shoes.jpg", { id:"photo"});
@@ -194,8 +200,8 @@ package br.com.stimuli.loading.tests {
             public function testRemovePausedItems ():void{
                 _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.jpg", {"priority":-200, id:"text"});
                 _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/shoes.jpg", {"priority":-200, id:"photo"});
-                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexm l.xml", {"priority":200, id:"xml"});
-                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexm l.xml", {"priority":200, id:"xml2"});
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"priority":200, id:"xml"});
+                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"priority":200, id:"xml2"});
                 _bulkLoader.pause("text");
                 _bulkLoader.pause("photo");
                 _bulkLoader.pause("xml");

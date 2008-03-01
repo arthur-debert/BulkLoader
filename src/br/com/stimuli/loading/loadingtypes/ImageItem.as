@@ -74,6 +74,7 @@ package br.com.stimuli.loading.loadingtypes {
         }
         
         override public function destroy() : void{
+            stop();
             cleanListeners();
             _content = null;
             loader = null;

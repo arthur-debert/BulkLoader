@@ -179,7 +179,7 @@ package asunit.framework {
 		 * @see TestResult
 		 */
 		public function run():void {
-		    trace("running ", fName + ":" + methodName );
+		    //trace("running ", fName + ":" + methodName );
 		    BulkLoader.__debug_print_num_loaders();
 			getResult().run(this);
 		}
@@ -333,7 +333,7 @@ package asunit.framework {
 			}
 			if(true) {
 				tearDown();
-				//trace("tear down ", fName );
+				trace("tear down ", fName );
 				layoutManager.resetAll();
 			}
 			setTimeout(runBare, 5);

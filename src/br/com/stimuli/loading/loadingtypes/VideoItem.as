@@ -121,6 +121,7 @@ package br.com.stimuli.loading.loadingtypes {
             if (stream) {
                 stream.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
                 stream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatus, false);
+                
             }
             if(dummyEventTrigger){
                 dummyEventTrigger.removeEventListener(Event.ENTER_FRAME, createNetStreamEvent, false);
@@ -139,7 +140,9 @@ package br.com.stimuli.loading.loadingtypes {
             if(stream){
                 //stream.client = null;
             }
+            stop();
             cleanListeners();
+            
             stream = null;
             super.destroy();
         }
@@ -148,6 +151,9 @@ package br.com.stimuli.loading.loadingtypes {
         *   @private
         */
         internal function onNetStatus(evt : NetStatusEvent) : void{
+            if(!stream){
+                return;
+            }
             stream.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatus, false);
             if(evt.info.code == "NetStream.Play.Start"){
                 _content = stream;

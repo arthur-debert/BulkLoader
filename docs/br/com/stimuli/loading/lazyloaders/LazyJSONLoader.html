@@ -46,7 +46,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <br>
 <span class="label">Example</span>
 <br>Basic usage:<div class='listing'><pre>   
-    var lazy : LazyXMLLoader = new LazyXMLLoader("sample-lazy.xml", "myBulkLoader");
+    var lazy : LazyJSONLoader = new LazyJSONLoader("sample-lazy.json", "myBulkLoader");
     // listen to when the lazy loader has loaded the external definition
     lazy.addEventListener(Event.LAZY_LOADED, onLazyLoaded);
     // add regular events to the BulkLoader instance

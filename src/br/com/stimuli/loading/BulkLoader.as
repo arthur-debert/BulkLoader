@@ -541,9 +541,10 @@ bulkLoader.start(3)
             }else if (!url is URLRequest){
                 throw new Error("[BulkLoader] cannot add object with bad type for url:'" + url.url);
             }
-            var item : LoadingItem = get(props[ID] || url);
+            var item : LoadingItem = get(props[ID]);
             // have already loaded this?
             if( item ){
+                log("Add received an already added id: " + props[ID] + ", not adding a new item");
                 return item;
             }
             var type : String;
@@ -811,9 +812,8 @@ bulkLoader.start(3)
             var item : LoadingItem  = evt.target as LoadingItem;
             log("After " + item.numTries + " I am giving up on " + item.url.url, LOG_ERRORS);
             log("Error loading", item, LOG_ERRORS);
-           
-
            _removeFromConnections(item);
+           evt.stopPropagation();
            var bulkErrorEvent : BulkErrorEvent = new BulkErrorEvent(BulkErrorEvent.ERROR);
            bulkErrorEvent.errors = _items.filter(function(i : LoadingItem, ...rest):Boolean{
                   return (i.status == LoadingItem.STATUS_ERROR);
@@ -933,7 +933,7 @@ bulkLoader.start(3)
         
         /** Total number of items to load.*/
         public function get itemsTotal() : int { 
-            return _itemsTotal; 
+            return items.length; 
         }
         
         /** 
@@ -1381,7 +1381,7 @@ bulkLoader.start(3)
                 if(!item) {
                     return false;
                 }      
-                
+                //trace("REMOVING key", key);
                 _removeFromItems(item);
                 _removeFromConnections(item);
                 item.destroy();

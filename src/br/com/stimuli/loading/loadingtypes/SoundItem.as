@@ -36,11 +36,9 @@ package br.com.stimuli.loading.loadingtypes {
 		override public function onStartedHandler(evt : Event) : void{
             _content = loader;
             super.onStartedHandler(evt);
-            //trace("{SoundItem}::method() context", context);
         };
         
         override public function onErrorHandler(evt : Event) : void{
-            trace("{SoundItem}::onErrorHandler", onErrorHandler);
             super.onErrorHandler(evt);
         }
         
@@ -80,6 +78,7 @@ package br.com.stimuli.loading.loadingtypes {
         
         override public function destroy() : void{
             cleanListeners();
+            stop();
             _content = null;
             loader = null;
         }
