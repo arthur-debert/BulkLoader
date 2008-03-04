@@ -100,6 +100,8 @@ package br.com.stimuli.loading.loadingtypes {
         /** @private */
         public var _id : String;
         /** @private */
+        public var _uid : String;
+        /** @private */
         public var _additionIndex : int ;
         /** @private */
         public var _priority : int = 0;
@@ -185,12 +187,13 @@ package br.com.stimuli.loading.loadingtypes {
         public var specificAvailableProps : Array ;
         /** @private */
         public var propertyParsingErrors : Array;
-        public function LoadingItem(url : URLRequest, type : String){
+        public function LoadingItem(url : URLRequest, type : String, _uid : String){
             this._type = type;
             this.url = url;
             if(!specificAvailableProps){
                 specificAvailableProps = [];
             }
+            this._uid = _uid;
         }
         
         /**
@@ -226,7 +229,7 @@ package br.com.stimuli.loading.loadingtypes {
         */
         public function load() : void{
             if (preventCache){
-                var cacheString : String = "BulkLoaderNoCache=" + int(Math.random()  * 100 * getTimer());
+                var cacheString : String = "BulkLoaderNoCache=" + _uid + "_" + int(Math.random()  * 100 * getTimer());
                 if(url.url.indexOf("?") == -1){
                     url.url += "?" + cacheString;
                 }else{

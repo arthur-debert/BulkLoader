@@ -561,7 +561,8 @@ bulkLoader.start(3)
                 type = guessType(url.url);
                 
             }
-            item  = new _typeClasses[type] (url, type);
+            _additionIndex ++;
+            item  = new _typeClasses[type] (url, type , _instancesCreated + "_" + String(_additionIndex));
             if (!props["id"] && _allowsAutoIDFromFileName){
                 props["id"] = getFileName(url.url);
                 log("Adding automatic id from file name for item:", item , "( id= " + props["id"] + " )");
@@ -574,7 +575,7 @@ bulkLoader.start(3)
             // properties from the props argument
             
             item._addedTime = getTimer();
-            item._additionIndex = _additionIndex ++;
+            item._additionIndex = _additionIndex;
             // add a lower priority than default, else the event for all items complete will fire before
             // individual listerners attached to the item
             item.addEventListener(Event.COMPLETE, _onItemComplete, false, int.MIN_VALUE, true);

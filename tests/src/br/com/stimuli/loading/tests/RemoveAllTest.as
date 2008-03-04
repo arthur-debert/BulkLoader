@@ -24,7 +24,7 @@ package br.com.stimuli.loading.tests {
 		// Override the run method and begin the request for remote data
 		public override function run():void {
 		    var numCon : int = 1;
-		    if (name = "testLoadAfterRemoveWithStart") numCon = 7;
+		    if (name == "testLoadAfterRemoveWithStart") numCon = 7;
 		    
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName(), 1)
             _bulkLoader.stringSubstitutions = {
@@ -103,7 +103,7 @@ package br.com.stimuli.loading.tests {
 		    for (var i:int = 0; i<11; i++){
 		      assertNull(_bulkLoader.get(String(i)));
 		    }
-		    for (var i:int = 11; i<21; i++){
+		    for (i = 11; i<21; i++){
 		      assertNotNull(_bulkLoader.get(String(i)));
 		    }
 		    

@@ -31,9 +31,9 @@ package br.com.stimuli.loading.loadingtypes {
         private var _canBeginStreaming : Boolean = false;
         
         
-		public function VideoItem(url : URLRequest, type : String){
+		public function VideoItem(url : URLRequest, type : String, uid : String){
 		    specificAvailableProps = [BulkLoader.CHECK_POLICY_FILE, BulkLoader.PAUSED_AT_START];
-			super(url, type);
+			super(url, type, uid);
 			
 		}
 		

@@ -10,8 +10,8 @@ package br.com.stimuli.loading.loadingtypes {
 	public class XMLItem extends LoadingItem {
         public var loader : URLLoader;
         
-		public function XMLItem(url : URLRequest, type : String){
-			super(url, type);
+		public function XMLItem(url : URLRequest, type : String, uid : String){
+			super(url, type, uid);
 		}
 		
 		override public function _parseOptions(props : Object)  : Array{

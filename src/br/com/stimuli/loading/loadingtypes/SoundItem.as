@@ -12,9 +12,9 @@ package br.com.stimuli.loading.loadingtypes {
 	public class SoundItem extends LoadingItem {
         public var loader : Sound;
         
-		public function SoundItem(url : URLRequest, type : String){
+		public function SoundItem(url : URLRequest, type : String, uid : String){
 		    specificAvailableProps = [BulkLoader.CONTEXT];
-			super(url, type);
+			super(url, type, uid);
 		}
 		
 		override public function _parseOptions(props : Object)  : Array{

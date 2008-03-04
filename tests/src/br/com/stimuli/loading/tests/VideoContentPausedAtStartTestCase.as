@@ -22,7 +22,7 @@ package br.com.stimuli.loading.tests {
 		
 		public override function run():void {
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
-	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true});
+	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true, preventCache:true});
 	 		_bulkLoader.get("the-movie").addEventListener(BulkLoader.OPEN, onVideoStartHandler);
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
@@ -70,7 +70,7 @@ package br.com.stimuli.loading.tests {
 		}
 
 		public function testVideoPausedAtStart():void {
-            assertEquals(netStreamAtStart.time , 0);
+            assertTrue(netStreamAtStart.time < 0.1);
 		}
 
 	}
