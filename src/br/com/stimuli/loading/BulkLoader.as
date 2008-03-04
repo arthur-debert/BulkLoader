@@ -345,6 +345,8 @@ import flash.utils.*;
         public var _isRunning : Boolean;
         /** @private */
         public var _isFinished : Boolean;
+        /** @private */
+        public var _isPaused : Boolean;
         
         /** @private */
         public var _logFunction : Function = trace;
@@ -559,7 +561,6 @@ bulkLoader.start(3)
                 type = guessType(url.url);
                 
             }
-            //trace("***GUESSING url:", url.url, ", type:", type);
             item  = new _typeClasses[type] (url, type);
             if (!props["id"] && _allowsAutoIDFromFileName){
                 props["id"] = getFileName(url.url);
@@ -574,7 +575,6 @@ bulkLoader.start(3)
             
             item._addedTime = getTimer();
             item._additionIndex = _additionIndex ++;
-            //trace("{BulkLoader}::method() _addedTime", item._addedTime);
             // add a lower priority than default, else the event for all items complete will fire before
             // individual listerners attached to the item
             item.addEventListener(Event.COMPLETE, _onItemComplete, false, int.MIN_VALUE, true);
@@ -586,6 +586,9 @@ bulkLoader.start(3)
             _totalWeight += item.weight;
             sortItemsByPriority();
             _isFinished = false;
+            if (!_isPaused){
+                _loadNext();
+            }
             return item;
         }
         
@@ -595,19 +598,21 @@ bulkLoader.start(3)
         *   @see #see #BulkLoader()
         */   
         public function start(withConnections : int = -1 ) : void{
+            if (withConnections  > 0){
+                _numConnections = withConnections;
+            }
             if(_connections){
                 _loadNext();
                 return;
             }
             _startTime = getTimer();
-            if (withConnections  > 0){
-                _numConnections = withConnections;
-            }
+            
             _connections = [];
             _loadNext();
-            isRunning = true;
+            _isRunning = true;
             _lastBytesCheck = 0;
             _lastSpeedCheck = getTimer();
+            _isPaused = false;
         }
         /** Forces the item specified by key to be reloaded right away. This will stop any open connection as needed.
         *   @param key The url request, url as a string or a id  from which the asset was created.
@@ -740,14 +745,17 @@ bulkLoader.start(3)
           return false;
         }
         
+        
         // if toLoad is specified it be cut line
             /** @private */
         public function _loadNext(toLoad : LoadingItem = null) : Boolean{
             if(_isFinished){
                 return false;
+            }if (!_connections){
+                _connections = [];
             }
             // check for "stale items"
-            //trace("{BulkLoader}::method() _connections", _connections);
+            
             _connections.forEach(function(i : LoadingItem, ...rest) : void{
                 if(i.status == LoadingItem.STATUS_ERROR && i.numTries < i.maxTries){
                     _removeFromConnections(i);
@@ -765,8 +773,8 @@ bulkLoader.start(3)
             }
             if (toLoad){
                 next = true;
-                isRunning = true;
-                if(_connections.length < numConnections){
+                _isRunning = true;
+                if(_connections.length <= numConnections){
                     _connections.push(toLoad);
                     toLoad.load();
                     log("Will load item:", toLoad, LOG_INFO);
@@ -920,8 +928,6 @@ bulkLoader.start(3)
             }
             localWeightPercent = localWeightLoaded / localWeightTotal;
             if(localWeightTotal == 0) localWeightPercent = 0;
-            /*trace("\n{BulkLoader}::method() localWeightTotal", localWeightTotal);
-            trace("{BulkLoader}::method() localWeightLoaded", localWeightLoaded);*/
             var e : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
             e.setInfo(localBytesLoaded, localBytesTotal, bytesTotalCurrent, localItemsLoaded, localItemsTotal, localWeightPercent);
             return e;
@@ -1038,9 +1044,6 @@ bulkLoader.start(3)
         
         public function get isFinished() : Boolean{
             return _isFinished;
-        }
-        public function set isRunning(value:Boolean) : void { 
-            _isRunning = value; 
         }
         
         /** Returns the highest priority for all items in this BulkLoader instance. This will check all items, 
@@ -1334,7 +1337,7 @@ bulkLoader.start(3)
             eComplete.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, _itemsLoaded, itemsTotal, weightPercent);
             var eProgress : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
             eProgress.setInfo(bytesLoaded, bytesTotal, bytesTotalCurrent, _itemsLoaded, itemsTotal, weightPercent);
-            isRunning = false;
+            _isRunning = false;
             _endTIme = getTimer();
             totalTime = BulkLoader.truncateNumber((_endTIme - _startTime) /1000);
             _updateStats();
@@ -1417,7 +1420,6 @@ bulkLoader.start(3)
                 if(!item) {
                     return false;
                 }      
-                //trace("REMOVING key", key);
                 _removeFromItems(item);
                 _removeFromConnections(item);
                 item.destroy();
@@ -1439,11 +1441,12 @@ bulkLoader.start(3)
         /** Deletes all loading and loaded objects. This will stop all connections and delete from the cache all of it's items (no content will be accessible if <code>removeAll</code> is executed).
         */
         public function removeAll() : void{
-            for each (var item : LoadingItem in _items){
+            for each (var item : LoadingItem in _items.slice()){
                 remove(item);
             }
             delete _allLoaders[name];
-            _items = _connections = [];
+            _items =  [];
+            _connections = [];
             _contents = new Dictionary();
         }
         
@@ -1516,7 +1519,8 @@ bulkLoader.start(3)
             for each(var item : LoadingItem in _items){
                 pause(item);
             }
-            isRunning = false;
+            _isRunning = false;
+            _isPaused = true;
             log("Stopping all items", LOG_INFO);
         }
         
@@ -1536,6 +1540,7 @@ bulkLoader.start(3)
         */
         public function resume(key : *) : Boolean{
             var item : LoadingItem = key is LoadingItem ? key : get(key);
+            _isPaused = false;
             if(item && item.status == LoadingItem.STATUS_STOPPED ){
                 item.status = null;
                 _loadNext();

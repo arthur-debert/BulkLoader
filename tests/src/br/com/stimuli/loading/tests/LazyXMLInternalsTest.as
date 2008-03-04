@@ -36,7 +36,6 @@ package br.com.stimuli.loading.tests {
         }
         
 		protected override function completeHandler(event:Event):void {
-		    trace("ON TESTE@ completeHandler", completeHandler);
 		    lazyLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
 		    
 			super.run();

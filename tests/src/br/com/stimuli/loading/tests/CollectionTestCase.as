@@ -83,7 +83,7 @@ package br.com.stimuli.loading.tests {
                 assertNotNull( error);
             }
             
-            public function testRemoveOneItem() : void{
+            public function testRemoveOneItemLengthCorrect() : void{
                 var lenghtBeforeRemoving : int = _bulkLoader.items.length;
                 _bulkLoader.remove("the-movie");
                 var lenghtAfterRemoving : int = _bulkLoader.items.length;
