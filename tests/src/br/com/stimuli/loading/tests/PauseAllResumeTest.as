@@ -67,16 +67,18 @@ package br.com.stimuli.loading.tests {
 			
 			if (event.target ==_bulkLoader1){
 		        progresses1.push(event.bytesLoaded);
-		        _bulkLoader1.removeEventListener(BulkLoader.PROGRESS, progressHandler);
+		        
 		    }else if (event.target ==_bulkLoader2){
 		        progresses2.push(event.bytesLoaded);
-		        _bulkLoader2.removeEventListener(BulkLoader.PROGRESS, progressHandler);
+		        
 		    }
 		    if (progresses1.length > 0 && progresses2.length > 0){
+		        _bulkLoader1.removeEventListener(BulkLoader.PROGRESS, progressHandler);
+		        _bulkLoader2.removeEventListener(BulkLoader.PROGRESS, progressHandler);
 		        BulkLoader.pauseAllLoaders();
 		        progresses2[0] = _bulkLoader2.items[0].bytesLoaded;
 		        progresses1[0] = _bulkLoader1.items[0].bytesLoaded;
-		        timer = new Timer(1000, 1);
+		        timer = new Timer(2000, 1);
 		        timer.addEventListener(TimerEvent.TIMER_COMPLETE, completeHandler);
 		        timer.start();
 		        //completeHandler(event);
@@ -104,12 +106,13 @@ package br.com.stimuli.loading.tests {
 		}
 		
 		public function testItemsArePaused() : void{
-		    
+		    assertEquals(_bulkLoader1.items[0].bytesLoaded, progresses1[progresses1.length-1]);
+            assertEquals(_bulkLoader2.items[0].bytesLoaded, progresses2[progresses2.length-1]);
+            
             assertEquals(_bulkLoader1.items[0].status, LoadingItem.STATUS_STOPPED);
             assertEquals(_bulkLoader2.items[0].status, LoadingItem.STATUS_STOPPED);
             
-            assertEquals(_bulkLoader1.items[0].bytesLoaded, progresses1[progresses1.length-1]);
-            assertEquals(_bulkLoader2.items[0].bytesLoaded, progresses2[progresses2.length-1]);
+            
             // now check bytes!
 		}
 		

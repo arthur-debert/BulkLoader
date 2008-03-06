@@ -2,7 +2,6 @@
 *   
 *   
 *   @author Arthur Debert
-*   @version 0.9.3.1
 */
 
 /**
@@ -117,7 +116,7 @@ import flash.utils.*;
     public class BulkLoader extends EventDispatcher {
         
         /** Version. Useful for debugging. */
-        public static const VERSION : String = "rev 88 (0.9.3.1)";
+        public static const VERSION : String = "rev 176 (0.9.9.3)";
         
         /** Tells this class to use a <code>Loader</code> object to load the item.*/
         public static const TYPE_IMAGE : String = "image";
@@ -930,7 +929,7 @@ bulkLoader.start(3)
             localWeightPercent = localWeightLoaded / localWeightTotal;
             if(localWeightTotal == 0) localWeightPercent = 0;
             var e : BulkProgressEvent = new BulkProgressEvent(PROGRESS);
-            e.setInfo(localBytesLoaded, localBytesTotal, bytesTotalCurrent, localItemsLoaded, localItemsTotal, localWeightPercent);
+            e.setInfo(localBytesLoaded, localBytesTotal, localBytesTotal, localItemsLoaded, localItemsTotal, localWeightPercent);
             return e;
         }
         

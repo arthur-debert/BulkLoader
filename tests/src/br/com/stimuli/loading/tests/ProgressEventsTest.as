@@ -24,7 +24,12 @@ package br.com.stimuli.loading.tests {
 		public var ratioPercentLoadedWentDown  : Boolean;
 		public var largestRatioLoaded   : Number = 0;
 		public var badValueForRatioLoaded : Boolean;
-		
+
+		public var bytesCurrentLoadedWentDown  : Boolean;
+		public var bytesCurrentLoaded   : Number = 0;
+		public var badValueForBytesCurrent : Boolean;
+		public var largestBytesCurrent : Number = 0;
+		//localBytesTotalCurrent
 		public function ProgressEventsTest(name : String) : void {
 		  super(name);
 		  this.name = name;
@@ -73,12 +78,12 @@ package br.com.stimuli.loading.tests {
 			    lastProgress = current;
 			    if (BulkLoaderTestSuite.LOADING_VERBOSE) trace(current * 100 , "% loaded") ;
 			}
+			
 			if (event.percentLoaded < largestPercentLoaded){
 			    percentLoadedWentDown = true;
 			}else{
 			    largestPercentLoaded = event.percentLoaded;
 			}
-			
 			if (event.percentLoaded < 0  || event.percentLoaded > 1){
 			    badValueForPercentLoaded = true;
 			}
@@ -100,6 +105,16 @@ package br.com.stimuli.loading.tests {
 			    ratioPercentLoadedWentDown = true;
 			}else{
 			    largestRatioLoaded = event.ratioLoaded;
+			}
+			
+			
+			if (event.bytesTotalCurrent < 0 || event.bytesTotalCurrent != _bulkLoader._bytesTotalCurrent){
+			    badValueForBytesCurrent = true;
+			}
+			if (event.bytesTotalCurrent < largestBytesCurrent){
+			    bytesCurrentLoadedWentDown = true;
+			}else{
+			    largestBytesCurrent = event.bytesTotalCurrent;
 			}
 			
 			for each(var propName : String in ["percentLoaded", "weightPercent", "ratioLoaded"] ){
@@ -150,6 +165,12 @@ package br.com.stimuli.loading.tests {
         public function testRatioLoaded() : void{
             assertFalse(badValueForRatioLoaded);
             assertFalse(ratioPercentLoadedWentDown);
+        }
+        
+        public function testBytesCurrent() : void{
+            assertFalse(badValueForBytesCurrent);
+            assertFalse(bytesCurrentLoadedWentDown);
+            assertEquals(largestBytesCurrent ,_bulkLoader._bytesTotalCurrent)
         }
 	}
 }
