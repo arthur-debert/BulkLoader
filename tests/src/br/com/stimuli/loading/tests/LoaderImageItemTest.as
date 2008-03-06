@@ -16,6 +16,9 @@ package br.com.stimuli.loading.tests {
 		public var ioError : Event;
 		
 		public var theImageItem : ImageItem;
+		public var content : *;
+		public var contentIsBitmap : Boolean;
+		
 		public function LoaderImageItemTest(name: String) : void {
 		  super(name);
 		  this.name = name;
@@ -32,7 +35,7 @@ package br.com.stimuli.loading.tests {
             
 	 		theImageItem = _bulkLoader.add(theURL, {id:"photo"}) as ImageItem;
             _bulkLoader.get("photo").addEventListener(BulkLoader.ERROR, onIOError);
-	 		
+	 		_bulkLoader.get("photo").addEventListener(BulkLoader.COMPLETE, onImageComplete);
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
@@ -45,6 +48,10 @@ package br.com.stimuli.loading.tests {
             tearDown();
         }
         
+        public function onImageComplete(event : Event) : void{
+            content = event.target.content;
+            contentIsBitmap = event.target.content is Bitmap;
+        }
 		protected override function completeHandler(event:Event):void {
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
@@ -77,6 +84,11 @@ package br.com.stimuli.loading.tests {
 		
 		protected override function tearDown():void {
 			_bulkLoader.removeAll();	
+		}
+		
+		public function testContentAvailableOnIndividualEvent():void {
+		    assertNotNull(content);
+		    assertTrue(contentIsBitmap);
 		}
 		
 		public function testBitmapContent():void {
