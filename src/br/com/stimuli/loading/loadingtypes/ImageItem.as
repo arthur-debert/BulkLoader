@@ -70,7 +70,11 @@ package br.com.stimuli.loading.loadingtypes {
         }
         
         override public function isImage(): Boolean{
-            return true;
+            return (type == BulkLoader.TYPE_IMAGE);
+        }
+        
+        override public function isSWF(): Boolean{
+            return (type == BulkLoader.TYPE_MOVIECLIP);
         }
         
         override public function destroy() : void{

@@ -116,7 +116,7 @@ import flash.utils.*;
     public class BulkLoader extends EventDispatcher {
         
         /** Version. Useful for debugging. */
-        public static const VERSION : String = "rev 176 (0.9.9.3)";
+        public static const VERSION : String = "rev 177 (0.9.9.4)";
         
         /** Tells this class to use a <code>Loader</code> object to load the item.*/
         public static const TYPE_IMAGE : String = "image";

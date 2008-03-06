@@ -122,6 +122,13 @@ package br.com.stimuli.loading.tests {
             assertNotNull(ioError);
         }
         
+        public function testIsImage() : void{
+            assertTrue(_bulkLoader.get("photo").isImage());
+        }
+        
+        public function testIsSWF() : void{
+            assertFalse(_bulkLoader.get("photo").isSWF());
+        }
         
         public function testInexistentOptionParseError() : void{
             var theBadItem : LoadingItem = _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"beginAsPaused":true});
