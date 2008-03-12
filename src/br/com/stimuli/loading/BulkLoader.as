@@ -116,7 +116,7 @@ import flash.utils.*;
     public class BulkLoader extends EventDispatcher {
         
         /** Version. Useful for debugging. */
-        public static const VERSION : String = "rev 177 (0.9.9.4)";
+        public static const VERSION : String = "rev 179 (0.9.9.4)";
         
         /** Tells this class to use a <code>Loader</code> object to load the item.*/
         public static const TYPE_IMAGE : String = "image";
@@ -254,7 +254,13 @@ import flash.utils.*;
         /** @private */
         public var _items : Array = [];
         /** @private */
+        public var _hosts : Dictionary = new Dictionary(true);
+        /** @private */
+        public var _parallelizeHosts : Boolean = false;
+        /** @private */
         public var _contents : Dictionary = new Dictionary();
+        
+        
         /** @private */
         public static var _allLoaders : Object = {};
         /** @private */
@@ -264,7 +270,7 @@ import flash.utils.*;
         /** @private */
         public var _numConnections : int = DEFAULT_NUM_CONNECTIONS;
         /** @private */
-        public var _connections : Array;
+        public var _connections : Dictionary;
         
         /**  
         *   @private
@@ -345,7 +351,7 @@ import flash.utils.*;
         /** @private */
         public var _isFinished : Boolean;
         /** @private */
-        public var _isPaused : Boolean;
+        public var _isPaused : Boolean = true;
         
         /** @private */
         public var _logFunction : Function = trace;
@@ -584,6 +590,15 @@ bulkLoader.start(3)
             _items.push(item);
             _itemsTotal += 1;
             _totalWeight += item.weight;
+            // cheese?
+            if (!_parallelizeHosts){
+                // no need to prioritize, just pretend all items have the same host
+                item._host = "";
+            }
+            if (!_hosts[item._host]){
+                _hosts[item._host] = [];
+            }
+            _hosts[item._host].push(item);
             sortItemsByPriority();
             _isFinished = false;
             if (!_isPaused){
@@ -607,7 +622,7 @@ bulkLoader.start(3)
             }
             _startTime = getTimer();
             
-            _connections = [];
+            _connections = _initConnections()
             _loadNext();
             _isRunning = true;
             _lastBytesCheck = 0;
@@ -668,17 +683,18 @@ bulkLoader.start(3)
                 return false;
             }
             if(!_connections){
-                _connections = [];
+                _connections = _initConnections()
             }
             // is this item already loaded or loading?
             if (item.status == LoadingItem.STATUS_FINISHED ||
                 item.status == LoadingItem.STATUS_STARTED){
                 return true;
             } 
+            var hostPool : Array = _getPoolForItem(item);
             // do we need to remove an item from the open connections?
-            if (_connections.length >= numConnections){
+            if (hostPool.length >= numConnections){
                 //which item should we remove?
-                var itemToRemove : LoadingItem = _getLeastUrgentOpenedItem();
+                var itemToRemove : LoadingItem = _getLeastUrgentOpenedItem(hostPool);
                 _removeFromConnections(itemToRemove);
                 itemToRemove.status = null;
             }
@@ -689,12 +705,15 @@ bulkLoader.start(3)
             return true;
         }
         
+        public function _getPoolForItem(item : LoadingItem) : Array{
+            return _connections[item._host] || [];
+        }
         /** @private
         *   Figures out which item to remove from open connections, comparation is done by priority
         *   and then by bytes remaining
         */
-        public function _getLeastUrgentOpenedItem() : LoadingItem{
-            var toRemove : LoadingItem = LoadingItem(_connections.sortOn(["priority", "bytesRemaining", "_additionIndex"],  [Array.NUMERIC, Array.DESCENDING , Array.NUMERIC, Array.NUMERIC])[0]);
+        public function _getLeastUrgentOpenedItem(hostPool : Array) : LoadingItem{
+            var toRemove : LoadingItem = LoadingItem(hostPool.sortOn(["priority", "bytesRemaining", "_additionIndex"],  [Array.NUMERIC, Array.DESCENDING , Array.NUMERIC, Array.NUMERIC])[0]);
             return toRemove;
         }
         /**  Register a new file extension to be loaded as a given type. This is used both in the guessing of types from the url and affects how loading is done for each type. 
@@ -752,15 +771,17 @@ bulkLoader.start(3)
             if(_isFinished){
                 return false;
             }if (!_connections){
-                _connections = [];
+                _connections = _initConnections()
             }
             // check for "stale items"
+            for each (var hostPool : Array in _connections ){
+                hostPool.forEach(function(i : LoadingItem, ...rest) : void{
+                    if(i.status == LoadingItem.STATUS_ERROR && i.numTries < i.maxTries){
+                        _removeFromConnections(i);
+                    }
+                });
+            }
             
-            _connections.forEach(function(i : LoadingItem, ...rest) : void{
-                if(i.status == LoadingItem.STATUS_ERROR && i.numTries < i.maxTries){
-                    _removeFromConnections(i);
-                }
-            });
             var next : Boolean = false;
             if (!toLoad){
                 // no given to load, search for the next one in line
@@ -772,17 +793,21 @@ bulkLoader.start(3)
                 }
             }
             if (toLoad){
+                var hostPool : Array = _getPoolForItem(toLoad)
                 next = true;
                 _isRunning = true;
-                if(_connections.length <= numConnections){
-                    _connections.push(toLoad);
+                if(hostPool.length <= numConnections){
+                    hostPool.push(toLoad);
                     toLoad.load();
                     log("Will load item:", toLoad, LOG_INFO);
                 }
                 // if we've got any more connections to open, load the next item
-                if(_connections.length  < numConnections){
-                    _loadNext();
+                for each (hostPool in _connections){
+                    if(hostPool.length  < numConnections){
+                        _loadNext();
+                    }
                 }
+
             }
             return next;
         }
@@ -834,6 +859,13 @@ bulkLoader.start(3)
             if(item._isLoaded){
                 _itemsLoaded --;
             }
+            var hostArray : Array = _hosts[item._host] as Array;
+            if (hostArray.indexOf(item) > -1){
+                hostArray.splice(hostArray.indexOf(item),1);
+            }
+            if (hostArray.length == 0){
+                delete _hosts[item._host];
+            }
             _itemsTotal --;             
             _totalWeight -= item.weight;
             log("Removing " + item, LOG_VERBOSE)
@@ -841,11 +873,21 @@ bulkLoader.start(3)
         }
         
         /** @private */
+        public function _initConnections() : Dictionary{
+            var d : Dictionary = new Dictionary(true);
+            for each(var hostName : String in _hosts){
+                d[hostName] = [];
+            }
+            return d;
+        }
+            
+        /** @private */
         public function _removeFromConnections(item : *) : Boolean{
             if(!_connections) return false;
-            var removeIndex : int = _connections.indexOf(item)
+            var hostPool : Array = _getPoolForItem(item);
+            var removeIndex : int = hostPool.indexOf(item)
             if(removeIndex > -1){
-                _connections.splice( removeIndex, 1); 
+                hostPool.splice( removeIndex, 1); 
                 return true;
             }
            return false;
@@ -1168,7 +1210,9 @@ bulkLoader.start(3)
         public function sortItemsByPriority() : void{
             // addedTime might not be precise, if subsequent add() calls are whithin getTimer precision
             // range, so we use _additionIndex
-            _items.sortOn(["priority", "_additionIndex"],  [Array.NUMERIC | Array.DESCENDING, Array.NUMERIC  ]);
+            for each (var itemsByHost : Array in _hosts){
+                itemsByHost.sortOn(["priority", "_additionIndex"],  [Array.NUMERIC | Array.DESCENDING, Array.NUMERIC  ]);
+            }
         }
         
         
@@ -1341,7 +1385,7 @@ bulkLoader.start(3)
             _endTIme = getTimer();
             totalTime = BulkLoader.truncateNumber((_endTIme - _startTime) /1000);
             _updateStats();
-            _connections = [];
+            _connections = _initConnections()
             getStats();
             _isFinished = true;
             log("Finished all", LOG_INFO);
@@ -1446,8 +1490,8 @@ bulkLoader.start(3)
             }
             delete _allLoaders[name];
             _items =  [];
-            _connections = [];
-            _contents = new Dictionary();
+            _connections = _initConnections()
+            _contents = new Dictionary(true);
         }
         
         /** Deletes all content from all instances of <code>BulkLoader</code> class. This will stop any pending loading operations as well as free memory.
