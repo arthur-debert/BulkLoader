@@ -345,7 +345,7 @@ import flash.utils.*;
         /** @private */
         public var _isFinished : Boolean;
         /** @private */
-        public var _isPaused : Boolean;
+        public var _isPaused : Boolean = true;
         
         /** @private */
         public var _logFunction : Function = trace;
