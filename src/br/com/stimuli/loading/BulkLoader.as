@@ -774,7 +774,7 @@ bulkLoader.start(3)
             if (toLoad){
                 next = true;
                 _isRunning = true;
-                if(_connections.length <= numConnections){
+                if(_connections.length < numConnections){
                     _connections.push(toLoad);
                     toLoad.load();
                     log("Will load item:", toLoad, LOG_INFO);
