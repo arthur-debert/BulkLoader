@@ -11,6 +11,7 @@ package br.com.stimuli.loading.tests {
 		public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
 		public var startEventFiredTime : Number;
+		public var canBeginPlayingCount : int = 0;
 		public var netStreamAtStart : NetStream;
 		public var name : String;
 		public var ioError : Event;
@@ -34,6 +35,7 @@ package br.com.stimuli.loading.tests {
 	 		_bulkLoader.add(theURL, {id:"the-movie", checkPolicyFile:true});
 	 		_bulkLoader.get("the-movie").addEventListener(BulkLoader.OPEN, onVideoStartHandler);
 	 		_bulkLoader.get("the-movie").addEventListener(BulkLoader.ERROR, onIOError);
+	 		_bulkLoader.get("the-movie").addEventListener(BulkLoader.CAN_BEGIN_PLAYING, onHasBeginPlayerFiredHandler);
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
@@ -52,7 +54,9 @@ package br.com.stimuli.loading.tests {
 			super.run();
 		}
 		
-		
+		public function onHasBeginPlayerFiredHandler(event : Event) : void{
+		    canBeginPlayingCount ++;
+		}
 		/** This also works as an assertion that event progress will never be NaN
 		*/
 		protected override function progressHandler(event:ProgressEvent):void {
@@ -143,6 +147,10 @@ package br.com.stimuli.loading.tests {
         public function testIsVideo() : void{
             assertTrue(_bulkLoader.get("the-movie").isVideo());
             
+        }
+        
+        public function testCanBeginPlayingEvent() : void{
+            assertEquals(canBeginPlayingCount, 1);
         }
 	}
 }

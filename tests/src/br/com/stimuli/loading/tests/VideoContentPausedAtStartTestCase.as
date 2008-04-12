@@ -14,6 +14,8 @@ package br.com.stimuli.loading.tests {
 		public var startEventFiredTime : Number;
 		public var netStreamAtStart : NetStream;
 		public var name : String;
+		public var canBeginPlayingCount : int = 0;
+		
 		// Override the run method and begin the request for remote data
 		public function VideoContentPausedAtStartTestCase(name: String) : void {
 		  super(name);
@@ -27,6 +29,7 @@ package br.com.stimuli.loading.tests {
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
+            _bulkLoader.get("the-movie").addEventListener(BulkLoader.CAN_BEGIN_PLAYING, onHasBeginPlayerFiredHandler);
 		}
 
 		protected override function completeHandler(event:Event):void {
@@ -54,6 +57,10 @@ package br.com.stimuli.loading.tests {
 			}
 		}
 
+		public function onHasBeginPlayerFiredHandler(event : Event) : void{
+		    canBeginPlayingCount ++;
+		}
+		
 		protected function onVideoStartHandler(evt : Event) : void{
 		    startEventFiredTime = getTimer();
 		    netStreamAtStart = evt.target.content;
@@ -72,6 +79,9 @@ package br.com.stimuli.loading.tests {
 		public function testVideoPausedAtStart():void {
             assertTrue(netStreamAtStart.time < 0.1);
 		}
-
+        
+        public function testCanBeginPlayingEvent() : void{
+            assertEquals(canBeginPlayingCount, 1);
+        }
 	}
 }

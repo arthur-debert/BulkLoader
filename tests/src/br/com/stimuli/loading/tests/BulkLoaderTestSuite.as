@@ -8,6 +8,7 @@ package br.com.stimuli.loading.tests {
 	/**@private*/
 	public class BulkLoaderTestSuite extends TestSuite {
 	    public var testClasses : Array = [
+	    VideoContentTest,
 	    StartPausedTest,
         LoaderImageItemTest,
 	    LoaderItemMovieTest,
@@ -33,8 +34,7 @@ package br.com.stimuli.loading.tests {
         URLItemTest,
         AudioContentTest,
         LoaderItemAVM1MovieTest,
-        VideoContentPausedAtStartTestCase, 
-        VideoContentTest
+        VideoContentPausedAtStartTestCase
 	    ];
 	    
 	    public var testsRun : Object = {} ;
