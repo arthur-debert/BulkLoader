@@ -530,6 +530,9 @@ bulkLoader.start(3)
    *    
         */
         public function add(url : *, props : Object= null ) : LoadingItem {
+            if(!_name){
+                throw new Error("[BulkLoader] Cannot use an instance that has been cleared from memory (.clear())");
+            }
             if(!url || !String(url)){
                 throw new Error("[BulkLoader] Cannot add an item with a null url")
             }
@@ -1180,6 +1183,9 @@ bulkLoader.start(3)
         *   
         */
         public function _getContentAsType(key : *, type : Class,  clearMemory : Boolean = false) : *{
+            if(!_name){
+                throw new Error("[BulkLoader] Cannot use an instance that has been cleared from memory (.clear())");
+            }
             var item : LoadingItem = get(key);
             if(!item){
                 return null;
@@ -1444,10 +1450,17 @@ bulkLoader.start(3)
             for each (var item : LoadingItem in _items.slice()){
                 remove(item);
             }
-            delete _allLoaders[name];
             _items =  [];
             _connections = [];
             _contents = new Dictionary();
+        }
+        
+        /** Removes this instance from the static Register of instances. After a clear method has been called for a given instance, nothing else should work
+        */
+        public function clear() : void{
+            removeAll();
+            delete _allLoaders[name];
+            _name = null;
         }
         
         /** Deletes all content from all instances of <code>BulkLoader</code> class. This will stop any pending loading operations as well as free memory.
@@ -1456,7 +1469,7 @@ bulkLoader.start(3)
         public static function removeAllLoaders() : void{
             for each (var atLoader : BulkLoader in _allLoaders){
                 atLoader.removeAll();
-                delete _allLoaders[atLoader.name];
+                atLoader.clear();
                 atLoader = null;
             }
             _allLoaders = {};

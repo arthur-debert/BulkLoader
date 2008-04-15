@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,VERSION,TYPE_IMAGE,TYPE_MOVIECLIP,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,AVAILABLE_EXTENSIONS,IMAGE_EXTENSIONS,MOVIECLIP_EXTENSIONS,TEXT_EXTENSIONS,VIDEO_EXTENSIONS,SOUND_EXTENSIONS,XML_EXTENSIONS,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,OPEN,CAN_BEGIN_PLAYING,CHECK_POLICY_FILE,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,PAUSED_AT_START,GENERAL_AVAILABLE_PROPS,DEFAULT_NUM_CONNECTIONS,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_WARNINGS,LOG_ERRORS,LOG_SILENT,DEFAULT_LOG_LEVEL,numConnections,contents,items,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,highestPriority,logFunction,allowsAutoIDFromFileName,speed,id,stringSubstitutions,createUniqueNamedLoader,getUniqueName,getLoader,hasItem,whichLoaderHasItem,add,start,reload,loadNow,registerNewType,getProgressForItems,getNotLoadedItems,changeItemPriority,sortItemsByPriority,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getAVM1Movie,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,getStats,get,remove,removeAll,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,VERSION,TYPE_IMAGE,TYPE_MOVIECLIP,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,AVAILABLE_EXTENSIONS,IMAGE_EXTENSIONS,MOVIECLIP_EXTENSIONS,TEXT_EXTENSIONS,VIDEO_EXTENSIONS,SOUND_EXTENSIONS,XML_EXTENSIONS,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,OPEN,CAN_BEGIN_PLAYING,CHECK_POLICY_FILE,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,PAUSED_AT_START,GENERAL_AVAILABLE_PROPS,DEFAULT_NUM_CONNECTIONS,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_WARNINGS,LOG_ERRORS,LOG_SILENT,DEFAULT_LOG_LEVEL,numConnections,contents,items,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,highestPriority,logFunction,allowsAutoIDFromFileName,speed,id,stringSubstitutions,createUniqueNamedLoader,getUniqueName,getLoader,hasItem,whichLoaderHasItem,add,start,reload,loadNow,registerNewType,getProgressForItems,getNotLoadedItems,changeItemPriority,sortItemsByPriority,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getAVM1Movie,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,getStats,get,remove,removeAll,clear,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -154,7 +154,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#isRunning">isRunning</a> : Boolean<div class="summaryTableDescription"> A boolean indicating if the instace has started and has not finished loading all items
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#isRunning">isRunning</a> : Boolean<div class="summaryTableDescription">[read-only] A boolean indicating if the instace has started and has not finished loading all items
         </div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
@@ -266,6 +266,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#changeItemPriority()">changeItemPriority</a>(key:String, newPriority:int):Boolean</div>
 <div class="summaryTableDescription"> Updates the priority of item identified by key with a new value, the queue will be re resorted right away.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#clear()">clear</a>():void</div>
+<div class="summaryTableDescription"> Removes this instance from the static Register of instances.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -698,7 +705,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#VERSION">VERSION</a> : String = "rev 88 (0.9.3.1)"<div class="summaryTableDescription">[static] Version.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#VERSION">VERSION</a> : String = "rev 177 (0.9.9.4)"<div class="summaryTableDescription">[static] Version.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -886,12 +893,10 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>isRunning:Boolean</code>&nbsp;&nbsp;[read-write]<p> A boolean indicating if the instace has started and has not finished loading all items
+<code>isRunning:Boolean</code>&nbsp;&nbsp;[read-only]<p> A boolean indicating if the instace has started and has not finished loading all items
         </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get isRunning():Boolean</code>
-<br>
-<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set isRunning(value:Boolean):void</code>
 <br>
 </div>
 <a name="items"></a>
@@ -1364,6 +1369,15 @@ bulkLoader.start(3)
 </tr>
 </table>
 </div>
+<a name="clear()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">clear</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function clear():void</code><p> Removes this instance from the static Register of instances. After a clear method has been called for a given instance, nothing else should work
+        </p></div>
 <a name="createUniqueNamedLoader()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -2650,7 +2664,7 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public static const VERSION:String = "rev 88 (0.9.3.1)"</code><p> Version. Useful for debugging. </p></div>
+<code>public static const VERSION:String = "rev 177 (0.9.9.4)"</code><p> Version. Useful for debugging. </p></div>
 <a name="WEIGHT"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
