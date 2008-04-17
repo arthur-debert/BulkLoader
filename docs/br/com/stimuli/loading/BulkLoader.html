@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,VERSION,TYPE_IMAGE,TYPE_MOVIECLIP,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,AVAILABLE_EXTENSIONS,IMAGE_EXTENSIONS,MOVIECLIP_EXTENSIONS,TEXT_EXTENSIONS,VIDEO_EXTENSIONS,SOUND_EXTENSIONS,XML_EXTENSIONS,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,OPEN,CAN_BEGIN_PLAYING,CHECK_POLICY_FILE,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,PAUSED_AT_START,GENERAL_AVAILABLE_PROPS,DEFAULT_NUM_CONNECTIONS,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_WARNINGS,LOG_ERRORS,LOG_SILENT,DEFAULT_LOG_LEVEL,numConnections,contents,items,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,highestPriority,logFunction,allowsAutoIDFromFileName,speed,id,stringSubstitutions,createUniqueNamedLoader,getUniqueName,getLoader,hasItem,whichLoaderHasItem,add,start,reload,loadNow,registerNewType,getProgressForItems,getNotLoadedItems,changeItemPriority,sortItemsByPriority,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getAVM1Movie,getNetStream,getNetStreamMetaData,getBitmapData,getSerializedData,getHttpStatus,getStats,get,remove,removeAll,clear,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,VERSION,TYPE_BINARY,TYPE_IMAGE,TYPE_MOVIECLIP,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,AVAILABLE_EXTENSIONS,IMAGE_EXTENSIONS,MOVIECLIP_EXTENSIONS,TEXT_EXTENSIONS,VIDEO_EXTENSIONS,SOUND_EXTENSIONS,XML_EXTENSIONS,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,OPEN,CAN_BEGIN_PLAYING,CHECK_POLICY_FILE,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,PAUSED_AT_START,GENERAL_AVAILABLE_PROPS,DEFAULT_NUM_CONNECTIONS,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_WARNINGS,LOG_ERRORS,LOG_SILENT,DEFAULT_LOG_LEVEL,numConnections,contents,items,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,highestPriority,logFunction,allowsAutoIDFromFileName,speed,id,stringSubstitutions,createUniqueNamedLoader,getUniqueName,getLoader,hasItem,whichLoaderHasItem,add,start,reload,loadNow,registerNewType,getProgressForItems,getNotLoadedItems,changeItemPriority,sortItemsByPriority,getContent,getXML,getText,getSound,getBitmap,getMovieClip,getAVM1Movie,getNetStream,getNetStreamMetaData,getBitmapData,getBinary,getSerializedData,getHttpStatus,getStats,get,remove,removeAll,clear,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -301,6 +301,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="#getBinary()">getBinary</a>(key:*, clearMemory:Boolean = false):ByteArray</div>
+<div class="summaryTableDescription"> Returns an ByteArray object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="#getBitmap()">getBitmap</a>(key:String, clearMemory:Boolean = false):Bitmap</div>
 <div class="summaryTableDescription"> Returns a Bitmap object with the downloaded asset for the given key.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
@@ -374,7 +381,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#getSerializedData()">getSerializedData</a>(key:*, clearMemory:Boolean = false, encodingFunction:Function = null):*</div>
-<div class="summaryTableDescription"></div>
+<div class="summaryTableDescription"> Returns a object decoded from a string, by a given encoding function.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -681,6 +688,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TYPE_BINARY">TYPE_BINARY</a> : String = "binary"<div class="summaryTableDescription">[static] Tells this class to use a <code>Loader</code> object to load the item.</div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TYPE_IMAGE">TYPE_IMAGE</a> : String = "image"<div class="summaryTableDescription">[static] Tells this class to use a <code>Loader</code> object to load the item.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
@@ -705,7 +716,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#VERSION">VERSION</a> : String = "rev 177 (0.9.9.4)"<div class="summaryTableDescription">[static] Version.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#VERSION">VERSION</a> : String = "rev 196 (0.9.9.4)"<div class="summaryTableDescription">[static] Version.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -1471,6 +1482,37 @@ bulkLoader.start(3)
 </tr>
 </table>
 </div>
+<a name="getBinary()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">getBinary</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function getBinary(key:*, clearMemory:Boolean = false):ByteArray</code><p> Returns an ByteArray object with the downloaded asset for the given key.
+          </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">key</span>:*</code> &mdash; The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails. 
+          </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">clearMemory</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+          </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>ByteArray</code> &mdash; The content retrived from that url casted to a ByteArray object. Returns null if the cast fails.
+        </td>
+</tr>
+</table>
+</div>
 <a name="getBitmap()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -1766,29 +1808,34 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public function getSerializedData(key:*, clearMemory:Boolean = false, encodingFunction:Function = null):*</code><span class="label">Parameters</span>
+<code>public function getSerializedData(key:*, clearMemory:Boolean = false, encodingFunction:Function = null):*</code><p> Returns a object decoded from a string, by a given encoding function.
+          </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">key</span>:*</code></td>
+<td width="20px"></td><td><code><span class="label">key</span>:*</code> &mdash; The url request, url as a string or a id  from which the asset was loaded. Returns null if the encoding fails
+          </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">clearMemory</span>:Boolean</code> (default = <code>false</code>)<code></code></td>
+<td width="20px"></td><td><code><span class="label">clearMemory</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+          </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">encodingFunction</span>:Function</code> (default = <code>null</code>)<code></code></td>
+<td width="20px"></td><td><code><span class="label">encodingFunction</span>:Function</code> (default = <code>null</code>)<code></code> &mdash; A <code>Function</code> object to be passed the string and be encoded into an object.
+          </td>
 </tr>
 </table>
 <p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code>*</code></td>
+<td width="20"></td><td><code>*</code> &mdash; The content retrived from that url encoded by encodingFunction
+        </td>
 </tr>
 </table>
 </div>
@@ -2609,6 +2656,14 @@ bulkLoader.start(3)
 <code>public static const PROGRESS:String = "progress"</code><p> 
           The name of the event 
           </p></div>
+<a name="TYPE_BINARY"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">TYPE_BINARY</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const TYPE_BINARY:String = "binary"</code><p> Tells this class to use a <code>Loader</code> object to load the item.</p></div>
 <a name="TYPE_IMAGE"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -2664,7 +2719,7 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public static const VERSION:String = "rev 177 (0.9.9.4)"</code><p> Version. Useful for debugging. </p></div>
+<code>public static const VERSION:String = "rev 196 (0.9.9.4)"</code><p> Version. Useful for debugging. </p></div>
 <a name="WEIGHT"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>

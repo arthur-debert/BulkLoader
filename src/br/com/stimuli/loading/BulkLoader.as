@@ -119,6 +119,9 @@ import flash.utils.*;
         public static const VERSION : String = "rev 196 (0.9.9.4)";
         
         /** Tells this class to use a <code>Loader</code> object to load the item.*/
+        public static const TYPE_BINARY : String = "binary";
+        
+        /** Tells this class to use a <code>Loader</code> object to load the item.*/
         public static const TYPE_IMAGE : String = "image";
         /** Tells this class to use a <code>Loader</code> object to load the item.*/
         public static const TYPE_MOVIECLIP : String = "movieclip";
@@ -132,7 +135,7 @@ import flash.utils.*;
         /** Tells this class to use a <code>NetStream</code> object to load the item.*/
         public static const TYPE_VIDEO : String = "video";
         
-        public static const AVAILABLE_TYPES : Array = [TYPE_VIDEO, TYPE_XML, TYPE_TEXT, TYPE_SOUND, TYPE_MOVIECLIP, TYPE_IMAGE]
+        public static const AVAILABLE_TYPES : Array = [TYPE_VIDEO, TYPE_XML, TYPE_TEXT, TYPE_SOUND, TYPE_MOVIECLIP, TYPE_IMAGE, TYPE_BINARY]
         /** List of all file extensions that the <code>BulkLoader</code> knows how to guess.
         *   Availabe types: swf, jpg, jpeg, gif, png. */
         public static var AVAILABLE_EXTENSIONS : Array = ["swf", "jpg", "jpeg", "gif", "png", "flv", "mp3", "xml", "txt", "js" ];
@@ -358,7 +361,8 @@ import flash.utils.*;
             xml: XMLItem,
             video: VideoItem,
             sound: SoundItem,
-            text: URLItem
+            text: URLItem,
+            bynari: BinaryItem
         }
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
         *   
@@ -1306,6 +1310,22 @@ bulkLoader.start(3)
             return  null;
         }
         
+        /** Returns an ByteArray object with the downloaded asset for the given key.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails. 
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @return The content retrived from that url casted to a ByteArray object. Returns null if the cast fails.
+        */
+		public function getBinary(key : *, clearMemory : Boolean = false) :ByteArray{
+            return ByteArray(_getContentAsType(key, ByteArray,  clearMemory));
+			
+        }
+        
+        /** Returns a object decoded from a string, by a given encoding function.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the encoding fails
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @param encodingFunction A <code>Function</code> object to be passed the string and be encoded into an object.
+        *   @return The content retrived from that url encoded by encodingFunction
+        */ 
         public function getSerializedData(key : *,  clearMemory : Boolean = false, encodingFunction : Function = null) : *{
             try{
                 var raw : * = _getContentAsType(key, Object, clearMemory);
