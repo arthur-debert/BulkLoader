@@ -49,11 +49,14 @@ package br.com.stimuli.loading.loadingtypes {
         };
         
         override public function cleanListeners() : void {
-            loader.removeEventListener(ProgressEvent.PROGRESS, onProgressHandler, false);
-            loader.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
-            loader.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
-            loader.removeEventListener(BulkLoader.OPEN, onStartedHandler, false);
-            loader.removeEventListener(HTTPStatusEvent.HTTP_STATUS, super.onHttpStatusHandler, false);
+            if(loader){
+                loader.removeEventListener(ProgressEvent.PROGRESS, onProgressHandler, false);
+                loader.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
+                loader.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
+                loader.removeEventListener(BulkLoader.OPEN, onStartedHandler, false);
+                loader.removeEventListener(HTTPStatusEvent.HTTP_STATUS, super.onHttpStatusHandler, false);
+            }
+            
         }
         
         override public function isText(): Boolean{
