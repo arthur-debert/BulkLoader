@@ -161,7 +161,7 @@ import flash.utils.*;
         public static var XML_EXTENSIONS : Array = ["xml"];
         
         /** @private */
-        public static var _customTypesExtensions : Object;
+        public static var _customTypesExtensions : Object ;
         /** 
         *   The name of the event 
         *   @eventType progress
@@ -724,17 +724,21 @@ bulkLoader.start(3)
           // is this a new type?
           if (AVAILABLE_TYPES.indexOf(atType) == -1){
               // new type: we need a class for that:
-              if (!Boolean(withClass) || !(withClass is LoadingItem)){
+              if (!Boolean(withClass) ){
                   throw new Error("[BulkLoader]: When adding a new type and extension, you must determine which class to use");
               }
               // add that class to the available classes
               _typeClasses[atType] = withClass;
+              if(!_customTypesExtensions) _customTypesExtensions = {};
               if(!_customTypesExtensions[atType]){
                   _customTypesExtensions[atType] = [];
                   AVAILABLE_TYPES.push(atType);
               }
               _customTypesExtensions[atType].push( extension);
               return true;
+          }else{
+              // do have this exension registred for this type?
+              _customTypesExtensions[atType].push( extension);
           }
           var extensions : Array ;
           
