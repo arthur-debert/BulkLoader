@@ -362,7 +362,7 @@ import flash.utils.*;
             video: VideoItem,
             sound: SoundItem,
             text: URLItem,
-            bynari: BinaryItem
+            binary: BinaryItem
         }
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
         *   
