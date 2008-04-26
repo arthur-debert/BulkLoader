@@ -67,21 +67,29 @@ package br.com.stimuli.loading.loadingtypes {
         */
         public function createNetStreamEvent(evt : Event) : void{
             if(_bytesTotal == _bytesLoaded && _bytesTotal > 8){
+            	// done loading: clean up, trigger on complete
                 if (dummyEventTrigger) dummyEventTrigger.removeEventListener(Event.ENTER_FRAME, createNetStreamEvent, false);
+                // maybe the video is in cache, and we need to trigger CAN_BEGIN_PLAYING:
+                fireCanBeginStreamingEvent();
                 var completeEvent : Event = new Event(Event.COMPLETE);
                 onCompleteHandler(completeEvent);
             }else if(_bytesTotal == 0 && stream.bytesTotal > 4){
+            	// just sa
                 var startEvent : Event = new Event(Event.OPEN);
                 onStartedHandler(startEvent);
                 _bytesLoaded = stream.bytesLoaded;
                 _bytesTotal = stream.bytesTotal;
+                
             }else if (stream){
                 var event : ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS, false, false, stream.bytesLoaded, stream.bytesTotal);
                 // if it's a video, check if we predict that time until finish loading
                    // is enough to play video back
-                   if (isVideo() && metaData && !_canBeginStreaming){
+                   
+                   if (isVideo()  && metaData && !_canBeginStreaming){
                        var timeElapsed : int = getTimer() - responseTime;
                        var currentSpeed : Number = bytesLoaded / (timeElapsed/1000);
+                       // calculate _bytes remaining, before the super onProgressHandler fires
+                       _bytesRemaining = _bytesTotal - bytesLoaded;
                        // be cautios, give a 20% error margin for estimated download time:
                        var estimatedTimeRemaining : Number = _bytesRemaining / (currentSpeed * 0.8);
                        var videoTimeToDownload : Number = metaData.duration - stream.bufferLength;
