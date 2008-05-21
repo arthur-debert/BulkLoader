@@ -1,7 +1,7 @@
 package br.com.stimuli.loading.tests {
 	import asunit.framework.*;
 	
-	import br.com.stimuli.loading.BulkLoader;
+	import br.com.stimuli.loading.*;
 	import br.com.stimuli.loading.loadingtypes.*;
 	
 	import flash.display.*;
@@ -25,12 +25,12 @@ package br.com.stimuli.loading.tests {
 	 		
 	 		
 	 		_bulkLoader.start();
-	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
+	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandlerBP);
 	 		_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
 		}
 
-		protected override function completeHandler(event:Event):void {
-		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
+		protected  function completeHandlerBP(event:BulkProgressEvent):void {
+		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandlerBP);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
 			super.run();
 		}

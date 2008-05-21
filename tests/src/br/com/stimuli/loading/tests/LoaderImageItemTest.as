@@ -1,7 +1,7 @@
 package br.com.stimuli.loading.tests {
 	import asunit.framework.*;
 	
-	import br.com.stimuli.loading.BulkLoader;
+	import br.com.stimuli.loading.*;
 	import br.com.stimuli.loading.loadingtypes.*;
 	
 	import flash.display.*;
@@ -37,7 +37,7 @@ package br.com.stimuli.loading.tests {
             _bulkLoader.get("photo").addEventListener(BulkLoader.ERROR, onIOError);
 	 		_bulkLoader.get("photo").addEventListener(BulkLoader.COMPLETE, onImageComplete);
 	 		_bulkLoader.start();
-	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
+	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandlerSpecialEvent);
 	 		_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
 		}
 
@@ -52,8 +52,8 @@ package br.com.stimuli.loading.tests {
             content = event.target.content;
             contentIsBitmap = event.target.content is Bitmap;
         }
-		protected override function completeHandler(event:Event):void {
-		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
+		protected function completeHandlerSpecialEvent(event:BulkProgressEvent):void {
+		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandlerSpecialEvent);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
 			super.run();
 		}

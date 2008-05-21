@@ -1541,7 +1541,9 @@ bulkLoader.start(3)
             if(!item) {
                 return false;
             }
-            item.stop();
+            if (item.status != LoadingItem.STATUS_FINISHED) {
+                item.stop();
+            }
             log("STOPPED ITEM:" , item, LOG_INFO)
             var result : Boolean = _removeFromConnections(item);
             if(loadsNext){

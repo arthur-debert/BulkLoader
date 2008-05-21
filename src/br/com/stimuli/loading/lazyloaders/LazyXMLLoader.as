@@ -38,7 +38,7 @@ package br.com.stimuli.loading.lazyloaders{
         */
     	lazy_loader override function _lazyParseLoader(withData : String) : void{
     	    var xml : XML = new XML(withData);
-    		var substitutions : Object = {};
+    		var substitutions : Object = stringSubstitutions ||  {};
     		for each (var substitutionXML: *in xml.stringSubstitutions.children()){
     		  substitutions[substitutionXML.name()] = substitutionXML.toString();
     		}
