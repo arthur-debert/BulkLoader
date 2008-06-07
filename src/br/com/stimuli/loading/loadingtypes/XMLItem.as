@@ -38,7 +38,15 @@ package br.com.stimuli.loading.loadingtypes {
         };
         
         override public function onCompleteHandler(evt : Event) : void {
-            _content = new XML(loader.data);
+            try{
+                _content = new XML(loader.data);
+            }catch(e  : Error){
+                _content = null;
+                status = STATUS_ERROR;  
+                var bulkErrorEvent : BulkErrorEvent = new BulkErrorEvent(BulkErrorEvent.ERROR);
+                bulkErrorEvent.errors = [this];
+                dispatchEvent(bulkErrorEvent);
+            }
             super.onCompleteHandler(evt);
         };
         
