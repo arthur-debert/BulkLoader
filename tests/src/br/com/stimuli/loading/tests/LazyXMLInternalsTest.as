@@ -63,6 +63,7 @@ package br.com.stimuli.loading.tests {
 		protected override function tearDown():void {
 			lazyLoader.removeAll();	
 			BulkLoader.removeAllLoaders();
+            lazyLoader = null;
 		}
         
         public function testXMLLoaded() : void{

@@ -58,7 +58,15 @@ package br.com.stimuli.loading.loadingtypes {
             customClient.onMetaData = onVideoMetadata;
             customClient.onPlayStatus = function(...args):void{};
             stream.client = customClient;
-            stream.play(url.url, _checkPolicyFile);
+            
+            try{
+            	// TODO: test for security error thown.
+            	stream.play(url.url, _checkPolicyFile);
+            }catch( e : SecurityError){
+            	onSecurityErrorHandler(e);
+            	
+            }
+            
             stream.seek(0);
 		};
 		

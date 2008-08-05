@@ -94,7 +94,8 @@ package br.com.stimuli.loading.tests {
 			}catch(e : Error){
 			    
 			}
-			_bulkLoader.removeAll();
+			//BulkLoader.removeAllLoaders();
+            //_bulkLoader = null;
 			
 		}
 		

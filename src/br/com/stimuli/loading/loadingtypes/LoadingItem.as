@@ -33,14 +33,13 @@
 */
 package br.com.stimuli.loading.loadingtypes {
     
-    import flash.events.*;
-    import flash.events.EventDispatcher;
-    import flash.display.*;
-    import flash.media.Sound;
-    import flash.utils.*;
-    import flash.net.*;
-    import br.com.stimuli.loading.BulkLoader;
     import br.com.stimuli.loading.BulkErrorEvent;
+    import br.com.stimuli.loading.BulkLoader;
+    
+    import flash.display.*;
+    import flash.events.*;
+    import flash.net.*;
+    import flash.utils.*;
     
     /** 
      *  Dispatched on download progress.
@@ -182,7 +181,7 @@ package br.com.stimuli.loading.loadingtypes {
         /**
         *   @private
         */
-        public var context : * = null;
+        public var _context : * = null;
         /** @private */
         public var specificAvailableProps : Array ;
         /** @private */
@@ -296,6 +295,25 @@ package br.com.stimuli.loading.loadingtypes {
             }
            
         }
+        
+        /**
+        *   @private
+        * @param e Can be a SecurityError or a SecurityErrorEvent
+        */
+        public function onSecurityErrorHandler(e :*) : void{
+            status = STATUS_ERROR;   
+            var evt : SecurityErrorEvent;
+        	if(e is Event){
+        		evt = e;
+        		e.stopPropagation();
+        	}else if( e is SecurityError){
+        		evt = new SecurityErrorEvent(SecurityErrorEvent.SECURITY_ERROR,  false, true, e.message);
+        	}
+        	evt.stopPropagation();
+        	dispatchEvent(evt);
+        	
+        }
+        
         /**
         *   @private
         */

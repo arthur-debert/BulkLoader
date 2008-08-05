@@ -72,7 +72,8 @@ package br.com.stimuli.loading.tests {
 		
 		protected override function tearDown():void {
 			// destroy the class under test instance
-			_bulkLoader.removeAll();
+			BulkLoader.removeAllLoaders();
+            _bulkLoader = null;
 		}
 		
 		public function onAudioStartLoading(evt : Event) : void {

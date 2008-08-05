@@ -73,7 +73,8 @@ package br.com.stimuli.loading.tests {
 		protected override function tearDown():void {
 			// destroy the class under test instance
 			_bulkLoader.getNetStream("the-movie").close();
-			_bulkLoader.removeAll();
+			BulkLoader.removeAllLoaders();
+            _bulkLoader = null;
 		}
 
 		public function testVideoPausedAtStart():void {

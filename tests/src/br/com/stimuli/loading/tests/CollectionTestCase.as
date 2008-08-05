@@ -40,6 +40,7 @@ package br.com.stimuli.loading.tests {
             var theMovie : LoadingItem = _bulkLoader.get("the-movie");
 			if(theMovie) theMovie.stop();
             BulkLoader.removeAllLoaders();
+            _bulkLoader = null;
             //trace("REMOVED ALL _bulkLoader.itemsTotal", _bulkLoader.itemsTotal);
     	 	}
 

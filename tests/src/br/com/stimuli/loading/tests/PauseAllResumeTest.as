@@ -102,7 +102,9 @@ package br.com.stimuli.loading.tests {
 		}
 		
 		protected override function tearDown():void {
-			BulkLoader.removeAllLoaders();	
+			BulkLoader.removeAllLoaders();
+            _bulkLoader1 = null;
+            _bulkLoader2 = null;	
 		}
 		
 		public function testItemsArePaused() : void{

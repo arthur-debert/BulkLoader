@@ -187,6 +187,11 @@ import flash.utils.*;
     	
     	/** 
         *   The name of the event 
+        *   @eventType securityError
+        */
+    	public static const SECURITY_ERROR : String = "securityError";
+    	/** 
+        *   The name of the event 
         *   @eventType error
         */
     	public static const OPEN : String = "open";
@@ -338,7 +343,7 @@ import flash.utils.*;
         * @see #LOG_ERRORS
         * @see #LOG_INFO
         */
-        public static const DEFAULT_LOG_LEVEL : int = 20;
+        public static const DEFAULT_LOG_LEVEL : int = LOG_ERRORS;
         /** @private */
         public var logLevel: int = DEFAULT_LOG_LEVEL;
         /** @private */
@@ -588,6 +593,7 @@ bulkLoader.start(3)
             item.addEventListener(ERROR, _onItemError, false, 0, true);
             item.addEventListener(Event.OPEN, _onItemStarted, false, 0, true);
             item.addEventListener(ProgressEvent.PROGRESS, _onProgress, false, 0, true);
+            item.addEventListener(SecurityErrorEvent.SECURITY_ERROR, _onItemSecurityError, false, 0, true);
             _items.push(item);
             _itemsTotal += 1;
             _totalWeight += item.weight;
@@ -646,6 +652,7 @@ bulkLoader.start(3)
             item._additionIndex = _additionIndex ++;
             item.addEventListener(Event.COMPLETE, _onItemComplete, false, int.MIN_VALUE, true);
             item.addEventListener(ERROR, _onItemError, false, 0, true);
+            item.addEventListener(SecurityErrorEvent.SECURITY_ERROR, _onItemSecurityError, false, 0, true);
             item.addEventListener(Event.OPEN, _onItemStarted, false, 0, true);
             item.addEventListener(ProgressEvent.PROGRESS, _onProgress, false, 0, true);
             _items.push(item);
@@ -847,7 +854,12 @@ bulkLoader.start(3)
             }
             _itemsTotal --;             
             _totalWeight -= item.weight;
-            log("Removing " + item, LOG_VERBOSE)
+            log("Removing " + item, LOG_VERBOSE);
+            item.removeEventListener(Event.COMPLETE, _onItemComplete, false)
+            item.removeEventListener(ERROR, _onItemError, false);
+            item.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, _onItemSecurityError, false);
+            item.removeEventListener(Event.OPEN, _onItemStarted, false);
+            item.removeEventListener(ProgressEvent.PROGRESS, _onProgress, false);
             return true;
         }
         
@@ -875,6 +887,17 @@ bulkLoader.start(3)
            });
            dispatchEvent(bulkErrorEvent);
         }
+        
+        /** @private */
+        public function _onItemSecurityError(evt : SecurityErrorEvent) : void{
+            var item : LoadingItem  = evt.target as LoadingItem;
+            log("Security error loading", evt, LOG_ERRORS);
+           _removeFromConnections(item);
+           evt.stopPropagation();
+           dispatchEvent(evt.clone());
+        
+        }
+        
         /** @private */
         public function _onItemStarted(evt : Event) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
@@ -1261,6 +1284,19 @@ bulkLoader.start(3)
             return Bitmap(_getContentAsType(key, Bitmap, clearMemory));
         }
         
+        /** Returns a Loader object with the downloaded asset for the given key.
+        * Had to pick this ugly name since <code>getLoader</code> is currently used for getting a BulkLoader instance.
+        * This is useful if you are loading images but do not have a crossdomain to grant you permissions. In this case, while you
+        * will still find restrictions to how you can use that loaded asset (no BitmapData for it, for example), you still can use it as content.
+        * 
+        *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @return The content retrived from that url casted to a Loader object. Returns null if the cast fails.
+        */
+        public function getDisplayObjectLoader(key : String, clearMemory : Boolean = false) : Loader{
+            return Loader(_getContentAsType(key, Loader, clearMemory));
+        }
+        
         /** Returns a <code>MovieClip</code> object with the downloaded asset for the given key.
         *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
         *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
@@ -1415,8 +1451,8 @@ bulkLoader.start(3)
         *   @see #LOG_VERBOSE
         */   
         public function log(...msg) : void{
-            var level : int  = isNaN(msg[msg.length -1] ) ? 3 : int(msg.pop());
-            if (level >= logLevel ){
+            var messageLevel : int  = isNaN(msg[msg.length -1] ) ? 3 : int(msg.pop());
+            if (messageLevel >= logLevel ){
                 _logFunction("[BulkLoader] " + msg.join(" "));
             }
         }

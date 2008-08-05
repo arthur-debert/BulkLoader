@@ -18,7 +18,7 @@ package br.com.stimuli.loading.loadingtypes {
 		}
 		
 		override public function _parseOptions(props : Object)  : Array{
-		    context = props[BulkLoader.CONTEXT] || null;
+		    _context = props[BulkLoader.CONTEXT] || null;
 		    
             return super._parseOptions(props);
         }
@@ -30,7 +30,14 @@ package br.com.stimuli.loading.loadingtypes {
             loader.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
             loader.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 0, true);
             loader.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);
-            loader.load(url, context);
+            loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, super.onSecurityErrorHandler, false, 0, true);
+            try{
+            	// TODO: test for security error thown.
+            	loader.load(url, _context);
+            }catch( e : SecurityError){
+            	onSecurityErrorHandler(e);
+            	
+            }
 		};
 		
 		override public function onStartedHandler(evt : Event) : void{
@@ -64,6 +71,7 @@ package br.com.stimuli.loading.loadingtypes {
                 loader.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
                 loader.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
                 loader.removeEventListener(BulkLoader.OPEN, onStartedHandler, false);
+                loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, super.onSecurityErrorHandler, false);
             }
             
         }

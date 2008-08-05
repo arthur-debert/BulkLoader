@@ -1,11 +1,11 @@
 package br.com.stimuli.loading.loadingtypes {
 	
-	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	import br.com.stimuli.loading.BulkLoader;
+	
 	import flash.display.*;
-    import flash.net.*;
-    import flash.events.*;
-    import flash.utils.*;
+	import flash.events.*;
+	import flash.net.*;
+	import flash.utils.*;
     /** @private */
 	public class ImageItem extends LoadingItem {
         public var loader : Loader;
@@ -16,7 +16,7 @@ package br.com.stimuli.loading.loadingtypes {
 		}
 		
 		override public function _parseOptions(props : Object)  : Array{
-            context = props[BulkLoader.CONTEXT] || null;
+            _context = props[BulkLoader.CONTEXT] || null;
             
             return super._parseOptions(props);
         }
@@ -27,9 +27,16 @@ package br.com.stimuli.loading.loadingtypes {
 		    loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgressHandler, false, 0, true);
             loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
             loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 100, true);
-            loader.contentLoaderInfo.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);  
+            loader.contentLoaderInfo.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);
+            //loader.content.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityErrorHandler, false, 0, true);  
             loader.contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, super.onHttpStatusHandler, false, 0, true);
-            loader.load(url, context);
+            try{
+            	// TODO: test for security error thown.
+            	loader.load(url, _context);
+            }catch( e : SecurityError){
+            	onSecurityErrorHandler(e);
+            }
+            
 		};
 		
         public function _onHttpStatusHandler(evt : HTTPStatusEvent) : void{
@@ -42,8 +49,24 @@ package br.com.stimuli.loading.loadingtypes {
         }
         
         override public function onCompleteHandler(evt : Event) : void {
-            _content = loader.content;
-            super.onCompleteHandler(evt);
+        	// TODO: test for the different behaviour when loading items with 
+        	// the a specific crossdomain and without one
+        	try{
+        		// of no crossdomain has allowed this operation, this might
+        		// raise a security error
+	            _content = loader.content;
+	            super.onCompleteHandler(evt);
+	        }catch(e : SecurityError){
+	        	// we can still use the Loader object (no dice for accessing it as data
+	        	// though. Oh boy:
+	        	_content = loader;
+	        	super.onCompleteHandler(evt);
+	        	// I am really unsure whether I should throw this event
+	        	// it would be nice, but simply delegating the error handling to user's code 
+	        	// seems cleaner (and it also mimics the Standar API behaviour on this respect)
+	        	//onSecurityErrorHandler(e);
+	        }
+            
         };
         
         override public function stop() : void{

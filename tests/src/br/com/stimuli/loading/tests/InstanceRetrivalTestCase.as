@@ -99,7 +99,8 @@ package br.com.stimuli.loading.tests {
     		protected override function tearDown():void {
     		    var theMovie : LoadingItem = _bulkLoader.get("the-movie");
     			if(theMovie) theMovie.stop();
-    			BulkLoader.removeAllLoaders();	
+    			BulkLoader.removeAllLoaders();
+            	_bulkLoader = null;	
     		}
     	 	
 
