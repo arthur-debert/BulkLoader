@@ -81,7 +81,7 @@ package br.com.stimuli.loading.loadingtypes {
                 fireCanBeginStreamingEvent();
                 var completeEvent : Event = new Event(Event.COMPLETE);
                 onCompleteHandler(completeEvent);
-            }else if(_bytesTotal == 0 && stream.bytesTotal > 4){
+            }else if(_bytesTotal == 0 && stream && stream.bytesTotal > 4){
             	// just sa
                 var startEvent : Event = new Event(Event.OPEN);
                 onStartedHandler(startEvent);

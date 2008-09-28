@@ -32,8 +32,8 @@ package br.com.stimuli.loading.tests {
             if (this.name == 'testIOError'){
                 theURL = badURL;
             }
-            
-	 		theImageItem = _bulkLoader.add(theURL, {id:"photo"}) as ImageItem;
+            theImageItem = _bulkLoader.add(theURL, {id:"photo"}) as ImageItem;
+	 		
             _bulkLoader.get("photo").addEventListener(BulkLoader.ERROR, onIOError);
 	 		_bulkLoader.get("photo").addEventListener(BulkLoader.COMPLETE, onImageComplete);
 	 		_bulkLoader.start();
@@ -44,7 +44,7 @@ package br.com.stimuli.loading.tests {
         public function onIOError(evt : Event) : void{
             ioError = evt;
             // call the on complete manually 
-            completeHandler(evt);
+            completeHandlerSpecialEvent();
             tearDown();
         }
         
@@ -52,7 +52,7 @@ package br.com.stimuli.loading.tests {
             content = event.target.content;
             contentIsBitmap = event.target.content is Bitmap;
         }
-		protected function completeHandlerSpecialEvent(event:BulkProgressEvent):void {
+		protected function completeHandlerSpecialEvent(event:BulkProgressEvent=null):void {
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandlerSpecialEvent);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
 			super.run();

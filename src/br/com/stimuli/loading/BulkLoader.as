@@ -1473,9 +1473,10 @@ bulkLoader.start(3)
         
         /** This will delete this item from memory. It's content will be inaccessible after that.
         *   @param key A url (as a string or urlrequest) or an id to fetch
+        *   @param internalCall If <code>remove</code> has been called internally. End user code should ignore this. 
         *   @return <code>True</code> if an item with that key has been removed, and <code>false</code> othersiwe.
         *   */
-        public function remove(key : *) : Boolean{      
+        public function remove(key : *, internalCall : Boolean = false) : Boolean{      
             try{
                 var item : LoadingItem;
                 if (key is LoadingItem){
@@ -1489,6 +1490,10 @@ bulkLoader.start(3)
                 _removeFromItems(item);
                 _removeFromConnections(item);
                 item.destroy();
+                // this has to be checked, else a removeAll will trigger events for completion
+                if (internalCall){
+                    return true;
+                }
                 item = null;
                 // checks is removing this item we are done?
                 _onProgress();
@@ -1508,7 +1513,7 @@ bulkLoader.start(3)
         */
         public function removeAll() : void{
             for each (var item : LoadingItem in _items.slice()){
-                remove(item);
+                remove(item, true);
             }
             _items =  [];
             _connections = [];

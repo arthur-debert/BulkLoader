@@ -15,8 +15,8 @@ package br.com.stimuli.loading.tests {
 		public var name : String;
 		public var ioError : Event;
 		
-		var completeFired : Boolean;
-		var progressFired : Boolean;
+		public var completeFired : Boolean;
+		public var progressFired : Boolean;
 		
 		public function StartPausedTest(name : String) : void {
 		  super(name);

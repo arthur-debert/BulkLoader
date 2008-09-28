@@ -4,7 +4,7 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
-<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,VERSION,TYPE_BINARY,TYPE_IMAGE,TYPE_MOVIECLIP,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,AVAILABLE_EXTENSIONS,IMAGE_EXTENSIONS,MOVIECLIP_EXTENSIONS,TEXT_EXTENSIONS,VIDEO_EXTENSIONS,SOUND_EXTENSIONS,XML_EXTENSIONS,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,OPEN,CAN_BEGIN_PLAYING,CHECK_POLICY_FILE,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,PAUSED_AT_START,GENERAL_AVAILABLE_PROPS,DEFAULT_NUM_CONNECTIONS,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_WARNINGS,LOG_ERRORS,LOG_SILENT,DEFAULT_LOG_LEVEL,numConnections,contents,items,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,highestPriority,logFunction,allowsAutoIDFromFileName,speed,id,stringSubstitutions,createUniqueNamedLoader,getUniqueName,getLoader,hasItem,whichLoaderHasItem,add,start,reload,loadNow,registerNewType,getProgressForItems,getNotLoadedItems,changeItemPriority,sortItemsByPriority,getContent,getXML,getText,getSound,getBitmap,getDisplayObjectLoader,getMovieClip,getAVM1Movie,getNetStream,getNetStreamMetaData,getBitmapData,getBinary,getSerializedData,getHttpStatus,getStats,get,remove,removeAll,clear,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,toString" name="keywords">
+<meta content="BulkLoader,br.com.stimuli.loading.BulkLoader,VERSION,TYPE_BINARY,TYPE_IMAGE,TYPE_MOVIECLIP,TYPE_SOUND,TYPE_TEXT,TYPE_XML,TYPE_VIDEO,AVAILABLE_TYPES,AVAILABLE_EXTENSIONS,IMAGE_EXTENSIONS,MOVIECLIP_EXTENSIONS,TEXT_EXTENSIONS,VIDEO_EXTENSIONS,SOUND_EXTENSIONS,XML_EXTENSIONS,PROGRESS,COMPLETE,HTTP_STATUS,ERROR,SECURITY_ERROR,OPEN,CAN_BEGIN_PLAYING,CHECK_POLICY_FILE,PREVENT_CACHING,HEADERS,CONTEXT,ID,PRIORITY,MAX_TRIES,WEIGHT,PAUSED_AT_START,GENERAL_AVAILABLE_PROPS,DEFAULT_NUM_CONNECTIONS,avgLatency,speedAvg,totalTime,LOG_VERBOSE,LOG_INFO,LOG_WARNINGS,LOG_ERRORS,LOG_SILENT,DEFAULT_LOG_LEVEL,numConnections,contents,items,name,loadedRatio,itemsTotal,itemsLoaded,totalWeight,bytesTotal,bytesLoaded,bytesTotalCurrent,percentLoaded,weightPercent,isRunning,isFinished,highestPriority,logFunction,allowsAutoIDFromFileName,speed,id,stringSubstitutions,createUniqueNamedLoader,getUniqueName,getLoader,hasItem,whichLoaderHasItem,add,start,reload,loadNow,registerNewType,getProgressForItems,getNotLoadedItems,changeItemPriority,sortItemsByPriority,getContent,getXML,getText,getSound,getBitmap,getDisplayObjectLoader,getMovieClip,getAVM1Movie,getNetStream,getNetStreamMetaData,getBitmapData,getBinary,getSerializedData,getHttpStatus,getStats,get,remove,removeAll,clear,removeAllLoaders,removePausedItems,removeFailedItems,pause,pauseAll,pauseAllLoaders,resume,resumeAll,toString" name="keywords">
 <title>br.com.stimuli.loading.BulkLoader</title>
 </head>
 <body>
@@ -615,7 +615,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#DEFAULT_LOG_LEVEL">DEFAULT_LOG_LEVEL</a> : int = 20<div class="summaryTableDescription">[static]The logging level <code>BulkLoader</code> will use.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#DEFAULT_LOG_LEVEL">DEFAULT_LOG_LEVEL</a> : int = 4<div class="summaryTableDescription">[static]The logging level <code>BulkLoader</code> will use.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -695,6 +695,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#SECURITY_ERROR">SECURITY_ERROR</a> : String = "securityError"<div class="summaryTableDescription">[static] 
+          The name of the event 
+          </div>
+</td><td class="summaryTableOwnerCol">BulkLoader</td>
+</tr>
+<tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#TYPE_BINARY">TYPE_BINARY</a> : String = "binary"<div class="summaryTableDescription">[static] Tells this class to use a <code>Loader</code> object to load the item.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
@@ -723,7 +729,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#VERSION">VERSION</a> : String = "$Id: BulkLoader.as 218 2008-07-12 18:39:14Z debert $"<div class="summaryTableDescription">[static] Version.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#VERSION">VERSION</a> : String = "$Id: BulkLoader.as 219 2008-08-05 03:48:56Z debert $"<div class="summaryTableDescription">[static] Version.</div>
 </td><td class="summaryTableOwnerCol">BulkLoader</td>
 </tr>
 <tr class="">
@@ -2493,7 +2499,7 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public static const DEFAULT_LOG_LEVEL:int = 20</code><p>The logging level <code>BulkLoader</code> will use. 
+<code>public static const DEFAULT_LOG_LEVEL:int = 4</code><p>The logging level <code>BulkLoader</code> will use. 
         </p><p>
 <span class="label">See also</span>
 </p>
@@ -2698,6 +2704,16 @@ bulkLoader.start(3)
 <code>public static const PROGRESS:String = "progress"</code><p> 
           The name of the event 
           </p></div>
+<a name="SECURITY_ERROR"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">SECURITY_ERROR</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const SECURITY_ERROR:String = "securityError"</code><p> 
+          The name of the event 
+          </p></div>
 <a name="TYPE_BINARY"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -2761,7 +2777,7 @@ bulkLoader.start(3)
 </tr>
 </table>
 <div class="detailBody">
-<code>public static const VERSION:String = "$Id: BulkLoader.as 218 2008-07-12 18:39:14Z debert $"</code><p> Version. Useful for debugging. </p></div>
+<code>public static const VERSION:String = "$Id: BulkLoader.as 219 2008-08-05 03:48:56Z debert $"</code><p> Version. Useful for debugging. </p></div>
 <a name="WEIGHT"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -2776,8 +2792,8 @@ bulkLoader.start(3)
 <hr>
 <br>
 <p></p>
-<center class="copyright">(c) Copyright 2007 Arthur Debert. All Rights Reserved. Project home: http://code.google.com/p/bulk-loader/ ; MIT LICENSE</center>
+<center class="copyright">(c) Copyright 2007 Arthur Debert. All Rights Reserved. Project home:; MIT LICENSE</center>
 </div>
 </body>
 </html>
-<!--(c) Copyright 2007 Arthur Debert. All Rights Reserved. Project home: http://code.google.com/p/bulk-loader/ ; MIT LICENSE-->
+<!--(c) Copyright 2007 Arthur Debert. All Rights Reserved. Project home:; MIT LICENSE-->
