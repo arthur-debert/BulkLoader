@@ -693,6 +693,7 @@ bulkLoader.start(3)
             if (_connections.length >= numConnections){
                 //which item should we remove?
                 var itemToRemove : LoadingItem = _getLeastUrgentOpenedItem();
+                pause(itemToRemove);
                 _removeFromConnections(itemToRemove);
                 itemToRemove.status = null;
             }
