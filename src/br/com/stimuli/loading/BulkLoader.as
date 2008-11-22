@@ -152,7 +152,7 @@ import flash.utils.*;
         /** List of file extensions that will be automagically treated as video for loading. 
         *  Availabe types: flv, f4v, f4p. 
         */
-        public static var VIDEO_EXTENSIONS : Array = ["flv", "f4v", "f4p"];
+        public static var VIDEO_EXTENSIONS : Array = ["flv", "f4v", "f4p", "mp4"];
         /** List of file extensions that will be automagically treated as sound for loading.
         *  Availabe types: mp3, f4a, f4b.
         */
