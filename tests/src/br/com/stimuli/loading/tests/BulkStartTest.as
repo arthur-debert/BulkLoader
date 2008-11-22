@@ -34,7 +34,6 @@ package br.com.stimuli.loading.tests {
 		public function completeHandler(event:Event):void {
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
-	 		trace("dsdd");
 			dispatchEvent(new Event(Event.INIT));
 		}
 		

@@ -114,7 +114,7 @@ package br.com.stimuli.loading.tests {
         }
         
         public function testVideoIsNotPaused() : void{
-            assertTrue(netStreamAtStart.time > 0.1);
+            assertTrue(netStreamAtStart.time > 0);
         }
         
         

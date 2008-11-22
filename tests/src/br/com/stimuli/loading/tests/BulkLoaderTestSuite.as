@@ -9,8 +9,9 @@ package br.com.stimuli.loading.tests {
 	public class BulkLoaderTestSuite extends TestSuite {
 	    public var testClasses : Array = [
 //	    OnErrorTest
+               VideoContentTest,
                  ClearMemoryTest,
-               RemoveAllTest,
+                RemoveAllTest,
 	            ResumeAllTest,
 	            ResumeTest,
 	            RemoveFailedItemTest,
@@ -34,7 +35,6 @@ package br.com.stimuli.loading.tests {
 	            VideoContentPausedAtStartTestCase,
 	            PauseAllResumeTest,
 	            ClearNowTest,
-	            VideoContentTest,
 	            StartPausedTest,
 	            LoaderItemMovieTest,
 	            ProgressEventsTest, 

@@ -632,12 +632,7 @@ bulkLoader.start(3)
         *   @return <code>True</code> if an item with that key is found, <code>false</code> otherwise.
         */
         public function reload(key : *) : Boolean{
-            var item : LoadingItem ;
-            if (key is LoadingItem){
-                item = key;
-            }else{
-                item = get(key);
-            }
+            var item : LoadingItem = get(key);
             if(!item){
                 return false;
             }
@@ -672,12 +667,7 @@ bulkLoader.start(3)
         *   @return <code>True</code> if an item with that key is found, <code>false</code> otherwise.
         */
         public function loadNow(key : *) : Boolean{
-            var item : LoadingItem ;
-            if (key is LoadingItem){
-                item = key;
-            }else{
-                item = get(key);
-            }
+            var item : LoadingItem = get(key); 
             if(!item){
                 return false;
             }
@@ -1464,7 +1454,7 @@ bulkLoader.start(3)
         */
         public function get(key : *) : LoadingItem{
             if(!key) return null;
-            
+            if(key is LoadingItem) return key;
             for each (var item : LoadingItem in _items){
                 if(item._id == key || item.url.url == key || item.url == key || (key is URLRequest && item.url.url == key.url) ){
                     return item;
@@ -1480,12 +1470,7 @@ bulkLoader.start(3)
         *   */
         public function remove(key : *, internalCall : Boolean = false) : Boolean{
             try{
-                var item : LoadingItem;
-                if (key is LoadingItem){
-                    item = key;
-                } else{
-                    item = get(key);
-                }      
+                var item : LoadingItem = get(key);
                 if(!item) {
                     return false;
                 }      
@@ -1581,7 +1566,7 @@ bulkLoader.start(3)
         * @return A <code>Boolean</code> indicating if the object has been stopped.
         */
         public function pause(key : *,  loadsNext : Boolean = false) : Boolean{
-            var item : LoadingItem = key is LoadingItem ? key : get(key);
+            var item : LoadingItem = get(key);
             if(!item) {
                 return false;
             }
