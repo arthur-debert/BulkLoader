@@ -1464,6 +1464,7 @@ bulkLoader.start(3)
         */
         public function get(key : *) : LoadingItem{
             if(!key) return null;
+            
             for each (var item : LoadingItem in _items){
                 if(item._id == key || item.url.url == key || item.url == key || (key is URLRequest && item.url.url == key.url) ){
                     return item;

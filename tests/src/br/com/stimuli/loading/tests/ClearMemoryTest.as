@@ -1,14 +1,15 @@
 package br.com.stimuli.loading.tests {
-	import flash.net.URLRequest;
-	import flash.net.*;
-	import flash.events.*;
-	import flash.utils.*;
+	import br.com.stimuli.loading.BulkLoader;
+	import br.com.stimuli.loading.loadingtypes.*;
+	
 	import flash.display.*;
+	import flash.events.*;
+	import flash.net.*;
+	import flash.utils.*;
+	
 	import kisstest.TestCase;
-import br.com.stimuli.loading.BulkLoader;
-    import br.com.stimuli.loading.loadingtypes.*;
 /**@private*/
-	public class RemoveAllTest extends TestCase { 
+	public class ClearMemoryTest extends TestCase { 
 	    public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
 
@@ -17,7 +18,7 @@ import br.com.stimuli.loading.BulkLoader;
 		
 		
         public var timer : Timer
-		public function RemoveAllTest(name : String) : void {
+		public function ClearMemoryTest(name : String) : void {
 		  super(name);
 		  this.name = name;
 		}
@@ -39,33 +40,12 @@ import br.com.stimuli.loading.BulkLoader;
 	 	
 	 		
 	 		_bulkLoader.start();
-	 		//_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
+	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		//_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
-	 		timer = new Timer (3000, 1);
-	 		timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimeRemove );
-	 		timer.start();
+	 		
 		}
 
-        public function onTimeRemove(evt : Event) : void{
-            timer.stop();
-            _bulkLoader.removeAll();
-            var fileName : String ;
-            for (var i:int = 11; i<21; i++){
-                fileName = "small-" + (i < 10 ? "0" + i : i) + ".jpg";
-                _bulkLoader.add("{base_path}" + fileName, {id:String(i)});
-            }
-            _bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
-            if (name == "testLoadAfterRemoveWithStart"){
-                _bulkLoader.start();
-            }
-        }
         
-        public function onIOError(evt : Event) : void{
-            ioError = evt;
-            // call the on complete manually 
-            completeHandler(evt);
-            tearDown();
-        }
         
 		public function completeHandler(event:Event):void {
             dispatchEvent(new Event(Event.INIT));
@@ -98,25 +78,15 @@ import br.com.stimuli.loading.BulkLoader;
             _bulkLoader = null;	
 		}
 		
-		public function testLoadAfterRemove():void {
-		    for (var i:int = 0; i<11; i++){
-		      assertNull(_bulkLoader.get(String(i)));
-		    }
-		    for (i = 11; i<21; i++){
-		      assertNotNull(_bulkLoader.get(String(i)));
-		    }
-		    
-		 }
-		 
-		 public function testLoadAfterRemoveWithStart():void {
- 		    for (var i:int = 0; i<11; i++){
- 		      assertNull(_bulkLoader.get(String(i)));
- 		    }
- 		    for (i = 11; i<21; i++){
- 		      assertNotNull(_bulkLoader.get(String(i)));
- 		    }
-
+		public function testItemsLoadedIsValidAfterClearMemory() : void{
+		    var keys : Array = [];
+ 		     for each (var item : LoadingItem in _bulkLoader.items){
+ 		         _bulkLoader.getContent(item._id, true);
+ 		         keys.push(item._id);
+ 		     }
+ 		     assertEquals(_bulkLoader.itemsLoaded, 0);
+ 		     
+ 		     assertEquals(0, _bulkLoader.getProgressForItems(keys).itemsLoaded);
  		 }
- 		 
 	}
 }
