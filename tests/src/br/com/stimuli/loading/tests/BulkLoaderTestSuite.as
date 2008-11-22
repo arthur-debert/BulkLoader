@@ -1,5 +1,5 @@
 package br.com.stimuli.loading.tests {
-	import asunit.framework.TestSuite;
+	import kisstest.TestSuite;
 	import flash.events.*;
 	import br.com.stimuli.loading.tests.*;
 	import flash.utils.*;
@@ -47,9 +47,9 @@ package br.com.stimuli.loading.tests {
         public function BulkLoaderTestSuite() {
 		    super();
 		    SoundMixer.soundTransform.volume = 0;
-            testClasses.forEach(function(cl : Class, ...rest):void{addTestsFromClass(cl)})
+            testClasses.forEach(function(cl : Class, ...rest):void{addTestCase(cl)})
 	 		for (var prop : String in testsRun){
-	 		    trace(prop.substring(6, prop.length -1) + " (" + testsRun[prop].length + ")", ":");
+	 		    //trace(prop.substring(6, prop.length -1) + " (" + testsRun[prop].length + ")", ":");
 	 		    for each (var testName : String in testsRun[prop]){
 	 		        //trace("\t",testName );
 	 		    }

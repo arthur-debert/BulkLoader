@@ -1,14 +1,14 @@
 package br.com.stimuli.loading.tests {
-	import asunit.framework.TestCase;
+	import kisstest.TestCase;
     import br.com.stimuli.loading.*;
     import br.com.stimuli.loading.loadingtypes.LoadingItem;
     import flash.net.*;
     import flash.events.*;
     /**@private*/
     	public class StringSubstituionTest extends TestCase {
-    		private var _bulkLoader:BulkLoader;
+    		 public var _bulkLoader:BulkLoader; 
             private var soundURL : URLRequest ;
-            public var name : String;
+            
             public var subs : Object;
     		/**
      		 * Constructor
@@ -24,19 +24,20 @@ package br.com.stimuli.loading.tests {
     	 	 * Prepare for test, create instance of class that we are testing.
     	 	 * Invoked by TestCase.runMethod function.
     	 	 */
-    		protected override function setUp():void {
+    		override public function setUp():void {
     	 		_bulkLoader = new BulkLoader(BulkLoader.getUniqueName());
     	 		_bulkLoader.stringSubstitutions  = {
     	 		    base_path:"http://www.google.com/",
     	 		    service_path:"nuthouse",
     	 		    "stuf-with-bad-chars":"yacks"
     	 		}
+    	 		dispatchEvent(new Event(Event.INIT));
     	 	}
 
     		/**
     	 	 * Clean up after test, delete instance of class that we were testing.
     	 	 */
-    	 	protected override function tearDown():void {
+    	 	override public function tearDown():void {
                 BulkLoader.removeAllLoaders();
             _bulkLoader = null;
     	 	}

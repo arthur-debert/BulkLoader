@@ -1,18 +1,18 @@
 package br.com.stimuli.loading.tests {
-	import asunit.framework.*;
-	
 	import br.com.stimuli.loading.*;
 	import br.com.stimuli.loading.loadingtypes.*;
 	
 	import flash.display.*;
 	import flash.events.*;
 	import flash.net.*;
+	
+	import kisstest.TestCase;
 /**@private*/
-	public class LoaderImageItemTest extends AsynchronousTestCase {
-		public var _bulkLoader : BulkLoader;
+	public class LoaderImageItemTest extends TestCase { 
+	    public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
 
-		public var name : String;
+		
 		public var ioError : Event;
 		
 		public var theImageItem : ImageItem;
@@ -28,7 +28,7 @@ package br.com.stimuli.loading.tests {
 		  this.name = name;
 		}
 		// Override the run method and begin the request for remote data
-		public override function run():void {
+		public override function setUp():void {
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
             var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/shoes.jpg";
             var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-image.jpg"
@@ -60,13 +60,14 @@ package br.com.stimuli.loading.tests {
 		protected function completeHandlerSpecialEvent(event:BulkProgressEvent=null):void {
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandlerSpecialEvent);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
-			super.run();
+	 		var e : Event= new Event(Event.INIT);
+			dispatchEvent(e);
 		}
 		
 		
 		/** This also works as an assertion that event progress will never be NaN
 		*/
-		protected override function progressHandler(event:ProgressEvent):void {
+		 public function progressHandler(event:ProgressEvent):void {
 		    //var evt : * = event as Object;
 			var current : Number= Math.floor((event as Object).percentLoaded * 100) /100;
 			var delta : Number = current - lastProgress;
@@ -83,11 +84,9 @@ package br.com.stimuli.loading.tests {
 		}
 		
 		
-		protected override function setUp():void {
 
-		}
 		
-		protected override function tearDown():void {
+		override public function tearDown():void {
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;	
 		}

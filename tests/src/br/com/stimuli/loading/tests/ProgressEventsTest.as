@@ -1,6 +1,5 @@
 package br.com.stimuli.loading.tests {
-	import asunit.framework.*;
-	
+	import kisstest.TestCase
 	import br.com.stimuli.loading.*;
 	import br.com.stimuli.loading.loadingtypes.*;
 	
@@ -8,11 +7,11 @@ package br.com.stimuli.loading.tests {
 	import flash.events.*;
 	import flash.net.*;
     /**@private*/
-	public class ProgressEventsTest extends AsynchronousTestCase {
-		public var _bulkLoader : BulkLoader;
+	public class ProgressEventsTest extends TestCase { 
+	    public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
 
-		public var name : String;
+		
 		public var ioError : Event;
 		
 		public var percentLoadedWentDown : Boolean;
@@ -60,16 +59,16 @@ package br.com.stimuli.loading.tests {
             tearDown();
         }
         
-		protected override function completeHandler(event:Event):void {
+		public function completeHandler(event:Event):void {
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
-			super.run();
+			dispatchEvent(new Event(Event.INIT));
 		}
 		
 		
 		/** This also works as an assertion that event progress will never be NaN
 		*/
-		protected override function progressHandler(anEvent:ProgressEvent):void {
+		 public function progressHandler(anEvent:ProgressEvent):void {
 		    var event : BulkProgressEvent = anEvent as BulkProgressEvent;
 		    //var evt : * = event as Object;
 			var current :Number = Math.floor((event as Object).percentLoaded * 100) /100;
@@ -126,11 +125,11 @@ package br.com.stimuli.loading.tests {
 		}
 		
 		
-		protected override function setUp():void {
+		override public function setUp():void {
 
 		}
 		
-		protected override function tearDown():void {
+		override public function tearDown():void {
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;	
 		}

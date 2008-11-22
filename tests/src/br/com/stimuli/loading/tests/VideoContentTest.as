@@ -3,17 +3,17 @@ package br.com.stimuli.loading.tests {
 	import flash.net.*;
 	import flash.events.*;
 	import flash.utils.getTimer;
-	import asunit.framework.*;
+	import kisstest.TestCase;
 	import br.com.stimuli.loading.BulkLoader;
     import br.com.stimuli.loading.loadingtypes.*;
     /**@private*/
-	public class VideoContentTest extends AsynchronousTestCase {
+	public class VideoContentTest extends TestCase {
 		public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
 		public var startEventFiredTime : Number;
 		public var canBeginPlayingCount : int = 0;
 		public var netStreamAtStart : NetStream;
-		public var name : String;
+		
 		public var ioError : Event;
 		
 		public function VideoContentTest(name: String) : void {
@@ -48,10 +48,10 @@ package br.com.stimuli.loading.tests {
             tearDown();
         }
         
-		protected override function completeHandler(event:Event):void {
+		public function completeHandler(event:Event):void {
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
-			super.run();
+			dispatchEvent(new Event(Event.INIT));
 		}
 		
 		public function onHasBeginPlayerFiredHandler(event : Event) : void{
@@ -59,7 +59,7 @@ package br.com.stimuli.loading.tests {
 		}
 		/** This also works as an assertion that event progress will never be NaN
 		*/
-		protected override function progressHandler(event:ProgressEvent):void {
+		 public function progressHandler(event:ProgressEvent):void {
 		    //var evt : * = event as Object;
 			var current :Number= Math.floor((event as Object).percentLoaded * 100) /100;
 			var delta : Number = current - lastProgress;
@@ -80,11 +80,11 @@ package br.com.stimuli.loading.tests {
 		    netStreamAtStart = evt.target.content;
 		}
 		
-		protected override function setUp():void {
+		override public function setUp():void {
 
 		}
 		
-		protected override function tearDown():void {
+		override public function tearDown():void {
 			// destroy the class under test instance
 			var theMovie : LoadingItem = _bulkLoader.get("the-movie");
 			if(theMovie) theMovie.stop();

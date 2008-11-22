@@ -1,26 +1,24 @@
 package br.com.stimuli.loading.tests {
-	import asunit.framework.*;
-	
+	import kisstest.TestCase
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.loadingtypes.*;
 	
 	import flash.events.*;
 	import flash.media.Sound;
     /**@private*/
-	public class AudioContentTest extends AsynchronousTestCase {
-		public var _bulkLoader : BulkLoader;
+	public class AudioContentTest extends TestCase { public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
 		public var sound : Sound;
 		public var sound1 : Sound;
 		
 		public var ioError : Event;
-		public var name : String;
+		
 		public function AudioContentTest(name : String) : void {
 		  super(name);
 		  this.name  = name;
 		}
 		// Override the run method and begin the request for remote data
-		public override function run():void {
+		public override function setUp():void {
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName());
             var goodSoundURL : String = "http://www.emptywhite.com/bulkloader-assets/chopin.mp3";
             var badSoundURL : String = "http://www.emptywhite.com/bulkloader-assets/badchopin.mp3"
@@ -43,15 +41,15 @@ package br.com.stimuli.loading.tests {
             completeHandler(evt);
         } 
         
-		protected override function completeHandler(event:Event):void {
+		public function completeHandler(event:Event):void {
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
-			super.run();
+			super.setUp();
 		}
 		
 		/** This also works as an assertion that event progress will never be NaN
 		*/
-		protected override function progressHandler(event:ProgressEvent):void {
+		 public function progressHandler(event:ProgressEvent):void {
 		    //var evt : * = event as Object;
 			var current : Number = Math.floor((event as Object).percentLoaded * 100) /100;
 			if (current > lastProgress){
@@ -66,11 +64,10 @@ package br.com.stimuli.loading.tests {
 			}
 			//trace("event", (event as Object).percentLoaded, current);
 		}
-		protected override function setUp():void {
-		}
+
 		
 		
-		protected override function tearDown():void {
+		override public function tearDown():void {
 			// destroy the class under test instance
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;

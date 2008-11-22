@@ -2,15 +2,16 @@
 	Copyright 2008 __MyCompanyName__.
 */
 package br.com.stimuli.loading.tests {
-	import asunit.framework.TestCase;
+	import kisstest.TestCase;
     import br.com.stimuli.loading.BulkLoader;
     import br.com.stimuli.loading.loadingtypes.LoadingItem;
     import flash.net.*;
+    import flash.events.Event;
     /**@private*/
     	public class GuessTypeTest extends TestCase {
-    		private var _bulkLoader:BulkLoader;
+    		public var _bulkLoader:BulkLoader;
             private var soundURL : URLRequest ;
-            private var name : String;
+            
     		/**
      		 * Constructor
      		 *
@@ -25,18 +26,19 @@ package br.com.stimuli.loading.tests {
     	 	 * Prepare for test, create instance of class that we are testing.
     	 	 * Invoked by TestCase.runMethod function.
     	 	 */
-    		protected override function setUp():void {
+    		override public function setUp():void {
     	 		_bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
     	 		soundURL = new URLRequest("http://www.emptywhite.com/bulkloader-assets/chopin.mp3");
     	 		_bulkLoader.add(soundURL, {id:"the-sound"});
     	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true});
     	 		_bulkLoader.start();
+    	 		dispatchEvent(new Event(Event.INIT));
     	 	}
 
     		/**
     	 	 * Clean up after test, delete instance of class that we were testing.
     	 	 */
-    	 	protected override function tearDown():void {
+    	 	override public function tearDown():void {
 var theMovie : LoadingItem = _bulkLoader.get("the-movie");
 			if(theMovie) theMovie.stop();
     	 		BulkLoader.removeAllLoaders();

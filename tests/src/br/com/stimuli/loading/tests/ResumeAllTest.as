@@ -4,15 +4,15 @@ package br.com.stimuli.loading.tests {
 	import flash.events.*;
 	import flash.utils.*;
 	import flash.display.*;
-	import asunit.framework.*;
-	import br.com.stimuli.loading.BulkLoader;
+	import kisstest.TestCase;
+import br.com.stimuli.loading.BulkLoader;
     import br.com.stimuli.loading.loadingtypes.*;
 /**@private*/
-	public class ResumeAllTest extends AsynchronousTestCase {
-		public var _bulkLoader : BulkLoader;
+	public class ResumeAllTest extends TestCase { 
+	    public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
         public var neverStopped : Boolean;
-		public var name : String;
+		
 		public var ioError : Event;
 		public var timer : Timer;
 		public function ResumeAllTest(name : String) : void {
@@ -40,11 +40,11 @@ package br.com.stimuli.loading.tests {
             tearDown();
         }
         
-		protected override function completeHandler(event:Event):void {
+		public function completeHandler(event:Event):void {
 		    trace(_bulkLoader.getStats());
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
-			super.run();
+			dispatchEvent(new Event(Event.INIT));
 		}
 		
 		public function doResume(evt : Event) : void{
@@ -53,7 +53,7 @@ package br.com.stimuli.loading.tests {
 		}
 		/** This also works as an assertion that event progress will never be NaN
 		*/
-		protected override function progressHandler(event:ProgressEvent):void {
+		 public function progressHandler(event:ProgressEvent):void {
 		    if(!_bulkLoader.get("text").status != LoadingItem.STATUS_STOPPED && neverStopped){
 		        _bulkLoader.pauseAll();
 		        timer = new Timer(1000, 1);
@@ -77,11 +77,11 @@ package br.com.stimuli.loading.tests {
 		}
 		
 		
-		protected override function setUp():void {
+		override public function setUp():void {
 
 		}
 		
-		protected override function tearDown():void {
+		override public function tearDown():void {
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;	
 		}

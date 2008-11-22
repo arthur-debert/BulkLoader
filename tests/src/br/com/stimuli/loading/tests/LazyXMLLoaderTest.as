@@ -4,17 +4,17 @@ package br.com.stimuli.loading.tests {
 	import flash.events.*;
 	import flash.utils.getTimer;
 	import flash.display.*;
-	import asunit.framework.*;
-	import br.com.stimuli.loading.BulkLoader;
+	import kisstest.TestCase;
+import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.BulkProgressEvent;
     import br.com.stimuli.loading.loadingtypes.*;
     import br.com.stimuli.loading.lazyloaders.*;
 /**@private*/
-	public class LazyXMLLoaderTest extends AsynchronousTestCase {
-		public var _bulkLoader : LazyXMLLoader;
+	public class LazyXMLLoaderTest extends TestCase { 
+	    public var _bulkLoader : LazyXMLLoader;
 		public var lastProgress : Number = 0;
 
-		public var name : String;
+		
 		public var ioError : Event;
 		public var numItemCompleteFires : int = 0;
 		
@@ -24,7 +24,7 @@ package br.com.stimuli.loading.tests {
 		  this.name = name;
 		}
 		// Override the run method and begin the request for remote data
-		public override function run():void {
+		public override function setUp():void {
             _bulkLoader = new LazyXMLLoader("http://www.emptywhite.com/bulkloader-assets/lazyloader.xml", BulkLoader.getUniqueName(), 2, 10);
             _bulkLoader.addEventListener(LazyBulkLoader.LAZY_COMPLETE, onLazyComplete);
             _bulkLoader.addEventListener("complete", completeHandler);
@@ -51,14 +51,14 @@ package br.com.stimuli.loading.tests {
         
 
         
-		protected override function completeHandler(event:Event):void {
-			super.run();
+		public function completeHandler(event:Event):void {
+			dispatchEvent(new Event(Event.INIT));
 		}
 		
 		
 		/** This also works as an assertion that event progress will never be NaN
 		*/
-		protected override function progressHandler(event:ProgressEvent):void {
+		 public function progressHandler(event:ProgressEvent):void {
 		    var percentLoaded : Number = event.bytesLoaded/ event.bytesTotal;
 			var current :Number = Math.floor(percentLoaded * 100) /100;
 			var o : Object = event as Object;
@@ -70,11 +70,9 @@ package br.com.stimuli.loading.tests {
 			}	
 		}
 		
-		protected override function setUp():void {
 
-		}
 		
-		protected override function tearDown():void {
+		override public function tearDown():void {
 			//_bulkLoader.removeAll();	
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;

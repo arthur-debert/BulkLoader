@@ -1,6 +1,5 @@
 package br.com.stimuli.loading.tests {
-	import asunit.framework.*;
-	
+	import kisstest.TestCase
 	import br.com.stimuli.loading.BulkErrorEvent;
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.loadingtypes.*;
@@ -10,11 +9,11 @@ package br.com.stimuli.loading.tests {
 	import flash.net.*;
 	import flash.utils.*;
 /**@private*/
-	public class OnErrorTest extends AsynchronousTestCase {
-		public var _bulkLoader : BulkLoader;
+	public class OnErrorTest extends TestCase { 
+	    public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
 
-		public var name : String;
+		
 		public var errorEvent : BulkErrorEvent;
 		
 		
@@ -54,23 +53,24 @@ package br.com.stimuli.loading.tests {
                 tearDown();
             }
         }
-		protected override function completeHandler(event:Event):void {
+		public function completeHandler(event:Event):void {
 		    trace("COMPLETE RAN om test ", name);
 			//super.run();
+			dispatchEvent(new Event(Event.INIT));
 		}
 		
 
 		/** This also works as an assertion that event progress will never be NaN
 		*/
-		protected override function progressHandler(event:ProgressEvent):void {
+		 public function progressHandler(event:ProgressEvent):void {
 		}
 		
 		
-		protected override function setUp():void {
+		override public function setUp():void {
 
 		}
 		
-		protected override function tearDown():void {
+		override public function tearDown():void {
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;	
 		}
