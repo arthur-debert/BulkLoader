@@ -262,7 +262,7 @@ import flash.utils.*;
         /** @private */
         public var _items : Array = [];
         /** @private */
-        public var _contents : Dictionary = new Dictionary();
+        public var _contents : Dictionary = new Dictionary(true);
         /** @private */
         public static var _allLoaders : Object = {};
         /** @private */
@@ -1489,6 +1489,7 @@ bulkLoader.start(3)
                 }      
                 _removeFromItems(item);
                 _removeFromConnections(item);
+                delete _contents[item.url.url];
                 item.destroy();
                 // this has to be checked, else a removeAll will trigger events for completion
                 if (internalCall){
