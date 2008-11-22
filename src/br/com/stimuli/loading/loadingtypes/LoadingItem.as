@@ -46,28 +46,28 @@ package br.com.stimuli.loading.loadingtypes {
      *
      *  @eventType flash.events.ProgressEvent.PROGRESS
      */
-    [Event(name="progress", type="flash.events.ProgressEvent.PROGRESS")]
+    [Event(name="progress", type="flash.events.ProgressEvent")]
 
     /**
      *  Dispatched when all the item has been fully downloaded and is ready for use..
      *
      *  @eventType flash.events.ProgressEvent.COMPLETE
      */
-    [Event(name="complete", type="flash.events.ProgressEvent.COMPLETE")]
+    [Event(name="complete", type="flash.events.Event")]
     
     /**
      *  Dispatched when the connection has been stablished and the download has begun. For types that can be streamed such as videos (<code>NetStream</code>) and sound(<code>Sound</code>), it's content is will be available after this event has fired.
      *
      *  @eventType flash.events.Event.OPEN
      */
-    [Event(name="open", type="flash.events.Event.OPEN")]
+    [Event(name="open", type="flash.events.Event")]
     
     /**
      *  Dispatched when the the netStream can be played until the end with no interuption expected. Only fires for TYPE_VIDEO items and will only fire once.
      *
      *  @eventType br.com.stimuli.loading.BulkLoader.CAN_BEGIN_PLAYING
      */
-    [Event(name="canBeginPlaying", type="br.com.stimuli.loading.BulkLoader.CAN_BEGIN_PLAYING")]
+    [Event(name="canBeginPlaying", type="br.com.stimuli.loading.BulkLoader")]
     
     /**
     *   An class used in <code>BulkLoader</code> instances.<p/>.
