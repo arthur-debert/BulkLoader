@@ -49,6 +49,7 @@ package br.com.stimuli.loading.lazyloaders{
         public function set decodeFunc(value:Function) : void { 
             _decodeFunc = value; 
         }
+    	
     	lazy_loader override function _lazyParseLoader(withData : String) : void{
     	    var source : Object = decodeFunc(withData);
     		stringSubstitutions = source["stringSubstitutions"] || undefined;

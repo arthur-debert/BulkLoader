@@ -35,9 +35,9 @@ package asunit.framework {
 		public function addError(test:Test, t:Error):void {
 			fErrors.push(new TestFailure(test, t));
 			var len:uint = fListeners.length;
-			var item:TestListener;
+			var item:*;
 			for(var i:uint; i < len; i++) {
-				item = TestListener(fListeners[i]);
+				item = (fListeners[i]);
 				item.addError(test, t);
 			}
 		}
@@ -48,22 +48,22 @@ package asunit.framework {
 		public function addFailure(test:Test, t:AssertionFailedError):void {
 			fFailures.push(new TestFailure(test, t));
 			var len:uint = fListeners.length;
-			var item:TestListener;
+			var item:*;
 			for(var i:uint; i < len; i++) {
-				item = TestListener(fListeners[i]);
+				item = (fListeners[i]);
 				item.addFailure(test, t);
 			}
 		}
 		/**
 		 * Registers a TestListener
 		 */
-		public function addListener(listener:TestListener):void {
+		public function addListener(listener: *):void {
 			fListeners.push(listener);
 		}
 		/**
 		 * Unregisters a TestListener
 		 */
-		public function removeListener(listener:TestListener):void {
+		public function removeListener(listener:*):void {
 			var len:uint = fListeners.length;
 			for(var i:uint; i < len; i++) {
 				if(fListeners[i] == listener) {
@@ -125,10 +125,10 @@ package asunit.framework {
 			fRunTests += count;
 
 			var len:uint = fListeners.length;
-			var item:TestListener;
+			var item:*;
 			for(var i:uint; i < len; i++) {
-				item = TestListener(fListeners[i]);
-				item.startTest(test);
+				item = (fListeners[i]);
+				item.onTestStart(test);
 			}
 		}
 		/**
@@ -136,10 +136,10 @@ package asunit.framework {
 		 */
 		public function endTest(test:Test):void {
 			var len:uint = fListeners.length;
-			var item:TestListener;
+			var item:*;
 			for(var i:uint; i < len; i++) {
-				item = TestListener(fListeners[i]);
-				item.endTest(test);
+				item = (fListeners[i]);
+				item.onTestEnd(test);
 			}
 		}
 		/**

@@ -334,7 +334,7 @@ package asunit.framework {
 			if(true) {
 				tearDown();
 				trace("tear down ", fName );
-				layoutManager.resetAll();
+				//layoutManager.resetAll();
 			}
 			setTimeout(runBare, 5);
 		}
