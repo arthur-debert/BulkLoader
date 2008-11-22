@@ -57,6 +57,7 @@ package br.com.stimuli.loading.tests {
 
 		
 		override public function tearDown():void {
+		    _bulkLoader.clear();
 			_bulkLoader.removeAll();	
 		}
 		

@@ -19,7 +19,7 @@ import br.com.stimuli.loading.BulkLoader;
 		  this.name = name;
 		}
 		// Override the run method and begin the request for remote data
-		public override function run():void {
+		public override function setUp():void {
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
             var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/some-text.txt";
             var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-text.txt"
@@ -40,7 +40,7 @@ import br.com.stimuli.loading.BulkLoader;
             ioError = evt;
             // call the on complete manually 
             completeHandler(evt);
-            tearDown();
+            
         }
         
 		public function completeHandler(event:Event):void {
@@ -69,11 +69,9 @@ import br.com.stimuli.loading.BulkLoader;
 		}
 		
 		
-		override public function setUp():void {
-
-		}
-		
+				
 		override public function tearDown():void {
+		    _bulkLoader.clear();
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;	
 		}

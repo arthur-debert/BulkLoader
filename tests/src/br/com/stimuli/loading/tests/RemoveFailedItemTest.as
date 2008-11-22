@@ -18,7 +18,7 @@ package br.com.stimuli.loading.tests {
 		  this.name = name;
 		}
 		// Override the run method and begin the request for remote data
-		public override function run():void {
+		public override function setUp():void {
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
             _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/bad-some-text.jpg", {"priority":-200, id:"text"});
             _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/badshoes.jpg", {"priority":-200, id:"photo"});
@@ -37,7 +37,7 @@ package br.com.stimuli.loading.tests {
             var allFailed : Boolean = evt.errors.length == _bulkLoader.items.length;
             if(allFailed){
                 completeHandler(evt);
-                tearDown();
+                
             }
             // call the on complete manually 
             
@@ -69,12 +69,9 @@ package br.com.stimuli.loading.tests {
 			}
 		}
 		
-		
-		override public function setUp():void {
 
-		}
-		
 		override public function tearDown():void {
+		    _bulkLoader.clear();
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;	
 		}

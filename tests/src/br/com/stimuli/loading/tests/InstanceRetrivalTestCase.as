@@ -39,7 +39,7 @@ package br.com.stimuli.loading.tests {
     	 		_bulkLoader.add(soundURL, {id:"the-sound"});
     	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true});
                 _bulkLoader.start();
-    	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/chopin.mp3", {id:"the-sound"});
+    	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/sound-short.mp3", {id:"the-sound"});
                 _bulkLoader2 = BulkLoader.createUniqueNamedLoader()
                 b2Name = _bulkLoader2.name;
                 _bulkLoader2.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {id:"xml"});
@@ -96,8 +96,7 @@ package br.com.stimuli.loading.tests {
 
 
     		override public function tearDown():void {
-    		    var theMovie : LoadingItem = _bulkLoader.get("the-movie");
-    			if(theMovie) theMovie.stop();
+    		    _bulkLoader.clear();
     			BulkLoader.removeAllLoaders();
             	_bulkLoader = null;	
     		}
@@ -170,7 +169,6 @@ package br.com.stimuli.loading.tests {
             public function testWhichLoaderHasItem() : void{
                 assertEquals(BulkLoader.whichLoaderHasItem("the-movie"), _bulkLoader);
                 assertFalse(BulkLoader.whichLoaderHasItem("the-movie") == _bulkLoader2);
-                BulkLoader.__debug_print_num_loaders();
                 assertEquals(BulkLoader.whichLoaderHasItem("xml"), _bulkLoader2);
             }
             

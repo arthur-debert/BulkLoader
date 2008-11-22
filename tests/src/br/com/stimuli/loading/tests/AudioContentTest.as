@@ -20,7 +20,7 @@ package br.com.stimuli.loading.tests {
 		// Override the run method and begin the request for remote data
 		public override function setUp():void {
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName());
-            var goodSoundURL : String = "http://www.emptywhite.com/bulkloader-assets/chopin.mp3";
+            var goodSoundURL : String = "http://www.emptywhite.com/bulkloader-assets/sound-short.mp3";
             var badSoundURL : String = "http://www.emptywhite.com/bulkloader-assets/badchopin.mp3"
             var theURL : String = goodSoundURL;
             if (this.name == 'testIOError'){
@@ -44,7 +44,7 @@ package br.com.stimuli.loading.tests {
 		public function completeHandler(event:Event):void {
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
-			super.setUp();
+			dispatchEvent(new Event(Event.INIT));
 		}
 		
 		/** This also works as an assertion that event progress will never be NaN
@@ -69,6 +69,7 @@ package br.com.stimuli.loading.tests {
 		
 		override public function tearDown():void {
 			// destroy the class under test instance
+			_bulkLoader.clear();
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;
 		}

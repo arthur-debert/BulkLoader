@@ -1477,7 +1477,7 @@ bulkLoader.start(3)
         *   @param internalCall If <code>remove</code> has been called internally. End user code should ignore this. 
         *   @return <code>True</code> if an item with that key has been removed, and <code>false</code> othersiwe.
         *   */
-        public function remove(key : *, internalCall : Boolean = false) : Boolean{      
+        public function remove(key : *, internalCall : Boolean = false) : Boolean{
             try{
                 var item : LoadingItem;
                 if (key is LoadingItem){
@@ -1490,8 +1490,8 @@ bulkLoader.start(3)
                 }      
                 _removeFromItems(item);
                 _removeFromConnections(item);
-                delete _contents[item.url.url];
                 item.destroy();
+                delete _contents[item.url.url];
                 // this has to be checked, else a removeAll will trigger events for completion
                 if (internalCall){
                     return true;

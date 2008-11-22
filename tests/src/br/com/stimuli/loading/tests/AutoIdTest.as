@@ -1,9 +1,11 @@
 package br.com.stimuli.loading.tests {
+	import br.com.stimuli.loading.*;
+	import br.com.stimuli.loading.loadingtypes.LoadingItem;
+	
+	import flash.events.*;
+	import flash.net.*;
+	
 	import kisstest.TestCase;
-    import br.com.stimuli.loading.*;
-    import br.com.stimuli.loading.loadingtypes.LoadingItem;
-    import flash.net.*;
-    import flash.events.*;
     /**@private*/
     	public class AutoIdTest extends TestCase {
     		 public var _bulkLoader:BulkLoader;
@@ -26,13 +28,14 @@ package br.com.stimuli.loading.tests {
     	 	 */
     		override public function setUp():void {
     	 		_bulkLoader = new BulkLoader(BulkLoader.getUniqueName()); 
-    	 		super.setUp();
+    	 		dispatchEvent( new Event(Event.INIT));
     	 	}
 
     		/**
     	 	 * Clean up after test, delete instance of class that we were testing.
     	 	 */
     	 	override public function tearDown():void {
+    	 	    _bulkLoader.clear();
                 BulkLoader.removeAllLoaders();
                 _bulkLoader = null;
     	 	}

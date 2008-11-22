@@ -1,14 +1,15 @@
 package br.com.stimuli.loading.tests {
-	import flash.net.URLRequest;
-	import flash.net.*;
-	import flash.events.*;
-	import flash.utils.getTimer;
+	import br.com.stimuli.loading.BulkLoader;
+	import br.com.stimuli.loading.lazyloaders.*;
+	import br.com.stimuli.loading.loadingtypes.*;
+	
+	import com.adobe.serialization.json.JSON;
+	
 	import flash.display.*;
+	import flash.events.*;
+	import flash.net.*;
+	
 	import kisstest.TestCase;
-import br.com.stimuli.loading.BulkLoader;
-	import br.com.stimuli.loading.BulkProgressEvent;
-    import br.com.stimuli.loading.loadingtypes.*;
-    import br.com.stimuli.loading.lazyloaders.*;
 /**@private*/
 	public class LazyXMLLoaderTest extends TestCase { 
 	    public var _bulkLoader : LazyXMLLoader;
@@ -22,6 +23,7 @@ import br.com.stimuli.loading.BulkLoader;
 		 // todo: test audio context,  loader context, events for entire loader, events for each item
 		  super(name);
 		  this.name = name;
+		  com.adobe.serialization.json.JSON;
 		}
 		// Override the run method and begin the request for remote data
 		public override function setUp():void {
@@ -73,7 +75,7 @@ import br.com.stimuli.loading.BulkLoader;
 
 		
 		override public function tearDown():void {
-			//_bulkLoader.removeAll();	
+		    _bulkLoader.clear();
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;
 		}

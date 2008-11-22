@@ -20,7 +20,7 @@ import br.com.stimuli.loading.BulkLoader;
 		  this.name = name;
 		}
 		// Override the run method and begin the request for remote data
-		public override function run():void {
+		public override function setUp():void {
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
             var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/large-file.txt";
             
@@ -41,7 +41,7 @@ import br.com.stimuli.loading.BulkLoader;
         }
         
 		public function completeHandler(event:Event):void {
-		    trace(_bulkLoader.getStats());
+		    //trace(_bulkLoader.getStats());
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
 			dispatchEvent(new Event(Event.INIT));
@@ -76,12 +76,10 @@ import br.com.stimuli.loading.BulkLoader;
 			}
 		}
 		
-		
-		override public function setUp():void {
 
-		}
 		
 		override public function tearDown():void {
+		    _bulkLoader.clear();
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;	
 		}

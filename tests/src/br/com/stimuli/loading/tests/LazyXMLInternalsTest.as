@@ -59,6 +59,7 @@ import br.com.stimuli.loading.BulkLoader;
 
 		
 		override public function tearDown():void {
+            lazyLoader.clear();
 			lazyLoader.removeAll();	
 			BulkLoader.removeAllLoaders();
             lazyLoader = null;

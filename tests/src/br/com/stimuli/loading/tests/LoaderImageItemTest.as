@@ -49,7 +49,7 @@ package br.com.stimuli.loading.tests {
             ioError = evt;
             // call the on complete manually 
             completeHandlerSpecialEvent();
-            tearDown();
+           // tearDown();
         }
         
         public function onImageComplete(event : Event) : void{
@@ -87,6 +87,7 @@ package br.com.stimuli.loading.tests {
 
 		
 		override public function tearDown():void {
+		    _bulkLoader.clear();
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;	
 		}

@@ -21,7 +21,7 @@ package br.com.stimuli.loading.tests {
 		  this.name = name;
 		}
 		
-		public override function run():void {
+		public override function setUp():void {
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
 	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true, preventCache:true});
 	 		_bulkLoader.get("the-movie").addEventListener(BulkLoader.OPEN, onVideoStartHandler);
@@ -65,13 +65,10 @@ package br.com.stimuli.loading.tests {
 		    netStreamAtStart = evt.target.content;
 		}
 
-		override public function setUp():void {
-
-		}
+		
 
 		override public function tearDown():void {
-			// destroy the class under test instance
-			_bulkLoader.getNetStream("the-movie").close();
+			_bulkLoader.clear();
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;
 		}

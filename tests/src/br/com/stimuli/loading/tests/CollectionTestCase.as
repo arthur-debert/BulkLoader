@@ -38,8 +38,7 @@ package br.com.stimuli.loading.tests {
     	 	 * Clean up after test, delete instance of class that we were testing.
     	 	 */
     	 	override public function tearDown():void {
-            var theMovie : LoadingItem = _bulkLoader.get("the-movie");
-			if(theMovie) theMovie.stop();
+            _bulkLoader.clear();
             BulkLoader.removeAllLoaders();
             _bulkLoader = null;
             //trace("REMOVED ALL _bulkLoader.itemsTotal", _bulkLoader.itemsTotal);

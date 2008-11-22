@@ -18,29 +18,13 @@ package br.com.stimuli.loading.tests {
 		  super(name);
 		  this.name = name;
 		}
-		// Override the run method and begin the request for remote data
-		public override function run():void {
-            _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
-            var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/samplexml.xml";
-            var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-samplexml.xml"
-            var theURL : String = goodURL;
-            if (this.name == 'testIOError'){
-                theURL = badURL;
-            }
-            
-	 		_bulkLoader.add(theURL, {id:"text"});
-            _bulkLoader.get("text").addEventListener(BulkLoader.ERROR, onIOError);
-	 		
-	 		_bulkLoader.start();
-	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
-	 		_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
-		}
+		
 
         public function onIOError(evt : Event) : void{
             ioError = evt;
             // call the on complete manually 
             completeHandler(evt);
-            tearDown();
+            
         }
         
 		public function completeHandler(event:Event):void {
@@ -70,10 +54,24 @@ package br.com.stimuli.loading.tests {
 		
 		
 		override public function setUp():void {
-
+            _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
+            var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/samplexml.xml";
+            var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-samplexml.xml"
+            var theURL : String = goodURL;
+            if (this.name == 'testIOError'){
+                theURL = badURL;
+            }
+            
+	 		_bulkLoader.add(theURL, {id:"text"});
+            _bulkLoader.get("text").addEventListener(BulkLoader.ERROR, onIOError);
+	 		
+	 		_bulkLoader.start();
+	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
+	 		_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
 		}
 		
 		override public function tearDown():void {
+		    _bulkLoader.clear();
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;	
 		}

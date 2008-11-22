@@ -21,7 +21,7 @@ package br.com.stimuli.loading.tests {
 		  this.name= name;
 		}
 		// Override the run method and begin the request for remote data
-		public override function run():void {
+		public override function setUp():void {
             _bulkLoader  = new BulkLoader(BulkLoader.getUniqueName());
             
             var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/movie.flv";
@@ -45,7 +45,7 @@ package br.com.stimuli.loading.tests {
             ioError = evt;
             // call the on complete manually 
             completeHandler(evt);
-            tearDown();
+          
         }
         
 		public function completeHandler(event:Event):void {
@@ -80,23 +80,12 @@ package br.com.stimuli.loading.tests {
 		    netStreamAtStart = evt.target.content;
 		}
 		
-		override public function setUp():void {
-
-		}
+		
 		
 		override public function tearDown():void {
-			// destroy the class under test instance
-			var theMovie : LoadingItem = _bulkLoader.get("the-movie");
-			if(theMovie) theMovie.stop();
-			
-			try{
-			    netStreamAtStart.close()
-			}catch(e : Error){
-			    
-			}
-			//BulkLoader.removeAllLoaders();
-            //_bulkLoader = null;
-			
+			_bulkLoader.clear();
+			BulkLoader.removeAllLoaders();
+            _bulkLoader = null;
 		}
 		
 		public function testVideoContent():void {

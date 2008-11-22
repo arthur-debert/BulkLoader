@@ -22,7 +22,7 @@ import br.com.stimuli.loading.BulkLoader;
 		  this.name = name;
 		}
 		// Override the run method and begin the request for remote data
-		public override function run():void {
+		public override function setUp():void {
 		    var numCon : int = 1;
 		    if (name == "testLoadAfterRemoveWithStart") numCon = 7;
 		    
@@ -90,12 +90,10 @@ import br.com.stimuli.loading.BulkLoader;
 			}
 		}
 		
-		
-		override public function setUp():void {
 
-		}
 		
 		override public function tearDown():void {
+		    _bulkLoader.clear();
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;	
 		}

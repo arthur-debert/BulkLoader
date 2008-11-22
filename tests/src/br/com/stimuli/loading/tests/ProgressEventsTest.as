@@ -34,7 +34,7 @@ package br.com.stimuli.loading.tests {
 		  this.name = name;
 		}
 		// Override the run method and begin the request for remote data
-		public override function run():void {
+		public override function setUp():void {
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
             var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/samplexml.xml";
             var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-samplexml.xml"
@@ -123,13 +123,10 @@ package br.com.stimuli.loading.tests {
 			    }
 			}
 		}
-		
-		
-		override public function setUp():void {
 
-		}
 		
 		override public function tearDown():void {
+		    _bulkLoader.clear();
 			BulkLoader.removeAllLoaders();
             _bulkLoader = null;	
 		}
