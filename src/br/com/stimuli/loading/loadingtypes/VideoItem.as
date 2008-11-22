@@ -104,15 +104,19 @@ package br.com.stimuli.loading.loadingtypes {
                    
                    if (isVideo()  && metaData && !_canBeginStreaming){
                        var timeElapsed : int = getTimer() - responseTime;
-                       var currentSpeed : Number = bytesLoaded / (timeElapsed/1000);
-                       // calculate _bytes remaining, before the super onProgressHandler fires
-                       _bytesRemaining = _bytesTotal - bytesLoaded;
-                       // be cautios, give a 20% error margin for estimated download time:
-                       var estimatedTimeRemaining : Number = _bytesRemaining / (currentSpeed * 0.8);
-                       var videoTimeToDownload : Number = metaData.duration - stream.bufferLength;
-                       if (videoTimeToDownload > estimatedTimeRemaining){
-                           fireCanBeginStreamingEvent();
+                       // se issue 49 on this hack
+                       if (timeElapsed > 100){
+                           var currentSpeed : Number = bytesLoaded / (timeElapsed/1000);
+                           // calculate _bytes remaining, before the super onProgressHandler fires
+                           _bytesRemaining = _bytesTotal - bytesLoaded;
+                           // be cautios, give a 20% error margin for estimated download time:
+                           var estimatedTimeRemaining : Number = _bytesRemaining / (currentSpeed * 0.8);
+                         var videoTimeToDownload : Number = metaData.duration - stream.bufferLength;
+                            if (videoTimeToDownload > estimatedTimeRemaining){
+                            fireCanBeginStreamingEvent();
+                           }
                        }
+                       
                    }
                 super.onProgressHandler(event)
             }
