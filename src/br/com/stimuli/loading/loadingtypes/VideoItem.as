@@ -14,21 +14,30 @@ package br.com.stimuli.loading.loadingtypes {
         /**
         *   @private
         */
-        internal var stream : NetStream;
-        private var dummyEventTrigger : Sprite;
-        private var _checkPolicyFile : Boolean;
+        public var stream : NetStream;
+        /**
+        *   @public
+        */
+        public var dummyEventTrigger : Sprite;
+        
         /**
         *   @private
         */
-        internal var pausedAtStart : Boolean = false;
-        
-        private var _metaData : Object;
+        public var _checkPolicyFile : Boolean;
+        /**
+        *   @private
+        */
+        public var pausedAtStart : Boolean = false;
+        /**
+        *   @private
+        */
+        public var _metaData : Object;
         
         /** Indicates if we've already fired an event letting users know that the netstream can
         *   begin playing (has enough buffer to play with no interruptions)
         *   @private
         */
-        private var _canBeginStreaming : Boolean = false;
+        public var _canBeginStreaming : Boolean = false;
         
         
 		public function VideoItem(url : URLRequest, type : String, uid : String){
@@ -206,7 +215,10 @@ package br.com.stimuli.loading.loadingtypes {
             var evt : Event = new Event(BulkLoader.CAN_BEGIN_PLAYING);
             dispatchEvent(evt);
         }
-
+        
+        public function get canBeginStreaming() : Boolean{
+            return _canBeginStreaming;
+        }
 	}
 	
 }
