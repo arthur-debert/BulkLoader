@@ -43,7 +43,8 @@ package br.com.stimuli.loading.loadingtypes {
 		public function VideoItem(url : URLRequest, type : String, uid : String){
 		    specificAvailableProps = [BulkLoader.CHECK_POLICY_FILE, BulkLoader.PAUSED_AT_START];
 			super(url, type, uid);
-			
+			// apparently, if the stream is a mp4 file, this value beings as -1! issue 57
+			_bytesTotal = _bytesLoaded = 0;
 		}
 		
 		override public function _parseOptions(props : Object)  : Array{

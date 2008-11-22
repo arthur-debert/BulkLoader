@@ -930,7 +930,7 @@ bulkLoader.start(3)
             var item : LoadingItem;
             var theseItems : Array = [];
             for each (var key: * in keys){
-              item = key is LoadingItem ? key : get(key);
+              item = get(key);
               if (!item) continue;
               localItemsTotal ++;
               localWeightTotal += item.weight;
