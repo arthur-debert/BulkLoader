@@ -156,5 +156,9 @@ package br.com.stimuli.loading.tests {
         public function testCanBeginPlayingEvent() : void{
             assertEquals(canBeginPlayingCount, 1);
         }
+        
+        public function testCanBeginStreamingIsAlwaysTrue() : void{
+            assertTrue((_bulkLoader.get("the-movie") as VideoItem).canBeginStreaming);
+        }
 	}
 }

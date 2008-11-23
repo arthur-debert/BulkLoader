@@ -78,7 +78,7 @@ package br.com.stimuli.loading.tests {
 		
 		public function testRemoveAllKeepsOtherItems():void{
 		    var itemsLeft : int = _bulkLoader.getFailedItems().length;
-		    var itemsToLoad = _bulkLoader.items.length - itemsLeft;
+		    var itemsToLoad : int = _bulkLoader.items.length - itemsLeft;
 		    _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/chopin.mp3")
 		    _bulkLoader.removeFailedItems();
     		assertEquals(_bulkLoader.items.length  , 1 + itemsToLoad);
