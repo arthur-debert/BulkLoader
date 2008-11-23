@@ -33,12 +33,15 @@ package br.com.stimuli.loading.tests {
             var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/shoes.jpg";
             var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-image.jpg"
             var theURL : String = goodURL;
-            if (this.name == 'testIOError'){
+            if (this.name.indexOf( 'testIOError') >  -1){
                 theURL = badURL;
             }
             theImageItem = _bulkLoader.add(theURL, {id:"photo"}) as ImageItem;
-	 		
-            _bulkLoader.get("photo").addEventListener(BulkLoader.ERROR, onIOError);
+	 		if (this.name != "testIOErrorOnBulkLoader"){
+	 		    _bulkLoader.get("photo").addEventListener(BulkLoader.ERROR, onIOError);
+	 		}else{
+	 		    _bulkLoader.addEventListener(BulkLoader.ERROR, onIOError);
+	 		}
 	 		_bulkLoader.get("photo").addEventListener(BulkLoader.COMPLETE, onImageComplete);
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandlerSpecialEvent);
@@ -138,6 +141,12 @@ package br.com.stimuli.loading.tests {
         
         public function testIOError() : void{
             assertNotNull(ioError);
+        }
+        
+        public function testIOErrorOnBulkLoader() : void{
+            assertNotNull(ioError);
+            assertNotNull( _bulkLoader.get("photo").errorEvent);
+            assertTrue( _bulkLoader.get("photo").errorEvent is ErrorEvent);
         }
         
         public function testIsImage() : void{

@@ -1,11 +1,11 @@
 package br.com.stimuli.loading.loadingtypes {
 	
-	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	import br.com.stimuli.loading.BulkLoader;
+	
 	import flash.display.*;
-    import flash.net.*;
-    import flash.events.*;
-    import flash.utils.*;
+	import flash.events.*;
+	import flash.net.*;
+	import flash.utils.*;
     /** @private */
 	public class VideoItem extends LoadingItem {
 		// for video:
@@ -73,7 +73,7 @@ package br.com.stimuli.loading.loadingtypes {
             	// TODO: test for security error thown.
             	stream.play(url.url, _checkPolicyFile);
             }catch( e : SecurityError){
-            	onSecurityErrorHandler(e);
+            	onSecurityErrorHandler(_createErrorEvent(e));
             	
             }
             
@@ -190,7 +190,7 @@ package br.com.stimuli.loading.loadingtypes {
                 var e : Event = new Event(Event.OPEN);
                 onStartedHandler(e);
             }else if(evt.info.code == "NetStream.Play.StreamNotFound"){
-                onErrorHandler(evt);
+                onErrorHandler(_createErrorEvent(new Error("[VideoItem] NetStream not found at " + this.url.url)));
             }
         }
         

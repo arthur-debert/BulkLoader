@@ -35,7 +35,7 @@ package br.com.stimuli.loading.loadingtypes {
             	// TODO: test for security error thown.
             	loader.load(url, _context);
             }catch( e : SecurityError){
-            	onSecurityErrorHandler(e);
+            	onSecurityErrorHandler(_createErrorEvent(e));
             	
             }
 		};
@@ -45,7 +45,7 @@ package br.com.stimuli.loading.loadingtypes {
             super.onStartedHandler(evt);
         };
         
-        override public function onErrorHandler(evt : Event) : void{
+        override public function onErrorHandler(evt : ErrorEvent) : void{
             super.onErrorHandler(evt);
         }
         

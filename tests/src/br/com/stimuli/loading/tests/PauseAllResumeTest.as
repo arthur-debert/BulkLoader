@@ -42,7 +42,7 @@ import br.com.stimuli.loading.*;
             _bulkLoader2.start();
 		}
 
-        public function onError(evt : BulkErrorEvent) : void{
+        public function onError(evt : ErrorEvent) : void{
             ioError = evt;
             // are we all set?
             tearDown();

@@ -23,12 +23,17 @@ package br.com.stimuli.loading.tests {
             var goodSoundURL : String = "http://www.emptywhite.com/bulkloader-assets/sound-short.mp3";
             var badSoundURL : String = "http://www.emptywhite.com/bulkloader-assets/badchopin.mp3"
             var theURL : String = goodSoundURL;
-            if (this.name == 'testIOError'){
+            if (this.name.indexOf('testIOError') > -1){
                 theURL = badSoundURL;
             }
 	 		var item : LoadingItem = _bulkLoader.add(theURL, {id:"the-sound"});
 	 		item.addEventListener(BulkLoader.OPEN, onAudioStartLoading);
-	 		item.addEventListener(BulkLoader.ERROR, onIOError);
+	 		if (this.name != "testIOErrorOnBulkLoader"){
+	 		    item.addEventListener(BulkLoader.ERROR, onIOError);
+	 		}else{
+	 		    _bulkLoader.addEventListener(BulkLoader.ERROR, onIOError);
+	 		}
+	 		
 	 		//_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true});
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
@@ -106,6 +111,12 @@ package br.com.stimuli.loading.tests {
         
         public function testIOError() : void{
             assertNotNull(ioError);
+        }
+        
+        public function testIOErrorOnBulkLoader() : void{
+            assertNotNull(ioError);
+            assertNotNull( _bulkLoader.get("the-sound").errorEvent);
+            assertTrue( _bulkLoader.get("the-sound").errorEvent is ErrorEvent);
         }
         
         public function testItemIsLoaded() : void{

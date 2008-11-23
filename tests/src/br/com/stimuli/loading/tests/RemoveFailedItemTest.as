@@ -1,11 +1,12 @@
 package br.com.stimuli.loading.tests {
-	import flash.net.URLRequest;
-	import flash.net.*;
-	import flash.events.*;
-	import flash.utils.getTimer;
+	import br.com.stimuli.loading.*;
+	import br.com.stimuli.loading.loadingtypes.*;
+	
 	import flash.display.*;
-	import kisstest.TestCase; import br.com.stimuli.loading.*;
-    import br.com.stimuli.loading.loadingtypes.*;
+	import flash.events.*;
+	import flash.net.*;
+	
+	import kisstest.TestCase;
 /**@private*/
 	public class RemoveFailedItemTest extends TestCase { 
 	    public var _bulkLoader : BulkLoader;
@@ -31,14 +32,10 @@ package br.com.stimuli.loading.tests {
             _bulkLoader.start();
 		}
 
-        public function onError(evt : BulkErrorEvent) : void{
+        public function onError(evt : ErrorEvent) : void{
             ioError = evt;
             // are we all set?
-            var allFailed : Boolean = evt.errors.length == _bulkLoader.items.length;
-            if(allFailed){
-                completeHandler(evt);
-                
-            }
+            completeHandler(evt);
             // call the on complete manually 
             
             
@@ -47,6 +44,7 @@ package br.com.stimuli.loading.tests {
 		public function completeHandler(event:Event):void {
 		    _bulkLoader.removeEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.removeEventListener(BulkLoader.PROGRESS, progressHandler);
+	 		_bulkLoader.removeEventListener(BulkLoader.ERROR, onError);
 			dispatchEvent(new Event(Event.INIT));
 		}
 		
@@ -76,24 +74,20 @@ package br.com.stimuli.loading.tests {
             _bulkLoader = null;	
 		}
 		
-		public function testRemoveFailed() : void {
-		  _bulkLoader.removeFailedItems();
-		  assertTrue(_bulkLoader.items.length == 0);
-		}
+		
 		
 		public function testRemoveAllKeepsOtherItems():void{
+		    var itemsLeft : int = _bulkLoader.getFailedItems().length;
+		    var itemsToLoad = _bulkLoader.items.length - itemsLeft;
 		    _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/chopin.mp3")
 		    _bulkLoader.removeFailedItems();
-    		assertTrue(_bulkLoader.items.length == 1);
+    		assertEquals(_bulkLoader.items.length  , 1 + itemsToLoad);
 		}
 		
-		public function testItemsToalAfterRemoveFailed() : void{
-		    _bulkLoader.removeFailedItems();
-		    assertEquals(_bulkLoader._itemsTotal, 0);
-		    
-		}
+		
 		
 		public function testContentAfterRemoveAll():void{
+		    _bulkLoader.removeAll();
 		    var numItems : int = 0;
 		    for (var prop:String in _bulkLoader._contents){
 		        numItems ++;

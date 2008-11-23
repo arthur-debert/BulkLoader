@@ -33,7 +33,6 @@
 */
 package br.com.stimuli.loading.loadingtypes {
     
-    import br.com.stimuli.loading.BulkErrorEvent;
     import br.com.stimuli.loading.BulkLoader;
     
     import flash.display.*;
@@ -186,6 +185,10 @@ package br.com.stimuli.loading.loadingtypes {
         public var specificAvailableProps : Array ;
         /** @private */
         public var propertyParsingErrors : Array;
+        
+        /** Stores any erros (if any), such as IOError and SecurityError for this item */
+        public var errorEvent : ErrorEvent;
+        
         public function LoadingItem(url : URLRequest, type : String, _uid : String){
             this._type = type;
             this.url = url;
@@ -281,37 +284,41 @@ package br.com.stimuli.loading.loadingtypes {
         /**
         *   @private
         */
-        public function onErrorHandler(evt : Event) : void{
+        public function onErrorHandler(evt : ErrorEvent) : void{
             numTries ++;
-            status = STATUS_ERROR;   
+             
             evt.stopPropagation();
-            if(numTries >= maxTries){
-                var bulkErrorEvent : BulkErrorEvent = new BulkErrorEvent(BulkErrorEvent.ERROR);
-                bulkErrorEvent.errors = [this];
-                dispatchEvent(bulkErrorEvent);
-            }else{   
+            if(numTries < maxTries){
                 status = null
                 load();
+            }else{
+                status = STATUS_ERROR;
+                errorEvent = evt;
+                _dispatchErrorEvent(errorEvent);
             }
-           
         }
         
+        /** @private
+        */
+        public function _dispatchErrorEvent (evt : ErrorEvent) : void{
+            // we are dispatching here so we can have all error events catched by addEventListener("error"), regardless of event type.
+            status = STATUS_ERROR;
+            dispatchEvent(new ErrorEvent(BulkLoader.ERROR, true, false, evt.text));
+        }
+        /** private
+        */
+        public function _createErrorEvent(e : Error) : ErrorEvent{
+            return new ErrorEvent(BulkLoader.ERROR, false, false, e.message);
+        }
         /**
         *   @private
-        * @param e Can be a SecurityError or a SecurityErrorEvent
+        * @param A SecurityErrorEvent.
         */
-        public function onSecurityErrorHandler(e :*) : void{
+        public function onSecurityErrorHandler(e : ErrorEvent) : void{
             status = STATUS_ERROR;   
-            var evt : SecurityErrorEvent;
-        	if(e is Event){
-        		evt = e;
-        		e.stopPropagation();
-        	}else if( e is SecurityError){
-        		evt = new SecurityErrorEvent(SecurityErrorEvent.SECURITY_ERROR,  false, true, e.message);
-        	}
-        	evt.stopPropagation();
-        	dispatchEvent(evt);
-        	
+            errorEvent = e as ErrorEvent;
+            e.stopPropagation();
+        	_dispatchErrorEvent(errorEvent);
         }
         
         /**

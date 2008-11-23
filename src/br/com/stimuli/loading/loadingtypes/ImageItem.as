@@ -27,14 +27,13 @@ package br.com.stimuli.loading.loadingtypes {
 		    loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgressHandler, false, 0, true);
             loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
             loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 100, true);
-            loader.contentLoaderInfo.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);
-            //loader.content.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityErrorHandler, false, 0, true);  
+            loader.contentLoaderInfo.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);  
             loader.contentLoaderInfo.addEventListener(HTTPStatusEvent.HTTP_STATUS, super.onHttpStatusHandler, false, 0, true);
             try{
             	// TODO: test for security error thown.
             	loader.load(url, _context);
             }catch( e : SecurityError){
-            	onSecurityErrorHandler(e);
+            	onSecurityErrorHandler(_createErrorEvent(e));
             }
             
 		};
@@ -44,7 +43,7 @@ package br.com.stimuli.loading.loadingtypes {
             dispatchEvent(evt);
         }
         
-        override public function onErrorHandler(evt : Event) : void{
+        override public function onErrorHandler(evt : ErrorEvent) : void{
             super.onErrorHandler(evt);
         }
         

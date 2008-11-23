@@ -394,6 +394,8 @@ import flash.utils.*;
             _instancesCreated ++;
             _id = _instancesCreated;
             _additionIndex = 0;
+            // we create a mock event listener for errors, else Unhandled errors will bubble and display an stack trace to the end user:
+            addEventListener(BulkLoader.ERROR, function (e:Event):void{}, false, 1, true);
         }
         
         /** Creates a BulkLoader instance with an unique name. This is useful for situations where you might be creating
@@ -593,7 +595,6 @@ bulkLoader.start(3)
             item.addEventListener(ERROR, _onItemError, false, 0, true);
             item.addEventListener(Event.OPEN, _onItemStarted, false, 0, true);
             item.addEventListener(ProgressEvent.PROGRESS, _onProgress, false, 0, true);
-            item.addEventListener(SecurityErrorEvent.SECURITY_ERROR, _onItemSecurityError, false, 0, true);
             _items.push(item);
             _itemsTotal += 1;
             _totalWeight += item.weight;
@@ -647,7 +648,6 @@ bulkLoader.start(3)
             item._additionIndex = _additionIndex ++;
             item.addEventListener(Event.COMPLETE, _onItemComplete, false, int.MIN_VALUE, true);
             item.addEventListener(ERROR, _onItemError, false, 0, true);
-            item.addEventListener(SecurityErrorEvent.SECURITY_ERROR, _onItemSecurityError, false, 0, true);
             item.addEventListener(Event.OPEN, _onItemStarted, false, 0, true);
             item.addEventListener(ProgressEvent.PROGRESS, _onProgress, false, 0, true);
             _items.push(item);
@@ -848,7 +848,6 @@ bulkLoader.start(3)
             log("Removing " + item, LOG_VERBOSE);
             item.removeEventListener(Event.COMPLETE, _onItemComplete, false)
             item.removeEventListener(ERROR, _onItemError, false);
-            item.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, _onItemSecurityError, false);
             item.removeEventListener(Event.OPEN, _onItemStarted, false);
             item.removeEventListener(ProgressEvent.PROGRESS, _onProgress, false);
             return true;
@@ -866,28 +865,16 @@ bulkLoader.start(3)
         }
         
         /** @private */
-        public function _onItemError(evt : BulkErrorEvent) : void{
+        public function _onItemError(evt : ErrorEvent) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
             log("After " + item.numTries + " I am giving up on " + item.url.url, LOG_ERRORS);
-            log("Error loading", item, LOG_ERRORS);
+            log("Error loading", item, evt.text, LOG_ERRORS);
            _removeFromConnections(item);
            evt.stopPropagation();
-           var bulkErrorEvent : BulkErrorEvent = new BulkErrorEvent(BulkErrorEvent.ERROR);
-           bulkErrorEvent.errors = _items.filter(function(i : LoadingItem, ...rest):Boolean{
-                  return (i.status == LoadingItem.STATUS_ERROR);
-           });
-           dispatchEvent(bulkErrorEvent);
+           dispatchEvent(evt);
         }
         
-        /** @private */
-        public function _onItemSecurityError(evt : SecurityErrorEvent) : void{
-            var item : LoadingItem  = evt.target as LoadingItem;
-            log("Security error loading", evt, LOG_ERRORS);
-           _removeFromConnections(item);
-           evt.stopPropagation();
-           dispatchEvent(evt.clone());
         
-        }
         
         /** @private */
         public function _onItemStarted(evt : Event) : void{
@@ -1558,6 +1545,15 @@ bulkLoader.start(3)
             });
             _loadNext();
             return numCleared;
+        }
+        
+        /** Get all items that have an error (either IOError or SecurityError). 
+        * @ return An array with the LoadingItem objects that have failed.
+        */
+        public function getFailedItems() : Array{
+            return _items.filter(function (item : LoadingItem, ...rest) : Boolean{
+                return (item.status == LoadingItem.STATUS_ERROR);
+            });
         }
         
         /** Stop loading the item identified by <code>key</code>. This will not remove the item from the <code>BulkLoader</code>. Note that progress notification will jump around, as the stopped item will still count as something to load, but it's byte count will be 0.

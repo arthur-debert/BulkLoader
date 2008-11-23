@@ -2,7 +2,7 @@ package br.com.stimuli.loading.loadingtypes {
 	
 	import br.com.stimuli.loading.loadingtypes.LoadingItem;
 	import br.com.stimuli.loading.BulkLoader;
-	import br.com.stimuli.loading.BulkErrorEvent;
+	
 	
 	import flash.display.*;
     import flash.net.*;
@@ -33,12 +33,12 @@ package br.com.stimuli.loading.loadingtypes {
             	// TODO: test for security error thown.
             	loader.load(url);
             }catch( e : SecurityError){
-            	onSecurityErrorHandler(e);
+            	onSecurityErrorHandler(_createErrorEvent(e));
             	
             }
 		};
 		
-		override public function onErrorHandler(evt : Event) : void{
+		override public function onErrorHandler(evt : ErrorEvent) : void{
             super.onErrorHandler(evt);
         }
         
@@ -52,9 +52,7 @@ package br.com.stimuli.loading.loadingtypes {
             }catch(e  : Error){
                 _content = null;
                 status = STATUS_ERROR;  
-                var bulkErrorEvent : BulkErrorEvent = new BulkErrorEvent(BulkErrorEvent.ERROR);
-                bulkErrorEvent.errors = [this];
-                dispatchEvent(bulkErrorEvent);
+                dispatchEvent(_createErrorEvent(e));
             }
             super.onCompleteHandler(evt);
         };

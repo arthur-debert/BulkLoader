@@ -58,12 +58,17 @@ package br.com.stimuli.loading.tests {
             var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/samplexml.xml";
             var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-samplexml.xml"
             var theURL : String = goodURL;
-            if (this.name == 'testIOError'){
+            if (this.name.indexOf('testIOError') > -1){
                 theURL = badURL;
             }
             
 	 		_bulkLoader.add(theURL, {id:"text"});
-            _bulkLoader.get("text").addEventListener(BulkLoader.ERROR, onIOError);
+	 		if (this.name != "testIOErrorOnBulkLoader"){
+	 		    _bulkLoader.get("text").addEventListener(BulkLoader.ERROR, onIOError);
+	 		}else{
+	 		    _bulkLoader.addEventListener(BulkLoader.ERROR, onIOError);
+	 		}
+            
 	 		
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
@@ -111,6 +116,12 @@ package br.com.stimuli.loading.tests {
         
         public function testIOError() : void{
             assertNotNull(ioError);
+        }
+        
+        public function testIOErrorOnBulkLoader() : void{
+            assertNotNull(ioError);
+            assertNotNull( _bulkLoader.get("text").errorEvent);
+            assertTrue( _bulkLoader.get("text").errorEvent is ErrorEvent);
         }
         
         public function testItemIsLoaded() : void{

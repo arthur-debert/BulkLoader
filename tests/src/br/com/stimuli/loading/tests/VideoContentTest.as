@@ -1,11 +1,12 @@
 package br.com.stimuli.loading.tests {
-	import flash.net.URLRequest;
-	import flash.net.*;
-	import flash.events.*;
-	import flash.utils.getTimer;
-	import kisstest.TestCase;
 	import br.com.stimuli.loading.BulkLoader;
-    import br.com.stimuli.loading.loadingtypes.*;
+	import br.com.stimuli.loading.loadingtypes.*;
+	
+	import flash.events.*;
+	import flash.net.*;
+	import flash.utils.getTimer;
+	
+	import kisstest.TestCase;
     /**@private*/
 	public class VideoContentTest extends TestCase {
 		public var _bulkLoader : BulkLoader;
@@ -15,7 +16,7 @@ package br.com.stimuli.loading.tests {
 		public var netStreamAtStart : NetStream;
 		
 		public var ioError : Event;
-		
+		public var ioErrorCount : int = 0;
 		public function VideoContentTest(name: String) : void {
 		  super(name);
 		  this.name= name;
@@ -27,14 +28,19 @@ package br.com.stimuli.loading.tests {
             var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/movie.flv";
             var badURL : String = "http://www.emptywhite.com/bulkloader-assets/bad-movie.flv"
             var theURL : String = goodURL;
-            if (this.name == 'testIOError'){
+            if (this.name.indexOf( 'testIOError') >  -1){
                 theURL = badURL;
             }
         
 	 		
 	 		_bulkLoader.add(theURL, {id:"the-movie", checkPolicyFile:true});
 	 		_bulkLoader.get("the-movie").addEventListener(BulkLoader.OPEN, onVideoStartHandler);
-	 		_bulkLoader.get("the-movie").addEventListener(BulkLoader.ERROR, onIOError);
+	 		if (this.name != "testIOErrorOnBulkLoader"){
+	 		    _bulkLoader.get("the-movie").addEventListener(BulkLoader.ERROR, onIOError);
+	 		}else{
+	 		    _bulkLoader.addEventListener(BulkLoader.ERROR, onIOError);
+	 		}
+	 		
 	 		_bulkLoader.get("the-movie").addEventListener(BulkLoader.CAN_BEGIN_PLAYING, onHasBeginPlayerFiredHandler);
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
@@ -43,9 +49,10 @@ package br.com.stimuli.loading.tests {
 
         public function onIOError(evt : Event) : void{
             ioError = evt;
+            ioErrorCount ++;  
             // call the on complete manually 
             completeHandler(evt);
-          
+            
         }
         
 		public function completeHandler(event:Event):void {
@@ -128,6 +135,13 @@ package br.com.stimuli.loading.tests {
         
         public function testIOError() : void{
             assertNotNull(ioError);
+        }
+        
+        public function testIOErrorOnBulkLoader() : void{
+            assertNotNull(ioError);
+            assertNotNull( _bulkLoader.get("the-movie").errorEvent);
+            assertTrue( _bulkLoader.get("the-movie").errorEvent is ErrorEvent);
+            assertEquals(ioErrorCount, 1);
         }
         
         public function testItemIsLoaded() : void{
