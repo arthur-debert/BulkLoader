@@ -4,11 +4,11 @@ package br.com.stimuli.loading.tests {
 	import flash.events.*;
 	import flash.utils.getTimer;
 	import flash.display.*;
-	import kisstest.TestCase;
+	import br.com.stimuli.kisstest.TestCase;
 import br.com.stimuli.loading.BulkLoader;
     import br.com.stimuli.loading.loadingtypes.*;
     
-    import kisstest.TestCase;
+    import br.com.stimuli.kisstest.TestCase;
     /**@private*/
 	public class BaseAsyncTest extends TestCase { 
         var lastProgress : Number = 0;

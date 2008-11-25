@@ -6,7 +6,7 @@ package br.com.stimuli.loading.tests {
 	import flash.net.*;
 	import flash.utils.getTimer;
 	
-	import kisstest.TestCase;
+	import br.com.stimuli.kisstest.TestCase;
     /**@private*/
 	public class VideoContentTest extends TestCase {
 		public var _bulkLoader : BulkLoader;

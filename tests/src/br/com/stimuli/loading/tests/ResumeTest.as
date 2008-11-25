@@ -4,7 +4,7 @@ package br.com.stimuli.loading.tests {
 	import flash.events.*;
 	import flash.utils.*;
 	import flash.display.*;
-	import kisstest.TestCase; import br.com.stimuli.loading.BulkLoader;
+	import br.com.stimuli.kisstest.TestCase; import br.com.stimuli.loading.BulkLoader;
     import br.com.stimuli.loading.loadingtypes.*;
     /**@private*/
 	public class ResumeTest extends TestCase { 

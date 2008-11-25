@@ -7,7 +7,7 @@ package br.com.stimuli.loading.tests {
 	import flash.events.*;
 	import flash.net.*;
 	
-	import kisstest.TestCase;
+	import br.com.stimuli.kisstest.TestCase;
 
     /**@private*/
 	public class BulkStartTest extends TestCase { public var _bulkLoader : BulkLoader;

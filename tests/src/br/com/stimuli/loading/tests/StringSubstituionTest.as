@@ -1,5 +1,5 @@
 package br.com.stimuli.loading.tests {
-	import kisstest.TestCase;
+	import br.com.stimuli.kisstest.TestCase;
     import br.com.stimuli.loading.*;
     import br.com.stimuli.loading.loadingtypes.LoadingItem;
     import flash.net.*;

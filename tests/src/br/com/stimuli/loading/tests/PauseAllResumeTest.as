@@ -5,7 +5,7 @@ package br.com.stimuli.loading.tests {
 	import flash.utils.*;
 	import flash.display.*;
 	import flash.utils.*;
-	import kisstest.TestCase;
+	import br.com.stimuli.kisstest.TestCase;
 import br.com.stimuli.loading.*;
     import br.com.stimuli.loading.loadingtypes.*;
 /**@private*/

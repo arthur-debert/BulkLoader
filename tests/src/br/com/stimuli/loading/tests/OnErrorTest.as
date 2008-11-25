@@ -1,5 +1,5 @@
 package br.com.stimuli.loading.tests {
-	import kisstest.TestCase
+	import br.com.stimuli.kisstest.TestCase
 	import br.com.stimuli.loading.BulkErrorEvent;
 	import br.com.stimuli.loading.BulkLoader;
 	import br.com.stimuli.loading.loadingtypes.*;

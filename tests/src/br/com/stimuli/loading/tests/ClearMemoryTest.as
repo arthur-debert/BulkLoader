@@ -7,7 +7,7 @@ package br.com.stimuli.loading.tests {
 	import flash.net.*;
 	import flash.utils.*;
 	
-	import kisstest.TestCase;
+	import br.com.stimuli.kisstest.TestCase;
 /**@private*/
 	public class ClearMemoryTest extends TestCase { 
 	    public var _bulkLoader : BulkLoader;

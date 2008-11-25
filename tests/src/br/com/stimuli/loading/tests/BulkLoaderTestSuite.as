@@ -1,5 +1,5 @@
 package br.com.stimuli.loading.tests {
-	import kisstest.TestSuite;
+	import br.com.stimuli.kisstest.TestSuite;
 	import flash.events.*;
 	import br.com.stimuli.loading.tests.*;
 	import flash.utils.*;

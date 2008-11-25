@@ -2,7 +2,7 @@
 	Copyright 2008 __MyCompanyName__.
 */
 package br.com.stimuli.loading.tests {
-	import kisstest.TestCase;
+	import br.com.stimuli.kisstest.TestCase;
     import br.com.stimuli.loading.BulkLoader;
     import br.com.stimuli.loading.loadingtypes.LoadingItem;
     import flash.net.*;
