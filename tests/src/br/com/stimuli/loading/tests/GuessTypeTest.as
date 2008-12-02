@@ -105,6 +105,18 @@ package br.com.stimuli.loading.tests {
     	 	    assertEquals(BulkLoader.guessType("somehting"), BulkLoader.TYPE_TEXT);
     	 	}
     	 	
+    	 	public function testWithDotAsPathPart () : void{
+    	 	    assertEquals(BulkLoader.TYPE_IMAGE, BulkLoader.guessType( "http://www.example.com/folder/file.xml/somedetails.jpg"));
+    	 	}
+    	 	
+    	 	public function testWithNoFile() : void{
+    	 	      assertEquals(BulkLoader.TYPE_TEXT, BulkLoader.guessType( "http://www.example.com/something/"));
+    	 	}
+    	 	
+    	 	public function testWithNoPart() : void{
+    	 	      assertEquals(BulkLoader.TYPE_TEXT, BulkLoader.guessType( "http://www.example.com/"));
+    	 	}
+    	 	
     	 	public function testUnknownType() : void{
     	 	    var error : Error;
     	 	    try{

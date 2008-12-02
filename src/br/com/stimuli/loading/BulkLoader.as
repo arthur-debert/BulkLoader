@@ -1655,8 +1655,12 @@ bulkLoader.start(3)
         */ 
         public static function guessType(urlAsString : String) : String{
             // no type is given, try to guess from the url
-            var searchString : String = urlAsString.indexOf("?") > -1 ? urlAsString.substring(0, urlAsString.indexOf("?")) : urlAsString;
-            var extension : String = searchString.substring(searchString.lastIndexOf(".") + 1).toLowerCase();
+            var searchString : String = urlAsString.indexOf("?") > -1 ? 
+                    urlAsString.substring(0, urlAsString.indexOf("?")) : 
+                    urlAsString;
+            // split on "/" as an url can have a dot as part of a directory name
+            var finalPart : String = searchString.substring(searchString.lastIndexOf("/"));;
+            var extension : String = finalPart.substring(finalPart.lastIndexOf(".") + 1).toLowerCase();
             var type : String;
             if(!Boolean(extension) ){
                 extension = BulkLoader.TYPE_TEXT;
