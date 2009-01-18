@@ -8,15 +8,15 @@ package br.com.stimuli.loading.tests {
 	import flash.net.*;
 	import flash.utils.*;
 /**@private*/
-	public class OnErrorTest extends TestCase { 
+	public class TwoItemsWithTheSameURLTest extends TestCase { 
 	    public var _bulkLoader : BulkLoader;
 		public var lastProgress : Number = 0;
 
 		
-		public var errorEvent : Event;
 		
 		
-		public function OnErrorTest(name : String) : void {
+		
+		public function TwoItemsWithTheSameURLTest(name : String) : void {
 		  super(name);
 		  this.name = name;
 		}
@@ -25,9 +25,8 @@ package br.com.stimuli.loading.tests {
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName())
             var goodURL : String = "http://www.emptywhite.com/bulkloader-assets/some-text.txt";
             
-	 		_bulkLoader.add(goodURL, {id:"200Item", preventCache: true});
-	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/404file.xml", {id:"404Item",preventCache: true}).addEventListener(BulkLoader.COMPLETE, onGoodURLLoaded, false, 0, true);
-	 		
+	 		_bulkLoader.add(goodURL, {id:"1", preventCache: true});
+	 		_bulkLoader.add(goodURL, {id:"2", preventCache: true});
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
 	 		_bulkLoader.addEventListener(BulkLoader.PROGRESS, progressHandler);
 	 		_bulkLoader.addEventListener(BulkLoader.ERROR, onError);
@@ -35,21 +34,12 @@ package br.com.stimuli.loading.tests {
 		}
 
         public function onError(evt : Event) : void{
-            errorEvent = evt ;
-            //trace("****", evt.target, "current", evt.currentTarget);
-            // call the on complete manually 
-            if (_bulkLoader.get("200Item").status == LoadingItem.STATUS_FINISHED){
-                completeHandler(evt);
-                
-            }
+            
             
         }
         
         public function onGoodURLLoaded(evt : Event): void{
-            if (errorEvent){
                 completeHandler(evt);
-                
-            }
         }
 		public function completeHandler(event:Event):void {
 			//super.run();
@@ -72,21 +62,16 @@ package br.com.stimuli.loading.tests {
 		
 		
         
-        public function testItemIsLoaded() : void{
-            assertNotNull(_bulkLoader.get("200Item"))
+        public function testItemsAreLoaded() : void{
+            assertNotNull(_bulkLoader.getText("1"));
+            assertNotNull(_bulkLoader.getText("2"));
         }
         
-        
-        public function testHasErrorDispatched() : void{
-            assertNotNull(errorEvent);
+        public function testItemsAreNotTheSame() : void{
+            var i1 : LoadingItem = _bulkLoader.get("1");
+             var i2 : LoadingItem = _bulkLoader.get("2");
+            assertFalse(_bulkLoader.get("1") == _bulkLoader.get("2")) ;
         }
         
-        public function testErrorType() : void{
-            assertTrue(errorEvent is ErrorEvent);
-        }
-        
-        public function assertErrorEventTarget() : void{
-            
-        }
 	}
 }

@@ -873,8 +873,10 @@ bulkLoader.start(3)
             log("After " + item.numTries + " I am giving up on " + item.url.url, LOG_ERRORS);
             log("Error loading", item, evt.text, LOG_ERRORS);
            _loadNext();
-           evt.stopPropagation();
+           //evt.stopPropagation();
+           //evt.currentTarget = item;
            dispatchEvent(evt);
+           
            
         }
         

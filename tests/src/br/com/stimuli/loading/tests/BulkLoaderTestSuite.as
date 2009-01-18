@@ -8,7 +8,8 @@ package br.com.stimuli.loading.tests {
 	/**@private*/
 	public class BulkLoaderTestSuite extends TestSuite {
 	    public var testClasses : Array = [
-//	    OnErrorTest
+	            TwoItemsWithTheSameURLTest,
+        	    OnErrorTest,
                 ErrorResumeTest,
                 GuessTypeTest,
                 SmartURLTest,
