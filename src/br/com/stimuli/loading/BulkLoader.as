@@ -766,7 +766,8 @@ bulkLoader.start(3)
             // check for "stale items"
             
             _connections.forEach(function(i : LoadingItem, ...rest) : void{
-                if(i.status == LoadingItem.STATUS_ERROR && i.numTries < i.maxTries){
+                
+                if(i.status == LoadingItem.STATUS_ERROR && i.numTries == i.maxTries){
                     _removeFromConnections(i);
                 }
             });
@@ -810,6 +811,7 @@ bulkLoader.start(3)
            if(allDone) {
                _onAllLoaded();
             }
+            evt.stopPropagation();
         }
         
         /** @private */
@@ -867,11 +869,13 @@ bulkLoader.start(3)
         /** @private */
         public function _onItemError(evt : ErrorEvent) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
+            _removeFromConnections(item);
             log("After " + item.numTries + " I am giving up on " + item.url.url, LOG_ERRORS);
             log("Error loading", item, evt.text, LOG_ERRORS);
-           _removeFromConnections(item);
+           _loadNext();
            evt.stopPropagation();
            dispatchEvent(evt);
+           
         }
         
         
