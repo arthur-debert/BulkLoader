@@ -711,15 +711,19 @@ bulkLoader.start(3)
         *   @see #TYPE_VIDEO
         *   @see #TYPE_SOUND
         *   @see #TYPE_TEXT
+        *   @see #TYPE_XML
+        *   @see #TYPE_MOVIECLIP
         *   @see #LoadingItem
         *   
         *   @return A <code>Boolean</code> indicating if the new extension was registered.
         */
-        public static function registerNewType( extension : String, atType : String, withClass : Class) : Boolean {
-            //TODO: TEST THIS TROUGHLY! Tough registerNewType
+        public static function registerNewType( extension : String, atType : String, withClass : Class = null) : Boolean {
+          // Normalize extension
           if (extension.charAt(0) == ".") extension = extension.substring(1);
           
-          // is this a new type?
+          if(!_customTypesExtensions) _customTypesExtensions = {};
+          
+          // Is this a new type?
           if (AVAILABLE_TYPES.indexOf(atType) == -1){
               // new type: we need a class for that:
               if (!Boolean(withClass) ){
@@ -727,7 +731,6 @@ bulkLoader.start(3)
               }
               // add that class to the available classes
               _typeClasses[atType] = withClass;
-              if(!_customTypesExtensions) _customTypesExtensions = {};
               if(!_customTypesExtensions[atType]){
                   _customTypesExtensions[atType] = [];
                   AVAILABLE_TYPES.push(atType);
@@ -736,16 +739,18 @@ bulkLoader.start(3)
               return true;
           }else{
               // do have this exension registred for this type?
-              _customTypesExtensions[atType].push( extension);
+			  if(_customTypesExtensions[atType])
+				_customTypesExtensions[atType].push( extension);
           }
           var extensions : Array ;
-          
-          var options : Object = {
-              IMAGE_EXTENSIONS : TYPE_IMAGE,
-              VIDEO_EXTENSIONS : TYPE_VIDEO,
-              SOUND_EXTENSIONS : TYPE_SOUND,
-              TEXT_EXTENSIONS  : TYPE_TEXT
-          };
+		  
+          var options : Object = { };
+          options[TYPE_IMAGE] = IMAGE_EXTENSIONS,
+          options[TYPE_MOVIECLIP] = MOVIECLIP_EXTENSIONS,
+          options[TYPE_VIDEO] = VIDEO_EXTENSIONS,
+          options[TYPE_SOUND] = SOUND_EXTENSIONS,
+          options[TYPE_TEXT] = TEXT_EXTENSIONS,
+          options[TYPE_XML] = XML_EXTENSIONS,
           extensions = options[atType];
           if (extensions && extensions.indexOf(extension) == -1){
               extensions.push(extension);
