@@ -99,8 +99,8 @@ package br.com.stimuli.loading.tests {
 //		    assertNotNull(_bulkLoader.getClassByName("CompiledClass"));
 //		}
 		
-		public function testLoadinItemGetClassDefinition() : void{
-		    assertNotNull((_bulkLoader.get("compiled-swf") as ImageItem).getClassByName("CompiledClass"));
+		public function testLoadinItemGetDefinition() : void{
+		    assertNotNull((_bulkLoader.get("compiled-swf") as ImageItem).getDefinitionByName("CompiledClass"));
 		}
         }
 }

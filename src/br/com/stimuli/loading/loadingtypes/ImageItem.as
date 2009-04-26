@@ -82,13 +82,13 @@ package br.com.stimuli.loading.loadingtypes {
             super.stop();
         };
         
-        /** Gets a class definition from a fully qualified path 
+        /** Gets a  definition from a fully qualified path (can be a Class, function or namespace). 
             @param className The fully qualified class name as a string.
-            @return The <code>Class</code> object with that name or null of not found.
+            @return The definition object with that name or null of not found.
         */
-        public function getClassByName(className : String) : Class{
+        public function getDefinitionByName(className : String) : Object{
             if (loader.contentLoaderInfo.applicationDomain.hasDefinition(className)){
-                return loader.contentLoaderInfo.applicationDomain.getDefinition(className) as Class;
+                return loader.contentLoaderInfo.applicationDomain.getDefinition(className);
             }
             return null;
         }
