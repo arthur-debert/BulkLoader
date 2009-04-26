@@ -1295,6 +1295,15 @@ bulkLoader.start(3)
             return MovieClip(_getContentAsType(key, MovieClip, clearMemory));
         }
 
+        /** Returns a <code>getMovie</code> object with the downloaded asset for the given key.
+        *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
+        *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
+        *   @return The content retrived from that url casted to a Sprite object. Returns null if the cast fails.
+        */
+        public function getSprite(key : String, clearMemory : Boolean = false) : Sprite{
+            return Sprite(_getContentAsType(key, Sprite, clearMemory));
+        }
+        
         /** Returns a <code>AVM1Movie</code> object with the downloaded asset for the given key.
         *   @param key The url request, url as a string or a id  from which the asset was loaded. Returns null if the cast fails
         *   @param clearMemory If this <code>BulkProgressEvent</code> instance should clear all references to the content of this asset.
