@@ -314,6 +314,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getFailedItems()">getFailedItems</a>():Array</div>
+<div class="summaryTableDescription"> Get all items that have an error (either IOError or SecurityError).</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
 <a class="signatureLink" href="../BulkLoader.html#getHttpStatus()">getHttpStatus</a>(key:*):int</div>
 <div class="summaryTableDescription"> Gets the http status code for the loading item identified by key.</div>
 </td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
@@ -374,6 +381,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="../BulkLoader.html#getSound()">getSound</a>(key:*, clearMemory:Boolean = false):Sound</div>
 <div class="summaryTableDescription"> Returns a Sound object with the downloaded asset for the given key.</div>
+</td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
+</tr>
+<tr class="hideInheritedMethod">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="../BulkLoader.html#getSprite()">getSprite</a>(key:String, clearMemory:Boolean = false):Sprite</div>
+<div class="summaryTableDescription"> Returns a <code>Sprite</code> object with the downloaded asset for the given key.</div>
 </td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
 </tr>
 <tr class="hideInheritedMethod">
@@ -442,7 +456,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="../BulkLoader.html#registerNewType()">registerNewType</a>(extension:String, atType:String, withClass:Class):Boolean</div>
+<a class="signatureLink" href="../BulkLoader.html#registerNewType()">registerNewType</a>(extension:String, atType:String, withClass:Class = null):Boolean</div>
 <div class="summaryTableDescription">[static]  Register a new file extension to be loaded as a given type.</div>
 </td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
 </tr>
@@ -456,7 +470,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <tr class="hideInheritedMethod">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
-<a class="signatureLink" href="../BulkLoader.html#remove()">remove</a>(key:*):Boolean</div>
+<a class="signatureLink" href="../BulkLoader.html#remove()">remove</a>(key:*, internalCall:Boolean = false):Boolean</div>
 <div class="summaryTableDescription"> This will delete this item from memory.</div>
 </td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
 </tr>
@@ -733,7 +747,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
 </tr>
 <tr class="hideInheritedConstant">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#VERSION">VERSION</a> : String = "$Id: BulkLoader.as 219 2008-08-05 03:48:56Z debert $"<div class="summaryTableDescription">[static] Version.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="../BulkLoader.html#VERSION">VERSION</a> : String = "$Id$"<div class="summaryTableDescription">[static] Version.</div>
 </td><td class="summaryTableOwnerCol"><a href="../BulkLoader.html">BulkLoader</a></td>
 </tr>
 <tr class="hideInheritedConstant">
@@ -786,8 +800,8 @@ showHideInherited();
 <hr>
 <br>
 <p></p>
-<center class="copyright">(c) Copyright 2007 Arthur Debert. All Rights Reserved. Project home:; MIT LICENSE</center>
+<center class="copyright">(c) Copyright 2007 Arthur Debert. All Rights Reserved. Project home: http://code.google.com/p/bulk-loader/ ; MIT LICENSE</center>
 </div>
 </body>
 </html>
-<!--(c) Copyright 2007 Arthur Debert. All Rights Reserved. Project home:; MIT LICENSE-->
+<!--(c) Copyright 2007 Arthur Debert. All Rights Reserved. Project home: http://code.google.com/p/bulk-loader/ ; MIT LICENSE-->
