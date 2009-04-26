@@ -1,12 +1,13 @@
 package br.com.stimuli.loading.tests {
-	import flash.net.URLRequest;
-	import flash.net.*;
-	import flash.events.*;
-	import flash.utils.*;
-	import flash.display.*;
 	import br.com.stimuli.kisstest.TestCase;
-import br.com.stimuli.loading.BulkLoader;
-    import br.com.stimuli.loading.loadingtypes.*;
+	import br.com.stimuli.loading.BulkLoader;
+	import br.com.stimuli.loading.BulkProgressEvent;
+	import br.com.stimuli.loading.loadingtypes.*;
+	
+	import flash.display.*;
+	import flash.events.*;
+	import flash.net.*;
+	import flash.utils.*;
 /**@private*/
 	public class RemoveAllSimpleTest extends TestCase { 
 	    public var _bulkLoader : BulkLoader;
@@ -86,6 +87,21 @@ import br.com.stimuli.loading.BulkLoader;
  		     assertEquals(_bulkLoader.totalWeight, 1);
  		     _bulkLoader.removeAll();
  		     assertEquals(_bulkLoader.totalWeight, 0);
+ 		 }
+ 		 
+ 		 public function testProgress() : void{
+ 		     var p : BulkProgressEvent = _bulkLoader.getProgressForItems(["small_1"]);
+ 		     assertEquals(p.itemsLoaded, 1);
+ 		     assertEquals(p.itemsTotal, 1);
+ 		     assertEquals(p._percentLoaded, 1);
+ 		     assertEquals(p.ratioLoaded, 1);
+ 		     assertEquals(p.weightPercent, 1);
+ 		     _bulkLoader.removeAll();
+ 		     assertEquals(_bulkLoader.itemsLoaded, 0);
+ 		     assertEquals(_bulkLoader.itemsTotal, 0);
+ 		     assertEquals(_bulkLoader._percentLoaded, 0);
+ 		     
+ 		     
  		 }
 	}
 }

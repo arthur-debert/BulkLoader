@@ -1513,6 +1513,7 @@ bulkLoader.start(3)
             _items =  [];
             _connections = [];
             _contents = new Dictionary();
+            _percentLoaded = _weightPercent = _loadedRatio = 0;
         }
         
         /** Removes this instance from the static Register of instances. After a clear method has been called for a given instance, nothing else should work
