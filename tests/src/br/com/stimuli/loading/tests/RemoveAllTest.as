@@ -49,13 +49,15 @@ import br.com.stimuli.loading.BulkLoader;
         public function onTimeRemove(evt : Event) : void{
             timer.stop();
             _bulkLoader.removeAll();
-            var fileName : String ;
-            for (var i:int = 11; i<21; i++){
-                fileName = "small-" + (i < 10 ? "0" + i : i) + ".jpg";
-                _bulkLoader.add("{base_path}" + fileName, {id:String(i)});
-            }
+            
             _bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);
+            var fileName : String ;
+                for (var i:int = 11; i<21; i++){
+                    fileName = "small-" + (i < 10 ? "0" + i : i) + ".jpg";
+                    _bulkLoader.add("{base_path}" + fileName, {id:String(i)});
+                }
             if (name == "testLoadAfterRemoveWithStart"){
+                
                 _bulkLoader.start();
             }
         }
@@ -118,5 +120,16 @@ import br.com.stimuli.loading.BulkLoader;
 
  		 }
  		 
+ 		 public function testItemsLoaded() : void{
+ 		     assertEquals(_bulkLoader.itemsLoaded, 10);;
+ 		 }
+ 		 
+ 		 public function testItemsTotal() : void{
+ 		     assertEquals(_bulkLoader.itemsTotal, 10);
+ 		 }
+ 		 
+ 		 public function testTotalWeight() : void{
+ 		     assertEquals(_bulkLoader.totalWeight, 10);
+ 		 }
 	}
 }
