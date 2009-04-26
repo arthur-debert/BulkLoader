@@ -38,6 +38,7 @@ import flash.display.*;
 import flash.events.*;
 import flash.media.Sound;
 import flash.net.*;
+import flash.system.ApplicationDomain;
 import flash.utils.*;
 
     
@@ -49,7 +50,7 @@ import flash.utils.*;
 [Event(name="progress", type="br.com.stimuli.loading.BulkProgressEvent")]
 
 /**
- *  Dispatched when all items have been downloaded and parsed.
+ *  Dispatched when all items have been downloaded and parsed. Note that this event only fires if there are no errors.
  *
  *  @eventType br.com.stimuli.loading.BulkProgressEvent.COMPLETE
  */
@@ -73,7 +74,7 @@ import flash.utils.*;
     bulkLoader.add(backgroundURL);
 
     // add event listeners for the loader itself :
-    // event fired when all items have been loaded
+    // event fired when all items have been loaded and nothing has failed!
     bulkLoader.addEventListener(BulkLoader.COMPLETE, onCompleteHandler);
     // event fired when loading progress has been made:
     bulkLoader.addEventListener(BulkLoader.PROGRESS, _onProgressHandler);
@@ -1375,6 +1376,19 @@ bulkLoader.start(3)
             return null;
         }
         
+        /** Gets a class definition from a fully qualified path. Note that this will only work if you've loaded the swf with the same LoaderContext of the other swf
+            (using "context" prop on "add"). Else you should use <code><imageItem>.getClassByName</code> instead.
+            @param className The fully qualified class name as a string.
+            @return The <code>Class</code> object with that name or null of not found.
+        */
+//        public function getClassByName(className : String) : Class{
+//            try{
+//                return getDefinitionByName(className) as Class;
+//            }catch(e : Error){
+//                
+//            }
+//            return null;
+//        }
         /** Gets the http status code for the loading item identified by key.
         *   @param key The url request, url as a string or a id  from which the asset was loaded. 
         *   @return The Http status as an integer. If no item is found returns -1. If the http status cannot be determined but the item was found, returns 0.

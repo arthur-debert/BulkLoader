@@ -16,6 +16,7 @@ package br.com.stimuli.loading.loadingtypes {
 		}
 		
 		override public function _parseOptions(props : Object)  : Array{
+		    trace(props, props["context"])
             _context = props[BulkLoader.CONTEXT] || null;
             
             return super._parseOptions(props);
@@ -33,6 +34,7 @@ package br.com.stimuli.loading.loadingtypes {
             try{
             	// TODO: test for security error thown.
             	loader.load(url, _context);
+            	trace("context", _context);
             }catch( e : SecurityError){
             	onSecurityErrorHandler(_createErrorEvent(e));
             }
@@ -79,6 +81,17 @@ package br.com.stimuli.loading.loadingtypes {
             }
             super.stop();
         };
+        
+        /** Gets a class definition from a fully qualified path 
+            @param className The fully qualified class name as a string.
+            @return The <code>Class</code> object with that name or null of not found.
+        */
+        public function getClassByName(className : String) : Class{
+            if (loader.contentLoaderInfo.applicationDomain.hasDefinition(className)){
+                return loader.contentLoaderInfo.applicationDomain.getDefinition(className) as Class;
+            }
+            return null;
+        }
         
         override public function cleanListeners() : void {
             if (loader){
