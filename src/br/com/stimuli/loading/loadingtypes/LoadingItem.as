@@ -62,6 +62,13 @@ package br.com.stimuli.loading.loadingtypes {
     [Event(name="open", type="flash.events.Event")]
     
     /**
+     *  Dispatched when the ImageItem (swf or image) has inited.
+     *
+     *  @eventType flash.events.Event.INIT
+     */
+    [Event(name="init", type="flash.events.Event")]
+    
+    /**
      *  Dispatched when the the netStream can be played until the end with no interuption expected. Only fires for TYPE_VIDEO items and will only fire once.
      *
      *  @eventType br.com.stimuli.loading.BulkLoader.CAN_BEGIN_PLAYING

@@ -650,6 +650,7 @@ bulkLoader.start(3)
             item._addedTime = getTimer();
             item._additionIndex = _additionIndex ++;
             item.addEventListener(Event.COMPLETE, _onItemComplete, false, int.MIN_VALUE, true);
+            item.addEventListener(Event.COMPLETE, _incrementItemsLoaded, false, int.MAX_VALUE, true);
             item.addEventListener(ERROR, _onItemError, false, 0, true);
             item.addEventListener(Event.OPEN, _onItemStarted, false, 0, true);
             item.addEventListener(ProgressEvent.PROGRESS, _onProgress, false, 0, true);

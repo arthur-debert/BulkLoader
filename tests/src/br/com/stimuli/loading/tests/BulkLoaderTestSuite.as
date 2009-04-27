@@ -8,7 +8,8 @@ package br.com.stimuli.loading.tests {
 	/**@private*/
 	public class BulkLoaderTestSuite extends TestSuite {
 	    public var testClasses : Array = [
-	        GetClassDefinitionTest,
+	            LoaderItemMovieTest,
+	            GetClassDefinitionTest,
 	            RemoveAllSimpleTest,
 	            RemoveAllTest,
 	            RegisterNewTypeTest,
@@ -31,7 +32,6 @@ package br.com.stimuli.loading.tests {
 	            PauseAllResumeTest,
 	            ClearNowTest,
 	            StartPausedTest,
-	            LoaderItemMovieTest,
 	            ProgressEventsTest, 
 	            ReloadTest,
 	            

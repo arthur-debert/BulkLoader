@@ -26,6 +26,7 @@ package br.com.stimuli.loading.loadingtypes {
 		    loader = new Loader();
 		    loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, onProgressHandler, false, 0, true);
             loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
+            loader.contentLoaderInfo.addEventListener(Event.INIT, onInitHandler, false, 0, true);
             loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 100, true);
             loader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityErrorHandler, false, 0, true);
             loader.contentLoaderInfo.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);  
@@ -46,6 +47,10 @@ package br.com.stimuli.loading.loadingtypes {
         
         override public function onErrorHandler(evt : ErrorEvent) : void{
             super.onErrorHandler(evt);
+        }
+        
+        public function onInitHandler(evt : Event) :void{
+            dispatchEvent(evt);
         }
         
         override public function onCompleteHandler(evt : Event) : void {
@@ -96,6 +101,7 @@ package br.com.stimuli.loading.loadingtypes {
                 var removalTarget : Object = loader.contentLoaderInfo;
                 removalTarget.removeEventListener(ProgressEvent.PROGRESS, onProgressHandler, false);
                 removalTarget.removeEventListener(Event.COMPLETE, onCompleteHandler, false);
+                removalTarget.removeEventListener(Event.INIT, onInitHandler, false);
                 removalTarget.removeEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false);
                 removalTarget.removeEventListener(BulkLoader.OPEN, onStartedHandler, false);
                 removalTarget.removeEventListener(HTTPStatusEvent.HTTP_STATUS, super.onHttpStatusHandler, false);
