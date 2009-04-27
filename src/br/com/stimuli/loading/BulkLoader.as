@@ -38,7 +38,6 @@ import flash.display.*;
 import flash.events.*;
 import flash.media.Sound;
 import flash.net.*;
-import flash.system.ApplicationDomain;
 import flash.utils.*;
 
     
@@ -593,6 +592,9 @@ bulkLoader.start(3)
             // add a lower priority than default, else the event for all items complete will fire before
             // individual listerners attached to the item
             item.addEventListener(Event.COMPLETE, _onItemComplete, false, int.MIN_VALUE, true);
+            // need an extra event listener to increment items loaded, because this must happen
+            // **before** the item's normal event, or else client code will get a dummy value for it
+            item.addEventListener(Event.COMPLETE, _incrementItemsLoaded, false, int.MAX_VALUE, true);
             item.addEventListener(ERROR, _onItemError, false, 0, true);
             item.addEventListener(Event.OPEN, _onItemStarted, false, 0, true);
             item.addEventListener(ProgressEvent.PROGRESS, _onProgress, false, 0, true);
@@ -813,11 +815,17 @@ bulkLoader.start(3)
            _contents[item.url.url] = item.content;
            var next : Boolean= _loadNext();
            var allDone : Boolean = _isAllDoneP();
-           _itemsLoaded ++;
+           
            if(allDone) {
                _onAllLoaded();
             }
             evt.stopPropagation();
+        }
+        
+        /** @private
+        */
+        public function _incrementItemsLoaded(evt : Event) : void{
+           _itemsLoaded ++; 
         }
         
         /** @private */
@@ -855,6 +863,7 @@ bulkLoader.start(3)
             _totalWeight -= item.weight;
             log("Removing " + item, LOG_VERBOSE);
             item.removeEventListener(Event.COMPLETE, _onItemComplete, false)
+            item.removeEventListener(Event.COMPLETE, _incrementItemsLoaded, false)
             item.removeEventListener(ERROR, _onItemError, false);
             item.removeEventListener(Event.OPEN, _onItemStarted, false);
             item.removeEventListener(ProgressEvent.PROGRESS, _onProgress, false);
@@ -1219,6 +1228,11 @@ bulkLoader.start(3)
                     }
                     if(clearMemory){
                         remove(key);
+                        // this needs to try to load a next item, because this might get called inside a 
+                        // complete handler and if it's on the last item on the open connections, it might stale
+                        if (!_isPaused){
+                            _loadNext();
+                        }
                     }               
                     return res;
                 }
