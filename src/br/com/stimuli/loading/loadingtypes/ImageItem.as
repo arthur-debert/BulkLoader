@@ -16,7 +16,6 @@ package br.com.stimuli.loading.loadingtypes {
 		}
 		
 		override public function _parseOptions(props : Object)  : Array{
-		    trace(props, props["context"])
             _context = props[BulkLoader.CONTEXT] || null;
             
             return super._parseOptions(props);
@@ -34,7 +33,6 @@ package br.com.stimuli.loading.loadingtypes {
             try{
             	// TODO: test for security error thown.
             	loader.load(url, _context);
-            	trace("context", _context);
             }catch( e : SecurityError){
             	onSecurityErrorHandler(_createErrorEvent(e));
             }
