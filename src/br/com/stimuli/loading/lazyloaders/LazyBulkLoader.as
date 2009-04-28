@@ -67,7 +67,6 @@ package br.com.stimuli.loading.lazyloaders{
 		*/
 		lazy_loader function _lazyParseLoader(withData : String) : void{
 		    throw new Error("subclasses should implement a useful method for this");
-		    return new BulkLoader("bad");
 		}
 		/** @private */
 		lazy_loader static function toBoolean(value : String):Boolean {
