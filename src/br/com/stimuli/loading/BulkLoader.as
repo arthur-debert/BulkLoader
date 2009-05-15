@@ -33,6 +33,7 @@
 package br.com.stimuli.loading {
     
 import br.com.stimuli.loading.loadingtypes.*;
+import br.com.stimuli.loading.utils.SmartURL;
 
 import flash.display.*;
 import flash.events.*;
@@ -271,8 +272,10 @@ import flash.utils.*;
         public static const DEFAULT_NUM_CONNECTIONS : int = 7;
         /** @private */
         public var _numConnections : int = DEFAULT_NUM_CONNECTIONS;
+        
+        public var maxConnectionsPerHost : int = 2;
         /** @private */
-        public var _connections : Array;
+        public var _connections : Object;
         
         /**  
         *   @private
@@ -624,7 +627,7 @@ bulkLoader.start(3)
             }
             _startTime = getTimer();
             
-            _connections = [];
+            _connections = {};
             _loadNext();
             _isRunning = true;
             _lastBytesCheck = 0;
@@ -676,7 +679,7 @@ bulkLoader.start(3)
                 return false;
             }
             if(!_connections){
-                _connections = [];
+                _connections = {};
             }
             // is this item already loaded or loading?
             if (item.status == LoadingItem.STATUS_FINISHED ||
@@ -684,7 +687,8 @@ bulkLoader.start(3)
                 return true;
             } 
             // do we need to remove an item from the open connections?
-            if (_connections.length >= numConnections){
+            
+            if (_getNumConnections()  >=  numConnections  || _getNumConnectionsForItem(item) >= maxConnectionsPerHost ){
                 //which item should we remove?
                 var itemToRemove : LoadingItem = _getLeastUrgentOpenedItem();
                 pause(itemToRemove);
@@ -703,7 +707,9 @@ bulkLoader.start(3)
         *   and then by bytes remaining
         */
         public function _getLeastUrgentOpenedItem() : LoadingItem{
-            var toRemove : LoadingItem = LoadingItem(_connections.sortOn(["priority", "bytesRemaining", "_additionIndex"],  [Array.NUMERIC, Array.DESCENDING , Array.NUMERIC, Array.NUMERIC])[0]);
+            var itemsToLoad : Array = _getAllConnections();
+            itemsToLoad.sortOn(["priority", "bytesRemaining", "_additionIndex"],  [Array.NUMERIC, Array.DESCENDING , Array.NUMERIC, Array.NUMERIC])
+            var toRemove : LoadingItem = LoadingItem(itemsToLoad[0]);
             return toRemove;
         }
         /**  Register a new file extension to be loaded as a given type. This is used both in the guessing of types from the url and affects how loading is done for each type. 
@@ -770,11 +776,11 @@ bulkLoader.start(3)
             if(_isFinished){
                 return false;
             }if (!_connections){
-                _connections = [];
+                _connections = {};
             }
             // check for "stale items"
             
-            _connections.forEach(function(i : LoadingItem, ...rest) : void{
+            _getAllConnections().forEach(function(i : LoadingItem, ...rest) : void{
                 
                 if(i.status == LoadingItem.STATUS_ERROR && i.numTries == i.maxTries){
                     _removeFromConnections(i);
@@ -793,13 +799,14 @@ bulkLoader.start(3)
             if (toLoad){
                 next = true;
                 _isRunning = true;
-                if(_connections.length < numConnections){
-                    _connections.push(toLoad);
+                var connectionsForItem : Array = _getConnectionsForItem(toLoad);
+                if(_getAllConnections().length < numConnections && connectionsForItem.length < maxConnectionsPerHost ){
+                    connectionsForItem.push(toLoad);
                     toLoad.load();
                     log("Will load item:", toLoad, LOG_INFO);
                 }
                 // if we've got any more connections to open, load the next item
-                if(_connections.length  < numConnections){
+                if(_getAllConnections().length < numConnections && connectionsForItem.length < maxConnectionsPerHost){
                     _loadNext();
                 }
             }
@@ -873,15 +880,63 @@ bulkLoader.start(3)
         
         /** @private */
         public function _removeFromConnections(item : *) : Boolean{
-            if(!_connections) return false;
-            var removeIndex : int = _connections.indexOf(item)
+            if(!_connections || _getNumConnectionsForItem(item) == 0) return false;
+            var connectionsForHost : Array = _getConnectionsForItem(item);
+            var removeIndex : int = connectionsForHost.indexOf(item)
             if(removeIndex > -1){
-                _connections.splice( removeIndex, 1); 
+                connectionsForHost.splice( removeIndex, 1); 
                 return true;
             }
            return false;
         }
         
+        /** @private */
+        public function _getNumConnectionsForHostname(hostname :String) : int{
+            var conns : Array = _getConnectionsForHostName(hostname);
+            if (!conns) {
+                return 0;
+            }
+            return conns.length;
+        }
+        
+        /** @private */
+        public function _getNumConnectionsForItem(item :LoadingItem) : int{
+            var conns : Array = _getConnectionsForItem(item);
+            if (!conns) {
+                return 0;
+            }
+            return conns.length;
+        }
+        
+        /** @private */
+        public function _getAllConnections() : Array {
+            var conns : Array = [];
+            for (var hostname : String in _connections){
+                conns = conns.concat ( _connections[hostname] ) ;
+            }
+            return conns;
+        }
+        /** @private **/
+        public function _getNumConnections() : int{
+            var connections : int = 0;
+            for (var hostname : String in _connections){
+                connections += _connections[hostname].length;
+            }
+            return connections;
+        }
+        
+        public function _getConnectionsForHostName (hostname : String) : Array {
+            if (_connections[hostname] == null ){
+                _connections[hostname] = [];
+            }
+            return _connections[hostname];
+        }
+        /** @private */
+        public function _getConnectionsForItem(item :LoadingItem) : Array{
+            var urlObject : SmartURL = new SmartURL(item.url.url);
+            return _getConnectionsForHostName(urlObject.host);
+            
+        }
         /** @private */
         public function _onItemError(evt : ErrorEvent) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
@@ -1415,12 +1470,14 @@ bulkLoader.start(3)
             }
             return -1;
         }
+
         /** @private  */
         public function _isAllDoneP() : Boolean{
             return _items.every(function(item : LoadingItem, ...rest):Boolean{
                 return item._isLoaded;
             });
         }
+
         /** @private  */
         public function _onAllLoaded() : void {
             if(_isFinished){
@@ -1434,7 +1491,7 @@ bulkLoader.start(3)
             _endTIme = getTimer();
             totalTime = BulkLoader.truncateNumber((_endTIme - _startTime) /1000);
             _updateStats();
-            _connections = [];
+            _connections = {};
             getStats();
             _isFinished = true;
             log("Finished all", LOG_INFO);
@@ -1540,7 +1597,7 @@ bulkLoader.start(3)
                 remove(item, true);
             }
             _items =  [];
-            _connections = [];
+            _connections = {};
             _contents = new Dictionary();
             _percentLoaded = _weightPercent = _loadedRatio = 0;
         }

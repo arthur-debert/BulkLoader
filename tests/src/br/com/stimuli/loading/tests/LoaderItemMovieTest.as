@@ -93,7 +93,7 @@ package br.com.stimuli.loading.tests {
         
         public function testInitFired() : void{
             assertTrue(initTime > 0);
-            assertTrue(initTime >= completeTime);
+            assertTrue(initTime <= completeTime);
         }    
         
 	}

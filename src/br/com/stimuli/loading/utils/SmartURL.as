@@ -11,7 +11,7 @@ package br.com.stimuli.loading.utils {
 		public function SmartURL(rawString : String){
 			this.rawString = rawString;
 			// 
-			var URL_RE : RegExp = /((?P<protocol>[a-zA-Z]+) : \/\/  (?P<host>[^:\/]*) (:(?P<port>\d+))?)?  (?P<path>[^?]*)? ((?P<query>.*))? /x; 
+			var URL_RE : RegExp = /((?P<protocol>[a-zA-Z]+: \/\/)   (?P<host>[^:\/]*) (:(?P<port>\d+))?)?  (?P<path>[^?]*)? ((?P<query>.*))? /x; 
 			//                   /((?P<protocol>[^\:]+:\/\/)?(?P<host>[^\/]+)?)?(?P<path>\/[^?]*)(?P<query>.*)?/ig; 
 			var match : * = URL_RE.exec(rawString);
             /*for (var prop : String in match){

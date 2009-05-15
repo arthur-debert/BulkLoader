@@ -59,8 +59,9 @@ package br.com.stimuli.loading.tests {
     	 	    assertFalse(item._isLoading);
     	 	    // now force load
     	 	    _bulkLoader.loadNow("text");
+    	 	    assertEquals(_bulkLoader._getAllConnections().indexOf(item) , 0);
+    	 	    
     	 	    assertTrue(item._isLoading);
-    	 	    assertTrue(_bulkLoader._connections.indexOf(item) >= 0);
 	 	    }
     	}
     

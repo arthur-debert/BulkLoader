@@ -22,7 +22,7 @@ package br.com.stimuli.loading.tests {
 		}
 		// Override the run method and begin the request for remote data
 		public override function setUp():void {
-		     _bulkLoader = new BulkLoader(BulkLoader.getUniqueName(), 1)
+		     _bulkLoader = new BulkLoader(BulkLoader.getUniqueName(), 1, BulkLoader.LOG_VERBOSE)
             _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/small-01.jpg", {id:String("small_1")});
 	 		_bulkLoader.start();
 	 		_bulkLoader.addEventListener(BulkLoader.COMPLETE, completeHandler);

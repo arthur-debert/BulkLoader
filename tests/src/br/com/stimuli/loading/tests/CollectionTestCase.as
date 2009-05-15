@@ -26,7 +26,8 @@ package br.com.stimuli.loading.tests {
     	 	 * Invoked by TestCase.runMethod function.
     	 	 */
     		override public function setUp():void {
-    	 		_bulkLoader = new BulkLoader(BulkLoader.getUniqueName());
+    	 		_bulkLoader = new BulkLoader(BulkLoader.getUniqueName(), 12);
+    	 		_bulkLoader.maxConnectionsPerHost = 10;
     	 		soundURL = new URLRequest("http://www.emptywhite.com/bulkloader-assets/chopin.mp3");
     	 		_bulkLoader.add(soundURL, {id:"the-sound"});
     	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true});
@@ -99,7 +100,11 @@ package br.com.stimuli.loading.tests {
             
             public function testConnectionsNotNullOnRemoveAll() : void{
                 _bulkLoader.removeAll();
-                assertTrue(_bulkLoader._connections.length == 0)
+                var keys : int = 0;
+                for (var prop : String in _bulkLoader._connections){
+                    keys ++;
+                }
+                assertEquals(keys,  0)
             }
             
             public function testPauseAllIsRunning() : void{
@@ -168,11 +173,11 @@ package br.com.stimuli.loading.tests {
             }
             
             public function testGetLeastUrgentItem() : void{
-                _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.jpg", {"priority":-200, id:"text"});
+                var least : LoadingItem = _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/some-text.jpg", {"priority":-200, id:"text"});
                 _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/shoes.jpg", {"priority":-200, id:"photo"});
                 _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/samplexml.xml", {"priority":200, id:"xml"});
                 _bulkLoader.start();
-                assertEquals(_bulkLoader._getLeastUrgentOpenedItem() , _bulkLoader.get("text"));
+                assertEquals(_bulkLoader._getLeastUrgentOpenedItem() , least);
             }
                         
             public function testHighestPriority() : void{
