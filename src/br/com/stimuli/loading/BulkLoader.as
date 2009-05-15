@@ -269,7 +269,7 @@ import flash.utils.*;
         /** @private */
         public var _additionIndex : int = 0;
         // Maximum number of simultaneous open requests
-        public static const DEFAULT_NUM_CONNECTIONS : int = 7;
+        public static const DEFAULT_NUM_CONNECTIONS : int = 12;
         /** @private */
         public var _numConnections : int = DEFAULT_NUM_CONNECTIONS;
         
@@ -769,15 +769,7 @@ bulkLoader.start(3)
           return false;
         }
         
-        
-        // if toLoad is specified it be cut line
-            /** @private */
-        public function _loadNext(toLoad : LoadingItem = null) : Boolean{
-            if(_isFinished){
-                return false;
-            }if (!_connections){
-                _connections = {};
-            }
+        public function _getNextItemToLoad() : LoadingItem{
             // check for "stale items"
             
             _getAllConnections().forEach(function(i : LoadingItem, ...rest) : void{
@@ -786,27 +778,37 @@ bulkLoader.start(3)
                     _removeFromConnections(i);
                 }
             });
-            var next : Boolean = false;
-            if (!toLoad){
-                // no given to load, search for the next one in line
-                for each (var checkItem:LoadingItem in _items){
-                   if (!checkItem._isLoading && checkItem.status != LoadingItem.STATUS_STOPPED){
-                       toLoad = checkItem;
-                       break;
-                   }
-                }
+            for each (var checkItem:LoadingItem in _items){
+               if (!checkItem._isLoading && checkItem.status != LoadingItem.STATUS_STOPPED && _canOpenConnectioForItem(checkItem)){
+                   return checkItem;
+               }
             }
+            return null;
+        }
+        // if toLoad is specified it be cut line
+            /** @private */
+        public function _loadNext(toLoad : LoadingItem = null) : Boolean{
+            if(_isFinished){
+                return false;
+            }if (!_connections){
+                _connections = {};
+            }
+            
+            var next : Boolean = false;
+            toLoad = toLoad || _getNextItemToLoad();
             if (toLoad){
                 next = true;
                 _isRunning = true;
-                var connectionsForItem : Array = _getConnectionsForItem(toLoad);
-                if(_getAllConnections().length < numConnections && connectionsForItem.length < maxConnectionsPerHost ){
+                // need to check again, as _loadNext might have been called with an item to be loaded forcefully.
+                if(_canOpenConnectioForItem(toLoad)){
+                    var connectionsForItem : Array = _getConnectionsForItem(toLoad);
                     connectionsForItem.push(toLoad);
                     toLoad.load();
+                    //trace("begun loading", new SmartURL(toLoad.url.url).host, _getNumConnectionsForItem(toLoad) + "/" + maxConnectionsPerHost, _getNumConnections() + "/" + numConnections);
                     log("Will load item:", toLoad, LOG_INFO);
                 }
                 // if we've got any more connections to open, load the next item
-                if(_getAllConnections().length < numConnections && connectionsForItem.length < maxConnectionsPerHost){
+                if(_getNextItemToLoad()){
                     _loadNext();
                 }
             }
@@ -936,6 +938,12 @@ bulkLoader.start(3)
             var urlObject : SmartURL = new SmartURL(item.url.url);
             return _getConnectionsForHostName(urlObject.host);
             
+        }
+        
+        public function _canOpenConnectioForItem(item :LoadingItem) : Boolean{
+            if (_getNumConnections() >= numConnections) return false;
+            if (_getNumConnectionsForItem(item) >= maxConnectionsPerHost) return false;
+            return true;
         }
         /** @private */
         public function _onItemError(evt : ErrorEvent) : void{
