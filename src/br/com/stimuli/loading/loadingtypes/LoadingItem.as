@@ -175,7 +175,7 @@ package br.com.stimuli.loading.loadingtypes {
         /** @private */
         public var _totalTime : int;
         /** The total time (in seconds) this item took to load.*/
-        public var _timeToDownload : int;
+        public var _timeToDownload : Number;
         /** The speed (in kbs) for this download.
         *   @private
         *   */
@@ -277,12 +277,9 @@ package br.com.stimuli.loading.loadingtypes {
             _totalTime = getTimer();
             _timeToDownload = ((_totalTime - _responseTime) /1000);
             if(_timeToDownload == 0){
-                _timeToDownload = 0.2;
+                _timeToDownload = 0.1;
             }
             _speed = BulkLoader.truncateNumber((bytesTotal / 1024) / (_timeToDownload));
-            if (_timeToDownload == 0){
-                _speed  = 3000;
-            }
            status = STATUS_FINISHED;
            _isLoaded = true;
            dispatchEvent(evt);
@@ -527,13 +524,23 @@ package br.com.stimuli.loading.loadingtypes {
             return _id; 
         }
         
+		public function get humanFiriendlySize():String
+		{
+			var kb : Number = _bytesTotal/1024;
+			if (kb < 1024){
+				return int(kb) + " kb"
+			}else{
+				return (kb/1024).toPrecision(3) + " mb"
+			}
+		}
         /** Returns a string with time stats for this loading item.
         */
         public function getStats() : String{
-            return "Item url:" + url.url + 
-            ", total time: " + _timeToDownload +
+            return "Item url: " + url.url + 
+            "(s), total time: " + (_totalTime/1000).toPrecision(3) +
+			"(s), download time: " + (_timeToDownload).toPrecision(3) +
             "(s), latency:" + _latency +
             "(s), speed: " + _speed + 
-            " kb/s, size: " + BulkLoader.truncateNumber(_bytesTotal/1024) + " kb";
+            " kb/s, size: " + humanFiriendlySize;
         }
 }}
