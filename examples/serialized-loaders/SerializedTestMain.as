@@ -65,7 +65,7 @@ package{
                         }
                     }
                 }else if (item.isSound()){
-                    var sound : Sound = lazy.getSound("sound-short");
+                    var sound : Sound = lazy.getSound(item.url);
                     sound.play();
             }    
             }
