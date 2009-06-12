@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+   xmlns="*"
+	creationComplete="startUp()" >
+	<GUIFlexRunner xmlns="br.com.stimuli.kisstest.runners.*" id="kissrunner">
+	<mx:Script>
+      <![CDATA[
+	import br.com.stimuli.loading.tests.BulkLoaderTestSuite;
+	import br.com.stimuli.kisstest.TestSuite;
+	
+	public function startUp() : void{
+		var suite : TestSuite = new BulkLoaderTestSuite();
+		kissrunner.createAndRun("BulkLoader Test Suite", suite);
+	}
+	
+	  ]]>
+   </mx:Script>
+	</GUIFlexRunner>
+</mx:Application>

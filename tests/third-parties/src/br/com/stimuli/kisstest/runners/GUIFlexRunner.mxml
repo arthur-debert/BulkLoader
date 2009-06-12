@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel
+   xmlns:mx="http://www.adobe.com/2006/mxml"
+   xmlns="*"
+   width="100%"
+   height="100%"
+   minHeight="500"
+   minWidth="850"
+   verticalScrollPolicy="off"
+   horizontalScrollPolicy="off"
+
+   modalTransparencyBlur="0"
+   modalTransparency="0"
+   creationComplete="handleCreationComplete()"
+    title="Kiss Test Suite" backgroundColor="#7186B7">
+
+
+   <mx:Script>
+      <![CDATA[
+          import mx.events.FlexEvent;
+          import br.com.stimuli.kisstest.events.AssertionFailedEvent;
+          import br.com.stimuli.kisstest.TestCase;
+          import br.com.stimuli.kisstest.TestResult;
+          import mx.events.DataGridEvent;
+          import mx.collections.ArrayCollection;
+          import mx.controls.dataGridClasses.DataGridListData;
+          import br.com.stimuli.loading.tests.BulkLoaderTestSuite;
+          import flash.events.Event;
+          
+        import br.com.stimuli.kisstest.TestSuite;
+        import br.com.stimuli.kisstest.TestRunner;
+        import br.com.stimuli.kisstest.events.TestEvent;
+        import br.com.stimuli.kisstest.runners.TraceRunner;
+        
+        import mx.resources.IResourceManager;
+        
+        public var suite : TestSuite;
+        public var runner : TestRunner;
+        private var ds : IResourceManager;
+        [Bindable]
+        public var tResults :ArrayCollection;
+        
+        [Bindable]
+        public var possibleStatus : Array = ["All", TestCase.STATUS_SUCCESS, TestCase.STATUS_ERROR, TestCase.STATUS_FAILURE];
+        
+        public var suiteName : String;
+        public function handleCreationComplete():void{
+             tResults = new ArrayCollection();       
+             testList.addEventListener(Event.CHANGE, onTestSelected);
+        }
+        
+        public function createAndRun(suiteName : String, s : TestSuite) : void{
+               this.suiteName = suiteName;
+                runner = new TestRunner(s);
+                runner.addEventListener(TestEvent.TEST_STARTED, onTestStarted);
+                runner.addEventListener(TestEvent.TEST_FINISHED, onTestFinished);
+                runner.run();
+                this.title = suiteName;
+        }
+        public function onTestStarted(evt :TestEvent) : void{
+            //trace("Starting:" + evt.test);
+            //this.title = suiteName + ":" + evt.test.className + evt.test.name;
+            fullSummary.htmlText = getMainSummary(evt.test);
+        }
+        
+        public function onTestFinished(evt :TestEvent) : void{
+//            trace("Finished:" + evt.test);
+//            trace(runner.finishedTestCount + "/" + runner.testCount);
+            
+            progressBar.setProgress(runner.finishedTestCount , runner.testCount);
+            progressBar.label = "Finished: " + runner.finishedTestCount + "/" + runner.testCount;
+            
+           tResults.addItem(evt.test);
+            testList.scrollToIndex(tResults.length-1);
+            var barColor : int = 0x00FF00;
+            if (runner.failedTestCount > 0 || runner.errorTestCount > 0){
+                barColor = 0xFF0000;
+                statusFilter.data = "Failure";
+            }
+            progressBar.setStyle("barColor", barColor);
+            
+            
+        }
+        
+        public function updateLabels() : void{
+            
+        }
+        
+        public function onTestSelected(evt : Event) : void{
+            
+            var selectionData : TestCase = tResults[testList.selectedIndex] as TestCase;
+            var testResult : TestResult = runner.getResult(selectionData);
+            testInfoDashboard.htmlText = getResultSummary(testResult);
+            testDetails.title = testResult.test.name;
+        }
+        
+        public function getResultSummary(result : TestResult) : String{
+            //trace("res", result.test.fails.length, result.test.fails[0], result.test.fails[0] is AssertionFailedEvent, result.test.fails[0].toString());
+            var output : Array = [
+                "<b>Status:</b> " + result.test.status,
+                "<b>Time:</b> " + result.elapsedTime,
+                "<b>Failure:</b>" + (result.test.fails.length > 0 ? result.test.fails[0] : ""),
+                "<b>Asserts:</b> " + result.numAsserts,
+                "<b>Stack:</b>" + result.stackTrace
+                
+            ];
+            return output.join("\n");
+        }
+        
+        public function getMainSummary( t : TestCase) : String{
+            var output : Array = [
+                "<b>Current Test:</b> " + t.name,
+                "<b>Number of tests:</b> " + runner.testCount,
+                "<b>Finished Tests:</b> " + runner.finishedTestCount,
+                "<b>Failed tests:</b> "  + runner.failedTestCount,
+                "<b>Errors:</b> " + runner.errorTestCount,
+                "<b>Asserts:</b> " + runner.numAsserts,
+                "<b>Average Asserts per Test:</b> " + runner.numAsserts / runner.finishedTestCount,
+                "<b>Elapsed Time:</b> " + runner.globalElapsedTime,
+                "<b>Averege time per Test:</b> " + runner.globalElapsedTime / runner.finishedTestCount,
+            ];
+            return output.join("\n");
+        }
+        public function onFilterChanged(...rest) : void{
+            if (statusFilter.dataProvider[statusFilter.selectedIndex] == "All"){
+                tResults = new ArrayCollection(runner.finishedTests);
+            }else{
+                tResults = new ArrayCollection(runner.finishedTests.filter(function (t : TestCase, ...rest):Boolean{
+                    return t.status == statusFilter.dataProvider[statusFilter.selectedIndex];
+                }));
+            }
+        }
+      ]]>
+   </mx:Script>
+   <mx:VDividedBox width="100%" height="100%">
+    <mx:Canvas width="100%" height="150" backgroundColor="#8094C5">
+    <mx:HBox width="100%">
+        <mx:Text width="60%" id="fullSummary" height="100%">
+            
+        </mx:Text>
+    
+     <mx:ProgressBar id="progressBar" indeterminate="false" mode="manual" y="40" left="0" right="665" width="40%" height="150" trackHeight="30" verticalGap="20">
+     </mx:ProgressBar>
+    </mx:HBox>     
+     
+      </mx:Canvas>
+    
+      <mx:HDividedBox width="100%" height="100%">
+      <mx:VBox width="70%" height="100%">
+       <mx:ComboBox dataProvider="{possibleStatus}" id="statusFilter" change="onFilterChanged()">
+            
+       </mx:ComboBox>
+        <mx:DataGrid height="100%" width="100%" dataProvider="{tResults}" id="testList">
+          <mx:columns>
+          <mx:DataGridColumn headerText="Class" dataField="className"/>
+            <mx:DataGridColumn headerText="Name" dataField="name"/>
+            <mx:DataGridColumn headerText="Status" dataField="status"/>
+            
+          </mx:columns>
+        </mx:DataGrid>   
+      </mx:VBox>
+      
+         <mx:Panel height="100%" width="30%" id="testDetails">
+            <mx:Text id="testInfoDashboard"/>
+             
+         </mx:Panel>
+         
+      </mx:HDividedBox>
+      
+   </mx:VDividedBox>
+
+</mx:Panel>
