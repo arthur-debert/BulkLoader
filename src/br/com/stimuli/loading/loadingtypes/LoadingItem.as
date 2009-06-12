@@ -34,7 +34,7 @@
 package br.com.stimuli.loading.loadingtypes {
     
     import br.com.stimuli.loading.BulkLoader;
-    
+    import br.com.stimuli.loading.utils.SmartURL;
     import flash.display.*;
     import flash.events.*;
     import flash.net.*;
@@ -188,6 +188,10 @@ package br.com.stimuli.loading.loadingtypes {
         *   @private
         */
         public var _context : * = null;
+		/**
+		 *	@private
+		 */
+		public var _parsedURL : SmartURL
         /** @private */
         public var specificAvailableProps : Array ;
         /** @private */
@@ -199,6 +203,7 @@ package br.com.stimuli.loading.loadingtypes {
         public function LoadingItem(url : URLRequest, type : String, _uid : String){
             this._type = type;
             this.url = url;
+			_parsedURL = new SmartURL(url.url);
             if(!specificAvailableProps){
                 specificAvailableProps = [];
             }
@@ -524,6 +529,13 @@ package br.com.stimuli.loading.loadingtypes {
             return _id; 
         }
         
+		/** The hostname, as a string for this item's URL. If no hostname is specified, then an empty string is returned
+		*/
+		public function get hostName():String
+		{
+			return _parsedURL.host;
+		}
+		
 		public function get humanFiriendlySize():String
 		{
 			var kb : Number = _bytesTotal/1024;

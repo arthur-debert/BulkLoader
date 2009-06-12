@@ -33,7 +33,6 @@
 package br.com.stimuli.loading {
     
 import br.com.stimuli.loading.loadingtypes.*;
-import br.com.stimuli.loading.utils.SmartURL;
 
 import flash.display.*;
 import flash.events.*;
@@ -801,7 +800,7 @@ bulkLoader.start(3)
                 _isRunning = true;
                 // need to check again, as _loadNext might have been called with an item to be loaded forcefully.
                 if(_canOpenConnectioForItem(toLoad)){
-                    var connectionsForItem : Array = _getConnectionsForItem(toLoad);
+                    var connectionsForItem : Array = _getConnectionsForHostName(toLoad.hostName)
                     connectionsForItem.push(toLoad);
                     toLoad.load();
                     //trace("begun loading", new SmartURL(toLoad.url.url).host, _getNumConnectionsForItem(toLoad) + "/" + maxConnectionsPerHost, _getNumConnections() + "/" + numConnections);
@@ -883,7 +882,7 @@ bulkLoader.start(3)
         /** @private */
         public function _removeFromConnections(item : *) : Boolean{
             if(!_connections || _getNumConnectionsForItem(item) == 0) return false;
-            var connectionsForHost : Array = _getConnectionsForItem(item);
+            var connectionsForHost : Array = _getConnectionsForHostName(item.hostName);(item);
             var removeIndex : int = connectionsForHost.indexOf(item)
             if(removeIndex > -1){
                 connectionsForHost.splice( removeIndex, 1); 
@@ -892,7 +891,7 @@ bulkLoader.start(3)
            return false;
         }
         
-        /** @private */
+
         public function _getNumConnectionsForHostname(hostname :String) : int{
             var conns : Array = _getConnectionsForHostName(hostname);
             if (!conns) {
@@ -903,7 +902,7 @@ bulkLoader.start(3)
         
         /** @private */
         public function _getNumConnectionsForItem(item :LoadingItem) : int{
-            var conns : Array = _getConnectionsForItem(item);
+            var conns : Array = _getConnectionsForHostName(item.hostName);(item);
             if (!conns) {
                 return 0;
             }
@@ -933,12 +932,7 @@ bulkLoader.start(3)
             }
             return _connections[hostname];
         }
-        /** @private */
-        public function _getConnectionsForItem(item :LoadingItem) : Array{
-            var urlObject : SmartURL = new SmartURL(item.url.url);
-            return _getConnectionsForHostName(urlObject.host);
-            
-        }
+
         
         public function _canOpenConnectioForItem(item :LoadingItem) : Boolean{
             if (_getNumConnections() >= numConnections) return false;
