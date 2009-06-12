@@ -10,7 +10,7 @@ package br.com.stimuli.loading.tests {
     	public class CollectionTestCase extends TestCase {
     		 public var _bulkLoader:BulkLoader;
             private var soundURL : URLRequest ;
-            
+            public var imageURL : String = "http://www.emptywhite.com/bulkloader-assets/small-01.jpg";
     		/**
      		 * Constructor
      		 *
@@ -31,6 +31,7 @@ package br.com.stimuli.loading.tests {
     	 		soundURL = new URLRequest("http://www.emptywhite.com/bulkloader-assets/chopin.mp3");
     	 		_bulkLoader.add(soundURL, {id:"the-sound"});
     	 		_bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/movie.flv", {id:"the-movie", pausedAtStart:true});
+				_bulkLoader.add(imageURL, {id:"image", preventCache:true});
     	 		_bulkLoader.start();
     	 		dispatchEvent(new Event(Event.INIT));
     	 	}
@@ -59,8 +60,14 @@ package br.com.stimuli.loading.tests {
     	 		assertNotNull( _bulkLoader.get(soundURL));
     	 	}
     	 	
+
+			public function testGetByURLStringWithPreventCache():void {
+    	 	    //"Get by URL",
+    	 		assertNotNull( _bulkLoader.get(imageURL));
+    	 	}
+
             public function testCorrectNumber() : void{
-                assertEquals(_bulkLoader.items.length, 2);
+                assertEquals(_bulkLoader.items.length, 3);
             }
             
             public function testCanAddTwoItemsSameURL() : void{

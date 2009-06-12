@@ -784,7 +784,7 @@ bulkLoader.start(3)
             }
             return null;
         }
-        // if toLoad is specified it be cut line
+        // if toLoad is specified it will take precedence over whoever is queued cut line
             /** @private */
         public function _loadNext(toLoad : LoadingItem = null) : Boolean{
             if(_isFinished){
@@ -803,7 +803,7 @@ bulkLoader.start(3)
                     var connectionsForItem : Array = _getConnectionsForHostName(toLoad.hostName)
                     connectionsForItem.push(toLoad);
                     toLoad.load();
-                    //trace("begun loading", new SmartURL(toLoad.url.url).host, _getNumConnectionsForItem(toLoad) + "/" + maxConnectionsPerHost, _getNumConnections() + "/" + numConnections);
+                    //trace("begun loading", toLoad.url.url);//, _getNumConnectionsForItem(toLoad) + "/" + maxConnectionsPerHost, _getNumConnections() + "/" + numConnections);
                     log("Will load item:", toLoad, LOG_INFO);
                 }
                 // if we've got any more connections to open, load the next item
@@ -1551,7 +1551,7 @@ bulkLoader.start(3)
             if(!key) return null;
             if(key is LoadingItem) return key;
             for each (var item : LoadingItem in _items){
-                if(item._id == key || item.url.url == key || item.url == key || (key is URLRequest && item.url.url == key.url) ){
+                if(item._id == key || item._parsedURL.rawString == key || item.url == key || (key is URLRequest && item.url.url == key.url) ){
                     return item;
                 }
             }
