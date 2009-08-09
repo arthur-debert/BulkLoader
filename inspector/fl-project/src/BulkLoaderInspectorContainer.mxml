@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" minWidth="500" minHeight="500" xmlns:local="*" width="850" height="500" >
+
+	<local:BulkLoaderInspectorPanel id="panel">
+		
+	</local:BulkLoaderInspectorPanel>
+	<mx:Script>
+		<![CDATA[
+//			/creationComplete="createBL()"
+			import br.com.stimuli.loading.BulkLoader;
+						
+			public function createBL(...rest):void{
+				var testURLS : Array = ["dfsfd.txt", "avm1movie.swf","avm2-movie.swf","bad-xml.xml","bigmovie.swf","cats.jpg","chopin.mp3","CompiledClassTest.swf","large-file.txt","large-file.xml","lazyloader.json","lazyloader.xml","movie-long.flv","movie.flv","sample.js","sample.json","sample.mp4","samplexml.xml","samplexml2.xml","shoes.jpg","small-01.jpg","small-02.jpg","small-03.jpg","small-04.jpg","small-05.jpg","small-06.jpg","small-07.jpg","small-08.jpg","small-09.jpg","small-10.jpg","small-11.jpg","small-12.jpg","small-13.jpg","small-14.jpg","small-15.jpg","small-16.jpg","small-17.jpg","small-18.jpg","small-19.jpg","small-20.jpg","small-21.jpg","small-22.jpg","small-23.jpg","small-24.jpg","small-25.jpg","small-26.jpg","small-27.jpg","small-28.jpg","small-29.jpg","small-30.jpg","small-31.jpg","small-32.jpg","small-33.jpg","small-34.jpg","small-35.jpg","some-text.txt","sound-short.mp3"];
+				for (var i :int=0 ; i < 2 ; i++){
+					var b : BulkLoader = new BulkLoader("loader_" + i);
+					
+					for (var k : int = 0 ; k < 15 ; k++){
+						var urlIndex :int = int(Math.random() * testURLS.length);
+						var url : String = "http://www.emptywhite.com/bulkloader-assets/" + testURLS.splice(urlIndex, 1)[0];
+						b.add(url, {"pausedAtStart":true, "preventCache":true, "id": BulkLoader.getFileName(url, true)});
+					}
+					b.start();
+				}
+				this.panel.refreshInstances_clickHandler();
+				this.panel.setBulkLoaderInstance(b);
+				
+			}
+		]]>
+	</mx:Script>
+</mx:Application>
