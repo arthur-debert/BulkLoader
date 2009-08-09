@@ -706,6 +706,7 @@ bulkLoader.start(3)
         *   and then by bytes remaining
         */
         public function _getLeastUrgentOpenedItem() : LoadingItem{
+			// TODO: make sure we remove from the righ hostname
             var itemsToLoad : Array = _getAllConnections();
             itemsToLoad.sortOn(["priority", "bytesRemaining", "_additionIndex"],  [Array.NUMERIC, Array.DESCENDING , Array.NUMERIC, Array.NUMERIC])
             var toRemove : LoadingItem = LoadingItem(itemsToLoad[0]);
@@ -1848,14 +1849,14 @@ bulkLoader.start(3)
             return buffer.join("");
         }
         /** @private  */
-        public static function getFileName(text : String) : String{
+        public static function getFileName(text : String, allowExtension : Boolean=false) : String{
             if (text.lastIndexOf("/") == text.length -1){
                 return getFileName(text.substring(0, text.length-1));
             }
             var startAt : int = text.lastIndexOf("/") + 1;
             //if (startAt == -1) startAt = 0;
             var croppedString : String = text.substring(startAt);
-            var lastIndex :int = croppedString.indexOf(".");
+            var lastIndex :int = allowExtension ? croppedString.length : croppedString.indexOf(".");
             if (lastIndex == -1 ){
                 if (croppedString.indexOf("?") > -1){
                     lastIndex = croppedString.indexOf("?") ;

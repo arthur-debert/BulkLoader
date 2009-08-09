@@ -8,6 +8,7 @@ package br.com.stimuli.loading.utils {
 		public var queryString : String;
 		public var queryObject : Object;
 		public var queryLength : int = 0;
+		public var fileName : String;
 		public function SmartURL(rawString : String){
 			this.rawString = rawString;
 			// 
@@ -23,8 +24,8 @@ package br.com.stimuli.loading.utils {
 				host = match.host || null;
 				port = match.port ? int(match.port) : 80;
 				path = match.path;
+				fileName = path.substring(path.lastIndexOf("/"), path.lastIndexOf("."));
 				queryString = match.query;
-				//print( queryString, type );
 				if (queryString){
 					queryObject = {};
 					queryString = queryString.substr(1);
