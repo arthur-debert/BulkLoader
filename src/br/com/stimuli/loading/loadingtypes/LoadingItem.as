@@ -34,7 +34,9 @@
 package br.com.stimuli.loading.loadingtypes {
     
     import br.com.stimuli.loading.BulkLoader;
+    import br.com.stimuli.loading.BulkProgressEvent;
     import br.com.stimuli.loading.utils.SmartURL;
+    
     import flash.display.*;
     import flash.events.*;
     import flash.net.*;
@@ -265,13 +267,18 @@ package br.com.stimuli.loading.loadingtypes {
         /**
         *   @private
         */
-        public function onProgressHandler(evt : *) : void {
+        public function onProgressHandler(evt : ProgressEvent) : void {
            _bytesLoaded = evt.bytesLoaded;
            _bytesTotal = evt.bytesTotal;
            _bytesRemaining = _bytesTotal - bytesLoaded;
            _percentLoaded = _bytesLoaded / _bytesTotal;
            _weightPercentLoaded = _percentLoaded * weight;
-           dispatchEvent(evt);
+           var e : BulkProgressEvent = new BulkProgressEvent(BulkLoader.PROGRESS, true, false);
+           e._percentLoaded = _percentLoaded;
+           e.bytesTotal = _bytesTotal;
+           e.bytesLoaded = _bytesLoaded;
+           evt.stopImmediatePropagation();
+           dispatchEvent(e);
         }
         
         
@@ -540,7 +547,7 @@ package br.com.stimuli.loading.loadingtypes {
 		{
 			var kb : Number = _bytesTotal/1024;
 			if (kb < 1024){
-				return int(kb) + " kb"
+				return Math.ceil(kb) + " kb"
 			}else{
 				return (kb/1024).toPrecision(3) + " mb"
 			}
