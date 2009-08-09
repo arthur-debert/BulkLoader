@@ -18,15 +18,21 @@ public class HostPriorityTest 	extends TestCase {
 		public var completeFired : Boolean;
 		public var progressFired : Boolean;
 		
+		// the order here should be the last to first, expected loading init!
 		public var items : Array = [
-			["http://www.emptywhite.com/bulkloader-assets/small-01.jpg", {preventCache:true, priority:0}],
-			["http://d1.emptywhite.com/bulkloader-assets/small-02.jpg", {preventCache:true, priority:10}],
-			["http://d2.emptywhite.com/bulkloader-assets/small-03.jpg", {preventCache:true, priority:70}],
-			["http://d1.emptywhite.com/bulkloader-assets/small-04.jpg", {preventCache:true, priority:80}],
-			["http://d3.emptywhite.com/bulkloader-assets/small-05.jpg", {preventCache:true, priority:90}],
-			["http://d2.emptywhite.com/bulkloader-assets/small-06.jpg", {preventCache:true, priority:95}],
-			["http://d3.emptywhite.com/bulkloader-assets/small-07.jpg", {preventCache:true, priority:100}],
+			["http://d2.emptywhite.com/bulkloader-assets/small-10.jpg", {preventCache:true, priority:70}],
+			["http://d2.emptywhite.com/bulkloader-assets/small-09.jpg", {preventCache:true, priority:92}],
+			["http://d2.emptywhite.com/bulkloader-assets/small-08.jpg", {preventCache:true, priority:93}],
+			["http://www.emptywhite.com/bulkloader-assets/small-07.jpg", {preventCache:true, priority:0}],
+			["http://d1.emptywhite.com/bulkloader-assets/small-06.jpg", {preventCache:true, priority:10}],
+			["http://d1.emptywhite.com/bulkloader-assets/small-05.jpg", {preventCache:true, priority:80}],
+			["http://d3.emptywhite.com/bulkloader-assets/small-04.jpg", {preventCache:true, priority:90}],
+			["http://d2.emptywhite.com/bulkloader-assets/small-03.jpg", {preventCache:true, priority:94}],
+			["http://d2.emptywhite.com/bulkloader-assets/small-02.jpg", {preventCache:true, priority:95}],
+			["http://d3.emptywhite.com/bulkloader-assets/small-01.jpg", {preventCache:true, priority:100}],
 		];
+		// 
+		// d3, d2, d2, d3, d1,d1 www, d2, d2
 		public var currentItemIndex : int = 0;
 		public var timer : Timer;
 		
@@ -106,6 +112,8 @@ public class HostPriorityTest 	extends TestCase {
 				assertTrue(loadingItems[i].startTime >= loadingItems[i + 1].startTime);
 				//trace(loadingItems[i]._parsedURL.path, loadingItems[i].startTime, loadingItems[i+1].startTime, loadingItems[i].startTime >= loadingItems[i + 1].startTime);//, loadingItems[i+1].url.url, loadingItems[i + 1].startTime);
 			}
+			loadingItems.sortOn("startTime");
+			//trace(loadingItems.join("\n"));
 		}
 	
 }
