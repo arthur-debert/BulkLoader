@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actionScriptProperties mainApplicationPath="BulkLoaderInspectorContainer.mxml" projectUUID="e43559b1-32fa-44d7-904a-8aedd4b4dc5e" version="6">
-  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="false" flexSDK="Flex 3.4" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="false" includeNetmonSwc="true" outputFolderPath="www" sourceFolderPath="src" strict="true" targetPlayerVersion="10.0.12" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="false" flexSDK="Flex 3.4" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="false" includeNetmonSwc="true" outputFolderPath="www" sourceFolderPath="src" strict="true" targetPlayerVersion="10.0.12" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="/Users/arthurdebert/Documents/projects/bulk-loader/bulk-loader-git/src"/>
     </compilerSourcePath>

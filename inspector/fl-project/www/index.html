@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>BulkLoader inspector panel</title>
+		<script type="text/javascript" src="swfobject.js"></script>
+
+
+	</head>
+	<body>
+		<div id="content">
+		</div>
+		<script type="text/javascript">
+
+			var flashvars = {};
+			var params = {};
+			var attributes = {};
+			if(swfobject.getQueryParamValue("debug")){
+				flashvars.debug = true;
+			}
+			swfobject.embedSWF("BulkLoaderInspectorContainer.swf", "content", "100%", "100%", "9.0.115", "expressInstall.swf", flashvars, params, attributes);
+		</script>
+	</body>
+</html>
