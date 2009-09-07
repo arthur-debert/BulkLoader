@@ -166,18 +166,18 @@ import flash.utils.*;
         *   The name of the event 
         *   @eventType progress
         */
-		public static const PROGRESS : String = "progress";
+        public static const PROGRESS : String = "progress";
 		/** 
         *   The name of the event 
         *   @eventType complete
         */
-		public static const COMPLETE : String = "complete";
+        public static const COMPLETE : String = "complete";
 		
 		/** 
         *   The name of the event 
         *   @eventType httpStatus
         */
-		public static const HTTP_STATUS : String = "httpStatus";
+        public static const HTTP_STATUS : String = "httpStatus";
 
     	/** 
         *   The name of the event 
@@ -205,31 +205,31 @@ import flash.utils.*;
     	public static const CHECK_POLICY_FILE : String = "checkPolicyFile"
     	
     	
-		// properties on adding a new url:
-		/** If <code>true</code> a random query (or post data parameter) will be added to prevent caching. Checked when adding a new item to load.
-		* @see #add()
-		*/
-		public static const PREVENT_CACHING : String = "preventCache";
-		/** An array of RequestHeader objects to be used when contructing the <code>URLRequest</code> object. If the <code>url</code> parameter is passed as a <code>URLRequest</code> object it will be ignored. Checked when adding a new item to load.
-		* @see #add()
-		*/
-		public static const HEADERS : String = "headers";
-		/** An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_IMAGE</code> a LoaderContext should be passed. Checked when adding a new item to load.
-		* @see #add()
-		*/
-		public static const CONTEXT : String = "context";
-		/** A <code>String</code> to be used to identify an item to load, can be used in any method that fetches content (as the key parameters), stops, removes and resume items. Checked when adding a new item to load.
-		* @see #add()
-		* @see #getContent()
-		* @see #pause()
-		* @see #resume()
-		* @see #removeItem()
-		*/
-		public static const ID : String = "id";
+        // properties on adding a new url:
+        /** If <code>true</code> a random query (or post data parameter) will be added to prevent caching. Checked when adding a new item to load.
+         * @see #add()
+         */
+        public static const PREVENT_CACHING : String = "preventCache";
+        /** An array of RequestHeader objects to be used when contructing the <code>URLRequest</code> object. If the <code>url</code> parameter is passed as a <code>URLRequest</code> object it will be ignored. Checked when adding a new item to load.
+         * @see #add()
+         */
+        public static const HEADERS : String = "headers";
+        /** An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_IMAGE</code> a LoaderContext should be passed. Checked when adding a new item to load.
+         * @see #add()
+         */
+        public static const CONTEXT : String = "context";
+        /** A <code>String</code> to be used to identify an item to load, can be used in any method that fetches content (as the key parameters), stops, removes and resume items. Checked when adding a new item to load.
+         * @see #add()
+         * @see #getContent()
+         * @see #pause()
+         * @see #resume()
+         * @see #removeItem()
+         */
+        public static const ID : String = "id";
 
-		/** An <code>int</code> that controls which items are loaded first. Items with a higher <code>PRIORITY</code> will load first. If more than one item has the same <code>PRIORITY</code> number, the order in which they are added will be taken into consideration. Checked when adding a new item to load.
-		* @see #add()
-		*/
+        /** An <code>int</code> that controls which items are loaded first. Items with a higher <code>PRIORITY</code> will load first. If more than one item has the same <code>PRIORITY</code> number, the order in which they are added will be taken into consideration. Checked when adding a new item to load.
+         * @see #add()
+         */
         public static const PRIORITY : String = "priority";
 		
 		/** The number, as an <code>int</code>, to retry downloading an item in case it fails. Checked when adding a new item to load.
@@ -371,6 +371,7 @@ import flash.utils.*;
             text: URLItem,
             binary: BinaryItem
         }
+
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
         *   
         *   @param name  A name that can be used later to reference this loader in a static context,
@@ -413,6 +414,7 @@ import flash.utils.*;
         public static function getUniqueName() : String{
             return "BulkLoader-" + _instancesCreated;
         }
+
         /** Fetched a <code>BulkLoader</code> object created with the <code>name</code> parameter.
         *   This is usefull if you must access loades assets from another scope, without having to pass direct references to this loader.
         *   @param  name The name of the loader to be fetched.
@@ -440,7 +442,7 @@ import flash.utils.*;
         public function hasItem(key : *, searchAll : Boolean = true) : Boolean{
             var loaders : *;
             if (searchAll){
-              loaders = _allLoaders;
+                loaders = _allLoaders;
             }else{
                 loaders = [this];
             }
@@ -712,6 +714,7 @@ bulkLoader.start(3)
             var toRemove : LoadingItem = LoadingItem(itemsToLoad[0]);
             return toRemove;
         }
+
         /**  Register a new file extension to be loaded as a given type. This is used both in the guessing of types from the url and affects how loading is done for each type. 
         *   If you are adding an extension to be of a type you are creating, you must pass the <code>withClass</code> parameter, which should be a class that extends LoadingItem.
         *   @param  extension   The file extension to be used (can include the dot or not)
@@ -785,6 +788,7 @@ bulkLoader.start(3)
             }
             return null;
         }
+
         // if toLoad is specified it will take precedence over whoever is queued cut line
             /** @private */
         public function _loadNext(toLoad : LoadingItem = null) : Boolean{
@@ -940,6 +944,7 @@ bulkLoader.start(3)
             if (_getNumConnectionsForItem(item) >= maxConnectionsPerHost) return false;
             return true;
         }
+
         /** @private */
         public function _onItemError(evt : ErrorEvent) : void{
             var item : LoadingItem  = evt.target as LoadingItem;
@@ -950,8 +955,6 @@ bulkLoader.start(3)
            //evt.stopPropagation();
            //evt.currentTarget = item;
            dispatchEvent(evt);
-           
-           
         }
         
         
@@ -1032,6 +1035,7 @@ bulkLoader.start(3)
         public function get numConnections() : int { 
             return _numConnections; 
         }
+
         /** Returns an object where the urls are the keys(as strings) and the loaded contents are the value for that key.
         *  Each value is typed as * an the client must check for the right typing.
         *   @return An object hashed by urls, where values are the downloaded content type of each url. The user mut cast as apropriate.
@@ -1049,14 +1053,15 @@ bulkLoader.start(3)
         }
         
         /**
-		* The name by which this loader instance can be identified.
-		* This property is used so you can get a reference to this instance from other classes in your code without having to save and pass it yourself, throught the static method BulkLoader.getLoader(name) .<p/>
-		* Each name should be unique, as instantiating a BulkLoader with a name already taken will throw an error.
-		* @see #getLoaders()
-		*/
+        * The name by which this loader instance can be identified.
+        * This property is used so you can get a reference to this instance from other classes in your code without having to save and pass it yourself, throught the static method BulkLoader.getLoader(name) .<p/>
+        * Each name should be unique, as instantiating a BulkLoader with a name already taken will throw an error.
+        * @see #getLoaders()
+        */
         public function get name() : String { 
             return _name; 
         }
+
         /**  
         *   The ratio (0->1) of items to load / items total.
         *   This number is always reliable.
@@ -1899,6 +1904,7 @@ bulkLoader.start(3)
         This is here only to assure that non hadled errors won't bubble up.
         */
         public function _swallowError(e:Event):void{}
+
         /** @private  */
         public static function __debug_print_loaders() : void{
             var theNames : Array = []

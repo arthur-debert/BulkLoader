@@ -1,45 +1,45 @@
 package br.com.stimuli.loading.loadingtypes {
 	
-	import br.com.stimuli.loading.loadingtypes.LoadingItem;
-	import br.com.stimuli.loading.BulkLoader;
-	import flash.display.*;
+    import br.com.stimuli.loading.loadingtypes.LoadingItem;
+    import br.com.stimuli.loading.BulkLoader;
+    import flash.display.*;
     import flash.net.*;
     import flash.events.*;
     import flash.utils.*;
 
     /** @private */
-	public class BinaryItem extends LoadingItem {
+    public class BinaryItem extends LoadingItem {
         public var loader : URLLoader;
-        
-		public function BinaryItem(url : URLRequest, type : String, uid : String){
-			super(url, type, uid);
-		}
-		
-		override public function _parseOptions(props : Object)  : Array{
+
+        public function BinaryItem(url : URLRequest, type : String, uid : String){
+            super(url, type, uid);
+        }
+
+        override public function _parseOptions(props : Object)  : Array{
             return super._parseOptions(props);
         }
-        
-		override public function load() : void{
-		    super.load();
-		    loader = new URLLoader();
-			loader.dataFormat = URLLoaderDataFormat.BINARY;
-		    loader.addEventListener(ProgressEvent.PROGRESS, onProgressHandler, false, 0, true);
+
+        override public function load() : void{
+            super.load();
+            loader = new URLLoader();
+            loader.dataFormat = URLLoaderDataFormat.BINARY;
+            loader.addEventListener(ProgressEvent.PROGRESS, onProgressHandler, false, 0, true);
             loader.addEventListener(Event.COMPLETE, onCompleteHandler, false, 0, true);
             loader.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler, false, 0, true);
             loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, super.onHttpStatusHandler, false, 0, true);
             loader.addEventListener(Event.OPEN, onStartedHandler, false, 0, true);
             loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, super.onSecurityErrorHandler, false, 0, true);
             try{
-            	// TODO: test for security error thown.
-            	loader.load(url);
+                // TODO: test for security error thown.
+                loader.load(url);
             }catch( e : SecurityError){
-            	onSecurityErrorHandler(_createErrorEvent(e));
-            	
+                onSecurityErrorHandler(_createErrorEvent(e));
+
             }
-		};
-		
-		override public function onErrorHandler(evt : ErrorEvent) : void {
-			 super.onErrorHandler(evt);
+        };
+
+        override public function onErrorHandler(evt : ErrorEvent) : void {
+            super.onErrorHandler(evt);
         }
         
 		override public function onStartedHandler(evt : Event) : void{
