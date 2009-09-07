@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" >
+	<mx:HBox width="100%" height="100%">
+		<mx:Grid>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Num Items"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Num Items" id="itemsTotal"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Loaded:"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%" id="ks">
+					<mx:Label text="Num Items" id="itemsLoaded"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Loading"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Num Items" id="itemsLoading"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Errors"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Num Items" id="itemsError"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Stoped"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Num Items" id="itemsStopped"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Bytes (loaded/total)"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Num Items" id="bytes"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Percent Loaded"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:ProgressBar id="percentBar" labelPlacement="right" fontWeight="normal" trackHeight="20"  labelWidth="50"  barColor="0x0000FF" mode="manual" trackColors="[0xE6EEEE,0xE6EEEE]"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Ration Loaded"/>
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:ProgressBar id="ratioBar" labelPlacement="right" fontWeight="normal" trackHeight="20"  labelWidth="50"  barColor="0x0000FF" mode="manual" trackColors="[0xE6EEEE,0xE6EEEE]"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="100%" height="100%">
+					<mx:Label text="Weight Loaded" />
+				</mx:GridItem>
+				<mx:GridItem width="100%" height="100%">
+					<mx:ProgressBar id="weightBar" labelPlacement="right" fontWeight="normal" trackHeight="20"  labelWidth="50"  barColor="0x0000FF" mode="manual"/>
+				</mx:GridItem>
+			</mx:GridRow>
+			
+		</mx:Grid>
+		<mx:DataGrid width="100%" height="100%" id="propGrid">
+			<mx:columns>
+				<mx:DataGridColumn headerText="Name" dataField="name"/>
+				<mx:DataGridColumn headerText="Value" dataField="value"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:HBox>	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.events.CollectionEventKind;
+			import mx.events.CollectionEvent;
+			
+			import br.com.stimuli.loading.loadingtypes.LoadingItem;
+			
+			import flash.utils.describeType;
+			
+			public var bl : BulkLoader;
+			//public var visibleProps : Array = ["id", "status", "url", ];
+			[Bindable]
+			public var provider : ArrayCollection = new ArrayCollection();
+			public var myData : XMLList;
+			public function onLoaderSelected(bl : BulkLoader) : void{
+				if (!bl) return;
+				
+				 
+				 myData = describeType(bl)..accessor;
+				for each (var node : XML in myData){
+					provider.addItem({"name": node.@name, "value":bl[node.@name]});
+				}
+				//provider.sortOn("name");
+				this.propGrid.dataProvider = provider;
+				if (bl != this.bl){
+					this.bl = bl;
+					updateInfo();
+				}
+			}
+			
+			public function updateInfo(e : BulkProgressEvent = null):void{
+				var items : Array = bl.items;
+				itemsTotal.text = items.length + "";
+				var loaded : int = items.filter(function(i: LoadingItem, ...rest):Boolean{return i.status == LoadingItem.STATUS_FINISHED}).length;
+				itemsLoaded.text = loaded +"";
+				var stopped : int = items.filter(function(i: LoadingItem, ...rest):Boolean{return i.status == LoadingItem.STATUS_STOPPED}).length;
+				itemsStopped.text = stopped +"";
+				var loading : int = items.filter(function(i: LoadingItem, ...rest):Boolean{return i.status == LoadingItem.STATUS_STARTED}).length;
+				itemsLoading.text = "" + loading;
+				var errors : int = items.filter(function(i: LoadingItem, ...rest):Boolean{return i.status == LoadingItem.STATUS_ERROR}).length;
+				itemsError.text = "" + errors;
+				if (!e){
+					e = bl.getProgressForItems(items);
+				}
+				percentBar.setProgress(e._percentLoaded, 1);
+				percentBar.label = e.percentLoaded +"";
+				bytes.text = e.bytesLoaded + "/" + e.bytesTotal;
+				
+				weightBar.setProgress(e.weightPercent, 1);
+				weightBar.label = e.weightPercent +"";
+				
+				ratioBar.setProgress(e.ratioLoaded, 1);
+				ratioBar.label = e.ratioLoaded + "";
+				
+				for each (var prop : Object in provider){
+					//trace( prop.name, prop.value);
+					prop.value = bl[prop.name];
+				}
+				var ce : CollectionEvent = new CollectionEvent(CollectionEvent.COLLECTION_CHANGE,true,true,CollectionEventKind.REFRESH);
+				provider.dispatchEvent(ce);
+				
+			}
+			
+	]]>
+	</mx:Script>
+</mx:Canvas>
