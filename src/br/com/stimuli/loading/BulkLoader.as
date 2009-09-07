@@ -397,7 +397,7 @@ import flash.utils.*;
             _id = _instancesCreated;
             _additionIndex = 0;
             // we create a mock event listener for errors, else Unhandled errors will bubble and display an stack trace to the end user:
-            addEventListener(BulkLoader.ERROR, function (e:Event):void{}, false, 1, true);
+            addEventListener(BulkLoader.ERROR, _swallowError, false, 1, true);
         }
         
         /** Creates a BulkLoader instance with an unique name. This is useful for situations where you might be creating
@@ -1869,6 +1869,10 @@ bulkLoader.start(3)
             return finalPath;
         }
         
+        /** @private
+        This is here only to assure that non hadled errors won't bubble up.
+        */
+        public function _swallowError(e:Event):void{}
         /** @private  */
         public static function __debug_print_loaders() : void{
             var theNames : Array = []
