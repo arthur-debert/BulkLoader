@@ -1357,7 +1357,33 @@ bulkLoader.start(3)
         *   @return The content retrived from that url casted to a Loader object. Returns null if the cast fails.
         */
         public function getDisplayObjectLoader(key : String, clearMemory : Boolean = false) : Loader{
-            return Loader(_getContentAsType(key, Loader, clearMemory));
+            if(!_name){
+                throw new Error("[BulkLoader] Cannot use an instance that has been cleared from memory (.clear())");
+            }
+            var item : ImageItem = get(key) as ImageItem;
+            if(!item){
+                return null;
+            }
+            try{
+                var res : Loader = item.loader as Loader;
+                if (!res){
+                    throw new Error("bad cast");
+                }
+                if(clearMemory){
+                    remove(key);
+                    // this needs to try to load a next item, because this might get called inside a 
+                    // complete handler and if it's on the last item on the open connections, it might stale
+                    if (!_isPaused){
+                        _loadNext();
+                    }
+                }               
+                return res;
+            }catch(e : Error){
+                log("Failed to get content with url: '"+ key + "'as type: Loader", LOG_ERRORS);
+            }
+            
+            return null;
+                
         }
         
         /** Returns a <code>MovieClip</code> object with the downloaded asset for the given key.

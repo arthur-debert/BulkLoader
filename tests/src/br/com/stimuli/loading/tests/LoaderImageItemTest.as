@@ -121,7 +121,12 @@ package br.com.stimuli.loading.tests {
             var item : * = _bulkLoader.getContent("photo");
 		    assertTrue(item is Bitmap);
         }
-        
+       
+        public function testGetDisplayObjectLoader() : void{
+            var ld : * = _bulkLoader.getDisplayObjectLoader("photo");
+            assertNotNull(ld);
+            assertTrue(ld is Loader);
+        }
         public function testClearMemoryRemovesItem(): void{
             var item : Bitmap = _bulkLoader.getBitmap("photo", true);
 		    assertNotNull(item);
