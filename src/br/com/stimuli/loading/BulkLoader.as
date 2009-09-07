@@ -1601,7 +1601,7 @@ bulkLoader.start(3)
             }
             _items =  [];
             _connections = {};
-            _contents = new Dictionary();
+            _contents = new Dictionary(true);
             _percentLoaded = _weightPercent = _loadedRatio = 0;
         }
         
