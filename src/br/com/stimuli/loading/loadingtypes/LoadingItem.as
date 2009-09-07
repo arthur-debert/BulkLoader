@@ -416,7 +416,6 @@ package br.com.stimuli.loading.loadingtypes {
         */
         public function destroy() : void{
             _content = null;
-            //loader = null;
         }
         
         
