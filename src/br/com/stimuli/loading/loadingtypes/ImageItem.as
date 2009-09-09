@@ -123,17 +123,17 @@ package br.com.stimuli.loading.loadingtypes {
                 stop();
                 cleanListeners();
                 _content = null;
-                // this is an air only feature. as such we must check it's existence
-                // with the array acessor, or else the compiler will barf on non air projects
-                if (loader["unload"] && loader["unload"] is Function) {
-                    loader["unload"]();
-                }
-
                 // this is an player 10 only feature. as such we must check it's existence
                 // with the array acessor, or else the compiler will barf on player 9
                 if (loader["unloadAndStop"] && loader["unloadAndStop"]) {
                     loader["unloadAndStop"](true);
+                }else if (loader["unload"] && loader["unload"] is Function) {
+                    // this is an air only feature. as such we must check it's existence
+                    // with the array acessor, or else the compiler will barf on non air projects
+                    loader["unload"]();
                 }
+
+
                 loader = null;
             }
 
