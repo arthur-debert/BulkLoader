@@ -777,7 +777,7 @@ bulkLoader.start(3)
             
             _getAllConnections().forEach(function(i : LoadingItem, ...rest) : void{
                 
-                if(i.status == LoadingItem.STATUS_ERROR && i.numTries == i.maxTries){
+                if(i.status == LoadingItem.STATUS_ERROR && i.numTries >= i.maxTries){
                     _removeFromConnections(i);
                 }
             });
