@@ -427,7 +427,7 @@ import flash.utils.*;
         /** @private */
         public static function _hasItemInBulkLoader(key : *, atLoader : BulkLoader) : Boolean{
             var item : LoadingItem = atLoader.get(key);
-            if (item) {
+            if (item && item._isLoaded) {
                 return true;
             }
             return false;
