@@ -31,13 +31,14 @@ package br.com.stimuli.loading.lazyloaders{
     	function LazyXMLLoader(url : *, name : String, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFAULT_LOG_LEVEL){
     		super (url, name, numConnections, logLevel);
     	}
+        public var _sourceXML : XML;
     
         /** Reads a xml as a string and create a complete bulk loader from it.
         *   @param withData The xml to be read as a string.
         *   @private
         */
     	lazy_loader override function _lazyParseLoader(withData : String) : void{
-    	    var xml : XML = new XML(withData);
+    	    var xml : XML = _sourceXML = new XML(withData);
     		var substitutions : Object = stringSubstitutions ||  {};
     		for each (var substitutionXML: *in xml.stringSubstitutions.children()){
     		  substitutions[substitutionXML.name()] = substitutionXML.toString();

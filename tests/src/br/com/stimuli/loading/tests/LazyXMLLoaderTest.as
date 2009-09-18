@@ -80,6 +80,10 @@ package br.com.stimuli.loading.tests {
             _bulkLoader = null;
 		}
         
+        public function testHasSourceXML() : void{
+            assertNotNull(_bulkLoader._sourceXML);
+        }
+
         public function testImage() : void{
             var bitmap : Bitmap = _bulkLoader.getBitmap("cats");
             assertNotNull(_bulkLoader.get("http://www.emptywhite.com/bulkloader-assets/cats.jpg"));
