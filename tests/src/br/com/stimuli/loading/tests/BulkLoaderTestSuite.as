@@ -8,12 +8,16 @@ package br.com.stimuli.loading.tests {
     /**@private*/
     public class BulkLoaderTestSuite extends TestSuite {
         public var testClasses : Array = [
+            XMLItemTest,
+            LoaderItemMovieTest,
+            LoadNowTest,
+            AudioContentTest, 
+            VideoContentTest,
+            URLItemTest,
             HasItemTest,
             HostPriorityTest,
             LoaderImageItemTest,
             GuessTypeTest,
-            LoaderItemMovieTest,
-            LoadNowTest,
             CollectionTestCase,
             RemoveAllTest,
             RemoveAllSimpleTest,
@@ -23,7 +27,6 @@ package br.com.stimuli.loading.tests {
             OnErrorTest,
             ErrorResumeTest,
             SmartURLTest,
-            VideoContentTest,
             RemoveFailedItemTest,
             OnCompleteTest,
             AutoIdTest,
@@ -38,15 +41,11 @@ package br.com.stimuli.loading.tests {
             StartPausedTest,
             ProgressEventsTest, 
             ReloadTest,
-
             ClearMemoryTest,
             ResumeAllTest,
             ResumeTest,
             BulkStartTest,
-            XMLItemTest,
             InstanceRetrivalTestCase,
-            URLItemTest,
-            AudioContentTest
                 ];
 
         public var testsRun : Object = {} ;

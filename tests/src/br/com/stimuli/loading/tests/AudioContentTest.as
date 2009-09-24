@@ -123,5 +123,13 @@ package br.com.stimuli.loading.tests {
             assertTrue(_bulkLoader.get("the-sound")._isLoaded);
         }
         
+
+        public function testSaneBytesReport() : void{
+                var item : LoadingItem = _bulkLoader.get("the-sound");
+                assertFalse(item.bytesTotal == 0);
+                assertEquals(item.bytesTotal ,item.bytesLoaded);
+                assertEquals(item.bytesRemaining, 0);
+
+        }
 	}
 }

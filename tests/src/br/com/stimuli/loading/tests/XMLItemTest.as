@@ -127,5 +127,13 @@ package br.com.stimuli.loading.tests {
         public function testItemIsLoaded() : void{
             assertTrue(_bulkLoader.get("text")._isLoaded)
         }
+
+        public function testSaneBytesReport() : void{
+                var item : LoadingItem = _bulkLoader.get("text");
+                assertFalse(item.bytesTotal == 0);
+                assertEquals(item.bytesTotal ,item.bytesLoaded);
+                assertEquals(item.bytesRemaining, 0);
+
+        }
 	}
 }

@@ -123,6 +123,15 @@ package br.com.stimuli.loading.loadingtypes {
         public var _isLoading : Boolean;
         
         /** @private 
+        If the gzip compression status has been determined */
+        //public var _gzipDetermined : int = -1;
+
+        /** @private
+        The http response headers, will be null until received
+        */
+        //public var _responseHeaders : Array = null;
+
+        /** @private 
         *   At what stage this item is at ( canceled, started, finished or error).
         */
         public var status : String;
@@ -153,7 +162,7 @@ package br.com.stimuli.loading.loadingtypes {
         */
         public var _bytesLoaded : int = 0;
         /** @private */
-        public var _bytesRemaining : int = 10000000;
+        public var _bytesRemaining : int = int.MAX_VALUE;
         /**The percentage of loading done (from 0 to 1).
         * @private   
         */
@@ -261,6 +270,7 @@ package br.com.stimuli.loading.loadingtypes {
         */
         public function onHttpStatusHandler(evt : HTTPStatusEvent) : void{
             _httpStatus = evt.status;
+            //_responseHeaders = evt.responseHeaders; waiting for decend http support in as3
             dispatchEvent(evt);
         }
         
@@ -271,6 +281,14 @@ package br.com.stimuli.loading.loadingtypes {
            _bytesLoaded = evt.bytesLoaded;
            _bytesTotal = evt.bytesTotal;
            _bytesRemaining = _bytesTotal - bytesLoaded;
+           // truncate correct numbers, since gzip compression might
+           // create nonsensical values
+           if (_bytesRemaining < 0 ){
+                   _bytesRemaining = int.MAX_VALUE;
+           }
+           if (_bytesTotal < 4 && _bytesLoaded > 0 ){
+                _bytesTotal = int.MAX_VALUE;
+           }
            _percentLoaded = _bytesLoaded / _bytesTotal;
            _weightPercentLoaded = _percentLoaded * weight;
            var e : BulkProgressEvent = new BulkProgressEvent(BulkLoader.PROGRESS, true, false);
@@ -291,6 +309,9 @@ package br.com.stimuli.loading.loadingtypes {
             if(_timeToDownload == 0){
                 _timeToDownload = 0.1;
             }
+            // check for gzip compression as these will give bad results
+            _bytesTotal = _bytesLoaded;
+            _bytesRemaining = 0;
             _speed = BulkLoader.truncateNumber((bytesTotal / 1024) / (_timeToDownload));
            status = STATUS_FINISHED;
            _isLoaded = true;
@@ -347,6 +368,42 @@ package br.com.stimuli.loading.loadingtypes {
             dispatchEvent(evt);
         }
         
+        /* If we have enough information (HttpHeaders available) to determine if 
+        * the response has been gzip enconded.
+        */
+        //public function get gzipDetermined() : Boolean{
+                //if (_gzipDetermined > -1) return true;
+                //return false
+        //}
+
+        /* If the response has gzip compression. This is important since progress 
+        * report is unreliable for gzip compressed responses. This only returns 
+        * a meaniful value if the headers have been returned, which means that 
+        * to be sure of the result you must check for gzipCompressed and gzipDetermined.
+        * Once determined, the response will be cached.
+        * @returns True if the response is compressed. And false if it is not 
+        * OR if the headers haven't been parsed yet.
+        * @see #gzipDetermined 
+        */
+        //public function get gzipCompressed (): Boolean{
+                //if (_gzipDetermined > -1){
+                    //return Boolean(_gzipDetermined);
+                //}
+                //if (_responseHeaders){
+                    //for each(var header : URLRequestHeader in _responseHeaders){
+                        //trace("\n", _parsedURL.fileName, header.name, header.value);
+                        //if (header.name.indexOf("Content-Encoding") > -1 &&
+                            //header.value.match(/gzip|compress/i))  {
+                                //_gzipDetermined = 1;
+                                //trace("gzip found");
+                                //return gzipCompressed;
+                        //}
+                    //}
+                    //_gzipDetermined = 0;
+                //}
+                //return false;
+        //}
+
         public override function toString() : String{
             return "LoadingItem url: " + url.url + ", type:" + _type + ", status: " + status;
         }

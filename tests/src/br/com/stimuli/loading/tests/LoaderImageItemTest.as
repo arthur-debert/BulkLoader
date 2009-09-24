@@ -175,5 +175,13 @@ package br.com.stimuli.loading.tests {
             assertNotNull(theCompleteEvent);
             
         }
+
+        public function testSaneBytesReport() : void{
+                var item : LoadingItem = _bulkLoader.get("photo");
+                assertFalse(item.bytesTotal == 0);
+                assertEquals(item.bytesTotal ,item.bytesLoaded);
+                assertEquals(item.bytesRemaining, 0);
+
+        }
 	}
 }

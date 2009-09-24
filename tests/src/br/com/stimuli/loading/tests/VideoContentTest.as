@@ -160,5 +160,13 @@ package br.com.stimuli.loading.tests {
         public function testCanBeginStreamingIsAlwaysTrue() : void{
             assertTrue((_bulkLoader.get("the-movie") as VideoItem).canBeginStreaming);
         }
+
+        public function testSaneBytesReport() : void{
+                var item : LoadingItem = _bulkLoader.get("the-movie");
+                assertFalse(item.bytesTotal == 0);
+                assertEquals(item.bytesTotal ,item.bytesLoaded);
+                assertEquals(item.bytesRemaining, 0);
+
+        }
 	}
 }
