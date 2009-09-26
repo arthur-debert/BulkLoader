@@ -9,8 +9,8 @@ package br.com.stimuli.loading.loadingtypes {
     import flash.events.*;
     import flash.utils.*;
     import com.adobe.serialization.json.JSON
-    /** @private */
-	public class JSONItem extends LoadingItem {
+        /** @private */
+        public class JSONItem extends LoadingItem {
 
             public var loader : URLLoader;
 
@@ -65,7 +65,6 @@ package br.com.stimuli.loading.loadingtypes {
                         loader.close();
                     }
                 }catch(e : Error){
-
                 }
                 super.stop();
             };
@@ -79,7 +78,6 @@ package br.com.stimuli.loading.loadingtypes {
                     loader.removeEventListener(HTTPStatusEvent.HTTP_STATUS, super.onHttpStatusHandler, false);
                     loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, super.onSecurityErrorHandler, false);
                 }
-
             }
 
             override public function isText(): Boolean{
@@ -92,7 +90,5 @@ package br.com.stimuli.loading.loadingtypes {
                 _content = null;
                 loader = null;
             }
-
         }
-
 }

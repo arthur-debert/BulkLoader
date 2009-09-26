@@ -1,5 +1,5 @@
 package br.com.stimuli.loading.loadingtypes {
-	
+
     import br.com.stimuli.loading.loadingtypes.LoadingItem;
     import br.com.stimuli.loading.BulkLoader;
     import flash.display.*;
@@ -41,28 +41,28 @@ package br.com.stimuli.loading.loadingtypes {
         override public function onErrorHandler(evt : ErrorEvent) : void {
             super.onErrorHandler(evt);
         }
-        
-		override public function onStartedHandler(evt : Event) : void{
+
+        override public function onStartedHandler(evt : Event) : void{
             super.onStartedHandler(evt);
         };
-        
+
         override public function onCompleteHandler(evt : Event) : void {
-           // _content = new ByteArray(loader.data);
-		   _content = evt.target.data;
+            // _content = new ByteArray(loader.data);
+            _content = evt.target.data;
             super.onCompleteHandler(evt);
         };
-        
+
         override public function stop() : void{
             try{
                 if(loader){
                     loader.close();
                 }
             }catch(e : Error){
-                
+
             }
             super.stop();
         };
-        
+
         override public function cleanListeners() : void {
             if(loader){
                 loader.removeEventListener(ProgressEvent.PROGRESS, onProgressHandler, false);
@@ -73,12 +73,12 @@ package br.com.stimuli.loading.loadingtypes {
                 loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, super.onSecurityErrorHandler, false);
             }
         }
-        
+
         override public function destroy() : void{
             stop();
             cleanListeners();
             _content = null;
             loader = null;
         }   
-	}	
+    }	
 }
