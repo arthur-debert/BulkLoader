@@ -487,37 +487,37 @@ image: ImageItem,
          *           <td>A string to identify this item. This id can be used in any method that uses the <code>key</code> parameter, such as <code>pause, removeItem, resume, getContent, getBitmap, getBitmapData, getXML, getMovieClip and getText</code>.</td>
          *       </tr>
          *       <tr>
-         *           <td>priority</td.
+         *           <td>priority</td>
          *           <td><a href="#PRIORITY">PRIORITY</a></td>
          *           <td><code>int</code></td>
          *           <td>An <code>int</code> used to order which items till be downloaded first. Items with a higher priority will download first. For items with the same priority they will be loaded in the same order they've been added.</td>
          *       </tr>
          *       <tr>
-         *           <td>maxTries</td.
+         *           <td>maxTries</td>
          *           <td><a href="#MAX_TRIES">MAX_TRIES</a></td>
          *           <td><code>int</code></td>
          *           <td>The number of retries in case the lading fails, defaults to 3.</td>
          *       </tr>
          *       <tr>
-         *           <td>weight</td.
+         *           <td>weight</td>
          *           <td><a href="#WEIGHT">WEIGHT</a></td>
          *           <td><code>int</code></td>
          *           <td>A number that sets an arbitrary relative size for this item. See #weightPercent.</td>
          *       </tr>
          *       <tr>
-         *           <td>headers</td.
+         *           <td>headers</td>
          *           <td><a href="#HEADERS">HEADERS</a></td>
          *           <td><code>Array</code></td>
          *           <td>An array of <code>RequestHeader</code> objects to be used when constructing the URL. If the <code>url</code> parameter is passed as a string, <code>BulkLoader</code> will use these request headers to construct the url.</td>
          *       </tr>
          *       <tr>
-         *           <td>context</td.
+         *           <td>context</td>
          *           <td><a href="#CONTEXT">CONTEXT</a></td>
          *           <td><code>LoaderContext or SoundLoaderContext</code></td>
          *           <td>An object definig the loading context for this load operario. If this item is of <code>TYPE_SOUND</code>, a <code>SoundLoaderContext</code> is expected. If it's a <code>TYPE_IMAGE</code> a LoaderContext should be passed.</td>
          *       </tr>
          *       <tr>
-         *           <td>pausedAtStart</td.
+         *           <td>pausedAtStart</td>
          *           <td><a href="#PAUSED_AT_START">PAUSED_AT_START</a></td>
          *           <td><code>Boolean</code></td>
          *           <td>If true, the nestream will be paused when loading has begun.</td>

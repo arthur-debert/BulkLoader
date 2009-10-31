@@ -4,22 +4,22 @@
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
-<meta content="LoadingItem,br.com.stimuli.loading.loadingtypes.LoadingItem,_timeToDownload,errorEvent,content,type,isLoaded,id,_createErrorEvent,toString,isVideo,isSound,isText,isXML,isImage,isSWF,isLoader,isStreamable,getStats" name="keywords">
+<meta content="LoadingItem,br.com.stimuli.loading.loadingtypes.LoadingItem,_timeToDownload,errorEvent,content,hostName,humanFiriendlySize,id,isLoaded,type,_createErrorEvent,getStats,isImage,isLoader,isSWF,isSound,isStreamable,isText,isVideo,isXML,toString" name="keywords">
 <title>br.com.stimuli.loading.loadingtypes.LoadingItem</title>
 </head>
 <body>
 <script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
 <!--
-				asdocTitle = 'LoadingItem - API Documentation';
+				asdocTitle = 'LoadingItem - BulkLoader';
 				var baseRef = '../../../../../';
 				window.onload = configPage;
 			--></script>
 <table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
 <tr>
-<td align="left" class="titleTableTitle">BulkLoader Documentation</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../index.html?br/com/stimuli/loading/loadingtypes/LoadingItem.html&amp;br/com/stimuli/loading/loadingtypes/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../images/logo.jpg"></td>
+<td align="left" class="titleTableTitle">BulkLoader</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../index.html?br/com/stimuli/loading/loadingtypes/LoadingItem.html&amp;br/com/stimuli/loading/loadingtypes/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../images/logo.jpg"></td>
 </tr>
 <tr class="titleTableRow2">
-<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;LoadingItem</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#eventSummary">Events</a></td>
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;LoadingItem</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
 </tr>
 <tr class="titleTableRow3">
 <td colspan="2">&nbsp;</td>
@@ -27,7 +27,7 @@
 </table>
 <script type="text/javascript" language="javascript">
 <!--
-if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class LoadingItem"); titleBar_setSubNav(false,true,false,false,true,false,true,false,false,false,false,false,false,false);}
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class LoadingItem"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
 --></script>
 <div class="MainContent">
 <table cellspacing="0" cellpadding="0" class="classHeaderTable">
@@ -42,11 +42,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
-      An class used in <code>BulkLoader</code> instances.<p/>.
-      A reference to a <code>LoadingItem</code> object can be used to attach events for an individual item, read it's id, type, content and urls from inside event handlers.
-      When implementing custom loading types, the new type should be a subclass of LoadingItem.
-      This class is just the base for specific loading types, but should provide the external interface for end users.
-      <p></p>
+       An class used in <code>BulkLoader</code> instances.<p/>.
+       A reference to a <code>LoadingItem</code> object can be used to attach 
+       events for an individual item, read it's id, type, content and urls from
+       inside event handlers.
+       When implementing custom loading types, the new type should be a subclass
+       of LoadingItem. This class is just the base for specific loading types,
+       but should provide the external interface for end users.
+       <p></p>
 <br>
 <hr>
 </div>
@@ -62,7 +65,16 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">LoadingItem</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#errorEvent">errorEvent</a> : ErrorEvent<div class="summaryTableDescription"> Stores any erros (if any), such as IOError and SecurityError for this item </div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#errorEvent">errorEvent</a> : ErrorEvent<div class="summaryTableDescription"> 
+         Stores any erros (if any), such as IOError and SecurityError for this item </div>
+</td><td class="summaryTableOwnerCol">LoadingItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#hostName">hostName</a> : String<div class="summaryTableDescription">[read-only] The hostname, as a string for this item's URL.</div>
+</td><td class="summaryTableOwnerCol">LoadingItem</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#humanFiriendlySize">humanFiriendlySize</a> : String<div class="summaryTableDescription">[read-only]</div>
 </td><td class="summaryTableOwnerCol">LoadingItem</td>
 </tr>
 <tr class="">
@@ -74,7 +86,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">LoadingItem</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_timeToDownload">_timeToDownload</a> : int<div class="summaryTableDescription"> The total time (in seconds) this item took to load.</div>
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_timeToDownload">_timeToDownload</a> : Number<div class="summaryTableDescription"> The total time (in seconds) this item took to load.</div>
 </td><td class="summaryTableOwnerCol">LoadingItem</td>
 </tr>
 <tr class="">
@@ -102,7 +114,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#_createErrorEvent()">_createErrorEvent</a>(e:Error):ErrorEvent</div>
 <div class="summaryTableDescription"> private
-        </div>
+         </div>
 </td><td class="summaryTableOwnerCol">LoadingItem</td>
 </tr>
 <tr class="">
@@ -177,47 +189,6 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 </div>
-<a name="eventSummary"></a>
-<div class="summarySection">
-<div class="summaryTableTitle">Events</div>
-<table id="summaryTableEvent" class="summaryTable " cellpadding="3" cellspacing="0">
-<tr>
-<th>&nbsp;</th><th colspan="2">Event</th><th>Summary</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#event:canBeginPlaying">canBeginPlaying</a>
-</div>
-</td><td class="summaryTableDescription summaryTableCol">
-      Dispatched when the the netStream can be played until the end with no interuption expected.</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#event:complete">complete</a>
-</div>
-</td><td class="summaryTableDescription summaryTableCol">
-      Dispatched when all the item has been fully downloaded and is ready for use..</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#event:open">open</a>
-</div>
-</td><td class="summaryTableDescription summaryTableCol">
-      Dispatched when the connection has been stablished and the download has begun.</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-<tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
-<div class="summarySignature">
-<a class="signatureLink" href="#event:progress">progress</a>
-</div>
-</td><td class="summaryTableDescription summaryTableCol"> 
-      Dispatched on download progress.</td><td class="summaryTableOwnerCol">LoadingItem</td>
-</tr>
-</table>
-</div>
 <script type="text/javascript" language="javascript">
 <!--
 showHideInherited();
@@ -232,8 +203,14 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>content:*</code>&nbsp;&nbsp;[read-only]<p> The content resulting from this download. The data type for the <code>content</code> depends on the myme-type of the downloaded asset. For types that can be streamed such as videos (<code>NetStream</code>) and sound(<code>Sound</code>), it's content is available as soon as the connection is open. Otherwiser the content will be available after the download is done and the <code>Event.COMPLETE</code> is fired.
-          </p><span class="label">Implementation</span>
+<code>content:*</code>&nbsp;&nbsp;[read-only]<p> The content resulting from this download. The data type for the 
+          <code>content</code> depends on the myme-type of the downloaded asset. 
+          For types that can be streamed such as videos (<code>NetStream</code>)
+          and sound(<code>Sound</code>), it's content is available as soon as 
+          the connection is open. Otherwiser the content will be available 
+          after the download is done and the <code>Event.COMPLETE</code> is 
+          fired.
+           </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get content():*</code>
 <br>
@@ -245,7 +222,33 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public var errorEvent:ErrorEvent</code><p> Stores any erros (if any), such as IOError and SecurityError for this item </p></div>
+<code>public var errorEvent:ErrorEvent</code><p> 
+         Stores any erros (if any), such as IOError and SecurityError for this item </p></div>
+<a name="hostName"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">hostName</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>hostName:String</code>&nbsp;&nbsp;[read-only]<p> The hostname, as a string for this item's URL. If no hostname is specified, then an empty string is returned
+         </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get hostName():String</code>
+<br>
+</div>
+<a name="humanFiriendlySize"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">humanFiriendlySize</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>humanFiriendlySize:String</code>&nbsp;&nbsp;[read-only]<span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get humanFiriendlySize():String</code>
+<br>
+</div>
 <a name="id"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -254,7 +257,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>id:String</code>&nbsp;&nbsp;[read-only]<p> The id this item was assigned. This is use in all of BulkLoader.getXXX(key) functions
-        </p><span class="label">Implementation</span>
+         </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get id():String</code>
 <br>
@@ -267,7 +270,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>isLoaded:Boolean</code>&nbsp;&nbsp;[read-only]<p> A Boolean that indicates if the item is fully loaded and ready for consumption.
-        </p><span class="label">Implementation</span>
+         </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get isLoaded():Boolean</code>
 <br>
@@ -279,7 +282,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public var _timeToDownload:int</code><p> The total time (in seconds) this item took to load.</p></div>
+<code>public var _timeToDownload:Number</code><p> The total time (in seconds) this item took to load.</p></div>
 <a name="type"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
 <tr>
@@ -288,7 +291,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>type:String</code>&nbsp;&nbsp;[read-only]<p> The type of this item.
-          </p><span class="label">Implementation</span>
+           </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get type():String</code>
 <br>
@@ -335,7 +338,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function _createErrorEvent(e:Error):ErrorEvent</code><p> private
-        </p><span class="label">Parameters</span>
+         </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20px"></td><td><code><span class="label">e</span>:Error</code></td>
@@ -357,7 +360,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function getStats():String</code><p> Returns a string with time stats for this loading item.
-        </p><p></p>
+         </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -373,7 +376,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function isImage():Boolean</code><p> Returns true if content is of type image.
-        </p><p></p>
+         </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -389,7 +392,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function isLoader():Boolean</code><p> Returns true if uses a Loader instance internally. (such as swfs and images).
-        </p><p></p>
+         </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -405,7 +408,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function isSound():Boolean</code><p> Returns true if content is of type sound.
-        </p><p></p>
+         </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -421,7 +424,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function isStreamable():Boolean</code><p> Returns true if this loading type should allow it's  content  to be accessed as soon as the server response starts. Should be true for sound and video types.
-        </p><p></p>
+         </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -437,7 +440,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function isSWF():Boolean</code><p> Returns true if content is of type movieclip.
-        </p><p></p>
+         </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -453,7 +456,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function isText():Boolean</code><p> Returns true if content is of type text.
-        </p><p></p>
+         </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -469,7 +472,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function isVideo():Boolean</code><p> Returns true if content is of type video.
-        </p><p></p>
+         </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -485,7 +488,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function isXML():Boolean</code><p> Returns true if content is of type xml.
-        </p><p></p>
+         </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -509,56 +512,6 @@ showHideInherited();
 </tr>
 </table>
 </div>
-<div class="detailSectionHeader">Event detail</div>
-<a name="event:canBeginPlaying"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">canBeginPlaying</td><td class="detailHeaderType">event&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<span class="label">Event object type: </span><a href="../../loading/BulkLoader.html"><code>br.com.stimuli.loading.BulkLoader</code></a>
-<br>
-<span class="label">BulkLoader.type property = </span><a href="../../loading/BulkLoader.html#CAN_BEGIN_PLAYING"><code>br.com.stimuli.loading.BulkLoader.CAN_BEGIN_PLAYING</code></a>
-<br><p>
-      Dispatched when the the netStream can be played until the end with no interuption expected. Only fires for TYPE_VIDEO items and will only fire once.
-           </p></div>
-<a name="event:complete"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">complete</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<span class="label">Event object type: </span><a href=""><code>flash.events.Event</code></a>
-<br>
-<p></p><p>
-      Dispatched when all the item has been fully downloaded and is ready for use..
-           </p></div>
-<a name="event:open"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">open</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<span class="label">Event object type: </span><a href=""><code>flash.events.Event</code></a>
-<br>
-<p></p><p>
-      Dispatched when the connection has been stablished and the download has begun. For types that can be streamed such as videos (<code>NetStream</code>) and sound(<code>Sound</code>), it's content is will be available after this event has fired.
-           </p></div>
-<a name="event:progress"></a>
-<table cellspacing="0" cellpadding="0" class="detailHeader">
-<tr>
-<td class="detailHeaderName">progress</td><td class="detailHeaderType">event&nbsp;</td><td class="detailHeaderRule">&nbsp;</td>
-</tr>
-</table>
-<div class="detailBody">
-<span class="label">Event object type: </span><a href=""><code>flash.events.ProgressEvent</code></a>
-<br>
-<p></p><p> 
-      Dispatched on download progress.
-           </p></div>
 <br>
 <br>
 <hr>

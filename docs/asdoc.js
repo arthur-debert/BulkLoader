@@ -1,3 +1,14 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+//  ADOBE SYSTEMS INCORPORATED
+//  Copyright 2006-2007 Adobe Systems Incorporated
+//  All Rights Reserved.
+//
+//  NOTICE: Adobe permits you to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
+//
+////////////////////////////////////////////////////////////////////////////////
+
 var ECLIPSE_FRAME_NAME = "ContentViewFrame";
 var eclipseBuild = false;
 var liveDocsBaseUrl = "http://livedocs.macromedia.com/flex/2/langref/";

@@ -101,7 +101,7 @@ package br.com.stimuli.loading {
         }
 
         /** Returns a <code>String</code> will all available information for this event.
-         * @return A code>String</code> will loading information.
+         * @return A <code>String</code> will loading information.
          */
         public function loadingStatus () : String{
             var names : Array = [];
