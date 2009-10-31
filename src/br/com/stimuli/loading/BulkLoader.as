@@ -376,14 +376,17 @@ image: ImageItem,
 
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
          *
-         *   @param name  A name that can be used later to reference this loader in a static context,
+         *   @param name  A name that can be used later to reference this loader in a static context. If null, bulkloader will generate a unique name.
          *   @param  numConnections The number of maximum simultaneous connections to be open.
          *   @param  logLevel At which level should traces be outputed. By default only errors will be traced.
          *
          *   @see #numConnections
          *   @see #log()
          */
-        public function BulkLoader(name : String, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFAULT_LOG_LEVEL){
+        public function BulkLoader(name : String=null, numConnections : int = BulkLoader.DEFAULT_NUM_CONNECTIONS, logLevel : int = BulkLoader.DEFAULT_LOG_LEVEL){
+            if (!name){
+                name = getUniqueName();
+            }
             if (Boolean(_allLoaders[name])){
                 __debug_print_loaders();
                 throw new Error ("BulkLoader with name'" + name +"' has already been created.");
