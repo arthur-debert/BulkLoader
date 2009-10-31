@@ -1012,7 +1012,9 @@ image: ImageItem,
             if (item.status == LoadingItem.STATUS_STARTED || item.status == LoadingItem.STATUS_FINISHED || item.status == LoadingItem.STATUS_STOPPED){
                 localBytesLoaded += item._bytesLoaded;
                 localBytesTotalCurrent += item._bytesTotal;
-                localWeightLoaded += (item._bytesLoaded / item._bytesTotal) * item.weight;
+                if (item._bytesTotal > 0){
+                    localWeightLoaded += (item._bytesLoaded / item._bytesTotal) * item.weight;
+                }
                 if(item.status == LoadingItem.STATUS_FINISHED) {
                     localItemsLoaded ++;
                 }

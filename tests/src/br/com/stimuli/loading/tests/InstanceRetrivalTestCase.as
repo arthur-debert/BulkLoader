@@ -132,7 +132,7 @@ package br.com.stimuli.loading.tests {
                     error = e;
                 }
                 //"Cannot create BulkLoader with an empty string", 
-                assertNotNull(error);
+                assertNull(error);
             }
 
             public function testCannotGetInstaceFromEmptyString() : void{
