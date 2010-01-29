@@ -21,6 +21,9 @@ package br.com.stimuli.loading.tests {
             _bulkLoader = new BulkLoader(BulkLoader.getUniqueName());
 	 		var item : LoadingItem = _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/lazyloader.json", {id:"json"});
 	 		_bulkLoader.add( "http://www.emptywhite.com/bulkloader-assets/some-text.txt", {"id":"text"});
+	 		// should be able to find the item if type is set as lowe:
+            _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/lazyloader.json?fdf", {id:"json2", type:"json"});
+            _bulkLoader.add("http://www.emptywhite.com/bulkloader-assets/lazyloader.json?fdf", {id:"json3", type:"JSON"});
 	 		_bulkLoader.addEventListener(BulkLoader.ERROR, onIOError);
 	 		
 	 		_bulkLoader.start();
@@ -70,6 +73,13 @@ package br.com.stimuli.loading.tests {
 		
 		public function testNewType () : void{
 		    var li : LoadingItem = _bulkLoader.get("json");
+		    assertTrue(li is JSONItem);
+		}
+		
+		public function testNewTypeMixedCased() : void{
+		    var li : LoadingItem = _bulkLoader.get("json2");
+		    assertTrue(li is JSONItem);
+		    li = _bulkLoader.get("json3");
 		    assertTrue(li is JSONItem);
 		}
 		

@@ -740,7 +740,7 @@ image: ImageItem,
         if (extension.charAt(0) == ".") extension = extension.substring(1);
 
         if(!_customTypesExtensions) _customTypesExtensions = {};
-
+        atType = atType.toLowerCase();
         // Is this a new type?
         if (AVAILABLE_TYPES.indexOf(atType) == -1){
             // new type: we need a class for that:
