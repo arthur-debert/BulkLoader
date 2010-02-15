@@ -41,7 +41,6 @@ package br.com.stimuli.loading.loadingtypes {
          */
         public var _canBeginStreaming : Boolean = false;
 
-
         public function VideoItem(url : URLRequest, type : String, uid : String){
             specificAvailableProps = [BulkLoader.CHECK_POLICY_FILE, BulkLoader.PAUSED_AT_START];
             super(url, type, uid);
@@ -52,7 +51,6 @@ package br.com.stimuli.loading.loadingtypes {
         override public function _parseOptions(props : Object)  : Array{
             pausedAtStart = props[BulkLoader.PAUSED_AT_START] || false;
             _checkPolicyFile = props[BulkLoader.CHECK_POLICY_FILE] || false;
-
             return super._parseOptions(props);
         }
 
@@ -76,10 +74,7 @@ package br.com.stimuli.loading.loadingtypes {
                 stream.play(url.url, _checkPolicyFile);
             }catch( e : SecurityError){
                 onSecurityErrorHandler(_createErrorEvent(e));
-
             }
-
-            stream.seek(0);
         };
 
         /**
@@ -134,6 +129,7 @@ package br.com.stimuli.loading.loadingtypes {
             _content = stream;
             if(pausedAtStart && stream){
                 stream.pause();
+                stream.seek(0);
             };
             super.onStartedHandler(evt);
         };
