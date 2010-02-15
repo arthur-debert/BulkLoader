@@ -118,18 +118,19 @@ package br.com.stimuli.loading {
 
         /** A number between 0 - 1 that indicates progress regarding weights */
         public function get weightPercent() : Number { 
-            return _weightPercent; 
+            return truncateToRange(_weightPercent); 
         }
 
 
         public function set weightPercent(value:Number) : void { 
-            if (isNaN(value) || !isFinite(value)) value = 0;		
+            if (isNaN(value) || !isFinite(value)) {
+                value = 0;		}
             _weightPercent = value; 
         }
 
         /** A number between 0 - 1 that indicates progress regarding bytes */
         public function get percentLoaded() : Number { 
-            return _percentLoaded; 
+            return truncateToRange(_percentLoaded); 
         }
 
         public function set percentLoaded(value:Number) : void {
@@ -138,13 +139,25 @@ package br.com.stimuli.loading {
         }
         /** The ratio (0-1) loaded (number of items loaded / number of items total) */
         public function get ratioLoaded() : Number { 
-            return _ratioLoaded; 
+            return truncateToRange(_ratioLoaded); 
         }
 
         public function set ratioLoaded(value:Number) : void { 
             if (isNaN(value) || !isFinite(value)) value = 0;		
             _ratioLoaded = value; 
         }
+
+        public function truncateToRange(value:Number):Number{
+            if(value < 0){
+                value = 0;
+            }else if (value > 1){
+                value =  1
+            }else if (isNaN(value) || !isFinite(value)){
+                value = 0;
+            }
+            return value;
+        }
+
         override public function toString() : String{
             return super.toString();
         }
