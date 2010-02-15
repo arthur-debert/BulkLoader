@@ -125,9 +125,9 @@ package br.com.stimuli.loading.loadingtypes {
             _content = null;
             // this is an player 10 only feature. as such we must check it's existence
             // with the array acessor, or else the compiler will barf on player 9
-            if (loader.hasOwnProperty("unloadAndStop") && loader["unloadAndStop"] is Function) {
+            if (loader && loader.hasOwnProperty("unloadAndStop") && loader["unloadAndStop"] is Function) {
                 loader["unloadAndStop"](true);
-            }else if (loader.hasOwnProperty("unload") && loader["unload"] is Function) {
+            }else if (loader && loader.hasOwnProperty("unload") && loader["unload"] is Function) {
                 // this is an air only feature. as such we must check it's existence
                 // with the array acessor, or else the compiler will barf on non air projects
                 loader["unload"]();
