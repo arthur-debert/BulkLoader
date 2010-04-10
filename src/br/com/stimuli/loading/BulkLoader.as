@@ -66,7 +66,7 @@ package br.com.stimuli.loading {
      *   @example Basic usage:<listing version="3.0">
      import br.com.stimuli.loading.BulkLoader;
 
-     / /instantiate a BulkLoader with a name : a way to reference this instance from another classes without having to set a expolicit reference on many places
+     / /instantiate a BulkLoader with a name : a way to reference this instance from another classes without having to set a explicit reference on many places
      var bulkLoader : BulkLoader = new BulkLoader("main loading");
     // add items to be loaded
     bulkLoader.add("my_xml_file.xml");
@@ -89,14 +89,14 @@ package br.com.stimuli.loading {
     }
 
     function onCompleteHandler(evt : ProgressEvent) : void{
-    trace("All items are loaeded and ready to consume");
+    trace("All items are loaded and ready to consume");
     // grab the main movie clip:
     var mainMovie : MovieClip = bulkLoader.getMovieClip("main.swf");
     // Get the xml object:
     var mXML : XML = bulkLoader.getXML("my_xml_file.xml");
     // grab the bitmap for the background image by a string:
     var myBitmap : Bitmap = bulkLoader.getBitmap("background.jpg");
-    // grab the bitmap for the background image using the url rquest object:
+    // grab the bitmap for the background image using the url request object:
     var myBitmap : Bitmap = bulkLoader.getBitmap(backgroundURL);
     }
 
