@@ -119,6 +119,11 @@ package br.com.stimuli.loading.loadingtypes {
             return (type == BulkLoader.TYPE_MOVIECLIP);
         }
 
+
+        override public function isStreamable() : Boolean{
+            return isSWF();
+        }
+
         override public function destroy() : void{
             stop();
             cleanListeners();

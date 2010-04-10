@@ -14,7 +14,9 @@ package br.com.stimuli.loading.tests {
 		public var lastProgress : Number = 0;
         public var initTime : int = -1;
         public var completeTime : int = -1;
-		
+
+		public var isStreamable : Boolean = true;
+
 		public function LoaderItemMovieTest(name : String) : void {
 		  super(name);
 		  this.name = name;
@@ -31,6 +33,7 @@ package br.com.stimuli.loading.tests {
 
         public function onInit(evt : Event) : void{
             initTime = getTimer();
+            isStreamable = evt.target.isStreamable;
         }
         
 		protected  function completeHandlerBP(event:BulkProgressEvent):void {
@@ -94,6 +97,7 @@ package br.com.stimuli.loading.tests {
         public function testInitFired() : void{
             assertTrue(initTime > 0);
             assertTrue(initTime <= completeTime);
+            assertTrue(isStreamable);
         }    
         
 	}
