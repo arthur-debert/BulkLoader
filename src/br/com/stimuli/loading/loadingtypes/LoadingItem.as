@@ -484,26 +484,31 @@ package br.com.stimuli.loading.loadingtypes {
         public function isText(): Boolean{
             return false;
         }
+
         /** Returns true if content is of type xml.
          */
         public function isXML(): Boolean{
             return false;
         }
+
         /** Returns true if content is of type image.
          */        
         public function isImage() : Boolean{
             return false;
         }
+
         /** Returns true if content is of type movieclip.
          */
         public function isSWF() : Boolean{
             return false;
         }
+
         /** Returns true if uses a Loader instance internally. (such as swfs and images).
          */
         public function isLoader(): Boolean{
             return false;
         }
+
         /** Returns true if this loading type should allow it's  content  to be accessed as soon as the server response starts. Should be true for sound and video types.
          */
         public function isStreamable() : Boolean{
