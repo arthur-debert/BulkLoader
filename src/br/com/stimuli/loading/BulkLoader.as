@@ -365,13 +365,13 @@ package br.com.stimuli.loading {
         public var _stringSubstitutions : Object;
         /** @private */
         public static var _typeClasses : Object = {
-image: ImageItem,
-       movieclip: ImageItem,
-       xml: XMLItem,
-       video: VideoItem,
-       sound: SoundItem,
-       text: URLItem,
-       binary: BinaryItem
+            image: ImageItem,
+            movieclip: ImageItem,
+            xml: XMLItem,
+            video: VideoItem,
+            sound: SoundItem,
+            text: URLItem,
+            binary: BinaryItem
         };
 
         /** Creates a new BulkLoader object identifiable by the <code>name</code> parameter. The <code>name</code> parameter must be unique, else an Error will be thrown.
@@ -783,9 +783,9 @@ image: ImageItem,
         _getAllConnections().forEach(function(i : LoadingItem, ...rest) : void{
 
                 if(i.status == LoadingItem.STATUS_ERROR && i.numTries >= i.maxTries){
-                _removeFromConnections(i);
+                    _removeFromConnections(i);
                 }
-                });
+            });
         for each (var checkItem:LoadingItem in _items){
             if (!checkItem._isLoading && checkItem.status != LoadingItem.STATUS_STOPPED && _canOpenConnectioForItem(checkItem)){
                 return checkItem;
@@ -882,8 +882,8 @@ image: ImageItem,
         _totalWeight -= item.weight;
         log("Removing " + item, LOG_VERBOSE);
         item.removeEventListener(Event.COMPLETE, _onItemComplete, false)
-            item.removeEventListener(Event.COMPLETE, _incrementItemsLoaded, false)
-            item.removeEventListener(ERROR, _onItemError, false);
+        item.removeEventListener(Event.COMPLETE, _incrementItemsLoaded, false)
+        item.removeEventListener(ERROR, _onItemError, false);
         item.removeEventListener(Event.OPEN, _onItemStarted, false);
         item.removeEventListener(ProgressEvent.PROGRESS, _onProgress, false);
         return true;
@@ -927,6 +927,7 @@ image: ImageItem,
         }
         return conns;
     }
+
     /** @private **/
     public function _getNumConnections() : int{
         var connections : int = 0;
