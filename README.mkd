@@ -31,7 +31,8 @@ BulkLoader gracefully handles progress notification in these use cases:
   *  Many connections opened for data of widely varying sizes: progress by weight.
  
 
-Useful links:                                                                            
+Useful links:                                                    
+                        
   * The [FAQ](http://github.com/arthur-debert/BulkLoader/wiki/FAQ) has the answer to the most common questions.
   * The [WIKI](http://github.com/arthur-debert/BulkLoader/wiki) has a lot of user guides.
   * The [Original announcement](http://www.stimuli.com.br/trane/2007/nov/25/loading-reloaded/) .
