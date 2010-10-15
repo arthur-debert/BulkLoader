@@ -29,12 +29,13 @@ BulkLoader gracefully handles progress notification in these use cases:
   *  Few connections to open: bytes total can be used instantly.
   *  Many connections opened: progress by ratio
   *  Many connections opened for data of widely varying sizes: progress by weight.
+ 
 
 Useful links:
-
+  * The [WIKI](http://github.com/arthur-debert/BulkLoader/wiki) has a lot of user guides.
   * The [Original announcement](http://www.stimuli.com.br/trane/2007/nov/25/loading-reloaded/) .
   * The [Mailing list](http://groups.google.com/group/bulkloader-users) . This is where support request and usage questions should be directed.
-  * The [Online documentation](http://media.stimuli.com.br/projects/bulk-loader/docs/)
+  * The [Online documentation](http://media.stimuli.com.br/projects/bulk-loader/docs/) for asdoc style help.
 
 Thank you
 	
