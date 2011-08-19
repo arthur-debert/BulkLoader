@@ -1258,7 +1258,7 @@ package br.com.stimuli.loading {
      *   @param new The priority to assign to the item.
      *   @return The <code>true</code> if an item with that key was found, <code>false</code> othersiwe.
      */
-    public function changeItemPriority(key : String, newPriority : int) : Boolean{
+    public function changeItemPriority(key : *, newPriority : int) : Boolean{
         var item : LoadingItem = get(key);
         if (!item){
             return false;
