@@ -55,9 +55,9 @@ package br.com.stimuli.loading {
     /**
      *  Dispatched if any item has an error while loading.
      *
-     *  @eventType events.ErrorEvent
+     *  @eventType flash.events.ErrorEvent
      */
-    [Event(name="error", type="events.ErrorEvent")];
+    [Event(name="error", type="flash.events.ErrorEvent")];
     /**
      *   Manages loading for simultaneous items and multiple formats.
      *   Exposes a simpler interface, with callbacks instead of events for each item to be loaded (but still dispatched "global" events).
