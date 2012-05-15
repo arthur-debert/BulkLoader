@@ -1,0 +1,7 @@
+# Build artifacts / configuration
+target/
+user.properties
+
+# IDE specific junk
+.project
+.settings

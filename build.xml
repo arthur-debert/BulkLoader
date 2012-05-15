@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="bulkloader">
+	<property file="user.properties" />
+
+	<property name="build.name" value="bulkloader" />
+	<property name="build.version" value="1.0.0" />
+	<property name="build.finalName" value="${build.name}-${build.version}" />
+	<property name="flexunit.headless" value="false" />
+	
+	<property name="lib.loc" value="lib" />
+	<property name="src.loc" value="src" />
+	<property name="test-src.loc" value="tests" />
+	<property name="bin.loc" value="target/bin" />
+	<property name="asdoc.loc" value="target/asdoc" />
+	<property name="test.loc" value="target/test" />
+	<property name="report.loc" value="target/test/report" />
+	<property name="package.loc" value="target/package" />
+	
+	<property environment="env" />
+	<property name="FLEX_HOME" value="${env.FLEX_HOME}" />
+	<fail unless="FLEX_HOME" message="FLEX_HOME property is not set, please set it in user.properties, or as an environment variable."/>
+	
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	<!-- <taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks-4.1.0_RC3-5.jar" /> -->
+	
+	<target name="clean" description="Cleans the workspace for a fresh build">
+		<delete dir="${bin.loc}" />
+		<delete dir="${asdoc.loc}"/>
+		<delete dir="${test.loc}" />
+		<delete dir="${package.loc}" />
+		<delete dir="${report.loc}"/>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="${bin.loc}"/>
+		<mkdir dir="${asdoc.loc}"/>
+		<mkdir dir="${test.loc}" />
+		<mkdir dir="${report.loc}" />
+		<mkdir dir="${package.loc}" />
+	</target>
+
+	<target name="test" depends="compile" description="Run unit tests">
+		<!-- Unit Tests need porting to FlexUnit 4 before we can get continuous integration
+		<flexunit 
+			workingDir="${test.loc}" 
+			toDir="${report.loc}" 
+			verbose="false"
+			headless="${flexunit.headless}"
+			haltonfailure="false">
+			<testSource dir="${test-src.loc}">
+				<include name="**/Test*.as" />
+			</testSource>
+			<library dir="${test-src.loc}" />
+			<library dir="${bin.loc}" />
+			<library dir="${lib.loc}" />
+		</flexunit>
+		<junitreport todir="${report.loc}">
+			<fileset dir="${report.loc}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${report.loc}/html" />
+		</junitreport>
+		<echo>Test Report Generated: file://${basedir}/${report.loc}/html/index.html</echo>
+		<fail if="flexunit.failed" message="Unit Tests Failed"/>
+		-->
+	</target>	
+	
+	<target name="compile" depends="clean, init">
+		<compc output="${bin.loc}/${build.finalName}.swc" target-player="10.0.0">
+			<source-path path-element="${src.loc}" />
+        	<include-sources dir="${src.loc}" includes="*" />
+		</compc>
+	</target>
+
+	<target name="document">
+		<java jar="${FLEX_HOME}/lib/asdoc.jar" fork="true" failonerror="true">
+			<jvmarg value="-Xmx256M" />
+			<arg line="+flexlib '${FLEX_HOME}/frameworks'" />
+			<arg line="-source-path+='${src.loc}'" />
+			<arg line="-doc-sources+='${src.loc}'" />
+			<arg line="-output '${asdoc.loc}'" />
+			<arg line="-keep-xml=true" />
+			<arg line="-window-title '${build.name} Documentation'" />
+			<arg line="-main-title '${build.name} Documentation'" />
+		</java>
+	</target>
+	
+	<target name="package" depends="clean, compile, test, document" description="Package the project">
+		<!-- Create final SWC with embedded ASDocs -->
+		<copy todir="${package.loc}">
+			<fileset file="${bin.loc}/${build.finalName}.swc"/>
+		</copy>
+		<zip destfile="${package.loc}/${build.finalName}.swc" update="true">
+		    <zipfileset dir="${asdoc.loc}/tempdita" prefix="docs">
+			    <include name="*.*"/>
+				<exclude name="ASDoc_Config.xml"/>
+				<exclude name="overviews.xml"/>
+			</zipfileset>
+		</zip>
+		<!-- Create HTML ASDocs zip -->
+		<zip destfile="${package.loc}/${build.finalName}-asdocs.zip">
+			<zipfileset dir="${asdoc.loc}">
+				<include name="*" />
+				<exclude name="tempdita" />
+			</zipfileset>
+		</zip>
+	</target>	
+</project>
